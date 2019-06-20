@@ -10,7 +10,7 @@
     "overwrite_logs": true,
     "logpath" : "./logs/25N2M_withcomp_realmap",
     "hextohex_d" : 0.008,           // Hex to hex distance, determines num hexes
-    "svgpath" : "./paper/whiskerbarrels.svg",
+    "svgpath" : "./boundaries/whiskerbarrels.svg",
     "boundaryFalloffDist" : 0.01,
     "D" : 0.2,
     "E" : 0.0,

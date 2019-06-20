@@ -3,6 +3,10 @@
  * diffusion system which is guided by M guidance molecules, whose
  * expression gradients drive N thalamocortical axon types to make
  * connections in an elliptical region.
+ *
+ * Author: Seb James <seb.james@sheffield.ac.uk>
+ *
+ * Date: June 2019
  */
 
 /*!
