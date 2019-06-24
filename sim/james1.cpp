@@ -31,30 +31,8 @@
 /*!
  * Include the reaction diffusion class
  */
-#if defined COMP1
-#include "rd_james_comp1.h"
-#elif defined COMP2
-#include "rd_james_comp2.h"
-#elif defined COMP3
-#include "rd_james_comp3.h"
-#elif defined COMP4
-#include "rd_james_comp4.h"
-#elif defined COMP5
-#include "rd_james_comp5.h"
-#elif defined COMP7
-#include "rd_james_comp7.h"
-#elif defined COMP8
+#if defined COMP8
 #include "rd_james_comp8.h"
-#elif defined COMP9
-#include "rd_james_comp9.h"
-#elif defined COMP10
-#include "rd_james_comp10.h"
-#elif defined COMP11
-#include "rd_james_comp11.h"
-#elif defined COMP12
-#include "rd_james_comp12.h"
-#elif defined COMP13
-#include "rd_james_comp13.h"
 #elif defined COMP14
 #include "rd_james_comp14.h"
 #else
@@ -375,28 +353,10 @@ int main (int argc, char **argv)
     const double D = root.get ("D", 0.1).asDouble();
     const FLOATTYPE k = root.get ("k", 3).asDouble();
 
-#if (defined COMP1 || defined COMP4 || defined COMP5 || defined COMP7 || defined COMP9 || defined COMP11 || defined COMP12 || defined COMP13 || defined COMP14)
+#if defined COMP14
     const FLOATTYPE l = root.get ("l", 1).asDouble();
-#endif
-
-#if defined COMP2 || defined COMP13
-    const double F = root.get ("F", 0.1).asDouble();
-#endif
-
-#if (defined COMP3 || defined COMP4 || defined COMP5 || defined COMP14)
     const double E = root.get ("E", 0.1).asDouble();
     cout << "E is set to " << E << endl;
-#endif
-
-#if defined COMP7 || defined COMP10 || defined COMP11
-    // Parameters for a sigmoid
-    const double o = root.get ("o", 0.1).asDouble();
-    const double s = root.get ("s", 1.0).asDouble();
-#endif
-
-#if defined COMP11
-    // Accumulation parameter
-    const double y = root.get ("y", 0.1).asDouble();
 #endif
 
     bool do_fgf_duplication = root.get ("do_fgf_duplication", false).asBool();
@@ -565,30 +525,8 @@ int main (int argc, char **argv)
     /*
      * Instantiate and set up the model object
      */
-#if defined COMP1
-    RD_James_comp1<FLOATTYPE> RD;
-#elif defined COMP2
-    RD_James_comp2<FLOATTYPE> RD;
-#elif defined COMP3
-    RD_James_comp3<FLOATTYPE> RD;
-#elif defined COMP4
-    RD_James_comp4<FLOATTYPE> RD;
-#elif defined COMP5
-    RD_James_comp5<FLOATTYPE> RD;
-#elif defined COMP7
-    RD_James_comp7<FLOATTYPE> RD;
-#elif defined COMP8
+#if defined COMP8
     RD_James_comp8<FLOATTYPE> RD;
-#elif defined COMP9
-    RD_James_comp9<FLOATTYPE> RD;
-#elif defined COMP10
-    RD_James_comp10<FLOATTYPE> RD;
-#elif defined COMP11
-    RD_James_comp11<FLOATTYPE> RD;
-#elif defined COMP12
-    RD_James_comp12<FLOATTYPE> RD;
-#elif defined COMP13
-    RD_James_comp13<FLOATTYPE> RD;
 #elif defined COMP14
     RD_James_comp14<FLOATTYPE> RD;
 #else
@@ -620,27 +558,10 @@ int main (int argc, char **argv)
     // After allocate(), we can set up parameters:
     RD.set_D (D);
 
-#if (defined COMP1 || defined COMP4 || defined COMP5 || defined COMP7 || defined COMP9 || defined COMP11 || defined COMP12 || defined COMP13 || defined COMP14)
+#if defined COMP14
     cout << "Setting RD.l to " << l << endl;
     RD.l = l;
-#endif
-
-#if (defined COMP2 || defined COMP13)
-    RD.F = F;
-#endif
-
-#if (defined COMP3 || defined COMP4 || defined COMP5 || defined COMP14)
     RD.E = E;
-#endif
-
-#if defined COMP7 || defined COMP10 || defined COMP11
-    RD.o = o;
-    RD.s = s;
-#endif
-
-#if defined COMP11
-    cout << "Setting RD.y to " << y << endl;
-    RD.y = y;
 #endif
 
     RD.contour_threshold = contour_threshold;
@@ -661,22 +582,9 @@ int main (int argc, char **argv)
         cout << "Set xinit["<<i<<"] to " << gp.x << endl;
         gp.y = v.get("yinit", 0.0).asDouble();
         RD.initmasks.push_back (gp);
-#if (defined COMP1 || defined COMP4 || defined COMP5 || defined COMP7 || defined COMP9 || defined COMP11 || defined COMP13 || defined COMP14)
+#if defined COMP14
         RD.epsilon[i] = v.get("epsilon", 0.0).asDouble();
         cout << "Set RD.epsilon["<<i<<"] to " << RD.epsilon[i] << endl;
-#elif (defined COMP12)
-        Json::Value epsilon = v["epsilon"];
-        int paramRtn = 0;
-        for (unsigned int j = 0; j < guid.size(); ++j) {
-            // Set up epsilon values using a setter which checks we
-            // don't set a value that's off the end of the epsilon
-            // container.
-            paramRtn += RD.setEpsilon (j, i, epsilon[j].asDouble());
-        }
-        if (paramRtn) {
-            cerr << "Something went wrong setting epsilon values" << endl;
-            return paramRtn;
-        }
 #endif
     }
 

@@ -1,7 +1,6 @@
 /*
- * Like RD_James, but derives from RD_Base
+ * A reaction diffusion system which derives from RD_Base
  */
-
 #include "morph/RD_Base.h"
 
 /*!
@@ -31,10 +30,14 @@ struct GaussParams {
 /*!
  * Reaction diffusion system. Based on Karbowski 2004, but with a
  * removal of the Fgf8, Pax6, Emx2 system, and instead an option to
- * define several guidance molecules and
+ * define several guidance molecules and thalamocortical types
+ * (i.e. configurable N and M).
  *
- * Using 'Flt' for the float type, this will either be single precision
- * (float) or double precision (double).
+ * This class also has a mechanism for providing normalization of the
+ * a variable.
+ *
+ * This is a template class using 'Flt' for the float type, this can
+ * either be single precision (float) or double precision (double).
  */
 template <class Flt>
 class RD_James : public RD_Base<Flt>
@@ -58,6 +61,12 @@ public:
      */
     alignas(alignof(vector<vector<Flt> >))
     vector<vector<Flt> > c;
+
+    /*!
+     * To record dci/dt, as this is used in the computation of a.
+     */
+    alignas(alignof(vector<vector<Flt> >))
+    vector<vector<Flt> > dc;
 
     /*!
      * These are the a_i(x,t) variables from the Karb2004 paper. x is
@@ -385,6 +394,7 @@ public:
 
         // Resize and zero-initialise the various containers
         this->resize_vector_vector (this->c, this->N);
+        this->resize_vector_vector (this->dc, this->N);
         this->resize_vector_vector (this->a, this->N);
         this->resize_vector_vector (this->betaterm, this->N);
         this->resize_vector_vector (this->alpha_c, this->N);
@@ -662,40 +672,78 @@ public:
     //@{
 
     /*!
-     * Do a single step through the model.
+     * Compute the values of c, the connection density
      */
-    virtual void step (void) {
+    virtual void integrate_c (void) {
+        // 3. Do integration of c
+        for (unsigned int i=0; i<this->N; ++i) {
 
-        this->stepCount++;
-
-        // 1. Compute Karb2004 Eq 3. (coupling between connections made by each TC type)
-        Flt nsum = 0.0;
-        Flt csum = 0.0;
-#pragma omp parallel for reduction(+:nsum,csum)
-        for (unsigned int hi=0; hi<this->nhex; ++hi) {
-            n[hi] = 0;
-            for (unsigned int i=0; i<N; ++i) {
-                n[hi] += c[i][hi];
+#pragma omp parallel for
+            for (unsigned int h=0; h<this->nhex; h++) {
+                // Note: betaterm used in compute_dci_dt()
+                this->betaterm[i][h] = this->beta[i] * this->n[h] * static_cast<Flt>(pow (this->a[i][h], this->k));
             }
-            csum += c[0][hi];
-            n[hi] = 1. - n[hi];
-            nsum += n[hi];
-        }
 
-#ifdef DEBUG__
-        if (this->stepCount % 100 == 0) {
-            DBG ("System computed " << this->stepCount << " times so far...");
-            DBG ("sum of n+c is " << nsum+csum);
+            // Runge-Kutta integration for C (or ci)
+            vector<Flt> qq(this->nhex,0.);
+            vector<Flt> k1 = this->compute_dci_dt (this->c[i], i);
+#pragma omp parallel for
+            for (unsigned int h=0; h<this->nhex; h++) {
+                qq[h] = this->c[i][h] + k1[h] * this->halfdt;
+            }
+
+            vector<Flt> k2 = this->compute_dci_dt (qq, i);
+#pragma omp parallel for
+            for (unsigned int h=0; h<this->nhex; h++) {
+                qq[h] = this->c[i][h] + k2[h] * this->halfdt;
+            }
+
+            vector<Flt> k3 = this->compute_dci_dt (qq, i);
+#pragma omp parallel for
+            for (unsigned int h=0; h<this->nhex; h++) {
+                qq[h] = this->c[i][h] + k3[h] * this->dt;
+            }
+
+            vector<Flt> k4 = this->compute_dci_dt (qq, i);
+#pragma omp parallel for
+            for (unsigned int h=0; h<this->nhex; h++) {
+                this->dc[i][h] = (k1[h]+2. * (k2[h] + k3[h]) + k4[h]) * this->sixthdt;
+                Flt c_cand = this->c[i][h] + this->dc[i][h];
+                // Avoid over-saturating c_i and make sure dc is similarly modified.
+                this->dc[i][h] = (c_cand > 1.0) ? (1.0 - this->c[i][h]) : this->dc[i][h];
+                this->c[i][h] = (c_cand > 1.0) ? 1.0 : c_cand;
+            }
         }
-#endif
+    }
+
+    /*!
+     * A possibly normalization-function specific task to carry out
+     * once after the sum of a has been computed.
+     */
+    virtual void sum_a_computation (const unsigned int _i) {}
+
+    /*!
+     * The normalization/transfer function with a default no-op
+     * implementation.
+     */
+    virtual inline Flt transfer_a (const Flt& _a, const unsigned int _i) {
+        Flt a_rtn = _a;
+        return a_rtn;
+    }
+
+    /*!
+     * Compute the values of a, the branching density
+     */
+    virtual void integrate_a (void) {
 
         // 2. Do integration of a (RK in the 1D model). Involves computing axon branching flux.
 
-        // Pre-compute intermediate val:
+        // Pre-compute:
+        // 1) The intermediate val alpha_c.
         for (unsigned int i=0; i<this->N; ++i) {
-#pragma omp parallel for shared(i,k)
+#pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
-                this->alpha_c[i][h] = alpha[i] * c[i][h];
+                this->alpha_c[i][h] = this->alpha[i] * this->c[i][h];
             }
         }
 
@@ -705,76 +753,106 @@ public:
         for (unsigned int i=0; i<this->N; ++i) {
 
             // Runge-Kutta integration for A
-            vector<Flt> q(this->nhex, 0.0);
-            this->compute_divJ (a[i], i); // populates divJ[i]
+            vector<Flt> qq(this->nhex, 0.0);
+            this->compute_divJ (this->a[i], i); // populates divJ[i]
 
             vector<Flt> k1(this->nhex, 0.0);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
-                k1[h] = this->divJ[i][h] + this->alpha_c[i][h] - beta[i] * n[h] * static_cast<Flt>(pow (a[i][h], k));
-                q[h] = this->a[i][h] + k1[h] * this->halfdt;
+                k1[h] = this->divJ[i][h] - this->dc[i][h];
+                qq[h] = this->a[i][h] + k1[h] * this->halfdt;
             }
 
             vector<Flt> k2(this->nhex, 0.0);
-            this->compute_divJ (q, i);
+            this->compute_divJ (qq, i);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
-                k2[h] = this->divJ[i][h] + this->alpha_c[i][h] - beta[i] * n[h] * static_cast<Flt>(pow (q[h], k));
-                q[h] = this->a[i][h] + k2[h] * this->halfdt;
+                k2[h] = this->divJ[i][h] - this->dc[i][h];
+                qq[h] = this->a[i][h] + k2[h] * this->halfdt;
             }
 
             vector<Flt> k3(this->nhex, 0.0);
-            this->compute_divJ (q, i);
+            this->compute_divJ (qq, i);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
-                k3[h] = this->divJ[i][h] + this->alpha_c[i][h] - beta[i] * n[h] * static_cast<Flt>(pow (q[h], k));
-                q[h] = this->a[i][h] + k3[h] * this->dt;
+                k3[h] = this->divJ[i][h] - this->dc[i][h];
+                qq[h] = this->a[i][h] + k3[h] * this->dt;
             }
 
             vector<Flt> k4(this->nhex, 0.0);
-            this->compute_divJ (q, i);
+            this->compute_divJ (qq, i);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
-                k4[h] = this->divJ[i][h] + this->alpha_c[i][h] - beta[i] * n[h] * static_cast<Flt>(pow (q[h], k));
-                a[i][h] += (k1[h] + 2.0 * (k2[h] + k3[h]) + k4[h]) * this->sixthdt;
+                k4[h] = this->divJ[i][h] - this->dc[i][h];
+                this->a[i][h] += (k1[h] + 2.0 * (k2[h] + k3[h]) + k4[h]) * this->sixthdt;
             }
+
+            // Do any necessary computation which involves summing a here
+            this->sum_a_computation (i);
+
+            // Now apply the transfer function
+//#define DEBUG_SUM_A_TRANSFERRED 1
+#ifdef DEBUG_SUM_A_TRANSFERRED
+            Flt sum_a_transferred = 0.0;
+#endif
+#ifndef DEBUG_SUM_A_TRANSFERRED
+# pragma omp parallel for
+#endif
+            for (unsigned int h=0; h<this->nhex; ++h) {
+                this->a[i][h] = this->transfer_a (this->a[i][h], i);
+#ifdef DEBUG_SUM_A_TRANSFERRED
+                sum_a_transferred += this->a[i][h];
+#endif
+            }
+#ifdef DEBUG_SUM_A_TRANSFERRED
+            cout << "After transfer_a(), sum_a is " << sum_a_transferred << endl;
+#endif
+        }
+    }
+
+    /*!
+     * Compute n
+     */
+    virtual void compute_n (void) {
+
+        Flt nsum = 0.0;
+        Flt csum = 0.0;
+#pragma omp parallel for reduction(+:nsum,csum)
+        for (unsigned int hi=0; hi<this->nhex; ++hi) {
+            this->n[hi] = 0;
+            // First, use n[hi] so sum c over all i:
+            for (unsigned int i=0; i<this->N; ++i) {
+                this->n[hi] += this->c[i][hi];
+            }
+            // Prevent sum of c being too large:
+            this->n[hi] = (this->n[hi] > 1.0) ? 1.0 : this->n[hi];
+            csum += this->c[0][hi];
+            // Now compute n for real:
+            this->n[hi] = 1. - this->n[hi];
+            nsum += this->n[hi];
         }
 
-        // 3. Do integration of c
-        for (unsigned int i=0; i<this->N; ++i) {
-
-#pragma omp parallel for
-            for (unsigned int h=0; h<this->nhex; h++) {
-                // Note: betaterm used in compute_dci_dt()
-                this->betaterm[i][h] = beta[i] * n[h] * static_cast<Flt>(pow (a[i][h], k));
-            }
-
-            // Runge-Kutta integration for C (or ci)
-            vector<Flt> q(this->nhex,0.);
-            vector<Flt> k1 = compute_dci_dt (c[i], i);
-#pragma omp parallel for
-            for (unsigned int h=0; h<this->nhex; h++) {
-                q[h] = c[i][h] + k1[h] * this->halfdt;
-            }
-
-            vector<Flt> k2 = compute_dci_dt (q, i);
-#pragma omp parallel for
-            for (unsigned int h=0; h<this->nhex; h++) {
-                q[h] = c[i][h] + k2[h] * this->halfdt;
-            }
-
-            vector<Flt> k3 = compute_dci_dt (q, i);
-#pragma omp parallel for
-            for (unsigned int h=0; h<this->nhex; h++) {
-                q[h] = c[i][h] + k3[h] * this->dt;
-            }
-
-            vector<Flt> k4 = compute_dci_dt (q, i);
-#pragma omp parallel for
-            for (unsigned int h=0; h<this->nhex; h++) {
-                c[i][h] += (k1[h]+2. * (k2[h] + k3[h]) + k4[h]) * this->sixthdt;
-            }
+#ifdef DEBUG__
+        if (this->stepCount % 100 == 0) {
+            DBG ("System computed " << this->stepCount << " times so far...");
+            DBG ("sum of n+c is " << nsum+csum);
         }
+#endif
+    }
+
+    /*!
+     * Do a single step through the model.
+     */
+    virtual void step (void) {
+
+        this->stepCount++;
+
+        // 1. Compute Karb2004 Eq 3. (coupling between connections made by each TC type)
+        this->compute_n();
+
+        // 2. Call Runge Kutta numerical integration code
+        this->integrate_a();
+        this->integrate_c();
     }
 
     /*!

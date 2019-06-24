@@ -3,10 +3,10 @@
  * from RD_James_norm base class.
  */
 
-#include "rd_james_norm.h"
+#include "rd_james.h"
 
 template <class Flt>
-class RD_James_comp8 : public RD_James_norm<Flt>
+class RD_James_comp8 : public RD_James<Flt>
 {
 public:
 
@@ -24,18 +24,18 @@ public:
      * Simple constructor; no arguments. Just calls base constructor.
      */
     RD_James_comp8 (void)
-        : RD_James_norm<Flt>() {
+        : RD_James<Flt>() {
     }
 
     virtual void allocate (void) {
-        RD_James_norm<Flt>::allocate();
+        RD_James<Flt>::allocate();
         this->resize_vector_param (this->sum_a, this->N);
         this->resize_vector_param (this->sum_a_init, this->N);
     }
 
     virtual void init (void) {
         cout << "RD_James_comp8::init() called" << endl;
-        RD_James_norm<Flt>::init();
+        RD_James<Flt>::init();
         // Now compute sum of a and record this as sum_a_init.
         for (unsigned int i = 0; i < this->N; ++i) {
             this->sum_a_computation(i);
