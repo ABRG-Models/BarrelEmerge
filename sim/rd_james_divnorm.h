@@ -1,12 +1,12 @@
 /*
  * 2D Karbowski system with *divisive* normalization of a_i, deriving
- * from RD_James_norm base class.
+ * from RD_James base class.
  */
 
 #include "rd_james.h"
 
 template <class Flt>
-class RD_James_comp8 : public RD_James<Flt>
+class RD_James_divnorm : public RD_James<Flt>
 {
 public:
 
@@ -23,7 +23,7 @@ public:
     /*!
      * Simple constructor; no arguments. Just calls base constructor.
      */
-    RD_James_comp8 (void)
+    RD_James_divnorm (void)
         : RD_James<Flt>() {
     }
 
@@ -34,7 +34,7 @@ public:
     }
 
     virtual void init (void) {
-        cout << "RD_James_comp8::init() called" << endl;
+        cout << "RD_James_divnorm::init() called" << endl;
         RD_James<Flt>::init();
         // Now compute sum of a and record this as sum_a_init.
         for (unsigned int i = 0; i < this->N; ++i) {

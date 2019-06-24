@@ -2,10 +2,10 @@
  * 2D Karbowski system with *divisive* normalization of a_i and competition.
  */
 
-#include "rd_james_comp8.h"
+#include "rd_james_divnorm.h"
 
 template <class Flt>
-class RD_James_comp14 : public RD_James_comp8<Flt>
+class RD_James_dncomp : public RD_James_divnorm<Flt>
 {
 public:
 
@@ -45,12 +45,12 @@ public:
     //@}
 
 
-    RD_James_comp14 (void)
-        : RD_James_comp8<Flt>() {
+    RD_James_dncomp (void)
+        : RD_James_divnorm<Flt>() {
     }
 
     virtual void allocate (void) {
-        RD_James_comp8<Flt>::allocate();
+        RD_James_divnorm<Flt>::allocate();
 
         // epsilon based competition
         this->resize_vector_param (this->epsilon, this->N);
@@ -66,7 +66,7 @@ public:
     }
 
     virtual void init (void) {
-        RD_James_comp8<Flt>::init();
+        RD_James_divnorm<Flt>::init();
 
         this->zero_gradient_field (this->grad_n);
         this->zero_vector_variable (this->div_n);

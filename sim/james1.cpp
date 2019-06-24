@@ -31,10 +31,10 @@
 /*!
  * Include the reaction diffusion class
  */
-#if defined COMP8
-#include "rd_james_comp8.h"
-#elif defined COMP14
-#include "rd_james_comp14.h"
+#if defined DIVNORM
+#include "rd_james_divnorm.h"
+#elif defined DNCOMP
+#include "rd_james_dncomp.h"
 #else
 #include "rd_james.h" // 2D Karbowski, no additional competition/features
 #endif
@@ -353,7 +353,7 @@ int main (int argc, char **argv)
     const double D = root.get ("D", 0.1).asDouble();
     const FLOATTYPE k = root.get ("k", 3).asDouble();
 
-#if defined COMP14
+#if defined DNCOMP
     const FLOATTYPE l = root.get ("l", 1).asDouble();
     const double E = root.get ("E", 0.1).asDouble();
     cout << "E is set to " << E << endl;
@@ -525,10 +525,10 @@ int main (int argc, char **argv)
     /*
      * Instantiate and set up the model object
      */
-#if defined COMP8
-    RD_James_comp8<FLOATTYPE> RD;
-#elif defined COMP14
-    RD_James_comp14<FLOATTYPE> RD;
+#if defined DIVNORM
+    RD_James_divnorm<FLOATTYPE> RD;
+#elif defined DNCOMP
+    RD_James_dncomp<FLOATTYPE> RD;
 #else
     RD_James<FLOATTYPE> RD;
 #endif
@@ -558,7 +558,7 @@ int main (int argc, char **argv)
     // After allocate(), we can set up parameters:
     RD.set_D (D);
 
-#if defined COMP14
+#if defined DNCOMP
     cout << "Setting RD.l to " << l << endl;
     RD.l = l;
     RD.E = E;
@@ -582,7 +582,7 @@ int main (int argc, char **argv)
         cout << "Set xinit["<<i<<"] to " << gp.x << endl;
         gp.y = v.get("yinit", 0.0).asDouble();
         RD.initmasks.push_back (gp);
-#if defined COMP14
+#if defined DNCOMP
         RD.epsilon[i] = v.get("epsilon", 0.0).asDouble();
         cout << "Set RD.epsilon["<<i<<"] to " << RD.epsilon[i] << endl;
 #endif
