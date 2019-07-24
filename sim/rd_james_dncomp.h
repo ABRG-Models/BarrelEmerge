@@ -1,5 +1,5 @@
 /*
- * 2D Karbowski system with *divisive* normalization of a_i and competition.
+ * 2D Karbowski system with *divisive* normalization of a_i AND competition.
  */
 
 #include "rd_james_divnorm.h"

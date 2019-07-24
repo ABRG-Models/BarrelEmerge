@@ -38,6 +38,7 @@
 #else
 #include "rd_james.h" // 2D Karbowski, no additional competition/features
 #endif
+using morph::RD_Help;
 
 #ifdef COMPILE_PLOTTING
 /*!
@@ -45,6 +46,7 @@
  */
 # include "morph/display.h"
 # include "morph/RD_Plot.h"
+using morph::RD_plot;
 #endif
 
 /*!

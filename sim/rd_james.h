@@ -40,7 +40,7 @@ struct GaussParams {
  * either be single precision (float) or double precision (double).
  */
 template <class Flt>
-class RD_James : public RD_Base<Flt>
+class RD_James : public morph::RD_Base<Flt>
 {
 public:
 
@@ -274,7 +274,7 @@ public:
      * Simple constructor; no arguments. Just calls RD_Base constructor
      */
     RD_James (void)
-        : RD_Base<Flt>() {
+        : morph::RD_Base<Flt>() {
     }
 
     /*!
@@ -390,7 +390,7 @@ public:
      */
     virtual void allocate (void) {
 
-        RD_Base<Flt>::allocate();
+        morph::RD_Base<Flt>::allocate();
 
         // Resize and zero-initialise the various containers
         this->resize_vector_vector (this->c, this->N);
@@ -545,7 +545,7 @@ protected:
      */
     //@{
     void set_d (Flt d_) {
-        RD_Base<Flt>::set_d (d_);
+        morph::RD_Base<Flt>::set_d (d_);
         this->updateTwoDover3dd();
     }
     //@}
