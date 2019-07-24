@@ -95,137 +95,6 @@ private:
     ProcessData* parent;
 };
 
-/*
- * Make external process calls to insert git information (current
- * revision, whether or not the git repo has any modified or untracked
- * files) into the given Json::Value object.
- */
-void insertGitInfo (Json::Value& root)
-{
-    ProcessData pD;
-    RDProcessCallbacks cb(&pD);
-    Process p;
-    string command ("/usr/bin/git");
-
-    list<string> args1;
-    args1.push_back ("git");
-    args1.push_back ("rev-parse");
-    args1.push_back ("HEAD");
-
-    try {
-        p.setCallbacks (&cb);
-        p.start (command, args1);
-        p.probeProcess ();
-        if (!p.waitForStarted()) {
-            throw runtime_error ("Process failed to start");
-        }
-        while (p.running() == true) {
-            p.probeProcess();
-        }
-
-        stringstream theOutput;
-        theOutput << p.readAllStandardOutput();
-        string line = "";
-        int nlines = 0;
-        while (getline (theOutput, line, '\n')) {
-            cout << "Current git HEAD: " << line << endl;
-            if (nlines++ > 0) {
-                break;
-            }
-            root["git_head"] = line; // Should be one line only
-        }
-
-    } catch (const exception& e) {
-        cerr << "Exception: " << e.what() << endl;
-        root["git_head"] = "unknown";
-    }
-
-    // Reset Process with arg true to keep callbacks
-    p.reset (true);
-
-    list<string> args2;
-    args2.push_back ("git");
-    args2.push_back ("status");
-
-    try {
-        p.start (command, args2);
-        p.probeProcess ();
-        if (!p.waitForStarted()) {
-            throw runtime_error ("Process failed to start");
-        }
-        while (p.running() == true) {
-            p.probeProcess();
-        }
-
-        stringstream theOutput;
-        theOutput << p.readAllStandardOutput();
-        string line = "";
-        bool lm = false;
-        bool ut = false;
-        while (getline (theOutput, line, '\n')) {
-            if (line.find("modified:") != string::npos) {
-                if (line.find("sim/") != string::npos) {
-                    if (!lm) {
-                        root["git_modified_sim"] = true;
-                        cout << "Repository has local modifications in sim/ dir" << endl;
-                    }
-                    lm = true;
-                }
-            }
-            if (line.find("Untracked files:") != string::npos) {
-                if (line.find("sim/") != string::npos) {
-                    if (!ut) {
-                        root["git_untracked_sim"] = true;
-                        cout << "Repository has untracked files present in sim/ dir" << endl;
-                    }
-                    ut = true;
-                }
-            }
-        }
-
-    } catch (const exception& e) {
-        cerr << "Exception: " << e.what() << endl;
-        root["git_status"] = "unknown";
-    }
-
-    // Reset for third call
-    p.reset (true);
-
-    // This gets the git branch name
-    list<string> args3;
-    args3.push_back ("git");
-    args3.push_back ("rev-parse");
-    args3.push_back ("--abbrev-ref");
-    args3.push_back ("HEAD");
-
-    try {
-        p.start (command, args3);
-        p.probeProcess ();
-        if (!p.waitForStarted()) {
-            throw runtime_error ("Process failed to start");
-        }
-        while (p.running() == true) {
-            p.probeProcess();
-        }
-
-        stringstream theOutput;
-        theOutput << p.readAllStandardOutput();
-        string line = "";
-        int nlines = 0;
-        while (getline (theOutput, line, '\n')) {
-            cout << "Current git branch: " << line << endl;
-            if (nlines++ > 0) {
-                break;
-            }
-            root["git_branch"] = line; // Should be one line only
-        }
-
-    } catch (const exception& e) {
-        cerr << "Exception: " << e.what() << endl;
-        root["git_branch"] = "unknown";
-    }
-}
-
 /*!
  * main(): Run a simulation, using parameters obtained from a JSON
  * file.
@@ -755,8 +624,9 @@ int main (int argc, char **argv)
 #ifdef COMPILE_PLOTTING
         if ((RD.stepCount % plotevery) == 0) {
             DBG2("Plot at step " << RD.stepCount);
-            // Do a final plot of the ctrs as found.
+            // Do a plot of the ctrs as found.
             vector<list<Hex> > ctrs = RD_Help<FLOATTYPE>::get_contours (RD.hg, RD.c, RD.contour_threshold);
+
             vector<list<Hex> > a_ctrs;
             if (plot_contours) {
                 plt.plot_contour (displays[contours_id], RD.hg, ctrs);
@@ -854,7 +724,7 @@ int main (int argc, char **argv)
     root["k"] = RD.k;
     root["dt"] = RD.get_dt();
     // Call our function to place git information into root.
-    insertGitInfo (root);
+    morph::Tools::insertGitInfo (root, "sim/");
     // Store the binary name and command argument into root, too.
     if (argc > 0) { root["argv0"] = argv[0]; }
     if (argc > 1) { root["argv1"] = argv[1]; }
