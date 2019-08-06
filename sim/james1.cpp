@@ -97,10 +97,8 @@ private:
 
 /*!
  * To go to the RD_Help class. Take a set of variables. Mark each hex
- * with the index of the variable which is highest for that hex. Make
- * an approximation of the vertices of the domains. Plot
- * these. Determine a metric of Dirichlet-ness after Honda1983 and/or
- * Senft1991
+ * with the outer index of the f which is highest for that hex, scaled
+ * and converted to a float.
  */
 vector<FLOATTYPE>
 dirichlet_regions (HexGrid* hg, vector<vector<FLOATTYPE> >& f)
@@ -188,6 +186,11 @@ public:
     }
 };
 
+/*!
+ * Determine the locations of the vertices on a Hex grid which are
+ * surrounded by three different values of @f. @f is indexed by the
+ * HexGrid @hg. Return a set of the vertices.
+ */
 set<DirichVtx>
 dirichlet_vertices (HexGrid* hg, vector<FLOATTYPE>& f)
 {
@@ -793,9 +796,10 @@ int main (int argc, char **argv)
             vector<list<Hex> > ctrs = RD_Help<FLOATTYPE>::get_contours (RD.hg, RD.c, RD.contour_threshold);
 
             /*RD_Help<FLOATTYPE>::*/
-            vector<FLOATTYPE> dd = dirichlet_regions (RD.hg, RD.c);
-            set<DirichVtx> vv = dirichlet_vertices (RD.hg, dd);
-            cout << "Size of the set of vertices: " << vv.size() << endl;
+            vector<FLOATTYPE> dr = dirichlet_regions (RD.hg, RD.c);
+            set<DirichVtx> dv = dirichlet_vertices (RD.hg, dr);
+            cout << "Size of the set of vertices: " << dv.size() << endl;
+            // Now do something with dv...
 
             vector<list<Hex> > a_ctrs;
             if (plot_contours) {
@@ -821,9 +825,9 @@ int main (int argc, char **argv)
             }
             if (plot_n) {
                 if (scale_n) {
-                    plt.scalarfields (displays[n_id], RD.hg, dd/*RD.n*/);
+                    plt.scalarfields (displays[n_id], RD.hg, dr/*RD.n*/);
                 } else {
-                    plt.scalarfields (displays[n_id], RD.hg, dd/*RD.n*/, 0.0, 1.0);
+                    plt.scalarfields (displays[n_id], RD.hg, dr/*RD.n*/, 0.0, 1.0);
                 }
             }
             // Then add:
