@@ -105,7 +105,6 @@ private:
 vector<FLOATTYPE>
 dirichlet_regions (HexGrid* hg, vector<vector<FLOATTYPE> >& f)
 {
-    unsigned int nhex = hg->num();
     unsigned int N = f.size();
 
     // Single variable to return
@@ -115,7 +114,6 @@ dirichlet_regions (HexGrid* hg, vector<vector<FLOATTYPE> >& f)
     for (auto h : hg->hexen) {
 
         FLOATTYPE maxf = -1e7;
-        int maxi = -1;
         for (unsigned int i = 0; i<N; ++i) {
             if (f[i][h.vi] > maxf) {
                 maxf = f[i][h.vi];
@@ -129,10 +127,75 @@ dirichlet_regions (HexGrid* hg, vector<vector<FLOATTYPE> >& f)
     return rtn;
 }
 
-set<pair<float, float> >
+/*!
+ * A class to use with an std::set. This is a container for a pair
+ * of floats (representing a pair of coordinates in 2D cartesian
+ * space) and a comparison operation which ensures that coordinate
+ * pairs which are similar are treated as being equal.
+ */
+class DirichVtx {
+public:
+    //! The coordinate data
+    pair<float, float> v;
+
+    /*!
+     * A distance threshold that makes sense within the problem -
+     * probably some fraction of the hex-to-hex distance, d is
+     * correct, because I'm using this to find hex vertices, and they
+     * are spaced exactly one side length of a hex apart. Basing
+     * threshold upon this metric means that we don't have to worry
+     * about the difficulties of comparing floating point numbers of
+     * different sizes (where, because the mantissa is of variable
+     * number of bits, the threshold that makes sense in a comparison
+     * is a function of the size of the number represented in the
+     * float).
+     */
+    float threshold = +0.00001f;
+
+    //! Constructors
+    //@{
+    //! Construct with passed in float pair, using default threshold
+    DirichVtx (const pair<float, float>& p) : v(p) {}
+    /*!
+     * Construct with passed in float pair, set the threshold on the
+     * basis of being passed in the Hex to Hex distance d.
+     */
+    DirichVtx (const pair<float, float>& p, const float& d) : v(p) {
+        // This is half of the shortest possible distance in the y
+        // direction between two adjacent Hex vertices.
+        this->threshold = d/(4.0f*morph::SQRT_OF_3_F);
+    }
+    //@}
+
+    //! Comparison operation
+    bool operator< (const DirichVtx& rhs) const {
+        if (rhs.v.first - this->v.first > this->threshold) {
+            return true;
+        }
+        if (this->v.first - rhs.v.first > this->threshold) {
+            return false;
+        }
+        // Get here, then rhs.v.first and this->v.first are "equal"
+        if (rhs.v.second - this->v.second > this->threshold) {
+            return true;
+        }
+        // No need for this comparison:
+        // if (rhs.v.second < this->v.second) {
+        //     return false;
+        // }
+        // Because we fall through to return false here:
+        return false;
+    }
+};
+
+set<DirichVtx>
 dirichlet_vertices (HexGrid* hg, vector<FLOATTYPE>& f)
 {
-    set<pair<float, float> > vertices;
+    // A set of pairs of floats, with a comparison function that will
+    // set points as equivalent if they're within a small difference
+    // of each other.
+    set<DirichVtx> vertices;
+
     for (auto h : hg->hexen) {
         //cout << "Examine Hex: " <<  h.ri << "," << h.gi << endl;
 
@@ -165,7 +228,7 @@ dirichlet_vertices (HexGrid* hg, vector<FLOATTYPE>& f)
                         && f[h.get_neighbour(nii)->vi] != f1 // f1 already tested != f[h.vi]
                         ) {
                         // Then vertex is "vertex ni"
-                        vertices.insert (h.get_vertex_coord(ni));
+                        vertices.insert (DirichVtx(h.get_vertex_coord(ni), hg->getd()));
                         cout << "1 Hex " << h.ri << "," << h.gi << ", vertex " << Hex::vertex_name(ni) << endl;
                         cout << "1 Inserted (" << h.get_vertex_coord(ni).first << "," << h.get_vertex_coord(ni).second << ")" << endl;
                         break;
@@ -178,7 +241,7 @@ dirichlet_vertices (HexGrid* hg, vector<FLOATTYPE>& f)
                             && f[h.get_neighbour(nii)->vi] != f1 // f1 already tested != f[h.vi]
                             ) {
                             // Then vertex is "vertex ni-1%6", i.e. nii.
-                            vertices.insert (h.get_vertex_coord(nii));
+                            vertices.insert (DirichVtx(h.get_vertex_coord(nii), hg->getd()));
                             cout << "2 Hex " << h.ri << "," << h.gi << ", vertex " << Hex::vertex_name(nii) << endl;
                             cout << "2 Inserted (" << h.get_vertex_coord(nii).first << "," << h.get_vertex_coord(nii).second << ")" << endl;
                             break;
@@ -189,9 +252,9 @@ dirichlet_vertices (HexGrid* hg, vector<FLOATTYPE>& f)
         }
     }
     cout << "At end of dirichlet_vertices: vertices has size " << vertices.size() << " and contains:" << endl;
-    set<pair<float,float> >::iterator si = vertices.begin();
+    set<DirichVtx>::iterator si = vertices.begin();
     while (si != vertices.end() ) {
-        cout << "   " << si->first << "," << si->second << endl;
+        cout << "   " << si->v.first << "," << si->v.second << endl;
         ++si;
     }
     return vertices;
@@ -731,7 +794,7 @@ int main (int argc, char **argv)
 
             /*RD_Help<FLOATTYPE>::*/
             vector<FLOATTYPE> dd = dirichlet_regions (RD.hg, RD.c);
-            set<pair<float, float> > vv = dirichlet_vertices (RD.hg, dd);
+            set<DirichVtx> vv = dirichlet_vertices (RD.hg, dd);
             cout << "Size of the set of vertices: " << vv.size() << endl;
 
             vector<list<Hex> > a_ctrs;
