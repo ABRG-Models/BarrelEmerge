@@ -96,108 +96,6 @@ private:
 };
 
 /*!
- * To go to the RD_Help class. Take a set of variables. Mark each hex
- * with the index of the variable which is highest for that hex. Make
- * an approximation of the vertices of the domains. Plot
- * these. Determine a metric of Dirichlet-ness after Honda1983 and/or
- * Senft1991
- */
-vector<FLOATTYPE>
-dirichlet_regions (HexGrid* hg, vector<vector<FLOATTYPE> >& f)
-{
-    unsigned int nhex = hg->num();
-    unsigned int N = f.size();
-
-    // Single variable to return
-    vector<FLOATTYPE> rtn (f[0].size(), 0.0);
-
-    // Mark regions first.
-    for (auto h : hg->hexen) {
-
-        FLOATTYPE maxf = -1e7;
-        int maxi = -1;
-        for (unsigned int i = 0; i<N; ++i) {
-            if (f[i][h.vi] > maxf) {
-                maxf = f[i][h.vi];
-                FLOATTYPE fi = 0.0f;
-                fi = (FLOATTYPE)i;
-                rtn[h.vi] = (fi/N);
-            }
-        }
-    }
-
-    return rtn;
-}
-
-set<pair<float, float> >
-dirichlet_vertices (HexGrid* hg, vector<FLOATTYPE>& f)
-{
-    set<pair<float, float> > vertices;
-    for (auto h : hg->hexen) {
-        //cout << "Examine Hex: " <<  h.ri << "," << h.gi << endl;
-
-        // For each hex, examine its neighbours, counting number of different neighbours.
-        set<FLOATTYPE> n_ids;
-        n_ids.insert (f[h.vi]);
-        for (unsigned int ni = 0; ni < 6; ++ni) {
-            if (h.has_neighbour(ni)) {
-                n_ids.insert (f[h.get_neighbour(ni)->vi]);
-            }
-        }
-
-        if (n_ids.size() > 2) {
-            cout << "n_ids size is " << n_ids.size() << endl;
-            // Ok, this has more than 2 different types in self &
-            // neighbouring hexes, so now work out which of the Hex's
-            // vertices is the vertex of the domain.
-            for (int ni = 0; ni < 6; ++ni) { // ni==0 is neighbour east. 1 is neighbour NE, etc.
-
-                // If there's a neihgbour in direction ni and that neighbour has different ID:
-                if (h.has_neighbour(ni) && f[h.get_neighbour(ni)->vi] != f[h.vi]) {
-
-                    // The first non-identical ID
-                    FLOATTYPE f1 = f[h.get_neighbour(ni)->vi];
-
-                    int nii = (ni+1)%6;
-                    cout << "(" << ni << "+1)%6 is " << nii << endl;
-                    if (h.has_neighbour(nii)
-                        && f[h.get_neighbour(nii)->vi] != f[h.vi]
-                        && f[h.get_neighbour(nii)->vi] != f1 // f1 already tested != f[h.vi]
-                        ) {
-                        // Then vertex is "vertex ni"
-                        vertices.insert (h.get_vertex_coord(ni));
-                        cout << "1 Hex " << h.ri << "," << h.gi << ", vertex " << Hex::vertex_name(ni) << endl;
-                        cout << "1 Inserted (" << h.get_vertex_coord(ni).first << "," << h.get_vertex_coord(ni).second << ")" << endl;
-                        break;
-                    } else {
-                        nii = (ni-1)%6;
-                        cout << "(" << ni << "-1) is " << ni-1 << endl;
-                        cout << "(" << ni << "-1)%6 is " << nii << endl;
-                        if (h.has_neighbour(nii)
-                            && f[h.get_neighbour(nii)->vi] != f[h.vi]
-                            && f[h.get_neighbour(nii)->vi] != f1 // f1 already tested != f[h.vi]
-                            ) {
-                            // Then vertex is "vertex ni-1%6", i.e. nii.
-                            vertices.insert (h.get_vertex_coord(nii));
-                            cout << "2 Hex " << h.ri << "," << h.gi << ", vertex " << Hex::vertex_name(nii) << endl;
-                            cout << "2 Inserted (" << h.get_vertex_coord(nii).first << "," << h.get_vertex_coord(nii).second << ")" << endl;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    cout << "At end of dirichlet_vertices: vertices has size " << vertices.size() << " and contains:" << endl;
-    set<pair<float,float> >::iterator si = vertices.begin();
-    while (si != vertices.end() ) {
-        cout << "   " << si->first << "," << si->second << endl;
-        ++si;
-    }
-    return vertices;
-}
-
-/*!
  * main(): Run a simulation, using parameters obtained from a JSON
  * file.
  *
@@ -729,10 +627,10 @@ int main (int argc, char **argv)
             // Do a plot of the ctrs as found.
             vector<list<Hex> > ctrs = RD_Help<FLOATTYPE>::get_contours (RD.hg, RD.c, RD.contour_threshold);
 
-            /*RD_Help<FLOATTYPE>::*/
-            vector<FLOATTYPE> dd = dirichlet_regions (RD.hg, RD.c);
-            set<pair<float, float> > vv = dirichlet_vertices (RD.hg, dd);
-            cout << "Size of the set of vertices: " << vv.size() << endl;
+            vector<FLOATTYPE> dr = RD_Help<FLOATTYPE>::dirichlet_regions (RD.hg, RD.c);
+            set<morph::DirichVtx> dv = RD_Help<FLOATTYPE>::dirichlet_vertices (RD.hg, dr);
+            cout << "Size of the set of vertices: " << dv.size() << endl;
+            // Now do something with dv...
 
             vector<list<Hex> > a_ctrs;
             if (plot_contours) {
@@ -758,9 +656,9 @@ int main (int argc, char **argv)
             }
             if (plot_n) {
                 if (scale_n) {
-                    plt.scalarfields (displays[n_id], RD.hg, dd/*RD.n*/);
+                    plt.scalarfields (displays[n_id], RD.hg, dr/*RD.n*/);
                 } else {
-                    plt.scalarfields (displays[n_id], RD.hg, dd/*RD.n*/, 0.0, 1.0);
+                    plt.scalarfields (displays[n_id], RD.hg, dr/*RD.n*/, 0.0, 1.0);
                 }
             }
             // Then add:
