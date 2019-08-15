@@ -13,9 +13,9 @@
  * This will be passed as the template argument for RD_plot and RD and
  * should be defined when compiling.
  */
-#ifndef FLOATTYPE
+#ifndef FLT
 // Check CMakeLists.txt to change to double or float
-# error "Please define FLOATTYPE when compiling (hint: See CMakeLists.txt)"
+# error "Please define FLT when compiling (hint: See CMakeLists.txt)"
 #endif
 
 /*!
@@ -94,6 +94,55 @@ public:
 private:
     ProcessData* parent;
 };
+
+#if 0
+/*!
+ * Take a set of Dirichlet vertices defining one or more Dirichlet
+ * domains and compute a metric for the Dirichlet-ness of the vertices
+ * after Honda1983.
+ */
+float
+dirichlet_analyse (const set<morph::DirichVtx>& dv)
+{
+    float metric = 0.0f;
+    float num = 0.0f;
+    set<DirichVtx>::iterator dvi = dv.begin();
+    float val = dvi->f;
+    set<DirichVtx> part;
+    while (dvi != dv.end()) {
+        if (dvi->f == val) {
+            part.insert(*dvi);
+        } else {
+            metric += dirichlet_analyse_single (part);
+            num += 1.0f;
+
+        }
+        ++dvi;
+    }
+    metric += dirichlet_analyse_single (part);
+    num += 1.0f;
+
+    // arithmetic mean Dirichlet-ness
+    return metric/num;
+}
+
+/*!
+ * Take a set of Dirichlet vertices defining exactly one Dirichlet
+ * domain and compute a metric for the Dirichlet-ness of the vertices
+ * after Honda1983.
+ */
+float
+dirichlet_analyse_single (const set<morph::DirichVtx>& dv)
+{
+    float metric = 0.0f;
+    float f = dv.begin()->f;
+    float num_vtx = static_cast<float>(dv.size());
+
+    // Now we get to the meat of the method.
+
+    return metric/num_vtx;
+}
+#endif
 
 /*!
  * main(): Run a simulation, using parameters obtained from a JSON
@@ -217,15 +266,15 @@ int main (int argc, char **argv)
     const double aNoiseGain = root.get ("aNoiseGain", 0.1).asDouble();
     const double aInitialOffset = root.get ("aInitialOffset", 0.1).asDouble();
 
-    const FLOATTYPE dt = static_cast<FLOATTYPE>(root.get ("dt", 0.00001).asDouble());
+    const FLT dt = static_cast<FLT>(root.get ("dt", 0.00001).asDouble());
 
-    const FLOATTYPE contour_threshold = root.get ("contour_threshold", 0.6).asDouble();
+    const FLT contour_threshold = root.get ("contour_threshold", 0.6).asDouble();
 
     const double D = root.get ("D", 0.1).asDouble();
-    const FLOATTYPE k = root.get ("k", 3).asDouble();
+    const FLT k = root.get ("k", 3).asDouble();
 
 #if defined DNCOMP
-    const FLOATTYPE l = root.get ("l", 1).asDouble();
+    const FLT l = root.get ("l", 1).asDouble();
     const double E = root.get ("E", 0.1).asDouble();
     cout << "E is set to " << E << endl;
 #endif
@@ -287,7 +336,7 @@ int main (int argc, char **argv)
     vector<double> rot(3, 0.0);
 
     // A plot object.
-    RD_plot<FLOATTYPE> plt(fix, eye, rot);
+    RD_plot<FLT> plt(fix, eye, rot);
 
     double rhoInit = root.get ("rhoInit", 1.0).asDouble(); // This is effectively a zoom control. Increase to zoom out.
     double thetaInit = 0.0;
@@ -397,11 +446,11 @@ int main (int argc, char **argv)
      * Instantiate and set up the model object
      */
 #if defined DIVNORM
-    RD_James_divnorm<FLOATTYPE> RD;
+    RD_James_divnorm<FLT> RD;
 #elif defined DNCOMP
-    RD_James_dncomp<FLOATTYPE> RD;
+    RD_James_dncomp<FLT> RD;
 #else
-    RD_James<FLOATTYPE> RD;
+    RD_James<FLT> RD;
 #endif
 
     RD.svgpath = svgpath;
@@ -446,7 +495,7 @@ int main (int argc, char **argv)
         RD.beta[i] = v.get("beta", 0.0).asDouble();
 
         // Sets up mask for initial branching density
-        GaussParams<FLOATTYPE> gp;
+        GaussParams<FLT> gp;
         gp.gain = v.get("gaininit", 1.0).asDouble();
         gp.sigma = v.get("sigmainit", 0.0).asDouble();
         gp.x = v.get("xinit", 0.0).asDouble();
@@ -542,10 +591,10 @@ int main (int argc, char **argv)
 
 #ifdef COMPILE_PLOTTING
 
-    vector<vector<FLOATTYPE> > gx = plt.separateVectorField (RD.g, 0);
-    vector<vector<FLOATTYPE> > gy = plt.separateVectorField (RD.g, 1);
-    FLOATTYPE ming = 1e7;
-    FLOATTYPE maxg = -1e7;
+    vector<vector<FLT> > gx = plt.separateVectorField (RD.g, 0);
+    vector<vector<FLT> > gy = plt.separateVectorField (RD.g, 1);
+    FLT ming = 1e7;
+    FLT maxg = -1e7;
     if (plot_guide) {
         // Plot gradients of the guidance effect g.
         plt.scalarfields (displays[guide_id], RD.hg, RD.rho);
@@ -568,8 +617,8 @@ int main (int argc, char **argv)
         cout << "min g = " << ming << " and max g = " << maxg << endl;
     }
 
-    FLOATTYPE mindivg = 1e7;
-    FLOATTYPE maxdivg = -1e7;
+    FLT mindivg = 1e7;
+    FLT maxdivg = -1e7;
     if (plot_divg) {
         for (unsigned int hi=0; hi<RD.nhex; ++hi) {
             Hex* h = RD.hg->vhexen[hi];
@@ -625,19 +674,28 @@ int main (int argc, char **argv)
         if ((RD.stepCount % plotevery) == 0) {
             DBG2("Plot at step " << RD.stepCount);
             // Do a plot of the ctrs as found.
-            vector<list<Hex> > ctrs = RD_Help<FLOATTYPE>::get_contours (RD.hg, RD.c, RD.contour_threshold);
+            vector<list<Hex> > ctrs = RD_Help<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
 
-            vector<FLOATTYPE> dr = RD_Help<FLOATTYPE>::dirichlet_regions (RD.hg, RD.c);
-            set<morph::DirichVtx> dv = RD_Help<FLOATTYPE>::dirichlet_vertices (RD.hg, dr);
+            vector<FLT> dr = RD_Help<FLT>::dirichlet_regions (RD.hg, RD.c);
+            set<morph::DirichVtx> dv = RD_Help<FLT>::dirichlet_vertices (RD.hg, dr);
             cout << "Size of the set of vertices: " << dv.size() << endl;
+#define DEBUG_SET 1
+#ifdef DEBUG_SET
+            set<morph::DirichVtx>::iterator idv = dv.begin();
+            while (idv != dv.end()) {
+                cout << "id " << idv->f << " (" << idv->v.first << "," << idv->v.second << ") neighb: " << idv->neighb.first << "," << idv->neighb.second << " B_i: " << idv->vn.first << "," << idv->vn.second << endl;
+                ++idv;
+            }
+#endif
             // Now do something with dv...
+            //float dirich_value = RD_Help::dirichlet_analyse (dv);
 
             vector<list<Hex> > a_ctrs;
             if (plot_contours) {
                 plt.plot_contour (displays[contours_id], RD.hg, ctrs);
             }
             if (plot_a_contours) {
-                a_ctrs = RD_Help<FLOATTYPE>::get_contours (RD.hg, RD.a, RD.contour_threshold);
+                a_ctrs = RD_Help<FLT>::get_contours (RD.hg, RD.a, RD.contour_threshold);
                 plt.plot_contour (displays[a_contours_id], RD.hg, a_ctrs);
             }
             if (plot_a) {
@@ -721,10 +779,10 @@ int main (int argc, char **argv)
     RD.savesums();
 
     // Before saving the json, we'll place any additional useful info
-    // in there, such as the FLOATTYPE. If float_width is 4, then
+    // in there, such as the FLT. If float_width is 4, then
     // results were computed with single precision, if 8, then double
     // precision was used. Also save various parameters from the RD system.
-    root["float_width"] = (unsigned int)sizeof(FLOATTYPE);
+    root["float_width"] = (unsigned int)sizeof(FLT);
     string tnow = morph::Tools::timeNow();
     root["sim_ran_at_time"] = tnow.substr(0,tnow.size()-1);
     root["hextohex_d"] = RD.hextohex_d;
@@ -749,7 +807,7 @@ int main (int argc, char **argv)
     }
 
     // Extract contours
-    vector<list<Hex> > ctrs = RD_Help<FLOATTYPE>::get_contours (RD.hg, RD.c, RD.contour_threshold);
+    vector<list<Hex> > ctrs = RD_Help<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
     {
         // Write each contour to a contours.h5 file
         stringstream ctrname;
@@ -758,7 +816,7 @@ int main (int argc, char **argv)
         unsigned int nctrs = ctrs.size();
         ctrdata.add_val ("/num_contours", nctrs);
         for (unsigned int ci = 0; ci < nctrs; ++ci) {
-            vector<FLOATTYPE> vx, vy;
+            vector<FLT> vx, vy;
             auto hi = ctrs[ci].begin();
             while (hi != ctrs[ci].end()) {
                 vx.push_back (hi->x);
@@ -782,7 +840,7 @@ int main (int argc, char **argv)
 
         // Also extract the boundary of the main, enclosing hexgrid and write that.
         list<Hex> outerBoundary = RD.hg->getBoundary();
-        vector<FLOATTYPE> vx, vy;
+        vector<FLT> vx, vy;
         auto bi = outerBoundary.begin();
         while (bi != outerBoundary.end()) {
             vx.push_back (bi->x);
