@@ -683,7 +683,9 @@ int main (int argc, char **argv)
 #ifdef DEBUG_SET
             set<morph::DirichVtx>::iterator idv = dv.begin();
             while (idv != dv.end()) {
-                cout << "id " << idv->f << " (" << idv->v.first << "," << idv->v.second << ") neighb: " << idv->neighb.first << "," << idv->neighb.second << " B_i: " << idv->vn.first << "," << idv->vn.second << endl;
+                //cout << "id " << idv->f << " (" << idv->v.first << "," << idv->v.second << ") neighb: " << idv->neighb.first << "," << idv->neighb.second << " B_i: " << idv->vn.first << "," << idv->vn.second << endl;
+
+                cout << idv->f << "," << idv->v.first << "," << idv->v.second << "," << idv->vn.first << "," << idv->vn.second << endl;
                 ++idv;
             }
 #endif
