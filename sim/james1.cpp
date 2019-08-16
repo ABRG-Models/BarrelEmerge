@@ -685,7 +685,7 @@ int main (int argc, char **argv)
             while (idv != dv.end()) {
                 //cout << "id " << idv->f << " (" << idv->v.first << "," << idv->v.second << ") neighb: " << idv->neighb.first << "," << idv->neighb.second << " B_i: " << idv->vn.first << "," << idv->vn.second << endl;
 
-                cout << idv->f << "," << idv->v.first << "," << idv->v.second << "," << idv->vn.first << "," << idv->vn.second << endl;
+                cout << idv->f << "," << idv->v.first << "," << idv->v.second << "," << idv->vn.first << "," << idv->vn.second << "," << idv->neighb.first << "," << idv->neighb.second << endl;
                 ++idv;
             }
 #endif
