@@ -5,11 +5,11 @@
  */
 {
     // Global simulation parameters
-    "steps" : 80000,                // Number of steps to simulate for
+    "steps" : 14000,                // Number of steps to simulate for
     "logevery": 1000,
     "overwrite_logs": true,
     "logpath" : "./logs/25N2M_withcomp_realmap",
-    "hextohex_d" : 0.008,           // Hex to hex distance, determines num hexes
+    "hextohex_d" : 0.015,           // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/whiskerbarrels.svg",
     "boundaryFalloffDist" : 0.01,
     "D" : 0.2,
@@ -29,14 +29,16 @@
     "vidframes": true,    // If true, number video frame saves consecutively, rather than by simulation step number
     "rhoInit": 2.6, // Larger to zoom out
     //
-    "plot_guide" : true,
-    "plot_contours" : true,
-    "plot_a_contours" : true,
+    "plot_guide" : false,
+    "plot_contours" : false,
+    "plot_a_contours" : false,
     "plot_a" : false,
     "plot_c" : false,
     "scale_a" : false,
     "scale_c" : false,
     "scale_n" : false,
+    "plot_n" : false,
+    "plot_dr" : true,
     //
     "plot_guidegrad" : false,
     "plot_divg" : false,

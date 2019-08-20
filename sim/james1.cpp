@@ -316,9 +316,10 @@ int main (int argc, char **argv)
     const bool plot_c = root.get ("plot_c", true).asBool();
     const bool scale_c = root.get ("scale_c", true).asBool();
     const bool plot_n = root.get ("plot_n", true).asBool();
+    const bool plot_dr = root.get ("plot_dr", true).asBool();
     const bool scale_n = root.get ("scale_n", true).asBool();
     // Window IDs
-    unsigned int guide_id = 0xffff, contours_id = 0xffff, a_id = 0xffff, c_id = 0xffff, n_id = 0xffff, a_contours_id = 0xffff;
+    unsigned int guide_id = 0xffff, contours_id = 0xffff, a_id = 0xffff, c_id = 0xffff, n_id = 0xffff, dr_id = 0xffff, a_contours_id = 0xffff;
 
     const bool plot_guidegrad = root.get ("plot_guidegrad", false).asBool();
     const bool plot_divg = root.get ("plot_divg", false).asBool();
@@ -405,6 +406,15 @@ int main (int argc, char **argv)
         displays.back().resetDisplay (fix, eye, rot);
         displays.back().redrawDisplay();
         n_id = windowId++;
+    }
+
+    if (plot_dr) {
+        winTitle = worldName + ": dr"; //4
+        displays.push_back (morph::Gdisplay (win_width, win_height, 100, 1800, winTitle.c_str(),
+                                             rhoInit, thetaInit, phiInit, displays[0].win));
+        displays.back().resetDisplay (fix, eye, rot);
+        displays.back().redrawDisplay();
+        dr_id = windowId++;
     }
 
     if (plot_guidegrad) {
@@ -676,21 +686,9 @@ int main (int argc, char **argv)
             // Do a plot of the ctrs as found.
             vector<list<Hex> > ctrs = RD_Help<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
 
-            vector<FLT> dr = RD_Help<FLT>::dirichlet_regions (RD.hg, RD.c);
-            set<morph::DirichVtx> dv = RD_Help<FLT>::dirichlet_vertices (RD.hg, dr);
-            cout << "Size of the set of vertices: " << dv.size() << endl;
-#define DEBUG_SET 1
-#ifdef DEBUG_SET
-            set<morph::DirichVtx>::iterator idv = dv.begin();
-            while (idv != dv.end()) {
-                //cout << "id " << idv->f << " (" << idv->v.first << "," << idv->v.second << ") neighb: " << idv->neighb.first << "," << idv->neighb.second << " B_i: " << idv->vn.first << "," << idv->vn.second << endl;
-
-                cout << idv->f << "," << idv->v.first << "," << idv->v.second << "," << idv->vn.first << "," << idv->vn.second << "," << idv->neighb.first << "," << idv->neighb.second << endl;
-                ++idv;
-            }
-#endif
+            RD.dirichlet();
             // Now do something with dv...
-            //float dirich_value = RD_Help::dirichlet_analyse (dv);
+            //float dirich_value = RD_Help::dirichlet_analyse (RD.dv);
 
             vector<list<Hex> > a_ctrs;
             if (plot_contours) {
@@ -716,10 +714,13 @@ int main (int argc, char **argv)
             }
             if (plot_n) {
                 if (scale_n) {
-                    plt.scalarfields (displays[n_id], RD.hg, dr/*RD.n*/);
+                    plt.scalarfields (displays[n_id], RD.hg, RD.n);
                 } else {
-                    plt.scalarfields (displays[n_id], RD.hg, dr/*RD.n*/, 0.0, 1.0);
+                    plt.scalarfields (displays[n_id], RD.hg, RD.n, 0.0, 1.0);
                 }
+            }
+            if (plot_dr) {
+                plt.scalarfields (displays[dr_id], RD.hg, RD.dr);
             }
             // Then add:
             //plt.plot_dirichlet_boundaries (displays[n_id], RD.hg, vv);
@@ -770,6 +771,7 @@ int main (int argc, char **argv)
         if ((RD.stepCount % logevery) == 0) {
             cout << "Logging data at step " << RD.stepCount << endl;
             RD.save();
+            RD.saveDirichletVertices();
         }
 
         if (RD.stepCount > steps) {

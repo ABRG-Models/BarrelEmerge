@@ -627,6 +627,50 @@ public:
             data.add_contained_vals (path.str().c_str(), this->divJ[i]);
         }
         data.add_contained_vals ("/n", this->n);
+
+        // Dirichlet regions here (as same size as n, c etc) Diriclet vertices in dv.h5.
+        data.add_contained_vals ("/dr", this->dr);
+    }
+
+    void saveDirichletVertices (void) {
+        stringstream fname;
+        fname << this->logpath << "/dv_";
+        fname.width(5);
+        fname.fill('0');
+        fname << this->stepCount << ".h5";
+        HdfData data(fname.str());
+        // Dirichlet vertices is a table, so construct vectors of floats
+        set<morph::DirichVtx>::iterator idv = dv.begin();
+        vector<float> dv_id;     // vertex ID
+        vector<float> dv_x;      // vertex x
+        vector<float> dv_y;      // vertex y
+        vector<float> dv_n_x;    // vertex neighbour x
+        vector<float> dv_n_y;    // vertex neighbour y
+        vector<float> dv_dn_f;   // first domain neighbour
+        vector<float> dv_dn_s;   // second domain neighbour
+        vector<float> dv_n_dn_f; // vertex neighbour's first domain neighbour
+        vector<float> dv_n_dn_s; // vertex neighbour's second domain neighbour
+        while (idv != dv.end()) {
+            dv_id.push_back (idv->f);
+            dv_x.push_back (idv->v.first);
+            dv_y.push_back (idv->v.second);
+            dv_n_x.push_back (idv->vn.first);
+            dv_n_y.push_back (idv->vn.second);
+            dv_dn_f.push_back (idv->neighb.first);
+            dv_dn_s.push_back (idv->neighb.second);
+            dv_n_dn_f.push_back (idv->neighbn.first);
+            dv_n_dn_s.push_back (idv->neighbn.second);
+            ++idv;
+        }
+        data.add_contained_vals ("/dv_id", dv_id);
+        data.add_contained_vals ("/dv_x", dv_x);
+        data.add_contained_vals ("/dv_y", dv_y);
+        data.add_contained_vals ("/dv_n_x", dv_n_x);
+        data.add_contained_vals ("/dv_n_y", dv_n_y);
+        data.add_contained_vals ("/dv_dn_f", dv_dn_f);
+        data.add_contained_vals ("/dv_dn_s", dv_dn_s);
+        data.add_contained_vals ("/dv_n_dn_f", dv_n_dn_f);
+        data.add_contained_vals ("/dv_n_dn_s", dv_n_dn_s);
     }
 
     /*!
@@ -1090,6 +1134,29 @@ public:
             Flt r_ = sqrt(x_*x_ + y_*y_);
             this->rho[m][h.vi] = (this->guidance_gain[m] - r_) * this->guidance_gain[m];
         }
+    }
+
+    //! Dirichlet regions
+    vector<Flt> dr;
+    //! Dirichlet vertices
+    set<morph::DirichVtx> dv;
+    /*!
+     * Compute Dirichlet analysis on the c variable
+     */
+    void dirichlet (void) {
+        this->dr = morph::RD_Help<Flt>::dirichlet_regions (this->hg, this->c);
+        this->dv = morph::RD_Help<Flt>::dirichlet_vertices (this->hg, dr);
+//#define DEBUG_SET 1
+#ifdef DEBUG_SET
+        cout << "Size of the set of vertices: " << dv.size() << endl;
+        set<morph::DirichVtx>::iterator idv = dv.begin();
+        while (idv != dv.end()) {
+            //cout << "id " << idv->f << " (" << idv->v.first << "," << idv->v.second << ") neighb: " << idv->neighb.first << "," << idv->neighb.second << " B_i: " << idv->vn.first << "," << idv->vn.second << endl;
+
+            cout << idv->f << "," << idv->v.first << "," << idv->v.second << "," << idv->vn.first << "," << idv->vn.second << "," << idv->neighb.first << "," << idv->neighb.second << "," << idv->neighbn.first << "," << idv->neighbn.second << endl;
+            ++idv;
+        }
+#endif
     }
 
 }; // RD_James
