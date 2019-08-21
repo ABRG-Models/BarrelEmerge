@@ -38,7 +38,8 @@
 #else
 #include "rd_james.h" // 2D Karbowski, no additional competition/features
 #endif
-using morph::RD_Help;
+#include "morph/ShapeAnalysis.h"
+using morph::ShapeAnalysis;
 
 #ifdef COMPILE_PLOTTING
 /*!
@@ -684,18 +685,17 @@ int main (int argc, char **argv)
         if ((RD.stepCount % plotevery) == 0) {
             DBG2("Plot at step " << RD.stepCount);
             // Do a plot of the ctrs as found.
-            vector<list<Hex> > ctrs = RD_Help<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
+            vector<list<Hex> > ctrs = ShapeAnalysis<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
 
             RD.dirichlet();
-            // Now do something with dv...
-            //float dirich_value = RD_Help::dirichlet_analyse (RD.dv);
+            //float dirich_value = RD.dirichlet();
 
             vector<list<Hex> > a_ctrs;
             if (plot_contours) {
                 plt.plot_contour (displays[contours_id], RD.hg, ctrs);
             }
             if (plot_a_contours) {
-                a_ctrs = RD_Help<FLT>::get_contours (RD.hg, RD.a, RD.contour_threshold);
+                a_ctrs = ShapeAnalysis<FLT>::get_contours (RD.hg, RD.a, RD.contour_threshold);
                 plt.plot_contour (displays[a_contours_id], RD.hg, a_ctrs);
             }
             if (plot_a) {
@@ -811,7 +811,7 @@ int main (int argc, char **argv)
     }
 
     // Extract contours
-    vector<list<Hex> > ctrs = RD_Help<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
+    vector<list<Hex> > ctrs = ShapeAnalysis<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
     {
         // Write each contour to a contours.h5 file
         stringstream ctrname;

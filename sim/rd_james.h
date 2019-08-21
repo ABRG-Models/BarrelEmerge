@@ -2,6 +2,8 @@
  * A reaction diffusion system which derives from RD_Base
  */
 #include "morph/RD_Base.h"
+#include "morph/DirichVtx.h"
+#include "morph/ShapeAnalysis.h"
 
 /*!
  * Enumerates the way that the guidance molecules are set up
@@ -640,7 +642,7 @@ public:
         fname << this->stepCount << ".h5";
         HdfData data(fname.str());
         // Dirichlet vertices is a table, so construct vectors of floats
-        set<morph::DirichVtx>::iterator idv = dv.begin();
+        typename set<morph::DirichVtx<Flt> >::iterator idv = dv.begin();
         vector<float> dv_id;     // vertex ID
         vector<float> dv_x;      // vertex x
         vector<float> dv_y;      // vertex y
@@ -1139,24 +1141,13 @@ public:
     //! Dirichlet regions
     vector<Flt> dr;
     //! Dirichlet vertices
-    set<morph::DirichVtx> dv;
+    set<morph::DirichVtx<Flt> > dv;
     /*!
      * Compute Dirichlet analysis on the c variable
      */
     void dirichlet (void) {
-        this->dr = morph::RD_Help<Flt>::dirichlet_regions (this->hg, this->c);
-        this->dv = morph::RD_Help<Flt>::dirichlet_vertices (this->hg, dr);
-//#define DEBUG_SET 1
-#ifdef DEBUG_SET
-        cout << "Size of the set of vertices: " << dv.size() << endl;
-        set<morph::DirichVtx>::iterator idv = dv.begin();
-        while (idv != dv.end()) {
-            //cout << "id " << idv->f << " (" << idv->v.first << "," << idv->v.second << ") neighb: " << idv->neighb.first << "," << idv->neighb.second << " B_i: " << idv->vn.first << "," << idv->vn.second << endl;
-
-            cout << idv->f << "," << idv->v.first << "," << idv->v.second << "," << idv->vn.first << "," << idv->vn.second << "," << idv->neighb.first << "," << idv->neighb.second << "," << idv->neighbn.first << "," << idv->neighbn.second << endl;
-            ++idv;
-        }
-#endif
+        this->dr = morph::ShapeAnalysis<Flt>::dirichlet_regions (this->hg, this->c);
+        this->dv = morph::ShapeAnalysis<Flt>::dirichlet_vertices (this->hg, dr);
     }
 
 }; // RD_James
