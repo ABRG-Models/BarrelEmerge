@@ -96,35 +96,39 @@ private:
     ProcessData* parent;
 };
 
-#if 0
-/*!
- * Take a set of Dirichlet vertices defining one or more Dirichlet
- * domains and compute a metric for the Dirichlet-ness of the vertices
- * after Honda1983.
- */
-float
-dirichlet_analyse (const set<morph::DirichVtx>& dv)
+#if 1
+
+list<DirichVtx<FLT> >
+dirichlet_order_vertices (set<DirichVtx<FLT> > domvertices)
 {
-    float metric = 0.0f;
-    float num = 0.0f;
-    set<DirichVtx>::iterator dvi = dv.begin();
-    float val = dvi->f;
-    set<DirichVtx> part;
-    while (dvi != dv.end()) {
-        if (dvi->f == val) {
-            part.insert(*dvi);
-        } else {
-            metric += dirichlet_analyse_single (part);
-            num += 1.0f;
+    DBG("called");
+    list<DirichVtx<FLT> > ordered;
+    unsigned int numVertices = domvertices.size();
 
+    set<DirichVtx<FLT> > dv = domvertices;
+    typename set<DirichVtx<FLT> >::iterator dvi = dv.begin();
+
+    // Ah - this may not be possible with the very messy early domains! A problem for tomorrow.
+    while (ordered.size() < numVertices) {
+        dvi = dv.begin();
+        while (dvi != domvertices.end()) {
+            if (ordered.empty()
+                || dvi->neighb.first == ordered.back().neighb.second) {
+                // Found partner; add to ordered
+                ordered.push_back (*dvi);
+                DBG ("Before, dv.size: " << dv.size());
+                dvi = dv.erase (dvi);
+                DBG ("After erase, dv.size: " << dv.size());
+
+            } else {
+                ++dvi;
+            }
         }
-        ++dvi;
+        DBG ("After first inner while ordered.size() = " << ordered.size()
+             << ", domvertices.size() = " << dv.size());
     }
-    metric += dirichlet_analyse_single (part);
-    num += 1.0f;
 
-    // arithmetic mean Dirichlet-ness
-    return metric/num;
+    return ordered;
 }
 
 /*!
@@ -133,16 +137,55 @@ dirichlet_analyse (const set<morph::DirichVtx>& dv)
  * after Honda1983.
  */
 float
-dirichlet_analyse_single (const set<morph::DirichVtx>& dv)
+dirichlet_analyse_single_domain (const set<DirichVtx<FLT> >& domvertices)
 {
+    DBG("called");
     float metric = 0.0f;
-    float f = dv.begin()->f;
-    float num_vtx = static_cast<float>(dv.size());
 
     // Now we get to the meat of the method.
 
+    // Problem: Don't know the ORDER of the vertices in domvertices! Solution:
+    // Make a list, using the neighbour domain identifiers to order.
+    list<DirichVtx<FLT> > lv = dirichlet_order_vertices (domvertices);
+
+    // Now loop around the list computing the lines
+
+    float num_vtx = static_cast<float>(domvertices.size());
     return metric/num_vtx;
 }
+
+/*!
+ * Take a set of Dirichlet vertices defining one or more Dirichlet
+ * domains and compute a metric for the Dirichlet-ness of the vertices
+ * after Honda1983.
+ *
+ * To go into morph::ShapeAnalysis
+ */
+float
+dirichlet_analyse (const set<DirichVtx<FLT> >& dv)
+{
+    DBG("called");
+    float metric = 0.0f;
+    float num = 0.0f;
+    typename set<DirichVtx<FLT> >::iterator dvi = dv.begin();
+    float val = dvi->f;
+    set<DirichVtx<FLT> > domain;
+    while (dvi != dv.end()) {
+        if (dvi->f == val) {
+            domain.insert (*dvi);
+        } else {
+            metric += dirichlet_analyse_single_domain (domain);
+            num += 1.0f;
+        }
+        ++dvi;
+    }
+    metric += dirichlet_analyse_single_domain (domain);
+    num += 1.0f;
+
+    // arithmetic mean Dirichlet-ness
+    return metric/num;
+}
+
 #endif
 
 /*!
@@ -688,7 +731,8 @@ int main (int argc, char **argv)
             vector<list<Hex> > ctrs = ShapeAnalysis<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
 
             RD.dirichlet();
-            //float dirich_value = RD.dirichlet();
+            float dirich_value = dirichlet_analyse (RD.dv);
+            cout << "dirich_value = " << dirich_value << endl;
 
             vector<list<Hex> > a_ctrs;
             if (plot_contours) {
