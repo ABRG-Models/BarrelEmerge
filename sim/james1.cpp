@@ -110,7 +110,7 @@ dirichlet_order_vertices (set<DirichVtx<FLT> > domvertices, set<DirichVtx<FLT> >
 
     typename set<DirichVtx<FLT> >::iterator dvi = remaining.begin();
 
-    unsigned int totali = 0;
+    unsigned int totali = 0; // just for debugging
 
     DBG ("At start, remaining.size() = " << remaining.size());
     // Ah - this may not be possible with the very messy early domains! A problem for tomorrow.
@@ -121,7 +121,7 @@ dirichlet_order_vertices (set<DirichVtx<FLT> > domvertices, set<DirichVtx<FLT> >
             FLT firstdom = -100.0;
             if (!ordered.empty()) {
                 // What's the first domain connected to this vertex?
-                firstdom = ordered.first().neighb.first
+                firstdom = ordered.front().neighb.first;
             }
 
             if (!ordered.empty()) {
@@ -132,7 +132,7 @@ dirichlet_order_vertices (set<DirichVtx<FLT> > domvertices, set<DirichVtx<FLT> >
                 }
             }
 
-            if (!ordered.empty && dvi->neighb.second == firstdom) {
+            if (!ordered.empty() && dvi->neighb.second == firstdom) {
                 // Got to
             } else if (ordered.empty()
                 || dvi->neighb.first == ordered.back().neighb.second) {
@@ -795,8 +795,8 @@ int main (int argc, char **argv)
             vector<list<Hex> > ctrs = ShapeAnalysis<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
 
             RD.dirichlet();
-            float dirich_value = dirichlet_analyse (RD.dv);
-            cout << "dirich_value = " << dirich_value << endl;
+            //float dirich_value = dirichlet_analyse (RD.dv);
+            //cout << "dirich_value = " << dirich_value << endl;
 
             vector<list<Hex> > a_ctrs;
             if (plot_contours) {
