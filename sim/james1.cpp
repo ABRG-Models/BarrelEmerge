@@ -99,47 +99,71 @@ private:
 #if 1
 
 list<DirichVtx<FLT> >
-dirichlet_order_vertices (set<DirichVtx<FLT> > domvertices)
+dirichlet_order_vertices (set<DirichVtx<FLT> > domvertices, set<DirichVtx<FLT> >& remaining)
 {
     DBG("called");
     list<DirichVtx<FLT> > ordered;
     unsigned int numVertices = domvertices.size();
 
-    // Note *copy* of domvertices here.
-    set<DirichVtx<FLT> > dv = domvertices;
+    // Note *copy* of domvertices here into the second arg
+    remaining = domvertices;
 
-    typename set<DirichVtx<FLT> >::iterator dvi = dv.begin();
+    typename set<DirichVtx<FLT> >::iterator dvi = remaining.begin();
 
+    unsigned int totali = 0;
+
+    DBG ("At start, remaining.size() = " << remaining.size());
     // Ah - this may not be possible with the very messy early domains! A problem for tomorrow.
-    while (ordered.size() < numVertices) {
-        dvi = dv.begin();
-        while (dvi != domvertices.end()) {
-            if (ordered.empty()
+    while (ordered.size() < numVertices && totali++ < 1500) {
+        dvi = remaining.begin();
+        while (dvi != remaining.end() && totali++ < 1500) {
+            DBG ("dvi->neighb.first = " << dvi->neighb.first << " dvi->neighb.second = " << dvi->neighb.second);
+            FLT firstdom = -100.0;
+            if (!ordered.empty()) {
+                // What's the first domain connected to this vertex?
+                firstdom = ordered.first().neighb.first
+            }
+
+            if (!ordered.empty()) {
+                auto li = ordered.begin();
+                while (li != ordered.end()) {
+                    DBG ("ordered from " << li->neighb.first << " to " << li->neighb.second);
+                    ++li;
+                }
+            }
+
+            if (!ordered.empty && dvi->neighb.second == firstdom) {
+                // Got to
+            } else if (ordered.empty()
                 || dvi->neighb.first == ordered.back().neighb.second) {
                 // Found partner; add to ordered
                 ordered.push_back (*dvi);
-                DBG ("Before, dv.size: " << dv.size());
-                dvi = dv.erase (dvi);
-                DBG ("After erase, dv.size: " << dv.size());
+                DBG ("Before, remaining.size: " << remaining.size());
+                dvi = remaining.erase (dvi);
+                DBG ("After erase, remaining.size: " << remaining.size());
 
             } else {
+                if (ordered.empty()) {
+                    DBG("ordered is empty");
+                }
                 ++dvi;
             }
         }
         DBG ("After first inner while ordered.size() = " << ordered.size()
-             << ", domvertices.size() = " << dv.size());
+             << ", remaining.size() = " << remaining.size());
     }
 
+    DBG ("Returning");
     return ordered;
 }
 
 /*!
  * Take a set of Dirichlet vertices defining exactly one Dirichlet
- * domain and compute a metric for the Dirichlet-ness of the vertices
+  * domain and compute a metric for the Dirichlet-ness of the vertices
  * after Honda1983.
  */
 float
-dirichlet_analyse_single_domain (const set<DirichVtx<FLT> >& domvertices)
+dirichlet_analyse_single_domain (const list<DirichVtx<FLT> >& domvertices)
 {
     DBG("called");
     float metric = 0.0f;
@@ -148,7 +172,7 @@ dirichlet_analyse_single_domain (const set<DirichVtx<FLT> >& domvertices)
 
     // Problem: Don't know the ORDER of the vertices in domvertices! Solution:
     // Make a list, using the neighbour domain identifiers to order.
-    list<DirichVtx<FLT> > lv = dirichlet_order_vertices (domvertices);
+    //list<DirichVtx<FLT> > lv = dirichlet_order_vertices (domvertices);
 
     // Now loop around the list computing the lines
 
@@ -167,7 +191,6 @@ float
 dirichlet_analyse (const set<DirichVtx<FLT> >& dv)
 {
     DBG ("called");
-    float metric = 0.0;
 
     // It's HERE that I need to create ordered lists of Dirichlet
     // vertices, which will then enable me to find out if I have >1
@@ -176,55 +199,55 @@ dirichlet_analyse (const set<DirichVtx<FLT> >& dv)
     // A container into which will be inserted individual ordered
     // lists of Dirichlet domain vertices, each comprising a single
     // domain.
-    vector<list<DirichVtx<FLT> > > domains;
+    vector<set<DirichVtx<FLT> > > candidate_domains;
+    vector<list<DirichVtx<FLT> > > final_domains;
 
-    // Make a set of the identifiers seen in the single domains we
-    // find. If we find more than one domain for each identifier, then
-    // return a negative metric.
-    set<FLT> identifiers;
+    // First separate into candidate domains by ID value
     typename set<DirichVtx<FLT> >::iterator dvi = dv.begin();
     FLT val = dvi->f;
     dvi = dv.begin();
-    set<DirichVtx<FLT> > domain;
+    set<DirichVtx<FLT> > candidate_domain;
     while (dvi != dv.end()) {
         if (dvi->f == val) {
-            domain.insert (*dvi);
+            candidate_domain.insert (*dvi);
         } else {
-            if (identifiers.count (val) == 0) {
-                DBG ("Insert domain with value " << val);
-                identifiers.insert (val);
-                domains.push_back (domain);
-                domain.clear();
-                val = dvi->f;
-            } else {
-                // >1 domain with the identifier val
-                DBG (">1 domain with the identifier val = " << val << ", return negative");
-                metric = -1.0;
-                return metric;
-            }
+            candidate_domains.push_back (candidate_domain);
+            candidate_domain.clear();
+            val = dvi->f;
         }
         ++dvi;
     }
-    if (identifiers.count (val) == 0) {
-        DBG ("Insert domain with value " << val);
-        identifiers.insert (val);
-        domains.push_back (domain);
-    } else {
-        // >1 domain with the identifier val
-        DBG ("(at end) >1 domain with the identifier val = " << val << ", return negative");
-        metric = -1.0;
-        return metric;
-    }
+    candidate_domains.push_back (candidate_domain);
 
-    // Now run through vector, analysing
-    auto vi = domains.begin();
-    while (vi != domains.end()) {
-         metric += dirichlet_analyse_single_domain (*vi);
+    // Now run through the vector of candidate domains, building a
+    // final set of ordered lists of vertices, and checking that each
+    // domain is singular (if there is >1 domain for any identifier,
+    // then the partner vertices are almost certainly wrong with the
+    // current implementation of
+    // ShapeAnalysis::dirichlet_set_neighbours)
+    auto vi = candidate_domains.begin();
+    while (vi != candidate_domains.end()) {
+        set<DirichVtx<FLT> > remaining;
+        remaining.clear();
+        list<DirichVtx<FLT> > fdom = dirichlet_order_vertices (*vi, remaining);
+        if (remaining.size() > 0) {
+            DBG ("Found >1 final domain for ID " << fdom.back().f);
+            return -1.0;
+        }
+        final_domains.push_back (fdom);
         ++vi;
     }
 
-    // arithmetic mean Dirichlet-ness
-    return metric/(float)domains.size();
+    // Now run through final domains, analysing each
+    float metric = 0.0;
+    auto vi2 = final_domains.begin();
+    while (vi2 != final_domains.end()) {
+         metric += dirichlet_analyse_single_domain (*vi2);
+        ++vi2;
+    }
+
+    // return the arithmetic mean Dirichlet-ness measure
+    return metric/(float)final_domains.size();
 }
 
 #endif
