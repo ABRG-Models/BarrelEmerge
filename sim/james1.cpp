@@ -105,7 +105,9 @@ dirichlet_order_vertices (set<DirichVtx<FLT> > domvertices)
     list<DirichVtx<FLT> > ordered;
     unsigned int numVertices = domvertices.size();
 
+    // Note *copy* of domvertices here.
     set<DirichVtx<FLT> > dv = domvertices;
+
     typename set<DirichVtx<FLT> >::iterator dvi = dv.begin();
 
     // Ah - this may not be possible with the very messy early domains! A problem for tomorrow.
@@ -164,26 +166,65 @@ dirichlet_analyse_single_domain (const set<DirichVtx<FLT> >& domvertices)
 float
 dirichlet_analyse (const set<DirichVtx<FLT> >& dv)
 {
-    DBG("called");
-    float metric = 0.0f;
-    float num = 0.0f;
+    DBG ("called");
+    float metric = 0.0;
+
+    // It's HERE that I need to create ordered lists of Dirichlet
+    // vertices, which will then enable me to find out if I have >1
+    // domain per ID.
+
+    // A container into which will be inserted individual ordered
+    // lists of Dirichlet domain vertices, each comprising a single
+    // domain.
+    vector<list<DirichVtx<FLT> > > domains;
+
+    // Make a set of the identifiers seen in the single domains we
+    // find. If we find more than one domain for each identifier, then
+    // return a negative metric.
+    set<FLT> identifiers;
     typename set<DirichVtx<FLT> >::iterator dvi = dv.begin();
-    float val = dvi->f;
+    FLT val = dvi->f;
+    dvi = dv.begin();
     set<DirichVtx<FLT> > domain;
     while (dvi != dv.end()) {
         if (dvi->f == val) {
             domain.insert (*dvi);
         } else {
-            metric += dirichlet_analyse_single_domain (domain);
-            num += 1.0f;
+            if (identifiers.count (val) == 0) {
+                DBG ("Insert domain with value " << val);
+                identifiers.insert (val);
+                domains.push_back (domain);
+                domain.clear();
+                val = dvi->f;
+            } else {
+                // >1 domain with the identifier val
+                DBG (">1 domain with the identifier val = " << val << ", return negative");
+                metric = -1.0;
+                return metric;
+            }
         }
         ++dvi;
     }
-    metric += dirichlet_analyse_single_domain (domain);
-    num += 1.0f;
+    if (identifiers.count (val) == 0) {
+        DBG ("Insert domain with value " << val);
+        identifiers.insert (val);
+        domains.push_back (domain);
+    } else {
+        // >1 domain with the identifier val
+        DBG ("(at end) >1 domain with the identifier val = " << val << ", return negative");
+        metric = -1.0;
+        return metric;
+    }
+
+    // Now run through vector, analysing
+    auto vi = domains.begin();
+    while (vi != domains.end()) {
+         metric += dirichlet_analyse_single_domain (*vi);
+        ++vi;
+    }
 
     // arithmetic mean Dirichlet-ness
-    return metric/num;
+    return metric/(float)domains.size();
 }
 
 #endif
