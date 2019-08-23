@@ -673,6 +673,15 @@ public:
         data.add_contained_vals ("/dv_dn_s", dv_dn_s);
         data.add_contained_vals ("/dv_n_dn_f", dv_n_dn_f);
         data.add_contained_vals ("/dv_n_dn_s", dv_n_dn_s);
+        // I also have a set of coordinates for the edges, one for each vertex.
+        // Could be:
+        // vector<vector<float>> dv_edges_x
+        // vector<vector<float>> dv_edges_y
+        //
+        // For this, I probably need to create a new
+        // add_contained_vals() method. If I'm doing that, then I may
+        // as well have a vector<set<pair<float, float> > > and
+        // associated add_contained_vals/read_vals methods
     }
 
     /*!
