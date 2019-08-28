@@ -5,6 +5,8 @@
 #include "morph/DirichVtx.h"
 #include "morph/ShapeAnalysis.h"
 
+#include <list>
+
 /*!
  * Enumerates the way that the guidance molecules are set up
  */
@@ -642,7 +644,6 @@ public:
         fname << this->stepCount << ".h5";
         HdfData data(fname.str());
         // Dirichlet vertices is a table, so construct vectors of floats
-        typename set<morph::DirichVtx<Flt> >::iterator idv = dv.begin();
         vector<float> dv_id;     // vertex ID
         vector<float> dv_x;      // vertex x
         vector<float> dv_y;      // vertex y
@@ -652,6 +653,8 @@ public:
         vector<float> dv_dn_s;   // second domain neighbour
         vector<float> dv_n_dn_f; // vertex neighbour's first domain neighbour
         vector<float> dv_n_dn_s; // vertex neighbour's second domain neighbour
+#if 0
+        typename list<list<morph::DirichVtx<Flt> > >::iterator idv = dv.begin();
         while (idv != dv.end()) {
             dv_id.push_back (idv->f);
             dv_x.push_back (idv->v.first);
@@ -664,6 +667,7 @@ public:
             dv_n_dn_s.push_back (idv->neighbn.second);
             ++idv;
         }
+#endif
         data.add_contained_vals ("/dv_id", dv_id);
         data.add_contained_vals ("/dv_x", dv_x);
         data.add_contained_vals ("/dv_y", dv_y);
@@ -1150,7 +1154,8 @@ public:
     //! Dirichlet regions
     vector<Flt> dr;
     //! Dirichlet vertices
-    set<morph::DirichVtx<Flt> > dv;
+    list<list<morph::DirichVtx<Flt> > > dv;
+
     /*!
      * Compute Dirichlet analysis on the c variable
      */
