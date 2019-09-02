@@ -633,7 +633,7 @@ public:
         data.add_contained_vals ("/n", this->n);
 
         // Dirichlet regions here (as same size as n, c etc) Diriclet vertices in dv.h5.
-        data.add_contained_vals ("/dr", this->dr);
+        data.add_contained_vals ("/dr", this->regions);
     }
 
     void saveDirichletVertices (void) {
@@ -1152,16 +1152,17 @@ public:
     }
 
     //! Dirichlet regions
-    vector<Flt> dr;
+    vector<Flt> regions;
     //! Dirichlet vertices
-    list<list<morph::DirichVtx<Flt> > > dv;
+    list<DirichVtx<Flt>> vertices;
+    list<list<morph::DirichVtx<Flt> > > domains;
 
     /*!
      * Compute Dirichlet analysis on the c variable
      */
     void dirichlet (void) {
-        this->dr = morph::ShapeAnalysis<Flt>::dirichlet_regions (this->hg, this->c);
-        this->dv = morph::ShapeAnalysis<Flt>::dirichlet_vertices (this->hg, dr);
+        this->regions = morph::ShapeAnalysis<Flt>::dirichlet_regions (this->hg, this->c);
+        this->domains = morph::ShapeAnalysis<Flt>::dirichlet_vertices (this->hg, this->regions, this->vertices);
     }
 
 }; // RD_James

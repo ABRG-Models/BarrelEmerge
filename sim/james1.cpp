@@ -96,67 +96,7 @@ private:
     ProcessData* parent;
 };
 
-#if 1
-
-list<DirichVtx<FLT> >
-dirichlet_order_vertices (set<DirichVtx<FLT> > domvertices, set<DirichVtx<FLT> >& remaining)
-{
-    DBG("called");
-    list<DirichVtx<FLT> > ordered;
-    unsigned int numVertices = domvertices.size();
-
-    // Note *copy* of domvertices here into the second arg
-    remaining = domvertices;
-
-    typename set<DirichVtx<FLT> >::iterator dvi = remaining.begin();
-
-    unsigned int totali = 0; // just for debugging
-
-    DBG ("At start, remaining.size() = " << remaining.size());
-    // Ah - this may not be possible with the very messy early domains! A problem for tomorrow.
-    while (ordered.size() < numVertices && totali++ < 1500) {
-        dvi = remaining.begin();
-        while (dvi != remaining.end() && totali++ < 1500) {
-            DBG ("dvi->neighb.first = " << dvi->neighb.first << " dvi->neighb.second = " << dvi->neighb.second);
-            FLT firstdom = -100.0;
-            if (!ordered.empty()) {
-                // What's the first domain connected to this vertex?
-                firstdom = ordered.front().neighb.first;
-            }
-
-            if (!ordered.empty()) {
-                auto li = ordered.begin();
-                while (li != ordered.end()) {
-                    DBG ("ordered from " << li->neighb.first << " to " << li->neighb.second);
-                    ++li;
-                }
-            }
-
-            if (!ordered.empty() && dvi->neighb.second == firstdom) {
-                // Got to
-            } else if (ordered.empty()
-                || dvi->neighb.first == ordered.back().neighb.second) {
-                // Found partner; add to ordered
-                ordered.push_back (*dvi);
-                DBG ("Before, remaining.size: " << remaining.size());
-                dvi = remaining.erase (dvi);
-                DBG ("After erase, remaining.size: " << remaining.size());
-
-            } else {
-                if (ordered.empty()) {
-                    DBG("ordered is empty");
-                }
-                ++dvi;
-            }
-        }
-        DBG ("After first inner while ordered.size() = " << ordered.size()
-             << ", remaining.size() = " << remaining.size());
-    }
-
-    DBG ("Returning");
-    return ordered;
-}
-
+#if 0
 /*!
  * Take a set of Dirichlet vertices defining exactly one Dirichlet
   * domain and compute a metric for the Dirichlet-ness of the vertices
@@ -249,7 +189,6 @@ dirichlet_analyse (const set<DirichVtx<FLT> >& dv)
     // return the arithmetic mean Dirichlet-ness measure
     return metric/(float)final_domains.size();
 }
-
 #endif
 
 /*!
@@ -828,7 +767,7 @@ int main (int argc, char **argv)
                 }
             }
             if (plot_dr) {
-                plt.scalarfields (displays[dr_id], RD.hg, RD.dr);
+                plt.scalarfields (displays[dr_id], RD.hg, RD.regions);
             }
             // Then add:
             //plt.plot_dirichlet_boundaries (displays[n_id], RD.hg, vv);

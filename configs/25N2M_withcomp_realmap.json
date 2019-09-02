@@ -5,7 +5,7 @@
  */
 {
     // Global simulation parameters
-    "steps" : 14000,                // Number of steps to simulate for
+    "steps" : 12000,                // Number of steps to simulate for
     "logevery": 1000,
     "overwrite_logs": true,
     "logpath" : "./logs/25N2M_withcomp_realmap",
