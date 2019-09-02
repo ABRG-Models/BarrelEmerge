@@ -643,6 +643,7 @@ int main (int argc, char **argv)
     // As RD.allocate() as been called (and log directory has been
     // created/verified ready), positions can be saved to file.
     RD.savePositions();
+    RD.saveHG();
     // Save the guidance molecules now.
     RD.saveGuidance();
 

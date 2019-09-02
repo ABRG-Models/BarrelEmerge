@@ -632,8 +632,14 @@ public:
         }
         data.add_contained_vals ("/n", this->n);
 
-        // Dirichlet regions here (as same size as n, c etc) Diriclet vertices in dv.h5.
+        // Dirichlet regions here (as same size as n, c etc) Dirichlet vertices in dv.h5.
         data.add_contained_vals ("/dr", this->regions);
+    }
+
+    void saveHG (void) {
+        stringstream hgname;
+        hgname << this->logpath << "/hexgrid.h5";
+        this->hg->save(hgname.str().c_str());
     }
 
     void saveDirichletVertices (void) {
