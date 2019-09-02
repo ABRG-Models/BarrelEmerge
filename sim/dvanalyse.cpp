@@ -38,8 +38,8 @@ int main()
         // Make up a variable.
         vector<float> f (hg.num(), 0.1f);
         {
-            HdfData d("../logs/25N2M_withcomp_realmap/dv_12000.h5", READIT);
-            d.read_contained_vals ("/dv_id", f);
+            HdfData d("../logs/25N2M_withcomp_realmap/c_12000.h5", READIT);
+            d.read_contained_vals ("/dr", f);
         }
 
         // The code to actually test:
