@@ -47,11 +47,6 @@ compute_angle (const pair<float, float>& c0,
                const pair<float, float>& c2,
                const unsigned int angleFor)
 {
-    // Length of line from coord0 to coord1
-    //float c01 = line_length (coord0, coord1);
-    //float c12 = line_length (coord1, coord2);
-    //float c20 = line_length (coord2, coord0);
-
     float angle = -1.0f;
     if (angleFor == 0) {
         angle = atan2 (c2.second - c0.second, c2.first - c0.first)
@@ -115,20 +110,32 @@ dirichlet_analyse_single_domain (list<DirichVtx<float> >& domain)
         }
         DBG ("Vertex A_i-1: (" << Aim1.first << "," << Aim1.second << ")");
 
-        // 1. Compute phi, the angle Bi Ai Ai-1 using law of cosines
+        // Reset dv back one
+        dv--;
+
+        /*
+         * 1. Compute phi, the angle Bi Ai Ai-1 using law of cosines
+         */
         float phi = compute_angle (Bi, Ai, Aim1, 1);
         float theta = morph::PI_F - phi;
         DBG ("phi = " << phi << " and theta = " << theta);
 
-        // 2. Compute the line P_i wrt to Ai and Ai+1
+        /*
+         * 2. Compute the line P_i wrt to Ai and Ai+1
+         */
         // 2a Project A_i+1 onto the line P_i to get the length to a point Pi on line Pi.
         float Aip1Ai = line_length (Aip1, Ai);
+        // Distance that we'll travel from Ai to get to the new point Pi.
         float AiPi = Aip1Ai * cos (theta);
         // 2b Determine the coordinates of point Pi using theta and the angle from the x axis to
         // Aip1.
         float xi = atan2 ((Aip1.second - Ai.second), (Aip1.first - Ai.first));
+        DBG ("xi is " << xi);
+
         float deltax = AiPi * cos (theta + xi);
+        DBG ("deltax from Ai to Pi is " << deltax);
         float deltay = AiPi * sin (theta + xi);
+        DBG ("deltay from Ai to Pi is " << deltay);
 
         pair<float, float> Pi = Ai;
         Pi.first += deltax;
@@ -136,6 +143,26 @@ dirichlet_analyse_single_domain (list<DirichVtx<float> >& domain)
 
         DBG ("Point Pi: " << Pi.first << "," << Pi.second << ")");
         dv->P_i = Pi;
+
+        /*
+         * 3. Use A_i and P_i to compute gradient/offset of the
+         * line equation that passes through point A_i. Store in
+         * this->m and this->c (or whatever is suitable).
+         */
+        if (dv->P_i.first == Ai.first) {
+            dv->m = dv->P_i.second < Ai.second ? numeric_limits<float>::lowest() : numeric_limits<float>::max();
+            dv->c = numeric_limits<float>::max();
+            // And if c is max(), then it's a vertical line from
+            // A_i through P_i which means that P_i.first ==
+            // A_i.first and P_i.second can be anything.
+
+        } else {
+            dv->m = (dv->P_i.second - Ai.second) / (dv->P_i.first - Ai.first);
+            dv->c = Ai.second - dv->m * Ai.first;
+        }
+        DBG ("Pi line gradient is m=" << dv->m << ", offset is c=" << dv->c);
+
+        ++dv;
     }
 
     float num_vtx = static_cast<float>(domain.size());
@@ -154,7 +181,7 @@ dirichlet_analyse (list<list<DirichVtx<float> > >& doms)
     float metric = 0.0;
     auto di = doms.begin();
     while (di != doms.end()) {
-         metric += dirichlet_analyse_single_domain (*di);
+        metric += dirichlet_analyse_single_domain (*di);
         ++di;
     }
     // return the arithmetic mean Dirichlet-ness measure
@@ -203,7 +230,7 @@ int main (int argc, char** argv)
         eye[2] = 0.12; // This also acts as a zoom. more +ve to zoom out, more -ve to zoom in.
         vector<double> rot(3, 0.0);
         double rhoInit = 1.7;
-        morph::Gdisplay disp(2800, 2800, 0, 0, "A boundary", rhoInit, 0.0, 0.0);
+        morph::Gdisplay disp(1600, 1600, 0, 0, "A boundary", rhoInit, 0.0, 0.0);
         disp.resetDisplay (fix, eye, rot);
         disp.redrawDisplay();
 
@@ -275,6 +302,10 @@ int main (int argc, char** argv)
                     posn1[0] = dom_inner.P_i.first;
                     posn1[1] = dom_inner.P_i.second;
                     disp.drawHex (posn1, offset3, (sz/4.0f), cl_h);
+                    // Draw a line from Ai to Pi
+                    disp.drawLine ((double)posn1[0], (double)posn1[1], 0.006,
+                                   (double)dom_inner.v.first, (double)dom_inner.v.second, 0.006,
+                                   0.8, 0.05, 0.2,   0.3);
 
                 }
             }
