@@ -46,7 +46,7 @@ int main (int argc, char** argv)
         // Make up a variable.
         vector<float> f (hg.num(), 0.1f);
         {
-            HdfData d("../logs/25N2M_withcomp_realmap/c_14000.h5", READIT);
+            HdfData d("../logs/25N2M_withcomp_realmap/c_12000.h5", READIT);
             d.read_contained_vals ("/dr", f);
         }
 
