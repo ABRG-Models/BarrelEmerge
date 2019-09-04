@@ -1167,6 +1167,8 @@ public:
      * Compute Dirichlet analysis on the c variable
      */
     void dirichlet (void) {
+        this->regions.clear();
+        this->vertices.clear();
         this->regions = morph::ShapeAnalysis<Flt>::dirichlet_regions (this->hg, this->c);
         this->domains = morph::ShapeAnalysis<Flt>::dirichlet_vertices (this->hg, this->regions, this->vertices);
     }
