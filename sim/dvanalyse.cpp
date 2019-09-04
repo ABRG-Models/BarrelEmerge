@@ -10,6 +10,8 @@
 #include <vector>
 #include <list>
 #include <unistd.h>
+#include <cmath>
+using std::atan2;
 
 #define DBGSTREAM std::cout
 #define DEBUG 1
@@ -17,10 +19,148 @@
 
 #include "morph/ShapeAnalysis.h"
 
+#include "morph/MathConst.h"
+
 using namespace morph;
 using namespace std;
 
 #define READIT true
+
+#if 1
+
+float line_length (const pair<float, float>& coord0, const pair<float, float>& coord1)
+{
+    float c01 = sqrt ((coord0.first - coord1.first) * (coord0.first - coord1.first)
+                      + (coord0.second - coord1.second) * (coord0.second - coord1.second));
+    return c01;
+}
+
+/*!
+ * For the three coordinates c0, c1, c2, compute the angle at coordinate number @angleFor
+ * (counting from 0).
+ *
+ * To go to morph::tools or morph::maths or something.
+ */
+float
+compute_angle (const pair<float, float>& c0,
+               const pair<float, float>& c1,
+               const pair<float, float>& c2,
+               const unsigned int angleFor)
+{
+    // Length of line from coord0 to coord1
+    //float c01 = line_length (coord0, coord1);
+    //float c12 = line_length (coord1, coord2);
+    //float c20 = line_length (coord2, coord0);
+
+    float angle = -1.0f;
+    if (angleFor == 0) {
+        angle = atan2 (c2.second - c0.second, c2.first - c0.first)
+            - atan2 (c1.second - c0.second, c1.first - c0.first);
+
+    } else if (angleFor == 1) {
+        angle = atan2 (c0.second - c1.second, c0.first - c1.first)
+            - atan2 (c2.second - c1.second, c2.first - c1.first);
+
+    } else if (angleFor == 2) {
+        angle = atan2 (c1.second - c2.second, c1.first - c2.first)
+            - atan2 (c0.second - c2.second, c0.first - c2.first);
+
+    } else {
+        throw runtime_error ("Ask for the angle around coord 0, 1 or 2 please.");
+    }
+
+    return angle;
+}
+
+/*!
+ * Take a set of Dirichlet vertices defining exactly one Dirichlet
+  * domain and compute a metric for the Dirichlet-ness of the vertices
+ * after Honda1983.
+ */
+float
+dirichlet_analyse_single_domain (list<DirichVtx<float> >& domain)
+{
+    DBG("called");
+    float metric = 0.0f;
+
+    // Now I know the ORDER of the vertices in domain I can proceed...
+    // Now loop around the list computing the lines
+    typename list<DirichVtx<float>>::iterator dv = domain.begin();
+    typename list<DirichVtx<float>>::iterator dvnext = dv;
+    typename list<DirichVtx<float>>::iterator dvprev = domain.end();
+    while (dv != domain.end()) {
+
+        DBG ("-- Domain --");
+
+        pair<float, float> Ai = dv->v;
+        pair<float, float> Bi = dv->vn;
+        DBG ("Vertex A_i: (" << Ai.first << "," << Ai.second << ")");
+        DBG ("Vertex B_i: (" << Bi.first << "," << Bi.second << ")");
+
+        dvnext = ++dv;
+        if (dvnext == domain.end()) {
+            dvnext = domain.begin();
+        }
+        pair<float, float> Aip1 = dvnext->v;
+        DBG ("Vertex A_i+1: (" << Aip1.first << "," << Aip1.second << ")");
+
+        pair<float, float> Aim1;
+        if (dvprev == domain.end()) {
+            dvprev--;
+            Aim1 = dvprev->v;
+            dvprev = domain.begin();
+        } else {
+            Aim1 = dvprev->v;
+            ++dvprev;
+        }
+        DBG ("Vertex A_i-1: (" << Aim1.first << "," << Aim1.second << ")");
+
+        // 1. Compute phi, the angle Bi Ai Ai-1 using law of cosines
+        float phi = compute_angle (Bi, Ai, Aim1, 1);
+        float theta = morph::PI_F - phi;
+        DBG ("phi = " << phi << " and theta = " << theta);
+
+        // 2. Compute the line P_i wrt to Ai and Ai+1
+        // 2a Project A_i+1 onto the line P_i to get the length to a point Pi on line Pi.
+        float Aip1Ai = line_length (Aip1, Ai);
+        float AiPi = Aip1Ai * cos (theta);
+        // 2b Determine the coordinates of point Pi using theta and the angle from the x axis to
+        // Aip1.
+        float xi = atan2 ((Aip1.second - Ai.second), (Aip1.first - Ai.first));
+        float deltax = AiPi * cos (theta + xi);
+        float deltay = AiPi * sin (theta + xi);
+
+        pair<float, float> Pi = Ai;
+        Pi.first += deltax;
+        Pi.second += deltay;
+
+        DBG ("Point Pi: " << Pi.first << "," << Pi.second << ")");
+        dv->P_i = Pi;
+    }
+
+    float num_vtx = static_cast<float>(domain.size());
+    return metric/num_vtx;
+}
+
+/*!
+ * Take a list of Dirichlet domains and compute a metric for the Dirichlet-ness of the vertices
+ * after Honda1983.
+ *
+ * To go into morph::ShapeAnalysis
+ */
+float
+dirichlet_analyse (list<list<DirichVtx<float> > >& doms)
+{
+    float metric = 0.0;
+    auto di = doms.begin();
+    while (di != doms.end()) {
+         metric += dirichlet_analyse_single_domain (*di);
+        ++di;
+    }
+    // return the arithmetic mean Dirichlet-ness measure
+    return metric/(float)doms.size();
+}
+#endif
 
 int main (int argc, char** argv)
 {
@@ -44,13 +184,17 @@ int main (int argc, char** argv)
         // Make up a variable.
         vector<float> f (hg.num(), 0.1f);
         {
-            HdfData d("../logs/25N2M_withcomp_realmap/c_02000.h5", READIT);
+            HdfData d("../logs/25N2M_withcomp_realmap/c_14000.h5", READIT);
             d.read_contained_vals ("/dr", f);
         }
 
         // The code to actually test:
         list<morph::DirichVtx<float>> vertices;
         list<list<morph::DirichVtx<float> > > domains = morph::ShapeAnalysis<float>::dirichlet_vertices (&hg, f, vertices);
+
+        // Carry out the analysis.
+        float analysis = dirichlet_analyse (domains);
+        cout << "Result of analysis: " << analysis << endl;
 
 #if 1
         // Draw it up.
@@ -103,6 +247,7 @@ int main (int argc, char** argv)
         array<float,3> cl_e = {{ 0, 0, 0 }};
         array<float,3> cl_f = {{ 0, 0, 0.8f }};
         array<float,3> cl_g = {{ 0.5f, 0, 0.8f }};
+        array<float,3> cl_h = {{ 0.3f, 0.6f, 0.1f }};
         unsigned int count = 0;
         for (auto dom_outer : domains) {
             if (count == (unsigned int)viewnum) {
@@ -126,6 +271,11 @@ int main (int argc, char** argv)
                     posn1[0] = dom_inner.vn.first;
                     posn1[1] = dom_inner.vn.second;
                     disp.drawHex (posn1, offset3, (sz/4.0f), cl_g);
+
+                    posn1[0] = dom_inner.P_i.first;
+                    posn1[1] = dom_inner.P_i.second;
+                    disp.drawHex (posn1, offset3, (sz/4.0f), cl_h);
+
                 }
             }
             ++count;
