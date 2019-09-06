@@ -46,17 +46,19 @@ int main (int argc, char** argv)
         // Make up a variable.
         vector<float> f (hg.num(), 0.1f);
         {
-            HdfData d("../logs/25N2M_withcomp_realmap/c_12000.h5", READIT);
+            HdfData d("../logs/25N2M_withcomp_realmap/c_16000.h5", READIT);
             d.read_contained_vals ("/dr", f);
         }
 
         // The code to actually test:
         list<morph::DirichVtx<float>> vertices;
-        list<list<morph::DirichVtx<float> > > domains = morph::ShapeAnalysis<float>::dirichlet_vertices (&hg, f, vertices);
+        list<morph::DirichDom<float>> domains = morph::ShapeAnalysis<float>::dirichlet_vertices (&hg, f, vertices);
 
         // Carry out the analysis.
-        float analysis = morph::ShapeAnalysis<float>::dirichlet_analyse (domains);
+        vector<pair<float, float>> d_centres;
+        float analysis = morph::ShapeAnalysis<float>::dirichlet_analyse (domains, d_centres);
         cout << "Result of analysis: " << analysis << endl;
+        cout << d_centres.size() << " Ps" << endl;
 
         // Draw it up.
         vector<double> fix(3, 0.0);
@@ -92,7 +94,7 @@ int main (int argc, char** argv)
         unsigned int count = 0;
         for (auto dom_outer : domains) {
             if (count == (unsigned int)viewnum) {
-                for (auto dom_inner : dom_outer) {
+                for (auto dom_inner : dom_outer.vertices) {
                     // Draw the paths
                     for (auto path : dom_inner.pathto_next) {
                         array<float,3> posn = {{0,0,0.003}};
@@ -111,6 +113,7 @@ int main (int argc, char** argv)
                     disp.drawHex (posn1, offset3, (sz/4.0f), cl_f);
                     posn1[0] = dom_inner.vn.first;
                     posn1[1] = dom_inner.vn.second;
+                    // Neighbour vertices
                     disp.drawHex (posn1, offset3, (sz/4.0f), cl_g);
 
                     posn1[0] = dom_inner.P_i.first;
@@ -121,8 +124,13 @@ int main (int argc, char** argv)
                                    (double)dom_inner.v.first, (double)dom_inner.v.second, 0.006,
                                    0.8, 0.05, 0.2,   0.3);
 
+
                 }
             }
+            // Draw best P for each domain
+            array<float,3> posn2 = {{d_centres[count].first, d_centres[count].second, 0.003}};
+            disp.drawHex (posn2, offset3, (sz/4.0f), cl_d);
+
             ++count;
         }
 

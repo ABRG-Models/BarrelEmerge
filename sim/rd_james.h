@@ -3,6 +3,7 @@
  */
 #include "morph/RD_Base.h"
 #include "morph/DirichVtx.h"
+#include "morph/DirichDom.h"
 #include "morph/ShapeAnalysis.h"
 
 #include <list>
@@ -1161,7 +1162,7 @@ public:
     vector<Flt> regions;
     //! Dirichlet vertices
     list<DirichVtx<Flt>> vertices;
-    list<list<morph::DirichVtx<Flt> > > domains;
+    list<DirichDom<Flt>> domains;
 
     /*!
      * Compute Dirichlet analysis on the c variable

@@ -640,8 +640,9 @@ int main (int argc, char **argv)
             vector<list<Hex> > ctrs = ShapeAnalysis<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
 
             RD.dirichlet();
-            //float dirich_value = dirichlet_analyse (RD.dv);
-            //cout << "dirich_value = " << dirich_value << endl;
+            vector<pair<float, float>> d_centres;
+            float dirich_value = ShapeAnalysis<FLT>::dirichlet_analyse (RD.domains, d_centres);
+            cout << "dirich_value = " << dirich_value << endl;
 
             vector<list<Hex> > a_ctrs;
             if (plot_contours) {
