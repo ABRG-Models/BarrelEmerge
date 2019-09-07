@@ -640,9 +640,7 @@ int main (int argc, char **argv)
             vector<list<Hex> > ctrs = ShapeAnalysis<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
 
             RD.dirichlet();
-            vector<pair<float, float>> d_centres;
-            float dirich_value = ShapeAnalysis<FLT>::dirichlet_analyse (RD.domains, d_centres);
-            cout << "dirich_value = " << dirich_value << endl;
+            cout << "dirich_value = " << RD.honda << endl;
 
             vector<list<Hex> > a_ctrs;
             if (plot_contours) {
@@ -725,7 +723,7 @@ int main (int argc, char **argv)
         if ((RD.stepCount % logevery) == 0) {
             cout << "Logging data at step " << RD.stepCount << endl;
             RD.save();
-            RD.saveDirichletVertices();
+            RD.saveDirichletDomains();
         }
 
         if (RD.stepCount > steps) {

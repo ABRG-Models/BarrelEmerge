@@ -276,6 +276,21 @@ public:
     bool doFgfDuplication = false;
 
     /*!
+     * Dirichlet analysis variables
+     */
+    //@{
+    //! Dirichlet regions
+    vector<Flt> regions;
+
+    //! Dirichlet vertices
+    list<DirichVtx<Flt>> vertices;
+    list<DirichDom<Flt>> domains;
+
+    //! The overall Honda 1983 Dirichlet approximation. 0.003 is a good fit. 0.05 not so good.
+    Flt honda = 0.0;
+    //@}
+
+    /*!
      * Simple constructor; no arguments. Just calls RD_Base constructor
      */
     RD_James (void)
@@ -643,56 +658,25 @@ public:
         this->hg->save(hgname.str().c_str());
     }
 
-    void saveDirichletVertices (void) {
+    // Save out the dirichlet domains, their paths, and various statistical measures.
+    void saveDirichletDomains (void) {
         stringstream fname;
-        fname << this->logpath << "/dv_";
+        fname << this->logpath << "/dirich_";
         fname.width(5);
         fname.fill('0');
         fname << this->stepCount << ".h5";
         HdfData data(fname.str());
-        // Dirichlet vertices is a table, so construct vectors of floats
-        vector<float> dv_id;     // vertex ID
-        vector<float> dv_x;      // vertex x
-        vector<float> dv_y;      // vertex y
-        vector<float> dv_n_x;    // vertex neighbour x
-        vector<float> dv_n_y;    // vertex neighbour y
-        vector<float> dv_dn_f;   // first domain neighbour
-        vector<float> dv_dn_s;   // second domain neighbour
-        vector<float> dv_n_dn_f; // vertex neighbour's first domain neighbour
-        vector<float> dv_n_dn_s; // vertex neighbour's second domain neighbour
-#if 0
-        typename list<list<morph::DirichVtx<Flt> > >::iterator idv = dv.begin();
-        while (idv != dv.end()) {
-            dv_id.push_back (idv->f);
-            dv_x.push_back (idv->v.first);
-            dv_y.push_back (idv->v.second);
-            dv_n_x.push_back (idv->vn.first);
-            dv_n_y.push_back (idv->vn.second);
-            dv_dn_f.push_back (idv->neighb.first);
-            dv_dn_s.push_back (idv->neighb.second);
-            dv_n_dn_f.push_back (idv->neighbn.first);
-            dv_n_dn_s.push_back (idv->neighbn.second);
-            ++idv;
+        unsigned int domcount = 0;
+        for (auto dom : this->domains) {
+            stringstream dname;
+            dname << "/dom";
+            dname.width(3);
+            dname.fill('0');
+            dname << domcount++;
+            dom.save (data, dname.str());
         }
-#endif
-        data.add_contained_vals ("/dv_id", dv_id);
-        data.add_contained_vals ("/dv_x", dv_x);
-        data.add_contained_vals ("/dv_y", dv_y);
-        data.add_contained_vals ("/dv_n_x", dv_n_x);
-        data.add_contained_vals ("/dv_n_y", dv_n_y);
-        data.add_contained_vals ("/dv_dn_f", dv_dn_f);
-        data.add_contained_vals ("/dv_dn_s", dv_dn_s);
-        data.add_contained_vals ("/dv_n_dn_f", dv_n_dn_f);
-        data.add_contained_vals ("/dv_n_dn_s", dv_n_dn_s);
-        // I also have a set of coordinates for the edges, one for each vertex.
-        // Could be:
-        // vector<vector<float>> dv_edges_x
-        // vector<vector<float>> dv_edges_y
-        //
-        // For this, I probably need to create a new
-        // add_contained_vals() method. If I'm doing that, then I may
-        // as well have a vector<set<pair<float, float> > > and
-        // associated add_contained_vals/read_vals methods
+        // Save the overall honda value for the system
+        data.add_val ("/honda", this->honda);
     }
 
     /*!
@@ -1158,12 +1142,6 @@ public:
         }
     }
 
-    //! Dirichlet regions
-    vector<Flt> regions;
-    //! Dirichlet vertices
-    list<DirichVtx<Flt>> vertices;
-    list<DirichDom<Flt>> domains;
-
     /*!
      * Compute Dirichlet analysis on the c variable
      */
@@ -1172,6 +1150,11 @@ public:
         this->vertices.clear();
         this->regions = morph::ShapeAnalysis<Flt>::dirichlet_regions (this->hg, this->c);
         this->domains = morph::ShapeAnalysis<Flt>::dirichlet_vertices (this->hg, this->regions, this->vertices);
+
+        // Carry out the analysis.
+        vector<pair<float, float>> d_centres;
+        this->honda = morph::ShapeAnalysis<float>::dirichlet_analyse (this->domains, d_centres);
+        //cout << "Result of analysis: " << this->honda << endl;
     }
 
 }; // RD_James
