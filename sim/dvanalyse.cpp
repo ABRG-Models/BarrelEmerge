@@ -79,7 +79,7 @@ int main (int argc, char** argv)
             array<float,3> cl_a = morph::Tools::getJetColorF (f[h.vi]);
             disp.drawHex (h.position(), offset, (sz/2.0f), cl_a);
             // On boundary draw small marker hex.
-            if (h.boundaryHex) {
+            if (h.boundaryHex()) {
                 disp.drawHex (h.position(), offset2, (sz/10.0f), cl_b);
             }
         }
