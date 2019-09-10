@@ -74,6 +74,10 @@ int main (int argc, char** argv)
         array<float,3> offset = {{0, 0, 0}};
         array<float,3> offset2 = {{0, 0, 0.001}};
         array<float,3> cl_b = {{1.,1.,1.}};
+        array<float,3> cl_b2 = {{0.5,0.5,0.5}};
+        array<float,3> cl_red2 = {{0.5,0.0,0.05}};
+        array<float,3> cl_gn2 = {{0.0,0.5,0.05}};
+        array<float,3> cl_bl2 = {{0.0,0.05,0.5}};
         float sz = hg.hexen.front().d;
         for (auto h : hg.hexen) {
             array<float,3> cl_a = morph::Tools::getJetColorF (f[h.vi]);
@@ -81,6 +85,12 @@ int main (int argc, char** argv)
             // On boundary draw small marker hex.
             if (h.boundaryHex()) {
                 disp.drawHex (h.position(), offset2, (sz/10.0f), cl_b);
+            }
+            if (h.getUserFlag(0)==true && h.getUserFlag(1)==false) {
+                disp.drawHex (h.position(), offset2, (sz/6.0f), cl_b2);
+            }
+            if (h.getUserFlag(1)==true) {
+                disp.drawHex (h.position(), offset2, (sz/6.0f), cl_gn2);
             }
         }
 
