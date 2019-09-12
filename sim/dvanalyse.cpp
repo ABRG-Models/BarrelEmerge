@@ -75,9 +75,7 @@ int main (int argc, char** argv)
         array<float,3> offset2 = {{0, 0, 0.001}};
         array<float,3> cl_b = {{1.,1.,1.}};
         array<float,3> cl_b2 = {{0.5,0.5,0.5}};
-        array<float,3> cl_red2 = {{0.5,0.0,0.05}};
         array<float,3> cl_gn2 = {{0.0,0.5,0.05}};
-        array<float,3> cl_bl2 = {{0.0,0.05,0.5}};
         float sz = hg.hexen.front().d;
         for (auto h : hg.hexen) {
             array<float,3> cl_a = morph::Tools::getJetColorF (f[h.vi]);
