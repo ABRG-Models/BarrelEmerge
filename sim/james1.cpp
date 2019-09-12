@@ -202,7 +202,8 @@ int main (int argc, char **argv)
     const float boundaryFalloffDist = root.get ("boundaryFalloffDist", 0.01).asFloat();
     const string svgpath = root.get ("svgpath", "./ellipse.svg").asString();
     bool overwrite_logs = root.get ("overwrite_logs", false).asBool();
-    bool do_dirichlet_analysis = root.get ("do_dirichlet_analysis", false).asBool();
+    // Do we carry out dirichlet analysis? Default to true, because it's computationally cheap.
+    bool do_dirichlet_analysis = root.get ("do_dirichlet_analysis", true).asBool();
     string logpath = root.get ("logpath", "logs/james1").asString();
     if (argc == 3) {
         string argpath(argv[2]);
