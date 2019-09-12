@@ -32,3 +32,7 @@ target_link_libraries(james_dncompc ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLIN
 add_executable(dvanalyse dvanalyse.cpp)
 target_compile_definitions(dvanalyse PUBLIC FLT=float COMPILE_PLOTTING)
 target_link_libraries(dvanalyse ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})
+
+add_executable(viewguidance viewguidance.cpp)
+target_compile_definitions(viewguidance PUBLIC FLT=float)
+target_link_libraries(viewguidance ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})
