@@ -1,7 +1,9 @@
 load '../logs/25N2M_withcomp_realmap/c_14000.h5'
 load '../logs/25N2M_withcomp_realmap/positions.h5'
-load '../logs/25N2M_withcomp_realmap/dv_14000.h5'
+load '../logs/25N2M_withcomp_realmap/dirich_14000.h5'
 
+% This script is obsolete, because currently I'm not storing the
+% data the same way.
 a=[dv_id', dv_x', dv_y', dv_n_x', dv_n_y'];
 
 fnum = 1;
