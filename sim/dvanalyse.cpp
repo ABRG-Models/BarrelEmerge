@@ -128,7 +128,7 @@ int main (int argc, char** argv)
 
                     posn1[0] = dom_inner.P_i.first;
                     posn1[1] = dom_inner.P_i.second;
-                    disp.drawHex (posn1, offset3, (sz/4.0f), cl_h);
+                    disp.drawHex (posn1, offset3, (sz/8.0f), cl_h);
                     // Draw a line from Ai to Pi
                     disp.drawLine ((double)posn1[0], (double)posn1[1], 0.006,
                                    (double)dom_inner.v.first, (double)dom_inner.v.second, 0.006,
