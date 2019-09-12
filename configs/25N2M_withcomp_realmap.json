@@ -5,7 +5,7 @@
  */
 {
     // Global simulation parameters
-    "steps" : 12000,                // Number of steps to simulate for
+    "steps" : 24000,                // Number of steps to simulate for
     "logevery": 1000,
     "overwrite_logs": true,
     "logpath" : "./logs/25N2M_withcomp_realmap",
@@ -29,7 +29,7 @@
     "vidframes": true,    // If true, number video frame saves consecutively, rather than by simulation step number
     "rhoInit": 2.6, // Larger to zoom out
     //
-    "plot_guide" : false,
+    "plot_guide" : true,
     "plot_contours" : false,
     "plot_a_contours" : false,
     "plot_a" : false,
@@ -133,11 +133,11 @@
     // Array of parameters for the guidance molecules
     "guidance": [
         {
-            "shape"  : "CircLinear2D",
+            "shape"  : "Linear1D",
             "gain"   : 1.0,
             "phi"    : -80,
             "width"  : 0.1,
-            "offset" : 0.65
+            "offset" : 0.0 // 0.65
         },
         {
             "shape"  : "Linear1D",
