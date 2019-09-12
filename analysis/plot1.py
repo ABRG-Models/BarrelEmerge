@@ -29,7 +29,7 @@ do_maps = 1
 if do_maps:
     # Read the data
     (x, y, t, cmatrix, amatrix, nmatrix, idmatrix, tarea) = ld.readSimDataFiles (logdirname)
-    for tg in range(0,23):
+    for tg in range(0,23,4):
         idstring = 'id{0}'.format(tg*1000);
         pt.surface (idmatrix[:,tg], x, y, 0, idstring)
 
