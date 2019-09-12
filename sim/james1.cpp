@@ -364,7 +364,7 @@ int main (int argc, char **argv)
 
     if (plot_dr && do_dirichlet_analysis) {
         winTitle = worldName + ": dr"; //4
-        displays.push_back (morph::Gdisplay (win_width, win_height, 100, 1800, winTitle.c_str(),
+        displays.push_back (morph::Gdisplay (win_width_contours, win_height_contours, 100, 1800, winTitle.c_str(),
                                              rhoInit, thetaInit, phiInit, displays[0].win));
         displays.back().resetDisplay (fix, eye, rot);
         displays.back().redrawDisplay();
