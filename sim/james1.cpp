@@ -202,6 +202,7 @@ int main (int argc, char **argv)
     const float boundaryFalloffDist = root.get ("boundaryFalloffDist", 0.01).asFloat();
     const string svgpath = root.get ("svgpath", "./ellipse.svg").asString();
     bool overwrite_logs = root.get ("overwrite_logs", false).asBool();
+    bool do_dirichlet_analysis = root.get ("do_dirichlet_analysis", false).asBool();
     string logpath = root.get ("logpath", "logs/james1").asString();
     if (argc == 3) {
         string argpath(argv[2]);
@@ -360,13 +361,15 @@ int main (int argc, char **argv)
         n_id = windowId++;
     }
 
-    if (plot_dr) {
+    if (plot_dr && do_dirichlet_analysis) {
         winTitle = worldName + ": dr"; //4
         displays.push_back (morph::Gdisplay (win_width, win_height, 100, 1800, winTitle.c_str(),
                                              rhoInit, thetaInit, phiInit, displays[0].win));
         displays.back().resetDisplay (fix, eye, rot);
         displays.back().redrawDisplay();
         dr_id = windowId++;
+    } else if (plot_dr && !do_dirichlet_analysis) {
+        cout << "Note: To plot the dirichlet regions (dr), do_dirichlet_analysis must be set." << endl;
     }
 
     if (plot_guidegrad) {
@@ -639,8 +642,10 @@ int main (int argc, char **argv)
             // Do a plot of the ctrs as found.
             vector<list<Hex> > ctrs = ShapeAnalysis<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
 
-            RD.dirichlet();
-            cout << "dirich_value = " << RD.honda << endl;
+            if (do_dirichlet_analysis == true) {
+                RD.dirichlet();
+                cout << "dirich_value = " << RD.honda << endl;
+            }
 
             vector<list<Hex> > a_ctrs;
             if (plot_contours) {
@@ -671,7 +676,7 @@ int main (int argc, char **argv)
                     plt.scalarfields (displays[n_id], RD.hg, RD.n, 0.0, 1.0);
                 }
             }
-            if (plot_dr) {
+            if (plot_dr && do_dirichlet_analysis) {
                 plt.scalarfields (displays[dr_id], RD.hg, RD.regions);
             }
             // Then add:
@@ -723,7 +728,9 @@ int main (int argc, char **argv)
         if ((RD.stepCount % logevery) == 0) {
             cout << "Logging data at step " << RD.stepCount << endl;
             RD.save();
-            RD.saveDirichletDomains();
+            if (do_dirichlet_analysis == true) {
+                RD.saveDirichletDomains();
+            }
         }
 
         if (RD.stepCount > steps) {
