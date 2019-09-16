@@ -122,7 +122,9 @@ int main (int argc, char **argv)
     const Json::Value guid = root["guidance"];
     unsigned int M_GUID = static_cast<unsigned int>(guid.size());
 
+#if 0
     const bool scale_a = root.get ("scale_a", true).asBool();
+#endif
 
     // Window IDs
     unsigned int guide_id = 0xffff;
