@@ -7,7 +7,7 @@
  */
 
 /*!
- * This will be passed as the template argument for RD_plot and RD and
+ * This will be passed as the template argument for RD_Plot and RD and
  * should be defined when compiling.
  */
 #ifndef FLT
@@ -35,7 +35,7 @@
  */
 # include "morph/display.h"
 # include "morph/RD_Plot.h"
-using morph::RD_plot;
+using morph::RD_Plot;
 
 /*!
  * Included for directory manipulation code
@@ -139,7 +139,7 @@ int main (int argc, char **argv)
     vector<double> rot(3, 0.0);
 
     // A plot object.
-    RD_plot<FLT> plt(fix, eye, rot);
+    RD_Plot<FLT> plt(fix, eye, rot);
 
     double rhoInit = root.get ("rhoInit", 1.0).asDouble(); // This is effectively a zoom control. Increase to zoom out.
     double thetaInit = 0.0;
