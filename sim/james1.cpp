@@ -205,6 +205,19 @@ int main (int argc, char **argv)
     // Do we carry out dirichlet analysis? Default to true, because it's computationally cheap.
     bool do_dirichlet_analysis = root.get ("do_dirichlet_analysis", true).asBool();
     string logpath = root.get ("logpath", "logs/james1").asString();
+    string logbase = "";
+    if (logpath == "fromfilename") {
+        // Using json filename as logpath
+        string justfile = paramsfile;
+        // Remove trailing .json and leading directories
+        vector<string> pth = morph::Tools::stringToVector (justfile, "/");
+        justfile = pth.back();
+        morph::Tools::searchReplace (".json", "", justfile);
+        // Use logbase as the subdirectory into which this should go
+        logbase = root.get ("logbase", "logs/").asString();
+        logpath = logbase + justfile;
+        cout << "logpath: " << logpath << endl;
+    }
     if (argc == 3) {
         string argpath(argv[2]);
         cerr << "Overriding the config-given logpath " << logpath << " with " << argpath << endl;
