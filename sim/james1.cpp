@@ -645,7 +645,7 @@ int main (int argc, char **argv)
 
             if (do_dirichlet_analysis == true) {
                 RD.dirichlet();
-                cout << "dirich_value = " << RD.honda << endl;
+                //cout << "dirich_value = " << RD.honda << endl;
             }
 
             vector<list<Hex> > a_ctrs;
