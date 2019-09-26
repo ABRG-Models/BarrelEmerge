@@ -204,7 +204,7 @@ int main (int argc, char **argv)
     bool overwrite_logs = root.get ("overwrite_logs", false).asBool();
     // Do we carry out dirichlet analysis? Default to true, because it's computationally cheap.
     bool do_dirichlet_analysis = root.get ("do_dirichlet_analysis", true).asBool();
-    string logpath = root.get ("logpath", "logs/james1").asString();
+    string logpath = root.get ("logpath", "fromfilename").asString();
     string logbase = "";
     if (logpath == "fromfilename") {
         // Using json filename as logpath
