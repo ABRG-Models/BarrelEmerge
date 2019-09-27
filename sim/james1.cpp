@@ -512,6 +512,7 @@ int main (int argc, char **argv)
         RD.guidance_phi.push_back (v.get("phi", 1.0).asDouble());
         RD.guidance_width.push_back (v.get("width", 1.0).asDouble());
         RD.guidance_offset.push_back (v.get("offset", 1.0).asDouble());
+        RD.guidance_time_onset.push_back (v.get("time_onset", 0).asUInt());
     }
 
     // Set up the interaction parameters between the different TC

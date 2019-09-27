@@ -94,15 +94,15 @@ public:
      * Contains the chemo-attractant modifiers which are applied to
      * a_i(x,t) in Eq 4.
      */
-    alignas(alignof(vector<array<vector<Flt>, 2> >))
-    vector<array<vector<Flt>, 2> > g;
+    alignas(alignof(vector<vector<array<vector<Flt>, 2> > >))
+    vector<vector<array<vector<Flt>, 2> > > g;
 
     /*!
-     * To hold div(g) / 3d, a static scalar field. There are M of
-     * these vectors of Flts
+     * To hold div(g) / 3d, a static scalar field. There are M vectors of N of these
+     * vectors of Flts
      */
-    alignas(alignof(vector<vector<Flt> >))
-    vector<vector<Flt> > divg_over3d;
+    alignas(alignof(vector<vector<vector<Flt> > >))
+    vector<vector<vector<Flt> > > divg_over3d;
 
     /*!
      * n(x,t) variable from the Karb2004 paper.
@@ -199,6 +199,13 @@ public:
      */
     alignas(alignof(vector<Flt>))
     vector<Flt> guidance_gain;
+
+    /*!
+     * Guidance molecule parameters to be the time (i.e. step) at which each guidance
+     * gradient is switched on.
+     */
+    alignas(alignof(vector<unsigned int>))
+    vector<unsigned int> guidance_time_onset;
 
     /*!
      * Rho variables in Eq 4 - the concentrations of axon guidance
@@ -419,7 +426,7 @@ public:
         this->resize_vector_vector (this->betaterm, this->N);
         this->resize_vector_vector (this->alpha_c, this->N);
         this->resize_vector_vector (this->divJ, this->N);
-        this->resize_vector_vector (this->divg_over3d, this->N);
+        this->resize_vector_vector_vector (this->divg_over3d, this->N, this->M);
 
         this->resize_vector_variable (this->n);
         this->resize_vector_vector (this->rho, this->M);
@@ -432,7 +439,7 @@ public:
 
         // Resize grad_a and other vector-array-vectors
         this->resize_vector_array_vector (this->grad_a, this->N);
-        this->resize_vector_array_vector (this->g, this->N);
+        this->resize_vector_vector_array_vector (this->g, this->N, this->M);
         this->resize_vector_array_vector (this->J, this->N);
 
         // rhomethod is a vector of size M
@@ -467,7 +474,7 @@ public:
         this->zero_vector_vector (this->betaterm, this->N);
         this->zero_vector_vector (this->alpha_c, this->N);
         this->zero_vector_vector (this->divJ, this->N);
-        this->zero_vector_vector (this->divg_over3d, this->N);
+        this->zero_vector_vector_vector (this->divg_over3d, this->N, this->M);
 
         this->zero_vector_variable (this->n);
         this->zero_vector_vector (this->rho, this->M);
@@ -476,7 +483,7 @@ public:
 
         // Resize grad_a and other vector-array-vectors
         this->zero_vector_array_vector (this->grad_a, this->N);
-        this->zero_vector_array_vector (this->g, this->N);
+        this->zero_vector_vector_array_vector (this->g, this->N, this->M);
         this->zero_vector_array_vector (this->J, this->N);
 
         // Initialise a with noise
@@ -510,6 +517,11 @@ public:
         if (this->guidance_gain.empty()) {
             for (unsigned int m=0; m<this->M; ++m) {
                 this->guidance_gain.push_back(1.0);
+            }
+        }
+        if (this->guidance_time_onset.empty()) {
+            for (unsigned int m=0; m<this->M; ++m) {
+                this->guidance_time_onset.push_back(0);
             }
         }
 
@@ -550,8 +562,8 @@ public:
                 // Sigmoid/logistic fn params: 100 sharpness, 0.02 dist offset from boundary
                 Flt bSig = 1.0 / ( 1.0 + exp (-100.0*(h.distToBoundary-this->boundaryFalloffDist)) );
                 for (unsigned int m = 0; m<this->M; ++m) {
-                    this->g[i][0][h.vi] += (this->gamma[m][i] * this->grad_rho[m][0][h.vi]) * bSig;
-                    this->g[i][1][h.vi] += (this->gamma[m][i] * this->grad_rho[m][1][h.vi]) * bSig;
+                    this->g[m][i][0][h.vi] += (this->gamma[m][i] * this->grad_rho[m][0][h.vi]) * bSig;
+                    this->g[m][i][1][h.vi] += (this->gamma[m][i] * this->grad_rho[m][1][h.vi]) * bSig;
                 }
             }
         }
@@ -707,12 +719,12 @@ public:
             data.add_contained_vals (pth.c_str(), this->grad_rho[m][0]);
             pth[2] = 'y';
             data.add_contained_vals (pth.c_str(), this->grad_rho[m][1]);
-        }
-        for (unsigned int i = 0; i<this->N; ++i) {
-            stringstream path;
-            path << "/divg_" << i;
-            string pth(path.str());
-            data.add_contained_vals (pth.c_str(), this->divg_over3d[i]);
+            for (unsigned int i = 0; i<this->N; ++i) {
+                stringstream path;
+                path << "/divg_" << m << "_" << i;
+                string pth(path.str());
+                data.add_contained_vals (pth.c_str(), this->divg_over3d[m][i]);
+            }
         }
     }
 
@@ -943,56 +955,61 @@ public:
      */
     void compute_divg_over3d (void) {
 
+        // Change to have one for each m in M? They should then sum, right?
+
         for (unsigned int i = 0; i < this->N; ++i) {
 
 #pragma omp parallel for schedule(static)
             for (unsigned int hi=0; hi<this->nhex; ++hi) {
 
-                Flt divg = 0.0;
-                // First sum
-                if (HAS_NE(hi)) {
-                    divg += /*cos (0)*/ (this->g[i][0][NE(hi)] + this->g[i][0][hi]);
-                } else {
-                    // Boundary condition _should_ be satisfied by
-                    // sigmoidal roll-off of g towards the boundary, so
-                    // add only g[i][0][hi]
-                    divg += /*cos (0)*/ (this->g[i][0][hi]);
-                }
-                if (HAS_NNE(hi)) {
-                    divg += /*cos (60)*/ 0.5 * (this->g[i][0][NNE(hi)] + this->g[i][0][hi])
-                        +  (/*sin (60)*/ this->R3_OVER_2 * (this->g[i][1][NNE(hi)] + this->g[i][1][hi]));
-                } else {
-                    //divg += /*cos (60)*/ (0.5 * (this->g[i][0][hi]))
-                    //    +  (/*sin (60)*/ this->R3_OVER_2 * (this->g[i][1][hi]));
-                }
-                if (HAS_NNW(hi)) {
-                    divg += -(/*cos (120)*/ 0.5 * (this->g[i][0][NNW(hi)] + this->g[i][0][hi]))
-                        +    (/*sin (120)*/ this->R3_OVER_2 * (this->g[i][1][NNW(hi)] + this->g[i][1][hi]));
-                } else {
-                    //divg += -(/*cos (120)*/ 0.5 * (this->g[i][0][hi]))
-                    //    +    (/*sin (120)*/ this->R3_OVER_2 * (this->g[i][1][hi]));
-                }
-                if (HAS_NW(hi)) {
-                    divg -= /*cos (180)*/ (this->g[i][0][NW(hi)] + this->g[i][0][hi]);
-                } else {
-                    divg -= /*cos (180)*/ (this->g[i][0][hi]);
-                }
-                if (HAS_NSW(hi)) {
-                    divg -= (/*cos (240)*/ 0.5 * (this->g[i][0][NSW(hi)] + this->g[i][0][hi])
-                             + ( /*sin (240)*/ this->R3_OVER_2 * (this->g[i][1][NSW(hi)] + this->g[i][1][hi])));
-                } else {
-                    divg -= (/*cos (240)*/ 0.5 * (this->g[i][0][hi])
-                             + (/*sin (240)*/ this->R3_OVER_2 * (this->g[i][1][hi])));
-                }
-                if (HAS_NSE(hi)) {
-                    divg += /*cos (300)*/ 0.5 * (this->g[i][0][NSE(hi)] + this->g[i][0][hi])
-                        - ( /*sin (300)*/ this->R3_OVER_2 * (this->g[i][1][NSE(hi)] + this->g[i][1][hi]));
-                } else {
-                    divg += /*cos (300)*/ 0.5 * (this->g[i][0][hi])
-                        - ( /*sin (300)*/ this->R3_OVER_2 * (this->g[i][1][hi]));
-                }
+                vector<Flt> divg(this->M, 0.0);
+                // Sum up over each gradient.
+                for (unsigned int m = 0; m<this->M; ++m) {
+                    // First sum
+                    if (HAS_NE(hi)) {
+                        divg[m] += /*cos (0)*/ (this->g[m][i][0][NE(hi)] + this->g[m][i][0][hi]);
+                    } else {
+                        // Boundary condition _should_ be satisfied by
+                        // sigmoidal roll-off of g towards the boundary, so
+                        // add only g[i][0][hi]
+                        divg[m] += /*cos (0)*/ (this->g[m][i][0][hi]);
+                    }
+                    if (HAS_NNE(hi)) {
+                        divg[m] += /*cos (60)*/ 0.5 * (this->g[m][i][0][NNE(hi)] + this->g[m][i][0][hi])
+                            +  (/*sin (60)*/ this->R3_OVER_2 * (this->g[m][i][1][NNE(hi)] + this->g[m][i][1][hi]));
+                    } else {
+                        //divg += /*cos (60)*/ (0.5 * (this->g[i][0][hi]))
+                        //    +  (/*sin (60)*/ this->R3_OVER_2 * (this->g[i][1][hi]));
+                    }
+                    if (HAS_NNW(hi)) {
+                        divg[m] += -(/*cos (120)*/ 0.5 * (this->g[m][i][0][NNW(hi)] + this->g[m][i][0][hi]))
+                            +    (/*sin (120)*/ this->R3_OVER_2 * (this->g[m][i][1][NNW(hi)] + this->g[m][i][1][hi]));
+                    } else {
+                        //divg += -(/*cos (120)*/ 0.5 * (this->g[i][0][hi]))
+                        //    +    (/*sin (120)*/ this->R3_OVER_2 * (this->g[i][1][hi]));
+                    }
+                    if (HAS_NW(hi)) {
+                        divg[m] -= /*cos (180)*/ (this->g[m][i][0][NW(hi)] + this->g[m][i][0][hi]);
+                    } else {
+                        divg[m] -= /*cos (180)*/ (this->g[m][i][0][hi]);
+                    }
+                    if (HAS_NSW(hi)) {
+                        divg[m] -= (/*cos (240)*/ 0.5 * (this->g[m][i][0][NSW(hi)] + this->g[m][i][0][hi])
+                                 + ( /*sin (240)*/ this->R3_OVER_2 * (this->g[m][i][1][NSW(hi)] + this->g[m][i][1][hi])));
+                    } else {
+                        divg[m] -= (/*cos (240)*/ 0.5 * (this->g[m][i][0][hi])
+                                 + (/*sin (240)*/ this->R3_OVER_2 * (this->g[m][i][1][hi])));
+                    }
+                    if (HAS_NSE(hi)) {
+                        divg[m] += /*cos (300)*/ 0.5 * (this->g[m][i][0][NSE(hi)] + this->g[m][i][0][hi])
+                            - ( /*sin (300)*/ this->R3_OVER_2 * (this->g[m][i][1][NSE(hi)] + this->g[m][i][1][hi]));
+                    } else {
+                        divg[m] += /*cos (300)*/ 0.5 * (this->g[m][i][0][hi])
+                            - ( /*sin (300)*/ this->R3_OVER_2 * (this->g[m][i][1][hi]));
+                    }
 
-                this->divg_over3d[i][hi] = divg * this->oneover3d;
+                    this->divg_over3d[m][i][hi] = divg[m] * this->oneover3d;
+                }
             }
         }
     }
@@ -1030,7 +1047,12 @@ public:
             Flt term1 = this->twoDover3dd * thesum;
 
             // 2. The (a div(g)) term.
-            Flt term2 = fa[hi] * this->divg_over3d[i][hi];
+            Flt term2 = 0.0;
+            for (unsigned int m =0 ; m < this->M; ++m) {
+                if (this->step >= this->guidance_time_onset[m]) {
+                    term2 += fa[hi] * this->divg_over3d[m][i][hi];
+                }
+            }
 
             // 3. Third term is this->g . grad a_i. Should not contribute to J, as g(x) decays towards boundary.
             Flt term3 = this->g[i][0][hi] * this->grad_a[i][0][hi] + (this->g[i][1][hi] * this->grad_a[i][1][hi]);
