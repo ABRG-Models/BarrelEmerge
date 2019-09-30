@@ -289,6 +289,10 @@ public:
     //! Dirichlet regions
     vector<Flt> regions;
 
+    //! The centroids of the regions. key is the "ID" of the region - a Flt between 0
+    //! and 1, with values separated by 1/N.
+    map<Flt, pair<Flt, Flt> > reg_centroids;
+
     //! Dirichlet vertices
     list<DirichVtx<Flt>> vertices;
     list<DirichDom<Flt>> domains;
@@ -689,6 +693,22 @@ public:
         }
         // Save the overall honda value for the system
         data.add_val ("/honda", this->honda);
+        // Save the region centroids
+        vector<Flt> keys;
+        vector<Flt> x_;
+        vector<Flt> y_;
+        // Hopefully, this ensures that we always save N centroids, even if some default to 0,0.
+        for (unsigned int i = 0; i<this->N; ++i) {
+            Flt k = (Flt)i/this->N;
+            keys.push_back (k);
+            x_.push_back (this->reg_centroids[k].first);
+            y_.push_back (this->reg_centroids[k].second);
+
+        }
+        data.add_contained_vals ("/reg_centroids_id", keys);
+        data.add_contained_vals ("/reg_centroids_x", x_);
+        data.add_contained_vals ("/reg_centroids_y", y_);
+        data.add_val ("/N", this->N);
     }
 
     /*!
@@ -1174,7 +1194,15 @@ public:
     void dirichlet (void) {
         this->regions.clear();
         this->vertices.clear();
+
+        // Find regions. Based on an 'ID field'.
         this->regions = morph::ShapeAnalysis<Flt>::dirichlet_regions (this->hg, this->c);
+
+        // Compute the centroids of the regions; used to determine aligned-ness of the barrels
+        this->reg_centroids = morph::ShapeAnalysis<Flt>::region_centroids (this->hg, this->regions);
+        DBG ("reg_centroids size after region_centroids() is " << reg_centroids.size());
+
+
         this->domains = morph::ShapeAnalysis<Flt>::dirichlet_vertices (this->hg, this->regions, this->vertices);
 
         // Carry out the analysis.
