@@ -9,7 +9,7 @@
     "logevery": 1000,
     "overwrite_logs": true,
     "logpath" : "./logs/25N2M_rect_1",
-    "hextohex_d" : 0.015,           // Hex to hex distance, determines num hexes
+    "hextohex_d" : 0.02,           // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/squatrect.svg",
     "boundaryFalloffDist" : 0.01,
     "D" : 0.2,
@@ -134,7 +134,7 @@
     "guidance": [
         {
             "shape"  : "Linear1D",
-            "onset"  : 0,
+            "time_onset"  : 6000,
             "gain"   : 1.0,
             "phi"    : -90, // Horizontal, high at bottom, low at top
             "width"  : 0.1,
@@ -142,7 +142,7 @@
         },
         {
             "shape"  : "Linear1D",
-            "onset"  : 12000,
+            "time_onset"  : 0,
             "gain"   : 1.0,
             "phi"    : 0, // Vertical, high at right, low at left
             "width"  : 0.1,
