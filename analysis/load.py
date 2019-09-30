@@ -31,8 +31,11 @@ def readDirichData (logdir):
     numdoms = np.empty([numtimes], dtype=float)
     # The area of the grid that is detected Dirichlet domains
     domarea = np.empty([numtimes], dtype=float)
-    # Coordinates of the putative centre of the domain.
-    domcentre = np.empty([numtimes, numdoms varies..., 2], dtype=float)
+    # Coordinates of the putative centre of the domain. Need to open first file to get N.
+    #print ('h5py open {0}'.format(files[0]))
+    f = h5py.File(files[0], 'r')
+    N = list(f['N'])[0]
+    domcentre = np.empty([numtimes, N, 2], dtype=float)
 
     fi = 0
     for filename in files:
@@ -47,8 +50,13 @@ def readDirichData (logdir):
         # Get the Honda Dirichlet value (the overall value)
         honda[fi] = list(f['honda'])[0]
 
+        # Coordinates, but need to re-cast them so that they have all ids. Or do I do that in the C++?
+        domcentre[fi, :, 0] = list(f['reg_centroids_x'])
+        domcentre[fi, :, 1] = list(f['reg_centroids_y'])
+        #print ('x coords: {0}'.format(domcentre[fi, :, 0]))
+
         # Now process the domains.
-        nondomset = set(['honda'])
+        nondomset = set(['honda', 'N', 'reg_centroids_id', 'reg_centroids_x', 'reg_centroids_y', 'reg_centroids_id_all'])
         kset = set(f.keys()) # dom000, dom001, dom002, etc, honda
         domset = kset.difference(nondomset); # Removes 'honda'
 
@@ -59,7 +67,7 @@ def readDirichData (logdir):
         for dom in domset:
             edgedev[fi] += list(f[dom]['edgedev'])[0]
             domarea[fi] += list(f[dom]['area'])[0]
-            print('P: {0}'.format(list(f[dom]['P'])))
+            #print('P: {0}'.format(list(f[dom]['P'])))
             # store domcentre for each domain domcentre[fi]
 
         edgedev[fi] = edgedev[fi] / len(domset)

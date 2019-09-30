@@ -34,7 +34,49 @@ if do_maps:
         pt.surface (idmatrix[:,tg], x, y, 0, idstring)
 
 # Also load the dirichlet stuff
-[t1, hondadelta, edgedev, numdoms, domarea, domcentres] = ld.readDirichData('../logs/25N2M_withcomp_realmap/')
+[t1, hondadelta, edgedev, numdoms, domarea, domcentres] = ld.readDirichData (logdirname)
+
+print ('domcentres shape: {0}'.format(np.shape (domcentres)[0]))
+
+# What does this want to do? Return, for a given timestep (or for every timestep), the average verticalness of the lines of best fit to groups of centres.
+def domcentres_analyse (dc, isvert=True):
+    numtc = np.shape(dc)[0]
+    tc = 0
+    linefits = []
+    while tc < numtc:
+        if isvert:
+            #print ('tc: {1}; ALL x: {0}'.format(dc[tc,:,0], tc))
+            #print ('tc: {1}; ALL y: {0}'.format(dc[tc,:,1], tc))
+            print ('-----tc:{0}------'.format(tc))
+            F2 = plt.figure (figsize=(20,4))
+            count = int(1)
+            for i in range(0,25,5):
+                # Note: Swap around x and y, so that vertical lines will come out with m=0 (approx)
+                ly = dc[tc,i:5+i,0] # x
+                lx = dc[tc,i:5+i,1] # y
+                A = np.vstack([lx, np.ones(len(lx))]).T
+                #m, c, resid = np.linalg.lstsq (A, ly, rcond=None)
+                m = 0
+                c = 0
+                out = np.linalg.lstsq (A, ly, rcond=None)
+                m, c = out[0]
+                # FIxme: FIgure out what out[1] and out[3] mean.
+
+                print ('out: {0}'.format(out))
+                print ('y = {0} x + {1}'.format(m,c))
+                a2 = F2.add_subplot(1,5,count)
+                _ = a2.plot(lx, ly, 'o', label='Original data', markersize=10)
+                _ = a2.plot(lx, m*lx + c, 'r', label='Fitted line')
+                a2.set_xlim([-0.6, 0.6])
+                a2.set_ylim([-0.8, 0.8])
+                _ = a2.legend()
+                count = count + int(1)
+            plt.show()
+
+        tc = tc + 1
+    return linefits
+
+lfits = domcentres_analyse (domcentres)
 
 
 pf = h5py.File(logdirname+'/positions.h5', 'r')
