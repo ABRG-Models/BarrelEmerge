@@ -31,6 +31,8 @@ def readDirichData (logdir):
     numdoms = np.empty([numtimes], dtype=float)
     # The area of the grid that is detected Dirichlet domains
     domarea = np.empty([numtimes], dtype=float)
+    # Coordinates of the putative centre of the domain.
+    domcentre = np.empty([numtimes, numdoms varies..., 2], dtype=float)
 
     fi = 0
     for filename in files:
@@ -57,13 +59,14 @@ def readDirichData (logdir):
         for dom in domset:
             edgedev[fi] += list(f[dom]['edgedev'])[0]
             domarea[fi] += list(f[dom]['area'])[0]
-            #P[fi] += list(f[dom]['P'])[0]
+            print('P: {0}'.format(list(f[dom]['P'])))
+            # store domcentre for each domain domcentre[fi]
 
         edgedev[fi] = edgedev[fi] / len(domset)
 
         fi = fi + 1
 
-    return [t, honda, edgedev, numdoms, domarea]
+    return [t, honda, edgedev, numdoms, domarea, domcentre]
 #
 # Load and read all the c_NNNNN.h5 files in logdir which contain a, c,
 # etc. Also reads x and y data which is stored in positions.h5.

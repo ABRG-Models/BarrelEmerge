@@ -8,7 +8,7 @@
     "steps" : 24000,                // Number of steps to simulate for
     "logevery": 1000,
     "overwrite_logs": true,
-    "logpath" : "./logs/25N2M_rect_1",
+    //"logpath" : "./logs/25N2M_rect_1",
     "hextohex_d" : 0.02,           // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/squatrect.svg",
     "boundaryFalloffDist" : 0.01,
@@ -49,85 +49,91 @@
 
     // Array of parameters for N thalamocortical populations.
     "tc": [// 165 works for 50000 steps. 160 not there for 135000 steps. Critical epsilon between these values
+
+        // An idea to have an additional population to "surround" the 25 competing TC types
+        //{ "alpha" : 3, "beta" : 20, "epsilon" : -10,
+        //  "xinit" : 0.0,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
+        //  "gamma" : [0,0] },
+
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-2,-2] },
+          "gamma" : [-2,-2,-2] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-1,-2] },
+          "gamma" : [-1,-2,-2] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [0,-2] },
+          "gamma" : [0,0,-2] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [1,-2] },
+          "gamma" : [1,1,-2] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [2,-2] }
+          "gamma" : [2,2,-2] }
         ,
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-2,-1] },
+          "gamma" : [-2,-2,-1] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-1,-1] },
+          "gamma" : [-1,-1,-1] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [0,-1] },
+          "gamma" : [0,0,-1] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [1,-1] },
+          "gamma" : [1,1,-1] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [2,-1] }
+          "gamma" : [2,2,-1] }
         ,
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-2,0] },
+          "gamma" : [-2,-2,0] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-1,0] },
+          "gamma" : [-1,-1,0] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [0,0] },
+          "gamma" : [0,0,0] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [1,0] },
+          "gamma" : [1,1,0] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [2,0] }
+          "gamma" : [2,2,0] }
         ,
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-2,1] },
+          "gamma" : [-2,-2,1] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-1,1] },
+          "gamma" : [-1,-1,1] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [0,1] },
+          "gamma" : [0,0,1] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [1,1] },
+          "gamma" : [1,1,1] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [2,1] }
+          "gamma" : [2,2,1] }
         ,
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-2,2] },
+          "gamma" : [-2,-2,2] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-1,2] },
+          "gamma" : [-1,-1,2] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [0,2] },
+          "gamma" : [0,0,2] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [1,2] },
+          "gamma" : [1,1,2] },
         { "alpha" : 3, "beta" : 20, "epsilon" : 200,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [2,2] }
+          "gamma" : [2,2,2] }
     ], // end tc
 
     // Array of parameters for the guidance molecules
@@ -135,7 +141,15 @@
         {
             "shape"  : "Linear1D",
             "time_onset"  : 6000,
-            "gain"   : 1.0,
+            "gain"   : 0.8,
+            "phi"    : -90, // Horizontal, high at bottom, low at top
+            "width"  : 0.1,
+            "offset" : 0.0 // 0.65
+        },
+        {
+            "shape"  : "Linear1D",
+            "time_onset"  : 0,
+            "gain"   : 0.2,
             "phi"    : -90, // Horizontal, high at bottom, low at top
             "width"  : 0.1,
             "offset" : 0.0 // 0.65

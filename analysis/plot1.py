@@ -34,7 +34,7 @@ if do_maps:
         pt.surface (idmatrix[:,tg], x, y, 0, idstring)
 
 # Also load the dirichlet stuff
-[t1, hondadelta, edgedev, numdoms, domarea] = ld.readDirichData('../logs/25N2M_withcomp_realmap/')
+[t1, hondadelta, edgedev, numdoms, domarea, domcentres] = ld.readDirichData('../logs/25N2M_withcomp_realmap/')
 
 
 pf = h5py.File(logdirname+'/positions.h5', 'r')
