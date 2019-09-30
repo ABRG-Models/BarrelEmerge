@@ -284,8 +284,8 @@ int main (int argc, char **argv)
     // Now have the guidance molecule densities and their gradients computed, call init()
     RD.init();
 
-    vector<vector<FLT> > gx = plt.separateVectorField (RD.g, 0);
-    vector<vector<FLT> > gy = plt.separateVectorField (RD.g, 1);
+    vector<vector<FLT> > gx = plt.separateVectorField (RD.g[0], 0);
+    vector<vector<FLT> > gy = plt.separateVectorField (RD.g[0], 1);
     FLT ming = 1e7;
     FLT maxg = -1e7;
 

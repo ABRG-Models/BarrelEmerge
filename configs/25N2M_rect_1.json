@@ -134,6 +134,7 @@
     "guidance": [
         {
             "shape"  : "Linear1D",
+            "onset"  : 0,
             "gain"   : 1.0,
             "phi"    : -90, // Horizontal, high at bottom, low at top
             "width"  : 0.1,
@@ -141,6 +142,7 @@
         },
         {
             "shape"  : "Linear1D",
+            "onset"  : 12000,
             "gain"   : 1.0,
             "phi"    : 0, // Vertical, high at right, low at left
             "width"  : 0.1,

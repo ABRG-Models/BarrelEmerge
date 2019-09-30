@@ -129,12 +129,27 @@ public:
                 cerr << "term1_2 isnan" << endl;
                 exit (21);
             }
-
+#if 0
             // 2. The (a div(g)) term.
             Flt term2 = fa[hi] * this->divg_over3d[i][hi];
 
             // 3. Third term is this->g . grad a_i. Should not contribute to J, as g(x) decays towards boundary.
             Flt term3 = this->g[i][0][hi] * this->grad_a[i][0][hi] + (this->g[i][1][hi] * this->grad_a[i][1][hi]);
+#endif
+            // 2. The (a div(g)) term.
+            Flt term2 = 0.0;
+
+            // 3. Third term is this->g . grad a_i. Should not contribute to J, as g(x) decays towards boundary.
+            Flt term3 = 0.0;
+
+            for (unsigned int m =0 ; m < this->M; ++m) {
+                if (this->stepCount >= this->guidance_time_onset[m]) {
+                    // g contributes to term2
+                    term2 += fa[hi] * this->divg_over3d[m][i][hi];
+                    // and to term3
+                    term3 += this->g[m][i][0][hi] * this->grad_a[i][0][hi] + (this->g[m][i][1][hi] * this->grad_a[i][1][hi]);
+                }
+            }
 
             this->divJ[i][hi] = term1 - term1_1 - term1_2  - term2 - term3;
         }

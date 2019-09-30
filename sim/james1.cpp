@@ -572,8 +572,8 @@ int main (int argc, char **argv)
 
 #ifdef COMPILE_PLOTTING
 
-    vector<vector<FLT> > gx = plt.separateVectorField (RD.g, 0);
-    vector<vector<FLT> > gy = plt.separateVectorField (RD.g, 1);
+    vector<vector<FLT> > gx = plt.separateVectorField (RD.g[0], 0);
+    vector<vector<FLT> > gy = plt.separateVectorField (RD.g[0], 1);
     FLT ming = 1e7;
     FLT maxg = -1e7;
     if (plot_guide) {
@@ -605,8 +605,9 @@ int main (int argc, char **argv)
             Hex* h = RD.hg->vhexen[hi];
             if (h->onBoundary() == false) {
                 for (unsigned int i = 0; i<RD.N; ++i) {
-                    if (RD.divg_over3d[i][h->vi]>maxdivg) { maxdivg = RD.divg_over3d[i][h->vi]; }
-                    if (RD.divg_over3d[i][h->vi]<mindivg) { mindivg = RD.divg_over3d[i][h->vi]; }
+                    // FIXME only dealing with divg_over3d[0] here!
+                    if (RD.divg_over3d[0][i][h->vi]>maxdivg) { maxdivg = RD.divg_over3d[0][i][h->vi]; }
+                    if (RD.divg_over3d[0][i][h->vi]<mindivg) { mindivg = RD.divg_over3d[0][i][h->vi]; }
                 }
             }
         }
@@ -621,7 +622,8 @@ int main (int argc, char **argv)
         displays[guidegrad_y_id].redrawDisplay();
     }
     if (plot_divg) {
-        plt.scalarfields (displays[divg_id], RD.hg, RD.divg_over3d, mindivg, maxdivg);
+        // FIXME
+        plt.scalarfields (displays[divg_id], RD.hg, RD.divg_over3d[0], mindivg, maxdivg);
         displays[divg_id].redrawDisplay();
     }
     if (plot_divJ) {
