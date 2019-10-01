@@ -67,6 +67,7 @@ def surface (dmatrix, x, y, ix, title):
     f1.set_title(title)
     f1.scatter (x, y, c=dmatrix, marker='h', cmap=plt.cm.plasma)
     f1.scatter (x[ix], y[ix], s=32, marker='o', color='k')
+    return f1
 
 # Like surface, but make it a 3d projection
 def surface2 (dmatrix, x, y, ix, title):
