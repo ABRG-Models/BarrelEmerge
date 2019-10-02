@@ -21,21 +21,21 @@ def readDirichData (logdir):
     numtimes = len(files)
 
     # Create the time series to return. Values to be filled in from dirich_*.h5 file names
-    t = np.empty([numtimes], dtype=int)
+    t = np.zeros([numtimes], dtype=int)
 
     # To hold the honda values
-    honda = np.empty([numtimes], dtype=float)
+    honda = np.zeros([numtimes], dtype=float)
     # To hold the edgedeviation
-    edgedev = np.empty([numtimes], dtype=float)
+    edgedev = np.zeros([numtimes], dtype=float)
     # To hold a count of number of domains
-    numdoms = np.empty([numtimes], dtype=float)
+    numdoms = np.zeros([numtimes], dtype=float)
     # The area of the grid that is detected Dirichlet domains
-    domarea = np.empty([numtimes], dtype=float)
+    domarea = np.zeros([numtimes], dtype=float)
     # Coordinates of the putative centre of the domain. Need to open first file to get N.
     #print ('h5py open {0}'.format(files[0]))
     f = h5py.File(files[0], 'r')
     N = list(f['N'])[0]
-    domcentre = np.empty([numtimes, N, 2], dtype=float)
+    domcentre = np.zeros([numtimes, N, 2], dtype=float)
 
     fi = 0
     for filename in files:
@@ -102,7 +102,7 @@ def readSimDataFiles (logdir):
     print ('Have {0} files/timepoints which are: {1}'.format(numtimes,files))
 
     # Create the time series to return. Values to be filled in from c_*.h5 file names
-    t = np.empty([numtimes], dtype=int)
+    t = np.zeros([numtimes], dtype=int)
 
     # Count up how many c files we have in each time point once only:
     f = h5py.File(files[0], 'r')
@@ -118,13 +118,13 @@ def readSimDataFiles (logdir):
     # c1 etc as cols and spatial index as rows, all relating to a
     # single time point.
     print ('Creating empty 3d matrix of dims [{0},{1},{2}]'.format (numcs, numhexes, numtimes))
-    cmatrix = np.empty([numcs, numhexes, numtimes], dtype=float)
+    cmatrix = np.zeros([numcs, numhexes, numtimes], dtype=float)
     # There are as many 'a's as 'c's:
-    amatrix = np.empty([numcs, numhexes, numtimes], dtype=float)
+    amatrix = np.zeros([numcs, numhexes, numtimes], dtype=float)
     # The n matrix is 2-D; there is only one n.
-    nmatrix = np.empty([numhexes, numtimes], dtype=float)
+    nmatrix = np.zeros([numhexes, numtimes], dtype=float)
     # Same for id matrix
-    idmatrix = np.empty([numhexes, numtimes], dtype=float)
+    idmatrix = np.zeros([numhexes, numtimes], dtype=float)
 
     fileidx = 0
     for filename in files:
