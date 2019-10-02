@@ -752,6 +752,9 @@ int main (int argc, char **argv)
             cout << "Logging data at step " << RD.stepCount << endl;
             RD.save();
             if (do_dirichlet_analysis == true) {
+#ifndef COMPILE_PLOTTING // Then it won't have been done above:
+                RD.dirichlet();
+#endif
                 RD.saveDirichletDomains();
             }
         }
