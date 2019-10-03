@@ -8,7 +8,7 @@
 \usepackage{amsmath,amssymb,mathtools}
 \usepackage{enumerate}
 \usepackage{times}
-\usepackage{color}
+\usepackage[usenames]{color}
 \usepackage{parskip}
 \usepackage{afterpage}
 \usepackage{setspace}
@@ -23,6 +23,8 @@
 \usepackage{textcomp}
 \usepackage{natbib}
 
+\usepackage{lmodern}
+
 \usepackage[labelfont=bf,labelsep=period,justification=justified]{caption}
 
 \doublespacing
@@ -36,13 +38,22 @@
 \date{}
 \pagestyle{plain}
 
-%\newcommand{\dvrg}{\nabla\vcdot\nabla}
+% Blue for comments
+\newcommand{\cmnt}[1]{\textcolor{blue}{#1}}
+% Code in sans serif
+\newcommand{\code}[1]{\textsf{#1}}
+% Divergence symbol (Del dot Del)
+\newcommand{\dvrg}{\nabla\vcdot\nabla}
+% Emphasis shortcut
+\newcommand{\e}{\emph}
+% Bold shortcut
+\newcommand{\bol}{\textbf}
+% Math bold
 \newcommand{\mb}[1]{\mathbf{#1}}
 \makeatletter
 \newcommand*\vcdot{\mathpalette\vcdot@{.35}}
 \newcommand*\vcdot@[2]{\mathbin{\vcenter{\hbox{\scalebox{#2}{$\m@th#1\bullet$}}}}}
 \makeatother
-
 
 %\bibliographystyle{plos2015}
 \bibliographystyle{apalike}
@@ -219,9 +230,9 @@ and the density of axon branches, $a$, interact at time $t$ at each cortical
 location $x$, for $N$ thalamocortical projections indexed by $i$. The Voronoi
 tesselation used to describe barrel patterning is a two-dimensional structure,
 hence we first extended the original model for simulation on a two-dimensional
-cortical sheet, and describe it here as such (i.e., substituting $x$ for the
+cortical sheet, and describe it here as such (i.e., substituting $x$ with the
 two-dimensional position vector $\mb{x}$ and substituting terms of the form
-$\frac{d}{dx}$ for the two-dimensional spatial operator $\nabla$).
+$\frac{d}{dx}$ with the two-dimensional spatial gradient operator $\nabla$).
 
 The original model was derived from the assumption that the rates at which
 thalamocortical synapses form and thalamocortical axons branch are
@@ -253,7 +264,7 @@ $\nabla\vcdot$) of a quantity referred to in models of heat diffusion as the
 `flux' (the term enclosed by parentheses). The central idea in heat diffusion
 models is that the change in temperature (over time) at a given location is
 proportional to the gradient in the temperature (over space) at that
-location. Substituting heat for the branching density, axons from a given
+location. Substituting the branching density for heat, axons from a given
 thalamic projection are thus assumed to branch laterally across the cortical
 sheet at a rate given by the diffusion constant $D$. Lateral branching is
 augmented by a measure of the local alignment between the branching density
@@ -303,15 +314,85 @@ integrated using fourth-order Runge-Kutta, and using a {\color{red} finite
 
 \section*{Results}
 
-\subsection*{}
+\cmnt{If we need to present the results of the 2-D system with $\chi=0$, then
+  we'll do that first, showing a 2-D version of the simulation obtained by
+  running \code{james0 configs/karb.json}}
 
-\subsection*{Relative interaction strengths}
+We first verified that the system given by Eqns. \ref{eq:Karb2DExt_dc} \&
+\ref{eq:Karb2DExt_da} described a two dimensional extension of the axon
+branching model in \citet{Karbowski2004}. We showed that in the presence of
+three guidance gradients varying only in one dimension (along the long axis of
+an elliptical domain), five thalamocortical axon types, each interacting
+uniquely with the three guidance gradients, would segregate into five separate
+regions. We investigated a number of configurations of the guidance gradients,
+varying their shape, $\rho(\mb{x})$, and number, $M$, and their effect on a
+varying number of thalamocortical projections, $N$. In general, we were not
+able to produce structure in the resulting patterns of the connections,
+$c(\mb{x},t\rightarrow\infty)$, which was not present in the guidance
+patterns.
+
+Complex structure can indeed be observed in protein expression for some genes,
+such as the molecules Bhlhb5 \citep{Joshi2008} and Lmo4
+\citep{Cederquist2013,Greig2013}. These expression patterns can therefore
+provide a theoretical mechanism for the guidance of axons into distinct
+regions, shifting the explanation of how such structures are generated into
+the realm of gene transcriptional interactions and mRNA diffusion/movement
+(\cmnt{Fixme: find a ref on structure in gene transcription}). However,
+complex, stable structure in gene expression is less commonly reported than
+homogeneous or simply varying expression, such as Pax6, Emx2, Coup-TF1 which
+display graded expression across the entire isocortex
+(\cmnt{REFS}). Furthermore, the complex structure observed in the whisker
+barrel field has not, to our knowledge, been linked to a complex set of gene
+expression patterns matching the scale of the barrels. To investigate how the
+whisker barrel structure might form in the presence of only two
+coordinate-giving morphogen gradients, we turned our attention to the
+competition for connections built into the model.
+
+There exists an element of competition in the model system specified by
+Eqns. \ref{eq:Karb2DExt_dc} \& \ref{eq:Karb2DExt_da}.
+
+\subsection*{Basic results}
+
+Formation of a grid of domains, with somatotopic ordering.
+
+Fig of domains.
+
+\subsection*{With surrounding large domains}
+
+Maybe, put this in to remind myself that I did this. It looks nice.
+
+\subsection*{Plucking experiments}
+
+Include results of plucking a single whisker, a row of whiskers and a
+column of whiskers.
+
+\subsection*{Any parameter sweeps necessary to show behaviour is
+  robust to changes in params}
+
+Go here.
+
+\subsection*{Manipulating Competition: Group competition stronger/weaker than inter-group competition}
+
+Just an idea - have two separate epsilons.
+
+\subsection*{Manipulating Guidance: Relative interaction strengths}
 
 One possibility is to modify the strength of the guidance interactions of the
 two, orthogonal guidance gradients. In the simulation we modify the magnitude
 of the expression of each guidance molecule, although this is equivalent to,
 and could stand for a more or less vigourous movement of axons in response to
 un-modified guidance gradients.
+
+\subsection*{Manipulating Guidance: Delayed onset in one axis}
+
+Another idea; begin with only one guidance gradient, or one strong and
+one very weak guidance gradient, and begin the development in this
+form, so as to encourage the formation of rows. Subsequently, turn on
+the second strong guidance signal.
+
+\subsection*{Manipulating Guidance: Different guidance profiles}
+
+Linear, circ linear, exponential, etc.
 
 %\begin{equation}
 %\chi=\frac{\epsilon_i  a_i}{N-1} \sum_{j \ne i}^{N} a_j(\mb{x}, t)^l
