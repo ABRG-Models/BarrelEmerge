@@ -10,14 +10,14 @@
     "overwrite_logs": true,
     //"logpath" : "./logs/25N2M_rect_1",
     "hextohex_d" : 0.02,           // Hex to hex distance, determines num hexes
-    "svgpath" : "./boundaries/squatrect.svg",
+    "svgpath" : "./boundaries/rect1.svg",
     "boundaryFalloffDist" : 0.01,
     "D" : 0.2,
     "E" : 0.0,
 
     // Exponent parameters
     "k" : 3,
-    "l" : 3,
+    "l" : 1,
 
     // Timestep. Defaults to 0.00001 if omitted here
     "dt" : 0.00005,
@@ -140,8 +140,8 @@
     "guidance": [
         {
             "shape"  : "Linear1D",
-            "time_onset"  : 6000,
-            "gain"   : 0.8,
+            "time_onset"  : 12000,
+            "gain"   : 0.95, // Major part comes on at step 6000
             "phi"    : -90, // Horizontal, high at bottom, low at top
             "width"  : 0.1,
             "offset" : 0.0 // 0.65
@@ -149,7 +149,7 @@
         {
             "shape"  : "Linear1D",
             "time_onset"  : 0,
-            "gain"   : 0.2,
+            "gain"   : 0.05, // Minor part comes on at step 0
             "phi"    : -90, // Horizontal, high at bottom, low at top
             "width"  : 0.1,
             "offset" : 0.0 // 0.65

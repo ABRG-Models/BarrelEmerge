@@ -10,14 +10,14 @@
     "overwrite_logs": true,
     "logpath" : "./logs/25N2M_rect_2",
     "hextohex_d" : 0.015,           // Hex to hex distance, determines num hexes
-    "svgpath" : "./boundaries/squatter_rect.svg",
+    "svgpath" : "./boundaries/rect2.svg",
     "boundaryFalloffDist" : 0.01,
     "D" : 0.2,
     "E" : 0.0,
 
     // Exponent parameters
     "k" : 3,
-    "l" : 3,
+    "l" : 1,
 
     // Timestep. Defaults to 0.00001 if omitted here
     "dt" : 0.00005,
