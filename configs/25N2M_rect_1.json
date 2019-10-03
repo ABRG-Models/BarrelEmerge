@@ -25,12 +25,13 @@
     "contour_threshold" : 0.2,
 
     // Visualization parameters (ignored by computation-only binaries)
+    "win_width_contours": 1920,
     "plotevery": 300,
     "vidframes": true,    // If true, number video frame saves consecutively, rather than by simulation step number
-    "rhoInit": 2.0, // Larger to zoom out
+    "rhoInit": 1.8, // Larger to zoom out
     //
     "plot_guide" : true,
-    "plot_contours" : false,
+    "plot_contours" : true,
     "plot_a_contours" : false,
     "plot_a" : false,
     "plot_c" : false,

@@ -35,7 +35,10 @@ def readDirichData (logdir):
     #print ('h5py open {0}'.format(files[0]))
     f = h5py.File(files[0], 'r')
     N = list(f['N'])[0]
+    # Domain centres using centroid method:
     domcentre = np.zeros([numtimes, N, 2], dtype=float)
+    # Dirichlet domain putative centres, Honda method:
+    dirichcentre = np.zeros([numtimes, N, 2], dtype=float)
 
     fi = 0
     for filename in files:
@@ -51,6 +54,7 @@ def readDirichData (logdir):
         honda[fi] = list(f['honda'])[0]
 
         # Coordinates, but need to re-cast them so that they have all ids. Or do I do that in the C++?
+        dom_id_list = list(f['reg_centroids_id'])
         domcentre[fi, :, 0] = list(f['reg_centroids_x'])
         domcentre[fi, :, 1] = list(f['reg_centroids_y'])
         #print ('x coords: {0}'.format(domcentre[fi, :, 0]))
@@ -69,12 +73,16 @@ def readDirichData (logdir):
             domarea[fi] += list(f[dom]['area'])[0]
             #print('P: {0}'.format(list(f[dom]['P'])))
             # store domcentre for each domain domcentre[fi]
+            #print ('{0}'.format(dom_id_list))
+            domid = dom_id_list.index(list(f[dom]['f'])[0])
+            dirichcentre[fi, domid, 0] = f[dom]['P'][0]
+            dirichcentre[fi, domid, 1] = f[dom]['P'][1]
 
         edgedev[fi] = edgedev[fi] / len(domset)
 
         fi = fi + 1
 
-    return [t, honda, edgedev, numdoms, domarea, domcentre]
+    return [t, honda, edgedev, numdoms, domarea, domcentre, dirichcentre]
 #
 # Load and read all the c_NNNNN.h5 files in logdir which contain a, c,
 # etc. Also reads x and y data which is stored in positions.h5.
@@ -83,6 +91,7 @@ def readSimDataFiles (logdir):
 
     # Take off any trailing directory slash
     logdir = logdir.rstrip ('/')
+    print ('logdir: {0}'.format(logdir))
 
     # Read x and y first
     pf = h5py.File(logdir+'/positions.h5', 'r')
@@ -141,7 +150,7 @@ def readSimDataFiles (logdir):
         klist = list(f.keys())
 
         for k in klist:
-            #print ('Key: {0}'.format(k))
+            #print ('Key: {0} fileidx: {1}'.format(k, fileidx))
             if k[0] == 'c':
                 cnum = int(k[1:])
                 cmatrix[cnum,:,fileidx] = np.array(f[k])
@@ -151,7 +160,8 @@ def readSimDataFiles (logdir):
             elif k[0] == 'n':
                 nmatrix[:,fileidx] = np.array(f[k])
             elif k[0] == 'd' and k[1] == 'r':
-                idmatrix[:,fileidx] = np.array(f[k])
+                if np.array(f[k]).size > 0:
+                    idmatrix[:,fileidx] = np.array(f[k])
 
         fileidx = fileidx + 1
 

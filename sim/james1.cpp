@@ -382,7 +382,7 @@ int main (int argc, char **argv)
     if (plot_dr && do_dirichlet_analysis) {
         winTitle = worldName + ": dr"; //4
         displays.push_back (morph::Gdisplay (win_width_contours, win_height_contours, 100, 1800, winTitle.c_str(),
-                                             rhoInit*0.7, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
+                                             rhoInit*1.2, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
         displays.back().resetDisplay (fix, eye, rot);
         displays.back().redrawDisplay();
         dr_id = windowId++;
@@ -698,7 +698,11 @@ int main (int argc, char **argv)
                 }
             }
             if (plot_dr && do_dirichlet_analysis) {
-                plt.scalarfields (displays[dr_id], RD.hg, RD.regions);
+                if (plot_contours) {
+                    plt.plot_contour_and_scalar (displays[dr_id], RD.hg, ctrs, RD.regions);
+                } else {
+                    plt.scalarfields (displays[dr_id], RD.hg, RD.regions);
+                }
             }
             // Then add:
             //plt.plot_dirichlet_boundaries (displays[n_id], RD.hg, vv);

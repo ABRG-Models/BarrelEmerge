@@ -29,8 +29,8 @@
     "rhoInit": 2.0, // Larger to zoom out
     //
     "plot_guide" : true,
-    "plot_contours" : false,
-    "plot_a_contours" : false,
+    "plot_contours" : true,
+    "plot_a_contours" : true,
     "plot_a" : false,
     "plot_c" : false,
     "scale_a" : false,

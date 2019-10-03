@@ -241,14 +241,16 @@ function of $a_i$, and for the change in $a_i$ as a function of
 $c_i$. Synaptogenesis is modelled as
 
 \begin{equation} \label{eq:Karb2DExt_dc}
-\frac{\partial c_i(\mb{x},t)}{\partial t} =-\alpha c_i(\mb{x},t) +\beta  \left(1 - \sum_{j=1}^{N} c_j(\mb{x}, t)\right)[a_i(\mb{x},t)]^k.
+\frac{\partial c_i(\mb{x},t)}{\partial t} =-\alpha c_i(\mb{x},t) +\beta  \left(1 - \sum_{i'=1}^{N} c_{i'}(\mb{x}, t)\right)[a_i(\mb{x},t)]^k.
 \end{equation}
 
 Accordingly, when the final term evaluates to zero, the density of
 thalamocortical connections decays exponentially at a rate given by the decay
 constant $\alpha$. This occurs where the density of connections over all
-thalamic projections sum to one. Otherwise, the connection density is assumed
-to vary non-linearly ($k>1$) with changes in the axon branching density.
+thalamic projections sum to one; interpreted as a state in which all of the
+available synaptic receptors within the cortical dendritic trees are
+occupied. Otherwise, the connection density is assumed to vary non-linearly
+($k>1$) with the axon branching density.
 
 Changes in axon branching density are assumed to depend also on the
 influence of guidance molecules and on the density of branches at
@@ -310,8 +312,6 @@ graphics (.svg) file format, on the lattice. The dynamics were numerically
 integrated using fourth-order Runge-Kutta, and using a {\color{red} finite
   difference method} to compute the flux term (see Supplementary Materials).
 
-
-
 \section*{Results}
 
 \cmnt{If we need to present the results of the 2-D system with $\chi=0$, then
@@ -349,7 +349,30 @@ coordinate-giving morphogen gradients, we turned our attention to the
 competition for connections built into the model.
 
 There exists an element of competition in the model system specified by
-Eqns. \ref{eq:Karb2DExt_dc} \& \ref{eq:Karb2DExt_da}.
+Eqns. \ref{eq:Karb2DExt_dc} \& \ref{eq:Karb2DExt_da}. The term $\left(1 -
+\sum_{i=1}^{N} c_i(\mb{x}, t)\right)$ ensures that once the available synaptic
+receptors in a region have been fully occupied, say by thalamocortical types
+$i=2$ and $i=3$, there is no longer the possibility for type $i=1$ to form any
+synapses. This competition turns out to be relatively weak, because it does
+not strongly affect the branching density in that region; two or more TC axon
+types can be branching equally in the region, leading to roughly equal numbers
+of connections being made up until the connection limit is reached.
+
+To introduce an element of competition between the branching of
+thalamocortical axon types, we introduced the new term $\chi$ given by
+%
+\begin{equation} \label{eq:branch_comp}
+\chi(\mb{x}, t) = - \frac{\epsilon  a_i}{N-1} \sum_{i' \ne i}^{N} a_{i'}(\mb{x}, t)
+\end{equation}
+%
+which leads to a reduction in the rate of increase of branching density for
+axon type $i$ in regions where the branching density of \e{other} axon
+types is high.
+
+This introduces a new parameter, $\epsilon$, which governs the
+strength of the branching competition. The factor $1/(N-1)$ ensures that the
+branching competition strength scales with the number of TC axons in the
+system.
 
 \subsection*{Basic results}
 
@@ -430,17 +453,14 @@ asymmetry between the barrel rows and arcs, and identified {\color{red} XXXXX}
 as the most likely candidate for the elongation of barrel shapes along the
 rows.
 
-
 \bibliography{bibfile}
 
 \end{document}
 
 
-
-
 %%%%% ORIGINAL EQUATIONS MAINTAINED AS NOTES HERE FOR REFERENCE
 
-\section{Karbowski system with N TCs and M gradients}
+\section*{App 1: Karbowski system with N TCs and M gradients}
 %
 \begin{equation} \label{eq:Karb2D_dc}
 \frac{\partial c_i(\mb{x},t)}{\partial t} = -\alpha c_i(\mb{x},t) + \beta n(\mb{x},t)
@@ -469,7 +489,7 @@ The boundary condition applied to these equations is:
 \mb{J}_i(\mb{x},t) \bigg\rvert_{boundary} = 0
 \end{equation}
 
-\section{Karbowski system with N TCs and M gradients plus competition}
+\section{App 2: Karbowski system with N TCs and M gradients plus competition}
 
 %
 \begin{equation} \label{eq:Karb2DExt_dc}
