@@ -275,8 +275,7 @@ int main (int argc, char **argv)
 
     // Which windows to plot?
     const bool plot_guide = root.get ("plot_guide", true).asBool();
-    //const bool plot_contours = root.get ("plot_contours", true).asBool();
-    const bool plot_contours = true;
+    const bool plot_contours = root.get ("plot_contours", true).asBool();
     const bool plot_a_contours = root.get ("plot_a_contours", true).asBool();
     const bool plot_a = root.get ("plot_a", true).asBool();
     const bool scale_a = root.get ("scale_a", true).asBool();
@@ -322,18 +321,22 @@ int main (int argc, char **argv)
     unsigned int win_height_contours = static_cast<unsigned int>(0.5625f * (float)win_width_contours);
 
     // SW - Contours. Always plot
-    winTitle = worldName + ": contours (from c)"; //3
-    displays.push_back (morph::Gdisplay (win_width_contours, win_height_contours, 100, 1500,
-                                         winTitle.c_str(), rhoInit*0.7, thetaInit, phiInit));
-    displays.back().resetDisplay (fix, eye, rot);
-    displays.back().redrawDisplay();
-    contours_id = windowId++;
+    if (plot_contours) {
+        winTitle = worldName + ": contours (from c)"; //3
 
+        displays.push_back (morph::Gdisplay (win_width_contours, win_height_contours, 100, 1500,
+                                             winTitle.c_str(), rhoInit*0.7, thetaInit, phiInit,
+                                             (windowId==0?0:displays[0].win)));
+        displays.back().resetDisplay (fix, eye, rot);
+        displays.back().redrawDisplay();
+        contours_id = windowId++;
+    }
     // a contours.
     if (plot_a_contours) {
         winTitle = worldName + ": contours (from a)"; //3
         displays.push_back (morph::Gdisplay (win_width_contours, win_height_contours, 100, 1500,
-                                             winTitle.c_str(), rhoInit*0.7, thetaInit, phiInit));
+                                             winTitle.c_str(), rhoInit*0.7, thetaInit, phiInit,
+                                             (windowId==0?0:displays[0].win)));
         displays.back().resetDisplay (fix, eye, rot);
         displays.back().redrawDisplay();
         a_contours_id = windowId++;
@@ -342,7 +345,8 @@ int main (int argc, char **argv)
     if (plot_guide) {
         winTitle = worldName + ": Guidance molecules"; // 0
         displays.push_back (morph::Gdisplay (win_width * (M_GUID>0?M_GUID:1), win_height, 100, 300,
-                                             winTitle.c_str(), rhoInit, thetaInit, phiInit, displays[0].win));
+                                             winTitle.c_str(), rhoInit, thetaInit, phiInit,
+                                             (windowId==0?0:displays[0].win)));
         displays.back().resetDisplay (fix, eye, rot);
         displays.back().redrawDisplay();
         guide_id = windowId++;
@@ -351,7 +355,7 @@ int main (int argc, char **argv)
     if (plot_a) {
         winTitle = worldName + ": a[0] to a[N]"; // 1
         displays.push_back (morph::Gdisplay (win_width*N_TC, win_height, 100, 900, winTitle.c_str(),
-                                             rhoInit, thetaInit, phiInit, displays[0].win));
+                                             rhoInit, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
         displays.back().resetDisplay (fix, eye, rot);
         displays.back().redrawDisplay();
         a_id = windowId++;
@@ -360,7 +364,7 @@ int main (int argc, char **argv)
     if (plot_c) {
         winTitle = worldName + ": c[0] to c[N]"; // 2
         displays.push_back (morph::Gdisplay (win_width*N_TC, win_height, 100, 1200, winTitle.c_str(),
-                                             rhoInit, thetaInit, phiInit, displays[0].win));
+                                             rhoInit, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
         displays.back().resetDisplay (fix, eye, rot);
         displays.back().redrawDisplay();
         c_id = windowId++;
@@ -369,7 +373,7 @@ int main (int argc, char **argv)
     if (plot_n) {
         winTitle = worldName + ": n"; //4
         displays.push_back (morph::Gdisplay (win_width, win_height, 100, 1800, winTitle.c_str(),
-                                             rhoInit, thetaInit, phiInit, displays[0].win));
+                                             rhoInit, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
         displays.back().resetDisplay (fix, eye, rot);
         displays.back().redrawDisplay();
         n_id = windowId++;
@@ -378,7 +382,7 @@ int main (int argc, char **argv)
     if (plot_dr && do_dirichlet_analysis) {
         winTitle = worldName + ": dr"; //4
         displays.push_back (morph::Gdisplay (win_width_contours, win_height_contours, 100, 1800, winTitle.c_str(),
-                                             rhoInit*0.7, thetaInit, phiInit, displays[0].win));
+                                             rhoInit*0.7, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
         displays.back().resetDisplay (fix, eye, rot);
         displays.back().redrawDisplay();
         dr_id = windowId++;
@@ -389,14 +393,14 @@ int main (int argc, char **argv)
     if (plot_guidegrad) {
         winTitle = worldName + ": Guidance gradient (x)";//5
         displays.push_back (morph::Gdisplay (win_width*N_TC, win_height, 100, 1800, winTitle.c_str(),
-                                             rhoInit, thetaInit, phiInit, displays[0].win));
+                                             rhoInit, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
         displays.back().resetDisplay (fix, eye, rot);
         displays.back().redrawDisplay();
         guidegrad_x_id = windowId++;
 
         winTitle = worldName + ": Guidance gradient (y)";//6
         displays.push_back (morph::Gdisplay (win_width*N_TC, win_height, 100, 1800, winTitle.c_str(),
-                                             rhoInit, thetaInit, phiInit, displays[0].win));
+                                             rhoInit, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
         displays.back().resetDisplay (fix, eye, rot);
         displays.back().redrawDisplay();
         guidegrad_x_id = windowId++;
@@ -405,7 +409,7 @@ int main (int argc, char **argv)
     if (plot_divg) {
         winTitle = worldName + ": div(g)/3d";//7
         displays.push_back (morph::Gdisplay (win_width*N_TC, win_height, 100, 1800, winTitle.c_str(),
-                                             rhoInit, thetaInit, phiInit, displays[0].win));
+                                             rhoInit, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
         displays.back().resetDisplay (fix, eye, rot);
         displays.back().redrawDisplay();
         divg_id = windowId++;
@@ -414,7 +418,7 @@ int main (int argc, char **argv)
     if (plot_divJ) {
         winTitle = worldName + ": div(J)";//8 or 5
         displays.push_back (morph::Gdisplay (win_width*N_TC, win_height, 100, 1800, winTitle.c_str(),
-                                             rhoInit, thetaInit, phiInit, displays[0].win));
+                                             rhoInit, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
         displays.back().resetDisplay (fix, eye, rot);
         displays.back().redrawDisplay();
         divJ_id = windowId++;
