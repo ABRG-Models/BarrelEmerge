@@ -17,6 +17,14 @@
 %\usepackage{xunicode}
 \usepackage{gensymb}
 
+\usepackage{titlesec}
+\titleformat*{\section}{\LARGE\bfseries}
+\titleformat*{\subsection}{\Large\bfseries}
+\titleformat*{\subsubsection}{\large\bfseries}
+\titleformat*{\paragraph}{\large\bfseries}
+\titleformat*{\subparagraph}{\large\bfseries}
+
+
 \setcounter{tocdepth}{3}
 \usepackage{graphicx}
 \usepackage{comment}
@@ -374,31 +382,40 @@ strength of the branching competition. The factor $1/(N-1)$ ensures that the
 branching competition strength scales with the number of TC axons in the
 system.
 
-\subsection*{Basic results}
+\subsection*{Competition is required to form somatotopically ordered barrels}
 
 Formation of a grid of domains, with somatotopic ordering.
 
 Fig of domains.
 
-\subsection*{With surrounding large domains}
+\subsection*{The barrel field reacts to changes in the expression pattern of guidance molecules}
 
-Maybe, put this in to remind myself that I did this. It looks nice.
+To cover the reaction to changes in the guidance molecules caused by
+experiments like those by Shimogori \& Grove.
 
-\subsection*{Plucking experiments}
+Linear, circ linear, exponential, etc.
 
-Include results of plucking a single whisker, a row of whiskers and a
-column of whiskers.
+\subsection*{The barrel field reacts to simulated whisker plucking}
 
-\subsection*{Any parameter sweeps necessary to show behaviour is
-  robust to changes in params}
+A section on whisker plucking?
 
-Go here.
+%\subsubsection*{With surrounding large domains}
+%Maybe, put this in to remind myself that I did this. It looks nice.
 
-\subsection*{Manipulating Competition: Group competition stronger/weaker than inter-group competition}
+%\subsection*{Plucking experiments}
+%Include results of plucking a single whisker, a row of whiskers and a
+%column of whiskers.
+
+%\subsection*{Any parameter sweeps necessary to show behaviour is
+%  robust to changes in params}
+
+\subsection*{Extending the model to capture row and arc development}
+
+\subsubsection*{Manipulating Competition: Group competition stronger/weaker than inter-group competition}
 
 Just an idea - have two separate epsilons.
 
-\subsection*{Manipulating Guidance: Relative interaction strengths}
+\subsubsection*{Manipulating Guidance: Relative interaction strengths}
 
 One possibility is to modify the strength of the guidance interactions of the
 two, orthogonal guidance gradients. In the simulation we modify the magnitude
@@ -406,16 +423,13 @@ of the expression of each guidance molecule, although this is equivalent to,
 and could stand for a more or less vigourous movement of axons in response to
 un-modified guidance gradients.
 
-\subsection*{Manipulating Guidance: Delayed onset in one axis}
+\subsubsection*{Manipulating Guidance: Delayed onset in one axis}
 
 Another idea; begin with only one guidance gradient, or one strong and
 one very weak guidance gradient, and begin the development in this
 form, so as to encourage the formation of rows. Subsequently, turn on
 the second strong guidance signal.
 
-\subsection*{Manipulating Guidance: Different guidance profiles}
-
-Linear, circ linear, exponential, etc.
 
 %\begin{equation}
 %\chi=\frac{\epsilon_i  a_i}{N-1} \sum_{j \ne i}^{N} a_j(\mb{x}, t)^l
