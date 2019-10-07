@@ -1200,7 +1200,7 @@ public:
 
         // Compute the centroids of the regions; used to determine aligned-ness of the barrels
         this->reg_centroids = morph::ShapeAnalysis<Flt>::region_centroids (this->hg, this->regions);
-        DBG ("reg_centroids size after region_centroids() is " << reg_centroids.size());
+        DBG2 ("reg_centroids size after region_centroids() is " << reg_centroids.size());
 
 
         this->domains = morph::ShapeAnalysis<Flt>::dirichlet_vertices (this->hg, this->regions, this->vertices);
