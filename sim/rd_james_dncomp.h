@@ -4,6 +4,45 @@
 
 #include "rd_james_divnorm.h"
 
+#include <chrono>
+using namespace std::chrono;
+
+// Counting up the time taken on each section.
+class Codetime
+{
+public:
+    milliseconds compute_n_time = std::chrono::milliseconds::zero();
+    milliseconds compute_divn_time = std::chrono::milliseconds::zero();
+    milliseconds compute_spacegrad_n_time = std::chrono::milliseconds::zero();
+    milliseconds integrate_a_time = std::chrono::milliseconds::zero();
+    milliseconds integrate_c_time = std::chrono::milliseconds::zero();
+
+    milliseconds a_precompute = std::chrono::milliseconds::zero();
+    milliseconds a_for1 = std::chrono::milliseconds::zero();
+    milliseconds a_for2 = std::chrono::milliseconds::zero();
+    milliseconds a_for3 = std::chrono::milliseconds::zero();
+    milliseconds a_for4 = std::chrono::milliseconds::zero();
+    milliseconds a_for5 = std::chrono::milliseconds::zero();
+    milliseconds a_for6 = std::chrono::milliseconds::zero();
+
+    void output (void) const {
+        cout << "Compute... n: " << compute_n_time.count()
+             << ", divn: " << compute_divn_time.count()
+             << ", gradn: " << compute_spacegrad_n_time.count()
+             << ", a: " << integrate_a_time.count()
+             << ", c: " << integrate_c_time.count()
+             << endl;
+        cout << "Compute... a_pre: " << a_precompute.count()
+             << ", for1, : " << a_for1.count()
+             << ", for2, : " << a_for2.count()
+             << ", for3, : " << a_for3.count()
+             << ", for4, : " << a_for4.count()
+             << ", for5, : " << a_for5.count()
+             << ", for6, : " << a_for6.count()
+             << endl;
+    }
+};
+
 template <class Flt>
 class RD_James_dncomp : public RD_James_divnorm<Flt>
 {
@@ -63,6 +102,9 @@ public:
         this->resize_vector_variable (this->ahat);
         this->resize_vector_variable (this->lambda);
         this->resize_gradient_field (this->grad_lambda);
+
+        // eps
+        this->resize_vector_variable (this->eps);
     }
 
     virtual void init (void) {
@@ -155,8 +197,13 @@ public:
         }
     }
 
+    //! Used as a temporary variable.
+    vector<Flt> eps_all; // sum of all a^l
+    vector<Flt> eps; // the sum of all a^l with eps_i subtracted.
+
     virtual void integrate_a (void) {
 
+        milliseconds ms1 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
         // 2. Do integration of a (RK in the 1D model). Involves computing axon branching flux.
 
         // Pre-compute:
@@ -167,25 +214,29 @@ public:
                 this->alpha_c[i][h] = this->alpha[i] * this->c[i][h];
             }
         }
+        milliseconds ms2 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+        this->codetimes.back().a_precompute += (ms2-ms1);
 
         // Runge-Kutta:
         // No OMP here - there are only N(<10) loops, which isn't
         // enough to load the threads up.
         for (unsigned int i=0; i<this->N; ++i) {
-
+            milliseconds msf1 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             // Compute epsilon * a_hat^l. a_hat is "the sum of all a_j
             // for which j!=i". Call the variable just 'eps'.
-            vector<Flt> eps(this->nhex, 0.0);
+
+            this->zero_vector_variable (this->eps);
+
             for (unsigned int j=0; j<this->N; ++j) {
-#define J_NE_I_IS_CRITICAL 1
-#ifdef J_NE_I_IS_CRITICAL
                 if (j==i) { continue; }
-#endif
-#pragma omp parallel for
+                // This is the for loop that appears to slow down as sim progresses:
+//#pragma omp parallel for // slows down with or without parallel for
                 for (unsigned int h=0; h<this->nhex; ++h) {
                     eps[h] += static_cast<Flt>(pow (this->a[j][h], this->l));
                 }
             }
+            milliseconds msf2 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+            this->codetimes.back().a_for1 += (msf2-msf1);
 
             // Multiply it by epsilon[i]/(N-1). Now it's ready to subtract from the solutions
             Flt eps_over_N = this->epsilon[i]/(this->N-1);
@@ -194,9 +245,15 @@ public:
                 eps[h] *= eps_over_N;
             }
 
+            milliseconds msf3 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+            this->codetimes.back().a_for2 += (msf3-msf2);
+
             // Runge-Kutta integration for A
             vector<Flt> qq(this->nhex, 0.0);
             this->compute_divJ (this->a[i], i); // populates divJ[i]
+
+            milliseconds msf4 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+            this->codetimes.back().a_for3 += (msf4-msf3);
 
             vector<Flt> k1(this->nhex, 0.0);
 #pragma omp parallel for
@@ -204,13 +261,7 @@ public:
                 k1[h] = this->divJ[i][h] - this->dc[i][h] - this->a[i][h] * eps[h];
                 qq[h] = this->a[i][h] + k1[h] * this->halfdt;
             }
-#if 0
-            // Code to look at relative contributions of divJ, dc/dt and a*epsilon (competition)
-            if ((this->stepCount % 1000) == 0) {
-                unsigned int ki = 0;
-                cout << "divJ[i][h]=" << this->divJ[i][ki] << " -dc[i][h]=" << -this->dc[i][ki] << " -a*eps=" << -this->a[i][ki] * eps[ki] << endl;
-            }
-#endif
+
             vector<Flt> k2(this->nhex, 0.0);
             this->compute_divJ (qq, i);
 #pragma omp parallel for
@@ -236,40 +287,62 @@ public:
                 this->a[i][h] += (k1[h] + 2.0 * (k2[h] + k3[h]) + k4[h]) * this->sixthdt;
             }
 
-#if 0
-            // Shows that the various ks are all about the same size
-            if ((this->stepCount % 1000) == 0) {
-                unsigned int ki = 400;
-                cout << "k1[ki]:" << k1[ki] << " k2[ki]:" << k2[ki] << " k3[ki]:" << k3[ki] << " k4[ki]:" << k4[ki] << endl;
-            }
-#endif
+            milliseconds msf5 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+            this->codetimes.back().a_for4 += (msf5-msf4);
 
             // Do any necessary computation which involves summing a here
             this->sum_a_computation (i);
+
+            milliseconds msf6 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+            this->codetimes.back().a_for5 += (msf6-msf5);
 
             // Now apply the transfer function
 //#pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
                 this->a[i][h] = this->transfer_a (this->a[i][h], i);
             }
+
+            milliseconds msf7 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+            this->codetimes.back().a_for6 += (msf7-msf6);
         }
     }
+
+    //! Counters for timing.
+    vector<Codetime> codetimes;
 
     //! Override step() as have to compute div_n and grad_n
     virtual void step (void) {
 
+        if ((this->stepCount % 100) == 0) {
+            if (!codetimes.empty()) {
+                codetimes.back().output();
+            }
+            Codetime ct;
+            codetimes.push_back (ct);
+        }
         this->stepCount++;
 
+        milliseconds ms1 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
         // 1. Compute Karb2004 Eq 3. (coupling between connections made by each TC type)
         this->compute_n();
 
+        milliseconds ms2 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+        codetimes.back().compute_n_time += (ms2-ms1);
         // 1.1 Compute divergence and gradient of n
         this->compute_divn();
+        milliseconds ms3 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+        codetimes.back().compute_divn_time += (ms3-ms2);
         this->spacegrad2D (this->n, this->grad_n);
+        milliseconds ms4 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+        codetimes.back().compute_spacegrad_n_time += (ms4-ms3);
 
         // 2. Call Runge Kutta numerical integration code
         this->integrate_a();
+        milliseconds ms5 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+        codetimes.back().integrate_a_time += (ms5-ms4);
         this->integrate_c();
+        milliseconds ms6 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+        codetimes.back().integrate_c_time += (ms6-ms5);
     }
 
 }; // RD_James_norm
