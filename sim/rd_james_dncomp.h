@@ -18,6 +18,7 @@ public:
     milliseconds integrate_c_time = std::chrono::milliseconds::zero();
 
     milliseconds a_precompute = std::chrono::milliseconds::zero();
+    milliseconds a_eps_all = std::chrono::milliseconds::zero();
     milliseconds a_for1 = std::chrono::milliseconds::zero();
     milliseconds a_for2 = std::chrono::milliseconds::zero();
     milliseconds a_for3 = std::chrono::milliseconds::zero();
@@ -33,6 +34,7 @@ public:
              << ", c: " << integrate_c_time.count()
              << endl;
         cout << "Compute... a_pre: " << a_precompute.count()
+             << ", a_eps_all: " << a_eps_all.count()
              << ", for1, : " << a_for1.count()
              << ", for2, : " << a_for2.count()
              << ", for3, : " << a_for3.count()
@@ -104,6 +106,8 @@ public:
         this->resize_gradient_field (this->grad_lambda);
 
         // eps
+        this->resize_vector_variable (this->eps_all);
+        this->resize_vector_variable (this->eps_i);
         this->resize_vector_variable (this->eps);
     }
 
@@ -199,7 +203,8 @@ public:
 
     //! Used as a temporary variable.
     vector<Flt> eps_all; // sum of all a^l
-    vector<Flt> eps; // the sum of all a^l with eps_i subtracted.
+    vector<Flt> eps_i; // sum of a^l for TC index i
+    vector<Flt> eps; // eps_all - eps_i
 
     virtual void integrate_a (void) {
 
@@ -217,24 +222,36 @@ public:
         milliseconds ms2 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
         this->codetimes.back().a_precompute += (ms2-ms1);
 
+        // Compute eps_all once only
+        this->zero_vector_variable (this->eps_all);
+        for (unsigned int j=0; j<this->N; ++j) {
+#pragma omp parallel for
+            for (unsigned int h=0; h<this->nhex; ++h) {
+                eps_all[h] += static_cast<Flt>(pow (this->a[j][h], this->l));
+            }
+        }
+
+        milliseconds ms3 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+        this->codetimes.back().a_eps_all += (ms3-ms2);
+
         // Runge-Kutta:
         // No OMP here - there are only N(<10) loops, which isn't
         // enough to load the threads up.
         for (unsigned int i=0; i<this->N; ++i) {
+
             milliseconds msf1 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+
+            //this->zero_vector_variable (this->eps_i);
+
             // Compute epsilon * a_hat^l. a_hat is "the sum of all a_j
             // for which j!=i". Call the variable just 'eps'.
 
-            this->zero_vector_variable (this->eps);
-
-            for (unsigned int j=0; j<this->N; ++j) {
-                if (j==i) { continue; }
-                // This is the for loop that appears to slow down as sim progresses:
-//#pragma omp parallel for // slows down with or without parallel for
-                for (unsigned int h=0; h<this->nhex; ++h) {
-                    eps[h] += static_cast<Flt>(pow (this->a[j][h], this->l));
-                }
+            // Compute eps_i, for subtraction from eps_all
+#pragma omp parallel for // slows down with or without parallel for
+            for (unsigned int h=0; h<this->nhex; ++h) {
+                eps_i[h] = static_cast<Flt>(pow (this->a[i][h], this->l));
             }
+
             milliseconds msf2 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             this->codetimes.back().a_for1 += (msf2-msf1);
 
@@ -242,7 +259,7 @@ public:
             Flt eps_over_N = this->epsilon[i]/(this->N-1);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
-                eps[h] *= eps_over_N;
+                eps[h] = (eps_all[h]-eps_i[h]) * eps_over_N;
             }
 
             milliseconds msf3 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
