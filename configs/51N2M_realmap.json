@@ -31,12 +31,14 @@
     //
     "plot_guide" : true,
     "plot_contours" : true,
-    "plot_a_contours" : true,
+    "plot_a_contours" : false,
     "plot_a" : false,
     "plot_c" : false,
+    "plot_n" : false,
     "scale_a" : false,
     "scale_c" : false,
     "scale_n" : false,
+
     //
     "plot_guidegrad" : false,
     "plot_divg" : false,
