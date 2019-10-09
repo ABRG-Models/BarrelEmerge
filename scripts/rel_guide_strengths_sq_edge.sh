@@ -1,10 +1,11 @@
 #!/bin/zsh
 
-# Run simulations on a rectangular domain.
+# Run simulations on a square domain.
 #
 # Start with a strong L-R guidance gradient, relative to the U-D
-# guidance. Gradually move to a strong U-D gradient and weak L-R
-# gradient.
+# guidance. Gradually move to a very slightly less strong L-R gradient
+# and very weak U-D gradient. Looks at the edge of the graph seen for
+# rel_guide_strenghts_sq.sh
 
 # Check we're running from BarrelEmerge dir
 CURDIR=$(pwd | awk -F '/' '{print $NF}')
@@ -18,14 +19,15 @@ fi
 NUMSTEPS=10 # Actually, there'll be NUMSTEPS+1 simulations...
 for i in $(seq 0 $NUMSTEPS); do
 
-    UDGAIN=$(( i * 1.0/${NUMSTEPS} ))
-    typeset -F 1 UDGAIN
-    LRGAIN=$(( 1.0 - ($i * 1.0/${NUMSTEPS}) ))
-    typeset -F 1 LRGAIN
+    # This is wrong...
+    UDGAIN=$(( i * 0.01 ))
+    typeset -F 2 UDGAIN
+    LRGAIN=$(( 1.0 - (i * 0.01) ))
+    typeset -F 2 LRGAIN
 
     echo "i: $i, UD gain = ${UDGAIN}, LR gain = ${LRGAIN}"
 
-    cat > configs/rel_guide_strengths_sq_UD${UDGAIN}.json <<EOF
+    cat > configs/rel_guide_strengths_sq_edge_UD${UDGAIN}.json <<EOF
 {
     // Global simulation parameters
     "steps" : 24000,
@@ -158,7 +160,7 @@ for i in $(seq 0 $NUMSTEPS); do
 EOF
 
     # Computation only version of the sim prog:
-    ./build/sim/james_dncompc configs/rel_guide_strengths_sq_UD${UDGAIN}.json
+    ./build/sim/james_dncompc configs/rel_guide_strengths_sq_edge_UD${UDGAIN}.json
     RTN=$?
     if [ $RTN -ne "0" ]; then
         echo "Exiting"
