@@ -57,10 +57,8 @@ ax1 = F1.add_subplot(1,1,1)
 l1, = ax1.plot(t1, hondadelta, 'o', label='Honda Delta')
 l2, = ax1.plot(t1, edgedev, 'o', label='Edge deviation')
 l3, = ax1.plot(t1, domarea/totalarea[0], 'go', label='Domain area proportion')
-l5, = ax1.plot(t1, s_resid, 's', label='Summed residuals to vert. line fits')
-l6, = ax1.plot(t1, gfits, '*', label='inv. verticality (0:vertical)')
-l7, = ax1.plot(t1, s_resid_h, 's', label='Summed residuals to horz. line fits')
-l8, = ax1.plot(t1, gfits_h, '*', label='inv. horz (0:horz)')
+#l5, = ax1.plot(t1, s_resid, 's', label='Summed residuals to vert. line fits')
+#l7, = ax1.plot(t1, s_resid_h, 's', label='Summed residuals to horz. line fits')
 ax1.set_title ('Shape analysis');
 
 ax2 = F1.add_subplot(1,1,1, sharex=ax1, frameon=False)
@@ -69,6 +67,6 @@ ax2.yaxis.tick_right()
 ax2.yaxis.set_label_position("right")
 ax2.set_ylabel ('Num doms')
 
-plt.legend((l1, l2, l3, l4, l5, l6, l7, l8), ('Honda Delta','Edge deviation','Domain area prop.','Number of doms', 'Summed resid.', 'inv. vert.', 'Summed resid (h).', 'inv. horz.'), loc='right')
+plt.legend((l1, l2, l3, l4), ('Honda Delta','Edge deviation','Domain area prop.','Number of doms'), loc='right')
 
 plt.show()
