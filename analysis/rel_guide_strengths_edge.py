@@ -22,7 +22,7 @@ fnt = {'family' : 'DejaVu Sans',
 matplotlib.rc('font', **fnt)
 
 # Which time step to analyse for
-keytime = 99
+keytime = 22
 
 uds = []
 lrs = []
@@ -34,7 +34,7 @@ gfits_h = []
 
 # Get target x/y hex to show trace for and the time step to show the
 # map for from the arguments:
-logdirbase = "/home/seb/gdrive_usfd/data/BarrelEmerge/voronoi_vs_epsilon_"
+logdirbase = "/home/seb/gdrive_usfd/data/BarrelEmerge/rel_guide_strengths_sq_edge_UD"
 
 do_maps = 1
 fcount = 0
@@ -48,10 +48,9 @@ if do_maps:
     F0 = plt.figure (figsize=(21,18))
     fcount = 0
 
-for ud in np.linspace(25,300,12):
-#for ud in np.linspace(300,300,1):
+for ud in np.linspace(0,0.1,11):
 
-    logdirname = "{0}{1:.0f}".format (logdirbase, ud)
+    logdirname = "{0}{1:.2f}".format (logdirbase, ud)
     print ('logdirname: {0}'.format(logdirname))
 
     # Load the dirichlet data, domcentres, etc
@@ -66,7 +65,7 @@ for ud in np.linspace(25,300,12):
         (x, y, t, cmatrix, amatrix, nmatrix, idmatrix, tarea) = ld.readSimDataFiles (logdirname)
         # Plot one plot only:
         ax0 = F0.add_subplot (4, 3, fcount)
-        ax0.set_title('Epsilon {0:.0f}'.format(ud))
+        ax0.set_title('UD{0:0.1f} / LR{1:0.1f}'.format(ud, 1-ud))
         # Plot regions:
         ax0.scatter (x, y, c=idmatrix[:,keytime], marker='h', cmap=plt.cm.plasma)
         ax0.set_xlim([-1.1,1.1])
@@ -110,7 +109,7 @@ l5, = ax1.plot(uds, gfits_h, '*-', label='inv. horz (0:horz)')
 ax1.set_title ('Shape analysis');
 ax1.set_ylabel ('Num')
 ax1.set_xlabel ('Up-down grad. gain')
-ax1.set_ylim([-0.1, 1.0])
+#ax1.set_ylim([-0.1, 1.0])
 
 plt.legend((l1, l2, l3, l4, l5), ('Honda Delta', 'Summed resid.', 'inv. vert.', 'Summed resid (h).', 'inv. horz.'), loc='right')
 

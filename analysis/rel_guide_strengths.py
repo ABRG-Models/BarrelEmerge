@@ -34,7 +34,7 @@ gfits_h = []
 
 # Get target x/y hex to show trace for and the time step to show the
 # map for from the arguments:
-logdirbase = "../logs/rel_guide_strengths_r1_UD"
+logdirbase = "/home/seb/gdrive_usfd/data/BarrelEmerge/rel_guide_strengths_r1_UD"
 
 do_maps = 1
 fcount = 0
