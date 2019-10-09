@@ -142,6 +142,7 @@ int main (int argc, char **argv)
 
     // A plot object.
     RD_Plot<FLT> plt(fix, eye, rot);
+    plt.scalarFieldsSingleColour = true;
 
     double rhoInit = root.get ("rhoInit", 1.0).asDouble(); // This is effectively a zoom control. Increase to zoom out.
     double thetaInit = 0.0;
