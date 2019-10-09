@@ -760,10 +760,25 @@ public:
         // 3. Do integration of c
         for (unsigned int i=0; i<this->N; ++i) {
 
-#pragma omp parallel for
+#pragma omp__ parallel for
             for (unsigned int h=0; h<this->nhex; h++) {
                 // Note: betaterm used in compute_dci_dt()
-                this->betaterm[i][h] = this->beta[i] * this->n[h] * static_cast<Flt>(pow (this->a[i][h], this->k));
+                Flt ak = static_cast<Flt>(pow (this->a[i][h], this->k));
+                this->betaterm[i][h] = this->beta[i] * this->n[h] * ak;
+                if (isnan(betaterm[i][h])) {
+                    if (isnan(beta[i])) {
+                        cerr << "beta[i="<<i<<"] isnan" << endl;
+                    }
+                    if (isnan(n[h])) {
+                        cerr << "n[h="<<h<<"] isnan" << endl;
+                    }
+                    if (isnan(ak)) {
+                        cerr << "ak isnan" << endl;
+                        if (isnan(a[i][h])) {
+                            cerr << "a[i="<<i<<"][h="<<h<<"] isnan" << endl;
+                        }
+                    }
+                }
             }
 
             // Runge-Kutta integration for C (or ci)
@@ -787,9 +802,27 @@ public:
             }
 
             vector<Flt> k4 = this->compute_dci_dt (qq, i);
-#pragma omp parallel for
+#pragma omp__ parallel for
             for (unsigned int h=0; h<this->nhex; h++) {
                 this->dc[i][h] = (k1[h]+2. * (k2[h] + k3[h]) + k4[h]) * this->sixthdt;
+                if (isnan(this->c[i][h])) {
+                    cerr << "c[i="<<i<<"][h="<<h<<"] isnan" << endl;
+                }
+                if (isnan(this->dc[i][h])) {
+                    cerr << "dc[i="<<i<<"][h="<<h<<"] isnan" << endl;
+                    if (isnan(k1[h])) {
+                        cerr << "k1[h="<<h<<"] isnan" << endl;
+                    }
+                    if (isnan(k2[h])) {
+                        cerr << "k2[h="<<h<<"] isnan" << endl;
+                    }
+                    if (isnan(k3[h])) {
+                        cerr << "k3[h="<<h<<"] isnan" << endl;
+                    }
+                    if (isnan(k4[h])) {
+                        cerr << "k4[h="<<h<<"] isnan" << endl;
+                    }
+                }
                 Flt c_cand = this->c[i][h] + this->dc[i][h];
                 // Avoid over-saturating c_i and make sure dc is similarly modified.
                 this->dc[i][h] = (c_cand > 1.0) ? (1.0 - this->c[i][h]) : this->dc[i][h];
@@ -899,12 +932,18 @@ public:
 
         Flt nsum = 0.0;
         Flt csum = 0.0;
-#pragma omp parallel for reduction(+:nsum,csum)
+#pragma omp__ parallel for reduction(+:nsum,csum)
         for (unsigned int hi=0; hi<this->nhex; ++hi) {
             this->n[hi] = 0;
             // First, use n[hi] so sum c over all i:
             for (unsigned int i=0; i<this->N; ++i) {
+                if (isnan(c[i][hi])) {
+                    cerr << "at hi=" << hi << ", c[" << i << "][hi] isnan" << endl;
+                }
                 this->n[hi] += this->c[i][hi];
+            }
+            if (isnan(this->n[hi])) {
+                cerr << "at hi=" << hi << ", n[" << hi << "] isnan (after summing c)" << endl;
             }
             // Prevent sum of c being too large:
             this->n[hi] = (this->n[hi] > 1.0) ? 1.0 : this->n[hi];
@@ -960,8 +999,17 @@ public:
      */
     vector<Flt> compute_dci_dt (vector<Flt>& f, unsigned int i) {
         vector<Flt> dci_dt (this->nhex, 0.0);
-#pragma omp parallel for
+#pragma omp__ parallel for
         for (unsigned int h=0; h<this->nhex; h++) {
+            if (isnan(this->betaterm[i][h])) {
+                cerr << "betaterm[i="<<i<<"][h="<<h<<"] isnan" << endl;
+            }
+            if (isnan(this->alpha[i])) {
+                cerr << "alpha[i="<<i<<"] isnan" << endl;
+            }
+            if (isnan(f[h])) {
+                cerr << "f[h="<<h<<"] isnan" << endl;
+            }
             dci_dt[h] = (this->betaterm[i][h] - this->alpha[i] * f[h]);
         }
         return dci_dt;

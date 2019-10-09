@@ -75,6 +75,9 @@ public:
         //Flt a_rtn = this->nhex * _a / this->sum_a[_i];
         // Divisive norm with initial sum multiplier
         Flt a_rtn = this->sum_a_init[_i] * _a / this->sum_a[_i];
+        if (isnan(a_rtn)) {
+            cerr << "Uh oh. sum_a[_i="<<_i<<"] is " << this->sum_a[_i] << " and _a=" << _a << ". sum_a_init[_i]=" << this->sum_a_init[_i] << endl;
+        }
         // Prevent a from becoming negative, necessary only when competition is implemented:
         return (a_rtn < 0.0) ? 0.0 : a_rtn;
     }

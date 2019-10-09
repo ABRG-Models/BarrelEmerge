@@ -124,15 +124,34 @@ public:
 
     //! Compute divergence of n
     void compute_divn (void) {
-#pragma omp parallel for
+//#pragma omp parallel for
         for (unsigned int hi=0; hi<this->nhex; ++hi) {
             Flt thesum = -6 * this->n[hi];
             thesum += this->n[(HAS_NE(hi)  ? NE(hi)  : hi)];
+            if (isnan(thesum)) {
+                cerr << "at hi=" << hi << ", n[" << (HAS_NE(hi)  ? NE(hi)  : hi) << "] isnan" << endl;
+            }
             thesum += this->n[(HAS_NNE(hi) ? NNE(hi) : hi)];
+            if (isnan(thesum)) {
+                cerr << "at hi=" << hi << ", n[" << (HAS_NNE(hi)  ? NNE(hi)  : hi) << "] isnan" << endl;
+            }
             thesum += this->n[(HAS_NNW(hi) ? NNW(hi) : hi)];
+            if (isnan(thesum)) {
+                cerr << "at hi=" << hi << ", n[" << (HAS_NNW(hi)  ? NNW(hi)  : hi) << "] isnan" << endl;
+            }
             thesum += this->n[(HAS_NW(hi)  ? NW(hi)  : hi)];
+            if (isnan(thesum)) {
+                cerr << "at hi=" << hi << ", n[" << (HAS_NW(hi)  ? NW(hi)  : hi) << "] isnan" << endl;
+            }
             thesum += this->n[(HAS_NSW(hi) ? NSW(hi) : hi)];
+            if (isnan(thesum)) {
+                cerr << "at hi=" << hi << ", n[" << (HAS_NSW(hi)  ? NSW(hi)  : hi) << "] isnan" << endl;
+            }
             thesum += this->n[(HAS_NSE(hi) ? NSE(hi) : hi)];
+            if (isnan(thesum)) {
+                cerr << "at hi=" << hi << ", n[" << (HAS_NSE(hi)  ? NSE(hi)  : hi) << "] isnan" << endl;
+                cerr << "(at end) thesum isnan in compute_divn" << endl;
+            }
             this->div_n[hi] = this->twoover3dd * thesum;
         }
     }
@@ -165,6 +184,15 @@ public:
             Flt term1_1 = this->E * fa[hi] * this->div_n[hi];
             if (isnan(term1_1)) {
                 cerr << "term1_1 isnan" << endl;
+                if (isnan(this->E)) {
+                    cerr << "E isnan" << endl;
+                }
+                if (isnan(fa[hi])) {
+                    cerr << "fa[hi] isnan" << endl;
+                }
+                if (isnan(div_n[hi])) {
+                    cerr << "div_n[hi="<<hi<<"] isnan" << endl;
+                }
                 exit (21);
             }
 
@@ -173,6 +201,18 @@ public:
                                      + this->grad_n[1][hi] * this->grad_a[i][1][hi]);
             if (isnan(term1_2)) {
                 cerr << "term1_2 isnan" << endl;
+                if (isnan(this->E)) {
+                    cerr << "E isnan" << endl;
+                }
+                if (isnan(this->grad_n[0][hi])) {
+                    cerr << "this->grad_n[0][hi] isnan" << endl;
+                }
+                if (isnan(this->grad_a[i][0][hi])) {
+                    cerr << "this->grad_a[i][0][hi] isnan" << endl;
+                }
+                if (isnan(this->grad_a[i][1][hi])) {
+                    cerr << "this->grad_a[i][1][hi] isnan" << endl;
+                }
                 exit (21);
             }
 #if 0
@@ -198,6 +238,9 @@ public:
             }
 
             this->divJ[i][hi] = term1 - term1_1 - term1_2  - term2 - term3;
+            if (isnan(this->divJ[i][hi])) {
+                cerr << "divJ[i="<<i<<"][hi="<<hi<<"] isnan" << endl;
+            }
         }
     }
 
@@ -298,9 +341,24 @@ public:
             vector<Flt> k4(this->nhex, 0.0);
             this->compute_divJ (qq, i);
 
-#pragma omp parallel for
+#pragma omp__ parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
                 k4[h] = this->divJ[i][h] - this->dc[i][h] - qq[h] * eps[h];
+                if (isinf(eps[h])) { cerr << "eps[h="<<h<<"] isinf" << endl; }
+                if (isnan(eps[h])) { cerr << "eps[h="<<h<<"] isnan" << endl; }
+                if (isinf(qq[h])) { cerr << "qq[h="<<h<<"] isinf" << endl; }
+                if (isnan(qq[h])) { cerr << "qq[h="<<h<<"] isnan" << endl; }
+                if (isinf(this->dc[i][h])) { cerr << "dc[i][h="<<h<<"] isinf" << endl; }
+                if (isnan(this->dc[i][h])) { cerr << "dc[i][h="<<h<<"] isnan" << endl; }
+                if (isinf(this->divJ[i][h])) { cerr << "divJ[i][h="<<h<<"] isinf" << endl; }
+                if (isnan(this->divJ[i][h])) { cerr << "divJ[i][h="<<h<<"] isnan" << endl; }
+                if (isinf(k4[h])) {
+                    cerr << "k4[h="<<h<<"] isinf" << endl;
+
+                    cerr << "k4[h] = " << this->divJ[i][h] << " - " <<  this->dc[i][h] << " - " << qq[h] << " * " << eps[h] << endl;
+
+                }
+                if (isnan(k4[h])) { cerr << "k4[h="<<h<<"] isnan" << endl; }
                 this->a[i][h] += (k1[h] + 2.0 * (k2[h] + k3[h]) + k4[h]) * this->sixthdt;
             }
 
@@ -314,9 +372,17 @@ public:
             this->codetimes.back().a_for5 += (msf6-msf5);
 
             // Now apply the transfer function
-//#pragma omp parallel for
+#pragma omp__ parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
-                this->a[i][h] = this->transfer_a (this->a[i][h], i);
+                if (isinf(this->a[i][h])) {
+                    cerr << "Before transfer_a, a[i="<<i<<"][h="<<h<<"] isinf" << endl;
+                }
+                Flt ta = this->transfer_a (this->a[i][h], i);
+                if (isnan(ta)) {
+                    cerr << "Before transfer_a, a[i="<<i<<"][h="<<h<<"] = " << this->a[i][h] << endl;
+                    cerr << "AFTER transfer_a, a[i="<<i<<"][h="<<h<<"] is(gonnabe)nan" << endl;
+                }
+                this->a[i][h] = ta;
             }
 
             milliseconds msf7 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
