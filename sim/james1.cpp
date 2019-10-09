@@ -704,7 +704,19 @@ int main (int argc, char **argv)
             if (plot_dr && do_dirichlet_analysis) {
                 plt.scalarFieldsSingleColour = false;
                 if (plot_contours) {
-                    plt.plot_contour_and_scalar (displays[dr_id], RD.hg, ctrs, RD.regions);
+                    if (plot_guide) {
+                        vector<bool> on;
+                        for (auto t_on : RD.guidance_time_onset) {
+                            if (RD.stepCount >= t_on) {
+                                on.push_back (true);
+                            } else {
+                                on.push_back (false);
+                            }
+                        }
+                        plt.plot_contour_and_scalar_and_guide (displays[dr_id], RD.hg, ctrs, RD.regions, RD.rho, on);
+                    } else {
+                        plt.plot_contour_and_scalar (displays[dr_id], RD.hg, ctrs, RD.regions);
+                    }
                 } else {
                     plt.scalarfields (displays[dr_id], RD.hg, RD.regions);
                 }
