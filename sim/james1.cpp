@@ -307,6 +307,7 @@ int main (int argc, char **argv)
 
     // A plot object.
     RD_Plot<FLT> plt(fix, eye, rot);
+    plt.scalarFieldsSingleColour = true;
 
     double rhoInit = root.get ("rhoInit", 1.0).asDouble(); // This is effectively a zoom control. Increase to zoom out.
     double thetaInit = 0.0;
@@ -701,11 +702,13 @@ int main (int argc, char **argv)
                 }
             }
             if (plot_dr && do_dirichlet_analysis) {
+                plt.scalarFieldsSingleColour = false;
                 if (plot_contours) {
                     plt.plot_contour_and_scalar (displays[dr_id], RD.hg, ctrs, RD.regions);
                 } else {
                     plt.scalarfields (displays[dr_id], RD.hg, RD.regions);
                 }
+                plt.scalarFieldsSingleColour = true;
             }
             // Then add:
             //plt.plot_dirichlet_boundaries (displays[n_id], RD.hg, vv);
