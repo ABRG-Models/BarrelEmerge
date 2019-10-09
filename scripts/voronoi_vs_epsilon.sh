@@ -25,6 +25,7 @@ for EPSILON in $(seq 25 25 300); do
     "steps" : 100000,
     "logevery": 1000,
     "overwrite_logs": true,
+    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge",
     "hextohex_d" : 0.015,
     "svgpath" : "./boundaries/whiskerbarrels.svg",
     "boundaryFalloffDist" : 0.01,

@@ -31,6 +31,7 @@ for i in $(seq 0 $NUMSTEPS); do
     "steps" : 24000,
     "logevery": 1000,
     "overwrite_logs": true,
+    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge",
     "hextohex_d" : 0.02,
     "svgpath" : "./boundaries/rect1.svg",
     "boundaryFalloffDist" : 0.01,
