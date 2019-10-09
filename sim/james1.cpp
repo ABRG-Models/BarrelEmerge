@@ -215,6 +215,9 @@ int main (int argc, char **argv)
         morph::Tools::searchReplace (".json", "", justfile);
         // Use logbase as the subdirectory into which this should go
         logbase = root.get ("logbase", "logs/").asString();
+        if (logbase.back() != '/') {
+            logbase += '/';
+        }
         logpath = logbase + justfile;
         cout << "logpath: " << logpath << endl;
     }

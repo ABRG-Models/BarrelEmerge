@@ -8,7 +8,7 @@
     "steps" : 24000,                // Number of steps to simulate for
     "logevery": 1000,
     "overwrite_logs": true,
-    "logpath" : "./logs/25N2M_withcomp_realmap",
+    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/",
     "hextohex_d" : 0.02,           // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/whiskerbarrels.svg",
     "boundaryFalloffDist" : 0.01,
