@@ -240,6 +240,12 @@ int main (int argc, char **argv)
 
     const FLT contour_threshold = root.get ("contour_threshold", 0.6).asDouble();
 
+    // For the maxval/contour/guidance window, used for movies
+    const FLT hshift = root.get ("hshift", 0.6).asDouble();
+    const FLT vshift = root.get ("vshift", 0.4).asDouble();
+    const FLT g_hshift = root.get ("g_hshift", -0.2).asDouble();
+    const FLT g_vshift = root.get ("g_vshift", -0.4).asDouble();
+
     const double D = root.get ("D", 0.1).asDouble();
     const FLT k = root.get ("k", 3).asDouble();
 
@@ -286,6 +292,8 @@ int main (int argc, char **argv)
     const bool scale_c = root.get ("scale_c", true).asBool();
     const bool plot_n = root.get ("plot_n", true).asBool();
     const bool plot_dr = root.get ("plot_dr", true).asBool();
+    // Should the guidance be plotted in same window as the dr stuff?
+    const bool plot_dr_with_guide = root.get ("plot_dr_with_guide", false).asBool();
     const bool scale_n = root.get ("scale_n", true).asBool();
     // Window IDs
     unsigned int guide_id = 0xffff, contours_id = 0xffff, a_id = 0xffff, c_id = 0xffff, n_id = 0xffff, dr_id = 0xffff, a_contours_id = 0xffff;
@@ -704,7 +712,7 @@ int main (int argc, char **argv)
             if (plot_dr && do_dirichlet_analysis) {
                 plt.scalarFieldsSingleColour = false;
                 if (plot_contours) {
-                    if (plot_guide) {
+                    if (plot_dr_with_guide) {
                         vector<bool> on;
                         for (auto t_on : RD.guidance_time_onset) {
                             if (RD.stepCount >= t_on) {
@@ -713,9 +721,10 @@ int main (int argc, char **argv)
                                 on.push_back (false);
                             }
                         }
-                        plt.plot_contour_and_scalar_and_guide (displays[dr_id], RD.hg, ctrs, RD.regions, RD.rho, on);
+                        plt.plot_contour_and_scalar_and_guide (displays[dr_id], RD.hg, ctrs, RD.regions, RD.rho, on,
+                                                               hshift, vshift, g_hshift, g_vshift);
                     } else {
-                        plt.plot_contour_and_scalar (displays[dr_id], RD.hg, ctrs, RD.regions);
+                        plt.plot_contour_and_scalar (displays[dr_id], RD.hg, ctrs, RD.regions, hshift, g_hshift);
                     }
                 } else {
                     plt.scalarfields (displays[dr_id], RD.hg, RD.regions);

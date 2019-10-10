@@ -3,6 +3,7 @@
     "steps" : 50000,               // Number of steps to simulate for
     "logevery" : 1000,
     "plotevery" : 100,
+    "vidframes" : true,    // If true, number video frame saves consecutively, rather than by simulation step number
     "hextohex_d" : 0.01,           // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/trial.svg",
     "boundaryFalloffDist" : 0.03,
@@ -10,32 +11,39 @@
     "contour_threshold" : 0.5,
     "k" : 3,
     "overwrite_logs" : true,
+    "logbase": "/home/seb/gdrive_usfd/data/BarrelEmerge/",
+    "rhoInit" : 1.4,
+
+    "hshift" : 0.6,
+    "vshift" : 0.3,
+    "g_hshift" : -0.8,
+    "g_vshift" : -0.4,
 
     // Array of parameters for N thalamocortical populations:
     "tc": [
         {
             "alpha" : 3,
-            "beta"  : 3,
+            "beta"  : 120,
             "gamma" : [1,-1,-1]
         },
         {
             "alpha" : 3,
-            "beta"  : 3,
+            "beta"  : 120,
             "gamma" : [1,1,-1]
         },
         {
             "alpha" : 3,
-            "beta"  : 3,
+            "beta"  : 120,
             "gamma" : [-1,1,-1]
         },
         {
             "alpha" : 3,
-            "beta"  : 3,
+            "beta"  : 120,
             "gamma" : [-1,1,1] // Array of interactions of this TC popn and guidance mols
         },
         {
             "alpha" : 3,
-            "beta"  : 3,
+            "beta"  : 120,
             "gamma" : [-1,-1,1]
         }
     ], // end tc

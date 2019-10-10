@@ -12,9 +12,11 @@ import matplotlib.pyplot as plt
 import h5py
 # My domcentres linear fit code:
 import domcentres as dc
+import sebcolour
+col = sebcolour.Colour
 
 # Set plotting defaults
-fs = 12
+fs = 32
 fnt = {'family' : 'DejaVu Sans',
        'weight' : 'regular',
        'size'   : fs}
@@ -51,22 +53,32 @@ totalarea = np.array(pf['area']);
 print ('total area: {0}'.format (totalarea))
 
 # And plot this longhand here:
-F1 = plt.figure (figsize=(8,8))
+F1 = plt.figure (figsize=(9,8))
 
 ax1 = F1.add_subplot(1,1,1)
-l1, = ax1.plot(t1, hondadelta, 'o', label='Honda Delta')
-l2, = ax1.plot(t1, edgedev, 'o', label='Edge deviation')
-l3, = ax1.plot(t1, domarea/totalarea[0], 'go', label='Domain area proportion')
+l1, = ax1.plot(t1, hondadelta, 'o', markersize=12, color=col.springgreen2, label='Honda $\delta$')
+l2, = ax1.plot((0,200000), (0.003, 0.003), '--', color=col.orange, linewidth=3, label='good\npattern')
+#l2, = ax1.plot(t1, edgedev, 'o', label='Edge deviation')
+#l3, = ax1.plot(t1, domarea/totalarea[0], 'go', label='Domain area proportion')
 #l5, = ax1.plot(t1, s_resid, 's', label='Summed residuals to vert. line fits')
 #l7, = ax1.plot(t1, s_resid_h, 's', label='Summed residuals to horz. line fits')
-ax1.set_title ('Shape analysis');
+#ax1.set_title ('Honda Dirichletiform measure');
+ax1.set_xlabel ('Simulation step')
+ax1.set_ylabel ('Honda $\delta$ measure')
+ax1.set_xlim ((0,200000))
+ax1.set_ylim ((0,0.05))
+ax1.set_xticks ((0,100000,200000))
+plt.legend()
 
-ax2 = F1.add_subplot(1,1,1, sharex=ax1, frameon=False)
-l4, = ax2.plot(t1, numdoms, 'ro', label='Number of domains')
-ax2.yaxis.tick_right()
-ax2.yaxis.set_label_position("right")
-ax2.set_ylabel ('Num doms')
+#ax2 = F1.add_subplot(1,1,1, sharex=ax1, frameon=False)
+#l4, = ax2.plot(t1, numdoms, 'ro', label='Number of domains')
+#ax2.yaxis.tick_right()
+#ax2.yaxis.set_label_position("right")
+#ax2.set_ylabel ('Num doms')
+#plt.legend((l1, l2, l3, l4), ('Honda Delta','Edge deviation','Domain area prop.','Number of doms'), loc='right')
 
-plt.legend((l1, l2, l3, l4), ('Honda Delta','Edge deviation','Domain area prop.','Number of doms'), loc='right')
+plt.tight_layout()
+
+plt.savefig('hondadelta.png')
 
 plt.show()
