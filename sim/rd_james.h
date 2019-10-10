@@ -166,6 +166,13 @@ protected: // We have a setter for gamma.
     //@{
     alignas(alignof(vector<vector<Flt> >))
     vector<vector<Flt> > gamma;
+
+    /*!
+     * Used for group-based competition. One of the sets of gammas is used as a group
+     * identifier.
+     */
+    alignas(alignof(vector<Flt>)) vector<Flt> group;
+    alignas(alignof(set<Flt>)) set<Flt> groupset;
     //@}
 
 public:
@@ -437,6 +444,7 @@ public:
 
         this->resize_vector_param (this->alpha, this->N);
         this->resize_vector_param (this->beta, this->N);
+        this->resize_vector_param (this->group, this->N);
         this->resize_vector_vector_param (this->gamma, this->N, this->M);
 
         this->resize_vector_array_vector (this->grad_rho, this->M);
@@ -614,11 +622,19 @@ public:
      * Parameter setter methods
      */
     //@{
-    int setGamma (unsigned int m_idx, unsigned int n_idx, Flt value) {
+    /*!
+     * setGamma for the guidance molecule index m_idx and the TC index n_idx to
+     * @value. If group_m==m_idx, then set this->group[n_idx]=@value
+     */
+    int setGamma (unsigned int m_idx, unsigned int n_idx, Flt value, unsigned int group_m = 0) {
         if (gamma.size() > m_idx) {
             if (gamma[m_idx].size() > n_idx) {
                 // Ok, we can set the value
                 this->gamma[m_idx][n_idx] = value;
+                if (group_m == m_idx) {
+                    this->group[n_idx] = value;
+                    this->groupset.insert (value);
+                }
             } else {
                 cerr << "WARNING: DID NOT SET GAMMA (too few TC axon types for n_idx=" << n_idx << ")" << endl;
                 return 1;

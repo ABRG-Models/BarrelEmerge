@@ -29,6 +29,15 @@ add_executable(james_dncompc james1.cpp)
 target_compile_definitions(james_dncompc PUBLIC FLT=float DNCOMP)
 target_link_libraries(james_dncompc ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})
 
+# Divisive normalization of a_i along with competition
+add_executable(james_dncomp2 james1.cpp)
+target_compile_definitions(james_dncomp2 PUBLIC FLT=float COMPILE_PLOTTING DNCOMP2)
+target_link_libraries(james_dncomp2 ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})
+
+add_executable(james_dncomp2c james1.cpp)
+target_compile_definitions(james_dncomp2c PUBLIC FLT=float DNCOMP2)
+target_link_libraries(james_dncomp2c ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})
+
 add_executable(dvanalyse dvanalyse.cpp)
 target_compile_definitions(dvanalyse PUBLIC FLT=float COMPILE_PLOTTING)
 target_link_libraries(dvanalyse ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})

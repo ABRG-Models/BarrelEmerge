@@ -33,6 +33,8 @@
  */
 #if defined DIVNORM
 #include "rd_james_divnorm.h"
+#elif defined DNCOMP2
+#include "rd_james_dncomp2.h"
 #elif defined DNCOMP
 #include "rd_james_dncomp.h"
 #else
@@ -249,7 +251,7 @@ int main (int argc, char **argv)
     const double D = root.get ("D", 0.1).asDouble();
     const FLT k = root.get ("k", 3).asDouble();
 
-#if defined DNCOMP
+#if defined DNCOMP || defined DNCOMP2
     const FLT l = root.get ("l", 1).asDouble();
     const double E = root.get ("E", 0.1).asDouble();
     cout << "E is set to " << E << endl;
@@ -442,6 +444,8 @@ int main (int argc, char **argv)
      */
 #if defined DIVNORM
     RD_James_divnorm<FLT> RD;
+#elif defined DNCOMP2
+    RD_James_dncomp2<FLT> RD;
 #elif defined DNCOMP
     RD_James_dncomp<FLT> RD;
 #else
@@ -473,7 +477,7 @@ int main (int argc, char **argv)
     // After allocate(), we can set up parameters:
     RD.set_D (D);
 
-#if defined DNCOMP
+#if defined DNCOMP || defined DNCOMP2
     cout << "Setting RD.l to " << l << endl;
     RD.l = l;
     RD.E = E;
@@ -497,9 +501,13 @@ int main (int argc, char **argv)
         cout << "Set xinit["<<i<<"] to " << gp.x << endl;
         gp.y = v.get("yinit", 0.0).asDouble();
         RD.initmasks.push_back (gp);
-#if defined DNCOMP
+#if defined DNCOMP || defined DNCOMP2
         RD.epsilon[i] = v.get("epsilon", 0.0).asDouble();
         cout << "Set RD.epsilon["<<i<<"] to " << RD.epsilon[i] << endl;
+#endif
+#if defined DNCOMP2
+        RD.xi[i] = v.get("xi", 0.0).asDouble();
+        cout << "Set RD.xi["<<i<<"] to " << RD.xi[i] << endl;
 #endif
     }
 
@@ -531,6 +539,9 @@ int main (int argc, char **argv)
         RD.guidance_time_onset.push_back (v.get("time_onset", 0).asUInt());
     }
 
+    // Which of the gammas is the "group" defining gamma?
+    const unsigned int groupgamma = root.get ("groupgamma", 0).asUInt();
+
     // Set up the interaction parameters between the different TC
     // populations and the guidance molecules (aka gamma).
     int paramRtn = 0;
@@ -542,7 +553,7 @@ int main (int argc, char **argv)
             // don't set a value that's off the end of the gamma
             // container.
             cout << "Set gamma for guidance " << j << " over TC " << i << " = " << gamma[j] << endl;
-            paramRtn += RD.setGamma (j, i, gamma[j].asDouble());
+            paramRtn += RD.setGamma (j, i, gamma[j].asDouble(), groupgamma);
         }
     }
 
