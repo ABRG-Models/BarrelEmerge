@@ -57,7 +57,7 @@ F1 = plt.figure (figsize=(9,8))
 
 ax1 = F1.add_subplot(1,1,1)
 l1, = ax1.plot(t1, hondadelta, 'o', markersize=12, color=col.springgreen2, label='Honda $\delta$')
-l2, = ax1.plot((0,200000), (0.003, 0.003), '--', color=col.orange, linewidth=3, label='good\npattern')
+l2, = ax1.plot((0,200000), (0.003, 0.003), '--', color=col.orange, linewidth=3, label="'good'\npattern")
 #l2, = ax1.plot(t1, edgedev, 'o', label='Edge deviation')
 #l3, = ax1.plot(t1, domarea/totalarea[0], 'go', label='Domain area proportion')
 #l5, = ax1.plot(t1, s_resid, 's', label='Summed residuals to vert. line fits')
