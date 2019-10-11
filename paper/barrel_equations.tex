@@ -225,7 +225,7 @@ n(\mb{x},t) = 1 - \sum_{i=1}^{N} c_i(\mb{x}, t)
 %
 \begin{equation} \label{eq:Karb2DExt_da}
 \frac{\partial a_i(\mb{x},t)}{\partial t}
-= \nabla\vcdot\mb{J}_i(\mb{x},t) - \frac{\partial c_i(\mb{x},t)}{\partial t}- \frac{\epsilon_i  a_i}{N-1} \sum_{j \ne i}^{N} a_j(\mb{x}, t)^l
+= \nabla\vcdot\mb{J}_i(\mb{x},t) - \frac{\partial c_i(\mb{x},t)}{\partial t}- \frac{\epsilon  a_i}{N-1} \sum_{j \ne i}^{N} a_j(\mb{x}, t)^l
 \end{equation}
 
 And normalization step
@@ -235,5 +235,16 @@ a_i' = n_e \; \frac {a_i} {\textstyle \sum_j^{n_e} a_{i,j} }
 \end{equation}
 
 ($a_i'$ becomes $a_i$ in the next computational step.)
+
+\section{Karbowski system with N TCs and M gradients plus grouped competition}
+
+Same, except:
+
+\begin{equation} \label{eq:Karb2DExt2_da}
+\frac{\partial a_i(\mb{x},t)}{\partial t}
+= \nabla\vcdot\mb{J}_i(\mb{x},t) - \frac{\partial c_i(\mb{x},t)}{\partial t}
+- \frac{\epsilon_i  a_i}{N-1} \sum_{j \ne i}^{N} a_j(\mb{x}, t)^l - \frac{\xi
+a_i}{N-N_g} \sum_{j}^{N} a_j(\mb{x}, t)^l \bigg\rvert_{g(j) \ne g(i)}
+\end{equation}
 
 \end{document}
