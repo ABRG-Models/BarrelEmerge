@@ -5,11 +5,37 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg4821"
    version="1.1"
    viewBox="0 0 210 297"
    height="297mm"
-   width="210mm">
+   width="210mm"
+   sodipodi:docname="rect2.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="2088"
+     inkscape:window-height="1364"
+     id="namedview9335"
+     showgrid="false"
+     inkscape:measure-start="462.665,1026.02"
+     inkscape:measure-end="445.438,1041.08"
+     inkscape:zoom="2.6924682"
+     inkscape:cx="205.15832"
+     inkscape:cy="1066.3335"
+     inkscape:window-x="562"
+     inkscape:window-y="312"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg4821" />
   <defs
      id="defs4815" />
   <metadata
@@ -20,7 +46,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -29,10 +55,13 @@
     <path
        id="mm_1x0"
        d="M 29.076069,14.519037 H 73.716046"
-       style="fill:none;stroke:#000000;stroke-width:0.16407478px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#000000;stroke-width:0.16407478px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:connector-curvature="0" />
     <path
        id="cortex"
-       d="m 93.955937,50.486952 c 0,0 -56.88433,1.5e-4 -68.034599,1.5e-4 V 21.548519 c 16.74788,0 54.959831,0 77.084442,0 0,10.197327 6e-5,20.608486 0,28.938583 z"
-       style="fill:none;stroke:#000000;stroke-width:0.11760331px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       d="m 93.955937,50.486952 c 0,0 -56.88433,1.5e-4 -68.034599,1.5e-4 V 21.548519 h 91.934252 c 0,10.197327 6e-5,20.608486 0,28.938583 z"
+       style="fill:none;stroke:#000000;stroke-width:0.11760331px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccc" />
   </g>
 </svg>
