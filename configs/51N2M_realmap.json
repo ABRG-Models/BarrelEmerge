@@ -5,7 +5,7 @@
  */
 {
     // Global simulation parameters
-    "steps" : 250000,                // Number of steps to simulate for
+    "steps" : 2500000,                // Number of steps to simulate for
     "logevery": 10000,
     "overwrite_logs": true,
     "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/",
