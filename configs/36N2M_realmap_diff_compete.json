@@ -1,0 +1,122 @@
+/*
+ * 6x6 grid of TC axons. 1000 steps near start of sim takes 25 s. 300k steps should thus take 125 minutes/circa 2 hrs.
+ */
+{
+    // Global simulation parameters
+    "steps" : 300000,                // Number of steps to simulate for
+    "logevery": 1000,
+    "overwrite_logs": true,
+    //"logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/",
+    "hextohex_d" : 0.02,           // Hex to hex distance, determines num hexes
+    "svgpath" : "./boundaries/whiskerbarrels.svg",
+    "boundaryFalloffDist" : 0.04,
+    "D" : 0.2,
+    "E" : 0.0,
+
+    // Exponent parameters
+    "k" : 3,
+    "l" : 3,
+
+    // Timestep. Defaults to 0.00001 if omitted here
+    "dt" : 0.00001,
+
+    "contour_threshold" : 0.35,
+
+    // Visualization parameters (ignored by computation-only binaries)
+    "win_width_contours": 1920,
+    "plotevery": 100,
+    "vidframes": true,    // If true, number video frame saves consecutively, rather than by simulation step number
+    "rhoInit": 1.7, // Larger to zoom out
+    //
+    "plot_guide" : true,
+    "plot_contours" : true,
+    "plot_a_contours" : true,
+    "plot_a" : false,
+    "plot_c" : false,
+    "scale_a" : false,
+    "scale_c" : false,
+    "scale_n" : false,
+    //
+    "plot_guidegrad" : false,
+    "plot_divg" : false,
+    "plot_divJ" : false,
+    "plot_dr": true,
+    "do_dirichlet_analysis": true,
+
+    "plot_dr_with_guide" : false,
+    "hshift" : 0.5,
+    "vshift" : 0.4,
+    "g_hshift" : 0.3,
+    "g_vshift" : -0.4,
+
+    "aNoiseGain" : 0.2,
+    "aInitialOffset" : 0.2,
+
+    // Which element of gamma, below, defines groupings. If 0, then all TCs with the same gamma[0] are in the same group.
+    "groupgamma" : 1,
+
+    // Array of parameters for N thalamocortical populations.
+    "tc": [// 165 works for 50000 steps. 160 not there for 135000 steps. Critical epsilon between these values
+        // Curvey row far right
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.5, -2.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.5, -2.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.5, -2.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.5, -2.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 1.5, -2.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 2.5, -2.5] },
+        //
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.5, -1.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.5, -1.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.5, -1.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.5, -1.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 1.5, -1.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 2.5, -1.5] },
+        //
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.5,  -0.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.5,  -0.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.5,  -0.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.5,  -0.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 1.5,  -0.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 2.5,  -0.5] },
+        //
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.5, 0.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.5, 0.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.5, 0.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.5, 0.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 1.5, 0.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 2.5, 0.5] },
+        //
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.5, 1.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.5, 1.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.5, 1.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.5, 1.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 1.5, 1.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 2.5, 1.5] },
+        //
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.5, 2.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.5, 2.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.5, 2.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.5, 2.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 1.5, 2.5] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xi" : 300, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 2.5, 2.5] }
+
+    ], // end tc
+
+    // Array of parameters for the guidance molecules
+    "guidance": [
+        {
+            "shape"  : "Linear1D",
+            "gain"   : 1.0,
+            "phi"    : -60,
+            "width"  : 0.1,
+            "offset" : 0.0
+        },
+        {
+            "shape"  : "Linear1D",
+            "gain"   : 1.0,
+            "phi"    : 30,
+            "width"  : 0.1,
+            "offset" : 0.0
+        }
+    ] // end guidance
+}

@@ -5,10 +5,10 @@
  */
 {
     // Global simulation parameters
-    "steps" : 24000,                // Number of steps to simulate for
-    "logevery": 1000,
+    "steps" : 50000,                // Number of steps to simulate for
+    "logevery": 5000,
     "overwrite_logs": true,
-    "logbase": "/home/seb/gdrive_usfd/data/BarrelEmerge/",
+    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/",
     "hextohex_d" : 0.02,           // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/rect1.svg",
     "boundaryFalloffDist" : 0.01,
@@ -22,11 +22,11 @@
     // Timestep. Defaults to 0.00001 if omitted here
     "dt" : 0.00005,
 
-    "contour_threshold" : 0.2,
+    "contour_threshold" : 0.5,
 
     // Visualization parameters (ignored by computation-only binaries)
     "win_width_contours": 1920,
-    "plotevery": 300,
+    "plotevery": 100,
     "vidframes": true,    // If true, number video frame saves consecutively, rather than by simulation step number
     "rhoInit": 1.8, // Larger to zoom out
     //
@@ -47,6 +47,10 @@
 
     "aNoiseGain" : 0.2,
     "aInitialOffset" : 0.2,
+
+    "plot_dr_with_guide" : false,
+    "hshift" : 0.5,
+    "g_hshift" : 0.35,
 
     // Array of parameters for N thalamocortical populations.
     "tc": [// 165 works for 50000 steps. 160 not there for 135000 steps. Critical epsilon between these values

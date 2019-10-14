@@ -5,13 +5,13 @@
  */
 {
     // Global simulation parameters
-    "steps" : 400000,                // Number of steps to simulate for
-    "logevery": 1000,
+    "steps" : 250000,                // Number of steps to simulate for
+    "logevery": 10000,
     "overwrite_logs": true,
     "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/",
-    "hextohex_d" : 0.01,           // Hex to hex distance, determines num hexes
+    "hextohex_d" : 0.015,           // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/whiskerbarrels.svg",
-    "boundaryFalloffDist" : 0.02,
+    "boundaryFalloffDist" : 0.03,
     "D" : 0.2,
     "E" : 0.0,
 
@@ -20,13 +20,13 @@
     "l" : 3,
 
     // Timestep. Defaults to 0.00001 if omitted here
-    "dt" : 0.000005,
+    "dt" : 0.000001,
 
-    "contour_threshold" : 0.2,
+    "contour_threshold" : 0.35,
 
     // Visualization parameters (ignored by computation-only binaries)
     "win_width_contours": 1920,
-    "plotevery": 100,
+    "plotevery": 500,
     "vidframes": true,    // If true, number video frame saves consecutively, rather than by simulation step number
     "rhoInit": 1.8, // Larger to zoom out
     //
@@ -46,6 +46,12 @@
     "plot_divJ" : false,
     "plot_dr": true,
     "do_dirichlet_analysis": true,
+
+    "plot_dr_with_guide" : false,
+    "hshift" : 0.5,
+    "vshift" : 0.4,
+    "g_hshift" : 0.3,
+    "g_vshift" : -0.4,
 
     "aNoiseGain" : 0.2,
     "aInitialOffset" : 0.2,

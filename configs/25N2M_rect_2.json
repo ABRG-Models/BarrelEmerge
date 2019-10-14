@@ -5,11 +5,11 @@
  */
 {
     // Global simulation parameters
-    "steps" : 24000,                // Number of steps to simulate for
-    "logevery": 1000,
+    "steps" : 50000,                // Number of steps to simulate for
+    "logevery": 5000,
     "overwrite_logs": true,
     "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/",
-    "hextohex_d" : 0.015,           // Hex to hex distance, determines num hexes
+    "hextohex_d" : 0.02,           // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/rect2.svg",
     "boundaryFalloffDist" : 0.01,
     "D" : 0.2,
@@ -22,15 +22,16 @@
     // Timestep. Defaults to 0.00001 if omitted here
     "dt" : 0.00005,
 
-    "contour_threshold" : 0.2,
+    "contour_threshold" : 0.5,
 
     // Visualization parameters (ignored by computation-only binaries)
-    "plotevery": 300,
+    "win_width_contours": 1920,
+    "plotevery": 100,
     "vidframes": true,    // If true, number video frame saves consecutively, rather than by simulation step number
-    "rhoInit": 2.2, // Larger to zoom out
+    "rhoInit": 2.4, // Larger to zoom out
     //
     "plot_guide" : true,
-    "plot_contours" : false,
+    "plot_contours" : true,
     "plot_a_contours" : false,
     "plot_a" : false,
     "plot_c" : false,
@@ -46,6 +47,10 @@
 
     "aNoiseGain" : 0.2,
     "aInitialOffset" : 0.2,
+
+    "plot_dr_with_guide" : false,
+    "hshift" : 0.48,
+    "g_hshift" : 0.56,
 
     // Array of parameters for N thalamocortical populations.
     "tc": [// 165 works for 50000 steps. 160 not there for 135000 steps. Critical epsilon between these values
@@ -134,6 +139,7 @@
     "guidance": [
         {
             "shape"  : "Linear1D",
+            "time_onset"  : 0,
             "gain"   : 1.0,
             "phi"    : -90, // Horizontal, high at bottom, low at top
             "width"  : 0.1,
@@ -141,6 +147,7 @@
         },
         {
             "shape"  : "Linear1D",
+            "time_onset"  : 0,
             "gain"   : 1.0,
             "phi"    : 0, // Vertical, high at right, low at left
             "width"  : 0.1,

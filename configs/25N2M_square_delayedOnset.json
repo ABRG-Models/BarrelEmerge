@@ -17,18 +17,18 @@
 
     // Exponent parameters
     "k" : 3,
-    "l" : 1,
+    "l" : 3,
 
     // Timestep. Defaults to 0.00001 if omitted here
     "dt" : 0.00005,
 
-    "contour_threshold" : 0.5,
+    "contour_threshold" : 0.2,
 
     // Visualization parameters (ignored by computation-only binaries)
     "win_width_contours": 1920,
     "plotevery": 100,
     "vidframes": true,    // If true, number video frame saves consecutively, rather than by simulation step number
-    "rhoInit": 1.8, // Larger to zoom out
+    "rhoInit": 2.0, // Larger to zoom out
     //
     "plot_guide" : true,
     "plot_contours" : true,
@@ -48,92 +48,93 @@
     "aNoiseGain" : 0.2,
     "aInitialOffset" : 0.2,
 
-    "plot_dr_with_guide" : false,
-    "hshift" : 0.55,
-    "g_hshift" : 0.05,
-
     // Array of parameters for N thalamocortical populations.
     "tc": [// 165 works for 50000 steps. 160 not there for 135000 steps. Critical epsilon between these values
 
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+        // An idea to have an additional population to "surround" the 25 competing TC types
+        //{ "alpha" : 3, "beta" : 20, "epsilon" : -10,
+        //  "xinit" : 0.0,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
+        //  "gamma" : [0,0] },
+
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-2,-2] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [-2,-2,-2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-1,-2] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [-1,-2,-2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [0,-2] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [0,0,-2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [1,-2] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [1,1,-2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [2,-2] }
+          "gamma" : [2,2,-2] }
         ,
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-2,-1] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [-2,-2,-1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-1,-1] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [-1,-1,-1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [0,-1] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [0,0,-1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [1,-1] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [1,1,-1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [2,-1] }
+          "gamma" : [2,2,-1] }
         ,
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-2,0] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [-2,-2,0] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-1,0] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [-1,-1,0] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [0,0] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [0,0,0] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [1,0] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [1,1,0] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [2,0] }
+          "gamma" : [2,2,0] }
         ,
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-2,1] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [-2,-2,1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-1,1] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [-1,-1,1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [0,1] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [0,0,1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [1,1] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [1,1,1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [2,1] }
+          "gamma" : [2,2,1] }
         ,
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-2,2] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [-2,-2,2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [-1,2] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [-1,-1,2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [0,2] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [0,0,2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [1,2] },
-        { "alpha" : 3, "beta" : 20, "epsilon" : 200,
+          "gamma" : [1,1,2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 300,
           "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0,
-          "gamma" : [2,2] }
+          "gamma" : [2,2,2] }
     ], // end tc
 
     // Array of parameters for the guidance molecules
@@ -141,7 +142,15 @@
         {
             "shape"  : "Linear1D",
             "time_onset"  : 0,
-            "gain"   : 1.0,
+            "gain"   : 1.0, // Major part comes on at step x
+            "phi"    : -90, // Horizontal, high at bottom, low at top
+            "width"  : 0.1,
+            "offset" : 0.0 // 0.65
+        },
+        {
+            "shape"  : "Linear1D",
+            "time_onset"  : 50000,
+            "gain"   : 0.05, // Minor part comes on at step y
             "phi"    : -90, // Horizontal, high at bottom, low at top
             "width"  : 0.1,
             "offset" : 0.0 // 0.65
