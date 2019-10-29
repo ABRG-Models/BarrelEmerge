@@ -1,0 +1,136 @@
+/*
+ * This configuration has 5 TC axon types and attempts to define 5
+ * rows using a single guidance gradient. In this config, the
+ * competition is turned ON, allowing rows to form.
+ */
+{
+    // Global simulation parameters
+    "steps" : 10,                // Number of steps to simulate for
+    "logevery": 1,
+    "overwrite_logs": true,
+    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/",
+    "hextohex_d" : 0.015,           // Hex to hex distance, determines num hexes
+    "svgpath" : "./boundaries/whiskerbarrels.svg",
+    "boundaryFalloffDist" : 0.03,
+    "D" : 0.2,
+    "E" : 0.0,
+
+    // Exponent parameters
+    "k" : 3,
+    "l" : 3,
+
+    // Timestep. Defaults to 0.00001 if omitted here
+    "dt" : 0.000001,
+
+    "contour_threshold" : 0.35,
+
+    // Visualization parameters (ignored by computation-only binaries)
+    "win_width_contours": 720,
+    "plotevery": 1,
+    "vidframes": true,    // If true, number video frame saves consecutively, rather than by simulation step number
+    "rhoInit": 1.8, // Larger to zoom out
+    //
+    "plot_guide" : true,
+    "plot_contours" : true,
+    "plot_a_contours" : false,
+    "plot_a" : false,
+    "plot_c" : false,
+    "plot_n" : false,
+    "scale_a" : false,
+    "scale_c" : false,
+    "scale_n" : false,
+
+    //
+    "plot_guidegrad" : false,
+    "plot_divg" : false,
+    "plot_divJ" : false,
+    "plot_dr": true,
+    "do_dirichlet_analysis": true,
+
+    "plot_dr_with_guide" : false,
+    "hshift" : 0.5,
+    "vshift" : 0.4,
+    "g_hshift" : 0.3,
+    "g_vshift" : -0.4,
+
+    "aNoiseGain" : 0.2,
+    "aInitialOffset" : 0.2,
+
+    // Array of parameters for N thalamocortical populations.
+    "tc": [// 165 works for 50000 steps. 160 not there for 135000 steps. Critical epsilon between these values
+        // Curvey row far right
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.00, -2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.67, -2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.33, -2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.00, -2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.67, -2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.33, -2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.00, -2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.33, -2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.67, -2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 1.00, -2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 1.33, -2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 1.67, -2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 2.00, -2] },
+        //
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.0, -1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.6, -1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.2, -1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.8, -1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.4, -1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.0, -1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.4, -1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.8, -1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 1.2, -1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 1.6, -1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 2.0, -1] },
+        //
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.0,  0] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.6,  0] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.2,  0] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.8,  0] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.4,  0] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.0,  0] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.4,  0] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.8,  0] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 1.2,  0] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 1.6,  0] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 2.0,  0] },
+        //
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.00, 1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.33, 1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.67, 1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.00, 1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.67, 1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 1.33, 1] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 2.00, 1] },
+        //
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.0, 2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.5, 2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.0, 2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.5, 2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.0, 2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 0.5, 2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 1.0, 2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 1.5, 2] },
+        { "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [ 2.0, 2] }
+    ], // end tc
+
+    // Array of parameters for the guidance molecules
+    "guidance": [
+        {
+            "shape"  : "CircLinear2D",
+            "gain"   : 1.0,
+            "phi"    : -60,
+            "width"  : 2,
+            "offset" : 1.0
+        },
+        {
+            "shape"  : "Linear1D",
+            "gain"   : 1.0,
+            "phi"    : 40,
+            "width"  : 0.0,
+            "offset" : 2.5
+        }
+    ] // end guidance
+}
