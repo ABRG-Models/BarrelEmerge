@@ -65,7 +65,7 @@ def surface (dmatrix, x, y, ix, title):
     F1 = plt.figure (figsize=(8,6))
     f1 = F1.add_subplot(1,1,1)
     f1.set_title(title)
-    f1.scatter (x, y, c=dmatrix, marker='h', cmap=plt.cm.plasma)
+    f1.scatter (x, y, c=dmatrix, marker='h', cmap=plt.cm.jet)
     f1.scatter (x[ix], y[ix], s=32, marker='o', color='k')
     return f1
 
