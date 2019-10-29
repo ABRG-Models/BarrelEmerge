@@ -105,8 +105,9 @@
 \definecolor{eqgreen}{rgb}{0.220, 0.463, 0.114}
 \definecolor{eqblue}{rgb}{0.235, 0.471, 0.847}
 \definecolor{eqred}{rgb}{1.0, 0.0, 0.0}
-\definecolor{eqgrey}{rgb}{0.8, 0.8, 0.8}
+\definecolor{eqgrey}{rgb}{0.6, 0.6, 0.63}
 \definecolor{eqcomp}{rgb}{0.0, 0.0, 0.0}
+\definecolor{eqpurp}{rgb}{0.8, 0.1, 0.8}
 
 % Caption font size to be small.
 \usepackage[font=small,labelfont=bf]{caption}
@@ -194,8 +195,8 @@
 \section{Karbowski system with N TCs and M gradients}
 %
 \begin{equation} \label{eq:Karb2D_dc}
-\frac{\partial \color{eqgreen}\boldsymbol{c}_i(\mb{x},t)\color{black}}{\partial t} = -\alpha \color{eqgreen}\boldsymbol{c}_i(\mb{x},t)\color{black} + \beta \color{eqred}\boldsymbol{n}(\mb{x},t)\color{black}
-[\color{eqblue}\boldsymbol{a}_i(\mb{x},t)\color{black}]^k
+\frac{\partial \color{eqgreen}\boldsymbol{c}_i\color{black}}{\partial t} = -\alpha \color{eqgreen}\boldsymbol{c}_i\color{black} + \beta \color{eqred}\boldsymbol{n}\color{black}
+[\color{eqblue}\boldsymbol{a}_i\color{black}]^k
 \end{equation}
 %
 \begin{equation} \label{eq:Karb2D_conserve}
@@ -208,14 +209,14 @@
 \end{equation}
 with the flux current
 \begin{equation} \label{eq:Karb2D_J}
-\color{eqblue}\mb{J}_i(\mb{x},t)\color{black} = D \nabla \color{eqblue}\boldsymbol{a}_i\color{black} - \color{eqblue}\boldsymbol{a}_i\color{black}
-\sum_{j=1}^M \big(\gamma_{i,j} \nabla\rho_j(\mb{x}) \big)
+\color{eqblue}\mb{J}_i\color{black} = D \nabla \color{eqblue}\boldsymbol{a}_i\color{black} - \color{eqblue}\boldsymbol{a}_i\color{black}
+\sum_{j=1}^M \gamma_{i,j} \nabla\color{eqpurp}\boldsymbol{\rho}_j\color{black}
 \end{equation}
 %
 The boundary condition applied to these equations is:
 %
 \begin{equation}
-\color{eqblue}\mb{J}_i(\mb{x},t)\color{black} \bigg\rvert_{boundary} = 0
+\color{eqblue}\mb{J}_i\color{black} \bigg\rvert_{boundary} = 0
 \end{equation}
 
 \section{Karbowski system with N TCs and M gradients plus competition}
