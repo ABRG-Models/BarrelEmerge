@@ -129,10 +129,10 @@ Spatial patterns in neural connectivity provide clues about the constraints
 under which brains evolve and develop. Whether or not patterning governs
 information processing, models of the development of information processing
 circuits can be validated in terms of their ability to account for biological
-patterning (\citealp{Purves1992}; see also
-\citealp{Wilson2015,Bednar2016}). One of the most distinctive patterns of
+patterning (\citealp{purves_iterated_1992}; see also
+\citealp{wilson_what_2015,bednar_cortical_2016}). One of the most distinctive patterns of
 neural connectivity is found in the rodent barrel cortex
-(\citealp{Woolsey1948,Woolsey1970,Welker1974}, see
+(\citealp{woolsey_pattern_1948,woolsey_structural_1970,welker_structure_1974}, see
 \citealp{Fox2008}). Understanding how this particular pattern forms might shed
 light on the interplay of genetic and extrinsic factors that shape cortical
 circuits, and on a wealth of anatomical, physiological, and behavioural data
@@ -165,7 +165,7 @@ thalamic calcium waves that propagate via mGlu5-receptor activation
 (\citealp{Anton2019}, see also \citealp{Anton2018}). Patterning also depends
 on a complex network of axon guidance processes, which includes interactions
 between guidance molecules like ephrin-A5 and A7 \citep{Miller2006} and
-between adhesion molecules like cadherin-6 and 8 \citep{Greig2013,Bishop2000},
+between adhesion molecules like cadherin-6 and 8 \citep{greig_molecular_2013,Bishop2000},
 and the binding of p75 to neurotropins (\citealp{Shimogori2005,Bishop2002};
 see also \citealp{Dye2011a,Dye2011b}). This network is orchestrated by
 interactions between morphogens Fgf8 and Fgf17 and transcription factors Emx2,
@@ -248,7 +248,7 @@ reciprocally coupled, resulting in an expression for the change in $c_i$ as a
 function of $a_i$, and for the change in $a_i$ as a function of
 $c_i$. Synaptogenesis is modelled as
 
-\begin{equation} \label{eq:Karb2DExt_dc}
+\begin{equation} \label{eq:dc}
 \frac{\partial c_i(\mb{x},t)}{\partial t} =-\alpha c_i(\mb{x},t) +\beta  \left(1 - \sum_{i'=1}^{N} c_{i'}(\mb{x}, t)\right)[a_i(\mb{x},t)]^k.
 \end{equation}
 
@@ -265,7 +265,7 @@ influence of guidance molecules and on the density of branches at
 adjacent cortical locations:
 
 %
-\begin{equation} \label{eq:Karb2DExt_da}
+\begin{equation} \label{eq:da}
 \frac{\partial a_i(\mb{x},t)}{\partial t} = \nabla\vcdot\left(D \nabla a_i(\mb{x},t)-a_i(\mb{x},t)\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x})\right) - \frac{\partial c_i(\mb{x},t)}{\partial t} + \chi.
 \end{equation}
 
@@ -320,37 +320,14 @@ graphics (.svg) file format, on the lattice. The dynamics were numerically
 integrated using fourth-order Runge-Kutta, and using a {\color{red} finite
   difference method} to compute the flux term (see Supplementary Materials).
 
-\cmnt{Start from the thalamic barreloids, to generate the interaction
-  parameters}
-
-% Include figure ../boundaries/barreloids_vanderloos_graph.png
-\begin{figure*}
-\begin{center}
-\includegraphics[width=\textwidth]{../boundaries/barreloids_vanderloos_graph.png}
-\end{center}
-\vspace{-2em}
-\caption{Barreloid centres taken from \cite{van_der_loos_1976}, Fig.~2
-  are shown as black circles. It is assumed that there are at least
-  two linearly increasing, orthogonal signalling gradients in the
-  thalamus (side graphs - addme!), such that the location of each
-  barreloid within the graded thalamic signal field can differentiate
-  the efferent axons, with the result that axons from each barreloid
-  interact to varying degrees with cortical signalling
-  gradients. Coloured arrows show, for each barreloid, the magnitude
-  of the interaction that its thalamocortical projection will have
-  with the four signalling gradients in the cortex. The mappings from
-  barreloid location to interaction strength are linear.}
-\label{fig:barreloids}
-\end{figure*}
-
 \section*{Results}
 
 \cmnt{If we need to present the results of the 2-D system with $\chi=0$, then
   we'll do that first, showing a 2-D version of the simulation obtained by
   running \code{james0 configs/karb.json}}
 
-We first verified that the system given by Eqns. \ref{eq:Karb2DExt_dc} \&
-\ref{eq:Karb2DExt_da} described a two dimensional extension of the axon
+We first verified that the system given by Eqns. \ref{eq:dc} \&
+\ref{eq:da} described a two dimensional extension of the axon
 branching model in \citet{Karbowski2004}. We showed that in the presence of
 three guidance gradients varying only in one dimension (along the long axis of
 an elliptical domain), five thalamocortical axon types, each interacting
@@ -364,24 +341,27 @@ patterns.
 
 Complex structure can indeed be observed in protein expression for some genes,
 such as the molecules Bhlhb5 \citep{Joshi2008} and Lmo4
-\citep{Cederquist2013,Greig2013}. These expression patterns can therefore
+\citep{Cederquist2013,greig_molecular_2013}. These expression patterns can therefore
 provide a theoretical mechanism for the guidance of axons into distinct
-regions, shifting the explanation of how such structures are generated into
-the realm of gene transcriptional interactions and mRNA diffusion/movement
-(\cmnt{Fixme: find a ref on structure in gene transcription}). However,
-complex, stable structure in gene expression is less commonly reported than
-homogeneous or simply varying expression, such as Pax6, Emx2, Sp8 and Coup-tf1 which
-display graded expression across the entire isocortex
-(\cmnt{REFS}). Furthermore, the complex structure observed in the whisker
-barrel field has not, to our knowledge, been linked to a complex set of gene
-expression patterns matching the scale of the barrels. To investigate how the
-whisker barrel structure might form in the presence of only two
-coordinate-giving morphogen gradients, we turned our attention to the
+regions. The question of how such structures are generated becomes one of of
+how gene transcriptional interactions and mRNA diffusion and movement achieves
+this (\cmnt{Fixme: find a ref on structure in gene transcription}). However,
+complex and stable structure in gene expression data is commonly reported;
+monotonically varying expression patterns, such as those for Pax6, Emx2, Sp8
+and Coup-tf1 which display graded expression across the entire isocortex
+(\cmnt{REFS}) are more typical. Furthermore, the complex structure observed in
+the whisker barrel field has not, to our knowledge, been linked to a complex
+set of gene expression patterns matching the scale of the barrels. To
+investigate how the whisker barrel structure might form in the presence of
+only monotonically varying morphogen gradients, we turned our attention to the
 competition for connections built into the model.
 
+
+\subsection*{Competition is required to form somatotopically ordered barrels}
+
 There exists an element of competition in the model system specified by
-Eqns. \ref{eq:Karb2DExt_dc} \& \ref{eq:Karb2DExt_da}. The term $\left(1 -
-\sum_{i=1}^{N} c_i(\mb{x}, t)\right)$ ensures that once the available synaptic
+Eqns. \ref{eq:dc} \& \ref{eq:da}. The term $\left(1 -
+\sum_{i=1}^{N} c_i(\mb{x}, t)\right)$ in Eq.~\ref{eq:dc} ensures that once the available synaptic
 receptors in a region have been fully occupied, say by thalamocortical types
 $i=2$ and $i=3$, there is no longer the possibility for type $i=1$ to form any
 synapses. This competition turns out to be relatively weak, because it does
@@ -405,11 +385,28 @@ strength of the branching competition. The factor $1/(N-1)$ ensures that the
 branching competition strength scales with the number of TC axons in the
 system.
 
-\subsection*{Competition is required to form somatotopically ordered barrels}
+\cmnt{Start from the thalamic barreloids, to generate the interaction
+  parameters}
 
-Formation of a grid of domains, with somatotopic ordering.
-
-Fig of domains.
+% Include figure ../boundaries/barreloids_vanderloos_graph.png
+\begin{figure*}
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../boundaries/barreloids_vanderloos_graph.png}
+\end{center}
+%\vspace{-0em}
+\caption{Barreloid centres taken from \cite{van_der_loos_1976}, Fig.~2
+  are shown as black circles. It is assumed that there are at least
+  two linearly increasing, orthogonal signalling gradients in the
+  thalamus (side graphs - addme!), such that the location of each
+  barreloid within the graded thalamic signal field can differentiate
+  the efferent axons, with the result that axons from each barreloid
+  interact to varying degrees with cortical signalling
+  gradients. Coloured arrows show, for each barreloid, the magnitude
+  of the interaction that its thalamocortical projection will have
+  with the four signalling gradients in the cortex. The mappings from
+  barreloid location to interaction strength are linear.}
+\label{fig:barreloids}
+\end{figure*}
 
 \subsection*{The barrel field reacts to changes in the expression pattern of guidance molecules}
 
@@ -490,7 +487,7 @@ asymmetry between the barrel rows and arcs, and identified {\color{red} XXXXX}
 as the most likely candidate for the elongation of barrel shapes along the
 rows.
 
-\bibliography{bibfile}
+\bibliography{BarrelEmerge}
 
 \end{document}
 
@@ -529,16 +526,16 @@ The boundary condition applied to these equations is:
 \section{App 2: Karbowski system with N TCs and M gradients plus competition}
 
 %
-\begin{equation} \label{eq:Karb2DExt_dc}
+\begin{equation} \label{eq:dc2}
 \frac{\partial c_i(\mb{x},t)}{\partial t} = -\alpha c_i(\mb{x},t) + \beta n(\mb{x},t)
 [a_i(\mb{x},t)]^k
 \end{equation}
 %
-\begin{equation} \label{eq:Karb2DExt_conserve}
+\begin{equation} \label{eq:conserve}
 n(\mb{x},t) = 1 - \sum_{i=1}^{N} c_i(\mb{x}, t)
 \end{equation}
 %
-\begin{equation} \label{eq:Karb2DExt_da}
+\begin{equation} \label{eq:da2}
 \frac{\partial a_i(\mb{x},t)}{\partial t}
 = \nabla\vcdot\mb{J}_i(\mb{x},t) - \frac{\partial c_i(\mb{x},t)}{\partial t}- \frac{\epsilon_i  a_i}{N-1} \sum_{j \ne i}^{N} a_j(\mb{x}, t)^l
 \end{equation}
