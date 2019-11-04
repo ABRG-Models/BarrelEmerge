@@ -33,7 +33,7 @@ yar = []
 gmax = 2.0
 gmin = 0.0
 
-with open('barreloids_vanderloos_dia_only.csv') as csvDataFile:
+with open('barreloids_haidarliu.csv') as csvDataFile:
     csvReader = csv.reader (csvDataFile)
 
     # Run through and find max x and max y, and read x, y and label
@@ -132,6 +132,6 @@ ax0.set_ylabel('Lateral to medial axis [mm]')
 
 F0.tight_layout()
 
-plt.savefig ('barreloids_vanderloos_graph.png')
+plt.savefig ('barreloids_haidarliu_graph.png')
 
 plt.show();
