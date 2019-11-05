@@ -64,8 +64,8 @@ with open('barreloids_haidarliu.csv') as csvDataFile:
 
 # Output the text for the config file
 for d in D:
-    print ('{0}'.format(d))
-    #print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}, {9}, {10}] }}, // {11}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, D[d][2], D[d][3], D[d][4], D[d][5], d))
+    #print ('{0}'.format(d))
+    print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}, {9}, {10}] }}, // {11}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, D[d][2], D[d][3], D[d][4], D[d][5], d))
 
 # Draw a scatter graph
 fs = 16
