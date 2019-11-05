@@ -64,7 +64,8 @@ with open('barreloids_haidarliu.csv') as csvDataFile:
 
 # Output the text for the config file
 for d in D:
-    print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}, {9}, {10}] }}, // {11}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, D[d][2], D[d][3], D[d][4], D[d][5], d))
+    print ('{0}'.format(d))
+    #print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}, {9}, {10}] }}, // {11}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, D[d][2], D[d][3], D[d][4], D[d][5], d))
 
 # Draw a scatter graph
 fs = 16
@@ -76,8 +77,11 @@ matplotlib.rcParams['text.usetex'] = True
 
 F0 = plt.figure (figsize=(9,7))
 ax0 = F0.add_subplot (1, 1, 1)
-ax0.set_xlim([0.0, 0.43])
-ax0.set_ylim([0.03, 0.48])
+#ax0.set_xlim([0.0, 0.43])
+#ax0.set_ylim([0.03, 0.48])
+
+txt_xoff = 0.005
+txt_yoff = -0.02
 
 g1qui = np.array([])
 g2qui = np.array([])
@@ -85,17 +89,17 @@ g3qui = np.array([])
 g4qui = np.array([])
 xqui = np.array([])
 yqui = np.array([])
-for d in D:
+for d in D: # Care, requires that there are no duplicate labels
     if d == 'a':
-        ax0.text (D[d][0]+0.005, D[d][1]-0.02, '$\\alpha$')
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '$\\alpha$')
     elif d == 'b':
-        ax0.text (D[d][0]+0.005, D[d][1]-0.02, '$\\beta$')
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '$\\beta$')
     elif d == 'c':
-        ax0.text (D[d][0]+0.005, D[d][1]-0.02, '$\\gamma$')
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '$\\gamma$')
     elif d == 'd':
-        ax0.text (D[d][0]+0.005, D[d][1]-0.02, '$\\delta$')
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '$\\delta$')
     else:
-        ax0.text (D[d][0]+0.005, D[d][1]-0.02, '$\\mathsf{{ {0} }}$'.format(d))
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '$\\mathsf{{ {0} }}$'.format(d))
     # Build lists for quiver plots
     g1qui = np.append(g1qui, D[d][2])
     g2qui = np.append(g2qui, D[d][3])
