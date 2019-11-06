@@ -13,7 +13,7 @@ import csv
 D = {}
 
 # Params for the output text
-epsilon = 200
+epsilon = 170
 alpha = 3
 beta = 20
 xinit = -0.16
@@ -62,10 +62,18 @@ with open('barreloids_haidarliu.csv') as csvDataFile:
         # stick array in a dictionary keyed by lbl
         D[lbl] = ar
 
+# Produce guidance interactions for 4 gradients (two opposing pairs, orthogonally
+# arranged) or two orthogonal gradients for which interactions will be positive or
+# negative.
+show_four = 0 # Else show two
+
 # Output the text for the config file
 for d in D:
     #print ('{0}'.format(d))
-    print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}, {9}, {10}] }}, // {11}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, D[d][2], D[d][3], D[d][4], D[d][5], d))
+    if show_four:
+        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}, {9}, {10}] }}, // {11}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, D[d][2], D[d][3], D[d][4], D[d][5], d))
+    else:
+        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}] }}, // {9}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, (D[d][2]-D[d][3]), (D[d][4]-D[d][5]), d))
 
 # Draw a scatter graph
 fs = 16
@@ -108,26 +116,17 @@ for d in D: # Care, requires that there are no duplicate labels
     xqui = np.append(xqui, D[d][0])
     yqui = np.append(yqui, D[d][1])
 
-show_four = 1
 sm = 12 # scalemult
 
-offset_arrows = 0
-if offset_arrows:
-    if show_four:
-        ax0.quiver (xqui-(g1qui*0.25)/(gmax*sm), yqui+0.02, g1qui, 0, color='r', width=0.003, scale=gmax*sm)
-        ax0.quiver (xqui+(g2qui*0.25)/(gmax*sm), yqui+0.03, -g2qui, 0, color='m', width=0.003, scale=gmax*sm)
-        ax0.quiver (xqui-0.01, yqui-(g3qui*0.25)/(gmax*sm)-0.0, 0, g3qui, color='b', width=0.003, scale=gmax*sm)
-        ax0.quiver (xqui-0.02, yqui+(g4qui*0.25)/(gmax*sm)-0.0, 0, -g4qui, color='c', width=0.003, scale=gmax*sm)
-    else:
-        ax0.quiver (xqui, yqui, g1qui-g2qui, g3qui-g4qui, color='k', width=0.003)
-
-    ax0.scatter (xqui, yqui, c='k', s=120, marker='o')
-
-else:
+if show_four:
     ax0.quiver (xqui, yqui, g1qui, 0, color='r', width=0.003, scale=gmax*sm)
     ax0.quiver (xqui, yqui, -g2qui, 0, color='m', width=0.003, scale=gmax*sm)
     ax0.quiver (xqui, yqui, 0, g3qui, color='b', width=0.003, scale=gmax*sm)
     ax0.quiver (xqui, yqui, 0, -g4qui, color='c', width=0.003, scale=gmax*sm)
+else:
+    ax0.quiver (xqui, yqui, g1qui-g2qui, 0, color='r', width=0.003, scale=gmax*sm)
+    ax0.quiver (xqui, yqui, 0, g3qui-g4qui, color='b', width=0.003, scale=gmax*sm)
+
 
     ax0.scatter (xqui, yqui, c='k', s=70, marker='o')
 
