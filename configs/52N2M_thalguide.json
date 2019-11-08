@@ -119,14 +119,14 @@
         {
             "shape"  : "Linear1D", // 'x'
             "gain"   : 1.0,
-            "phi"    : 133,
+            "phi"    : 43,
             "width"  : 0.1,
             "offset" : 0.0
         },
         {
             "shape"  : "Linear1D", // 'y'
             "gain"   : 1.0,
-            "phi"    : 223,
+            "phi"    : -47,
             "width"  : 0.1,
             "offset" : 0.0
         }
