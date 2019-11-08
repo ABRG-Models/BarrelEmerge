@@ -6,6 +6,8 @@ import matplotlib
 matplotlib.use ('TKAgg', warn=False, force=True)
 import matplotlib.pyplot as plt
 
+from scipy.spatial import Voronoi, voronoi_plot_2d
+
 # First load data
 import csv
 
@@ -81,9 +83,10 @@ fnt = {'family' : 'DejaVu Sans',
        'weight' : 'regular',
        'size'   : fs}
 matplotlib.rc('font', **fnt)
-matplotlib.rcParams['text.usetex'] = True
+#matplotlib.rcParams['text.usetex'] = True
 
 F0 = plt.figure (figsize=(9,7))
+
 ax0 = F0.add_subplot (1, 1, 1)
 #ax0.set_xlim([0.0, 0.43])
 #ax0.set_ylim([0.03, 0.48])
@@ -99,15 +102,15 @@ xqui = np.array([])
 yqui = np.array([])
 for d in D: # Care, requires that there are no duplicate labels
     if d == 'a':
-        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '$\\alpha$')
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\alpha$')
     elif d == 'b':
-        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '$\\beta$')
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\beta$')
     elif d == 'c':
-        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '$\\gamma$')
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\gamma$')
     elif d == 'd':
-        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '$\\delta$')
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\delta$')
     else:
-        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '$\\mathsf{{ {0} }}$'.format(d))
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '{0}'.format(d))
     # Build lists for quiver plots
     g1qui = np.append(g1qui, D[d][2])
     g2qui = np.append(g2qui, D[d][3])
@@ -127,11 +130,33 @@ else:
     ax0.quiver (xqui, yqui, g1qui-g2qui, 0, color='r', width=0.003, scale=gmax*sm)
     ax0.quiver (xqui, yqui, 0, g3qui-g4qui, color='b', width=0.003, scale=gmax*sm)
 
-
-    ax0.scatter (xqui, yqui, c='k', s=70, marker='o')
+# Plot the actual centres:
+ax0.scatter (xqui, yqui, c='k', s=70, marker='o')
 
 ax0.set_xlabel('Posterior to anterior axis [mm]')
 ax0.set_ylabel('Lateral to medial axis [mm]')
+
+
+# Plot voronoi
+vpts = np.vstack((xqui,yqui)).T
+print ('vpts shape: {0}'.format(np.shape(vpts)))
+
+vor = Voronoi(vpts)
+#F2 = voronoi_plot_2d (vor, show_vertices=False, line_colors='orange', line_width=2, line_alpha=0.6)
+
+figured_out = False
+if figured_out:
+    vlast = []
+    first = True
+    for v in vor.vertices:
+        print ('v: {0}'.format(v))
+        if first == True:
+            first = False
+            vlast = v
+        else:
+            ax0.plot((vlast[0], v[0]), (vlast[1], v[1]))
+            vlast = v
+
 
 F0.tight_layout()
 
