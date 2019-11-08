@@ -69,6 +69,58 @@ def surface (dmatrix, x, y, ix, title):
     f1.scatter (x[ix], y[ix], s=32, marker='o', color='k')
     return f1
 
+# ...with names
+def surface_withnames (dmatrix, x, y, ix, title, idnames, domcentres):
+    fs = 16
+    fnt = {'family' : 'DejaVu Sans',
+           'weight' : 'regular',
+           'size'   : fs}
+    matplotlib.rc('font', **fnt)
+    F1 = plt.figure (figsize=(10,9))
+    f1 = F1.add_subplot(1,1,1)
+    #f1.set_title(title)
+    f1.scatter (x, y, c=dmatrix, marker='h', cmap=plt.cm.jet)
+    f1.set_xlabel('x (mm)')
+    f1.set_ylabel('y (mm)')
+    #f1.scatter (x[ix], y[ix], s=32, marker='o', color='k')
+    count = 0
+    idn_arr = []
+    for idn in idnames:
+        idn_arr.append(idn)
+        print ('{0}'.format(idn))
+        count = count + 1
+    N = count
+    count = 0
+    cmap = matplotlib.cm.get_cmap('Greys')
+    for dc in domcentres:
+        print('dc: {0}'.format(dc))
+
+        # Compute a greyscale colour for the text
+        cidx = count/N
+        clow = 0.2
+        cmid = 0.31
+        chi = 0.7
+        if cidx > clow and cidx < cmid:
+            cidx = clow
+        if cidx >= cmid and cidx < chi:
+            cidx = chi
+        # Place the text label for the barrel
+        if idn_arr[count] == 'a':
+            thechar = r'$\alpha$'
+        elif idn_arr[count] == 'b':
+            thechar = r'$\beta$'
+        elif idn_arr[count] == 'c':
+            thechar = r'$\gamma$'
+        elif idn_arr[count] == 'd':
+            thechar = r'$\delta$'
+        else:
+            thechar = idn_arr[count]
+
+        f1.text (dc[0], dc[1], thechar, fontsize=14, verticalalignment='center', horizontalalignment='center', color=cmap(cidx))
+
+        count = count + 1
+    return f1
+
 # Like surface, but make it a 3d projection
 def surface2 (dmatrix, x, y, ix, title):
     fs = 12

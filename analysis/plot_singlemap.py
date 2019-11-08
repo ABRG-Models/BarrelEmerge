@@ -33,7 +33,7 @@ else:
     ti = -1
 
 # Read the data
-(x, y, t, cmatrix, amatrix, nmatrix, idmatrix, tarea) = ld.readSimDataFiles (logdirname)
+(x, y, t, cmatrix, amatrix, nmatrix, idmatrix, tarea, idnames, domcentres) = ld.readSimDataFiles (logdirname)
 #for tg in range(0,4,4):
 idstring = 'id{0}'.format(0);
 print ('idstring: {0}'.format(idstring))
@@ -44,7 +44,8 @@ print ('idmatrix shape: {0}'.format(shp))
 if ti == -1:
     ti = shp[1]-1
 print ('ti = {0}'.format(ti))
-f1 = pt.surface (idmatrix[:,ti], x, y, 0, idstring)
+f1 = pt.surface_withnames (idmatrix[:,ti], x, y, 0, idstring, idnames, domcentres[ti,:,:])
 
+plt.savefig('map.png')
 
 plt.show()

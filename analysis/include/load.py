@@ -6,6 +6,7 @@ import numpy as np
 from pathlib import Path
 import h5py
 import re
+import json
 
 def readDirichData (logdir):
 
@@ -100,6 +101,20 @@ def readSimDataFiles (logdir):
     totalarea = np.array(pf['area']);
     print ('HexGrid area: {0}'.format(totalarea))
 
+    # Get idnames from the parameters json file.
+    idnames = {}
+    count = 0
+    with open (logdir+'/params.json') as f:
+        jd = json.load(f)
+        tc = jd["tc"]
+        print ('tc length: {0}'.format(len(jd["tc"])))
+        N = len(jd["tc"])
+        for i in tc:
+            # Do a key-value thing
+            idnames[i["name"]] = count/N
+            print ('Set idnames["{0}"] = {1}'.format(i["name"], count/N))
+            count = count + 1
+
     # From ../logs get list of c_*.h5 files
     p = Path(logdir+'/')
     globstr = 'c_*.h5'
@@ -135,6 +150,8 @@ def readSimDataFiles (logdir):
     # Same for id matrix
     idmatrix = np.zeros([numhexes, numtimes], dtype=float)
 
+    domcentre = np.zeros([numtimes, N, 2], dtype=float)
+
     fileidx = 0
     for filename in files:
 
@@ -144,7 +161,7 @@ def readSimDataFiles (logdir):
         idxsearch = re.search(logdir+'/c_(.*).h5', '{0}'.format(filename))
         thetime = int('{0}'.format(idxsearch.group(1)))
         t[fileidx] = thetime
-        #print ('Time {0}: {1}'.format(fileidx, thetime))
+        print ('Time {0}: {1}'.format(fileidx, thetime))
 
         f = h5py.File(filename, 'r')
         klist = list(f.keys())
@@ -163,9 +180,17 @@ def readSimDataFiles (logdir):
                 if np.array(f[k]).size > 0:
                     idmatrix[:,fileidx] = np.array(f[k])
 
+        # Get domcentres
+        dcf_filename = '{0}/dirich_{1:05d}.h5'.format(logdir, thetime)
+        dcf = h5py.File (dcf_filename, 'r')
+        dom_id_list = list(dcf['reg_centroids_id'])
+        domcentre[fileidx, :, 0] = list(dcf['reg_centroids_x'])
+        domcentre[fileidx, :, 1] = list(dcf['reg_centroids_y'])
+
         fileidx = fileidx + 1
 
-    return (x, y, t, cmatrix, amatrix, nmatrix, idmatrix, totalarea)
+
+    return (x, y, t, cmatrix, amatrix, nmatrix, idmatrix, totalarea, idnames, domcentre)
 
 #
 # targ is a container of a target x,y coordinate. x and y are the
