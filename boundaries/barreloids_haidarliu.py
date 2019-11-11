@@ -82,7 +82,7 @@ with open('barreloids_haidarliu_boundary_ordered.csv') as csvDataFile:
 show_four = 0 # Else show two
 
 # Draw a scatter graph
-fs = 16
+fs = 24
 fnt = {'family' : 'DejaVu Sans',
        'weight' : 'regular',
        'size'   : fs}
@@ -108,6 +108,7 @@ g3qui = np.array([])
 g4qui = np.array([])
 xqui = np.array([])
 yqui = np.array([])
+small_size = ["E6","E7","E8","E9","E9","E10","E11","E12","E13","D6","D7","D8","D9","D9","D10","D11","D12","C10"]
 for d in D: # Care, requires that there are no duplicate labels
     if d == 'a':
         ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\alpha$')
@@ -117,9 +118,8 @@ for d in D: # Care, requires that there are no duplicate labels
         ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\gamma$')
     elif d == 'd':
         ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\delta$')
-    elif d == 'C10':
-        # Adjust positionslightly
-        ax0.text (D[d][0]+txt_xoff-0.01, D[d][1]+txt_yoff, '{0}'.format(d))
+    elif d in small_size:
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '{0}'.format(d), fontsize=14)
     else:
         ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '{0}'.format(d))
     # Build lists for quiver plots
@@ -234,10 +234,10 @@ voronoi_plot_2d (vor, ax=ax0, show_vertices=False, show_points=False, line_color
 
 ax0.set_xlim([-0.06, 0.34])
 ax0.set_ylim([-0.1, 0.42])
+ax0.yaxis.set_ticks_position('both')
 ax0.xaxis.set_ticks_position('both')
 # Tick labels on top, not bottom:
-ax0.xaxis.set_tick_params (labeltop='on',labelbottom='off')
-ax0.yaxis.set_ticks_position('both')
+ax0.xaxis.set_tick_params (labeltop=True,labelbottom=False)
 
 ax_r.plot ([0,1],[-0.1,0.42],'-',color='b')
 ax_r.set_xlabel ('Mol. B')
