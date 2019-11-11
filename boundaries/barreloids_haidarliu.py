@@ -88,13 +88,19 @@ fnt = {'family' : 'DejaVu Sans',
        'size'   : fs}
 matplotlib.rc('font', **fnt)
 #matplotlib.rcParams['text.usetex'] = True
+F0 = plt.figure (figsize=(15,15))
 
-F0 = plt.figure (figsize=(9,7))
+gw = 6
+gs = F0.add_gridspec (gw, gw)
 
-ax0 = F0.add_subplot (1, 1, 1)
+ax0 = F0.add_subplot (gs[:-1,:-1])
 
-txt_xoff = 0.005
-txt_yoff = -0.02
+ax_r = F0.add_subplot (gs[:-1,gw-1])
+ax_d = F0.add_subplot (gs[gw-1,:-1])
+
+
+txt_xoff = 0.003
+txt_yoff = -0.015
 
 g1qui = np.array([])
 g2qui = np.array([])
@@ -111,6 +117,9 @@ for d in D: # Care, requires that there are no duplicate labels
         ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\gamma$')
     elif d == 'd':
         ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\delta$')
+    elif d == 'C10':
+        # Adjust positionslightly
+        ax0.text (D[d][0]+txt_xoff-0.01, D[d][1]+txt_yoff, '{0}'.format(d))
     else:
         ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '{0}'.format(d))
     # Build lists for quiver plots
@@ -135,11 +144,8 @@ else:
 # Plot the actual centres:
 ax0.scatter (xqui, yqui, c='k', s=70, marker='o')
 
-ax0.set_xlabel('Posterior to anterior axis [mm]')
-ax0.set_ylabel('Lateral to medial axis [mm]')
-
 # Plot boundary
-ax0.plot (bndry_x, bndry_y, c='grey', marker='None', linestyle='--', linewidth=2)
+ax0.plot (bndry_x, bndry_y, c='grey', marker='None', linestyle='--', linewidth=2, label='boundary')
 
 # Plot voronoi
 vpts = np.vstack((xqui,yqui)).T
@@ -199,7 +205,8 @@ print ('vpts2 shape: {0}'.format(np.shape(vpts2)))
 areas_by_pos = np.vstack ((areas, vpts2.T)).T
 print ('areas_by_pos: {0}'.format (areas_by_pos))
 
-# For each in vts, find nearest position in areas_by_pos and show the area on the graph.
+# For each barreloid, find nearest position in areas_by_pos and record the area of the
+# barreloid's voronoi region in D
 areatotal = 0
 for d in D:
     x = D[d][0]
@@ -227,20 +234,40 @@ voronoi_plot_2d (vor, ax=ax0, show_vertices=False, show_points=False, line_color
 
 ax0.set_xlim([-0.06, 0.34])
 ax0.set_ylim([-0.1, 0.42])
+ax0.xaxis.set_ticks_position('both')
+# Tick labels on top, not bottom:
+ax0.xaxis.set_tick_params (labeltop='on',labelbottom='off')
+ax0.yaxis.set_ticks_position('both')
 
-#ax0.set_xlim([-0.15, 0.44])
-#ax0.set_ylim([-0.2, 0.52])
+ax_r.plot ([0,1],[-0.1,0.42],'-',color='b')
+ax_r.set_xlabel ('Mol. B')
+ax_r.yaxis.tick_right()
+#ax_r.xaxis.set_ticks_position('both')
+ax_r.yaxis.set_ticks_position('both')
+ax_d.plot ([-0.06,0.34],[0,1],'-',color='r')
+ax_d.xaxis.set_ticks_position('both')
+#ax_d.yaxis.set_ticks_position('both')
+ax_d.set_ylabel ('Mol. A')
+ax_d.set_xlim([-0.06, 0.34])
+ax_r.set_ylim([-0.1, 0.42])
 
-F0.tight_layout()
+ax0.set_xlabel('Posterior to anterior axis [mm]', labelpad=20)
+ax0.xaxis.set_label_position('top')
+ax_d.set_xlabel('Posterior to anterior axis [mm]', labelpad=20)
+
+ax0.set_ylabel('Lateral to medial axis [mm]')
+ax_r.set_ylabel('Lateral to medial axis [mm]', labelpad=10)
+ax_r.yaxis.set_label_position('right')
+
+F0.subplots_adjust (wspace=0.2, hspace=0.2)
 
 plt.savefig ('barreloids_haidarliu_graph.png')
 
 # To scale the gain by the area of each barreloid, set to 1
-area_to_gain = 1
+area_to_gain = 0
 
 # Output the text for the config file
 for d in D:
-    #print ('{0}'.format(d))
     gaininit = 1.0
     if area_to_gain:
         gaininit = (D[d][6]/meanarea)
