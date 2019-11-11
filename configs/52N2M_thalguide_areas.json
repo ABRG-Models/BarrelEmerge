@@ -1,0 +1,134 @@
+/*
+ * 52 barrels to arrange, corresponding to A, B, C, D, E rows, rhinal
+ * whiskers and the 4 straddlers.
+ */
+{
+    // Global simulation parameters
+    "steps" : 60000,                // Number of steps to simulate for
+    "logevery": 1000,
+    "overwrite_logs": true,
+    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/",
+    "hextohex_d" : 0.015,           // Hex to hex distance, determines num hexes
+    "svgpath" : "./boundaries/whiskerbarrels.svg",
+    "boundaryFalloffDist" : 0.03,
+    "D" : 0.2,
+    "E" : 0.0,
+
+    // gamma gain
+    "G" : 1.0,
+
+    // Exponent parameters
+    "k" : 3,
+    "l" : 1, // If not 1, then sim tends to blow up.
+
+    // Timestep. Defaults to 0.00001 if omitted here
+    "dt" : 0.0001,
+
+    "contour_threshold" : 0.35,
+
+    // Visualization parameters (ignored by computation-only binaries)
+    "win_width_contours": 1920,
+    "plotevery": 4,
+    "vidframes": true,    // If true, number video frame saves consecutively, rather than by simulation step number
+    "rhoInit": 1.8, // Larger to zoom out
+    //
+    "plot_guide" : true,
+    "plot_contours" : true,
+    "plot_a_contours" : false,
+    "plot_a" : false,
+    "plot_c" : false,
+    "plot_n" : false,
+    "scale_a" : false,
+    "scale_c" : false,
+    "scale_n" : false,
+
+    //
+    "plot_guidegrad" : false,
+    "plot_divg" : false,
+    "plot_divJ" : false,
+    "plot_dr": true,
+    "do_dirichlet_analysis": true,
+
+    "plot_dr_with_guide" : false,
+    "hshift" : 0.5,
+    "vshift" : 0.4,
+    "g_hshift" : 0.3,
+    "g_vshift" : -0.4,
+
+    "aNoiseGain" : 0.2,
+    "aInitialOffset" : 0.2,
+
+    // Array of parameters for N thalamocortical populations.
+    "tc": [
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.8552324407098244, "gamma" : [-1.3842487739182971, -2.327640621446677] }, // a
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.2673393983002883, "gamma" : [-2.1579780537281996, -1.7601517563467544] }, // A1
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.2665401754259338, "gamma" : [-2.1071053670819424, -1.1618678898879025] }, // A2
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0156290172863163, "gamma" : [-2.1080774566356926, -0.7160281547959112] }, // A3
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.8822702330754542, "gamma" : [-2.05516608217532, -0.2488892833173405] }, // A4
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.9027007007783432, "gamma" : [-0.27065268387850216, -2.3697729756113795] }, // b
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.5803708392771092, "gamma" : [-0.980291559359906, -1.676186567122786] }, // B1
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.285151250837895, "gamma" : [-1.1249843891868538, -1.148001264636223] }, // B2
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.043796596281172, "gamma" : [-1.2512480212239552, -0.6964928531413453] }, // B3
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.9638867067671784, "gamma" : [-1.2965176916923469, -0.2873497551153982] }, // B4
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 2.0156408188180692, "gamma" : [0.7446138475507055, -2.3955870851799053] }, // c
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.8646529811183288, "gamma" : [0.1644248976436955, -1.6268546611274122] }, // C1
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.9734956158994377, "gamma" : [0.02775180663518617, -0.788423031909878] }, // C2
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.5635229966992361, "gamma" : [-0.05378220468560668, -0.10571915091880257] }, // C3
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.2148087567273858, "gamma" : [-0.1879440643469279, 0.37865870907265553] }, // C4
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.9146769286726273, "gamma" : [-0.49151953123681524, 0.7576945903521568] }, // C5
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.48517286268309595, "gamma" : [-0.8409047183471776, 1.0082700553001014] }, // C6
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.38633694245927525, "gamma" : [-1.1681343643783184, 1.0684844887929934] }, // C7
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.3114300623975346, "gamma" : [-1.5047878785833142, 1.069782404916551] }, // C8
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.22037767827036037, "gamma" : [-1.7570586190252775, 1.0636589032054085] }, // C9
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.40441789612093715, "gamma" : [-1.9188845272370714, 1.0740755120944705] }, // C10
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 2.1752612627044052, "gamma" : [1.7480802918968912, -2.2005557743400876] }, // d
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.9183429142510948, "gamma" : [1.0943500669999224, -1.6168263177453976] }, // D1
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.9377593539475844, "gamma" : [1.0589228032632505, -0.5368491699438124] }, // D2
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.5776984028834589, "gamma" : [0.9858945755377713, 0.23318117023223817] }, // D3
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.2184044755047754, "gamma" : [0.7777053961096165, 0.7554759303118881] }, // D4
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.7987441747533129, "gamma" : [0.4890218011334292, 1.0972050430142715] }, // D5
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.5555181942107831, "gamma" : [0.13281848590301382, 1.2779259965943566] }, // D6
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.4542973887601256, "gamma" : [-0.20230938775234686, 1.370998785283628] }, // D7
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.3830935065926925, "gamma" : [-0.5738096122105248, 1.394516581710476] }, // D8
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.40294846013619945, "gamma" : [-0.8854048179188507, 1.463306136259006] }, // D9
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.40665604803035055, "gamma" : [-1.3152979218210477, 1.533327047129886] }, // D10
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.3447223476878759, "gamma" : [-1.6466994521870324, 1.5127156953557894] }, // D11
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.47006938734681175, "gamma" : [-1.9615214551640567, 1.4722695228216918] }, // D12
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.763843672334811, "gamma" : [1.9630470957136927, -1.0576019612954757] }, // E1
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.5924659541295791, "gamma" : [2.0, -0.45043236137534726] }, // E2
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.6895492929445197, "gamma" : [1.9999054912933856, 0.3844050385769512] }, // E3
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.273820831029551, "gamma" : [1.9437808208081169, 0.9859836151956026] }, // E4
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.8839059611506819, "gamma" : [1.6340082830130722, 1.4153497994885988] }, // E5
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.7967462405650186, "gamma" : [1.190775950234415, 1.6144412582021088] }, // E6
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.6877563223064665, "gamma" : [0.7599512605098743, 1.71288320418883] }, // E7
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.6002084257029938, "gamma" : [0.3413586976700227, 1.7849674688971593] }, // E8
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.5782682874963713, "gamma" : [-0.04238715491664646, 1.8348429466023992] }, // E9
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.6034016532219689, "gamma" : [-0.4783288160421778, 1.8808801424379742] }, // E10
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.5429145403646869, "gamma" : [-0.9161201475685946, 1.983759408505233] }, // E11
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.40350263815708043, "gamma" : [-1.3737313049964728, 1.9972377682498654] }, // E12
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.49918313707200584, "gamma" : [-1.639935329042188, 2.0] }, // E13
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.5606259385736312, "gamma" : [-2.1397783770829886, 0.250264852542307] }, // R1
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.5402452996702712, "gamma" : [-1.9474801616098882, 0.6285463894081169] }, // R2
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.7093290321473552, "gamma" : [-1.5072181024676898, 0.5890098674905291] }, // R3
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.40284303653711845, "gamma" : [-1.8003166041671588, 0.16370383107122433] }, // R4
+        { "alpha" : 3, "beta" : 20, "epsilon" : 170, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 0.810422921180604, "gamma" : [-1.411305266497676, 0.0919301787685326] } // R5
+    ], // end tc
+
+    // Array of parameters for the guidance molecules
+    "guidance": [
+        {
+            "shape"  : "Linear1D", // 'x'
+            "gain"   : 1.0,
+            "phi"    : 43,
+            "width"  : 0.1,
+            "offset" : 0.0
+        },
+        {
+            "shape"  : "Linear1D", // 'y'
+            "gain"   : 1.0,
+            "phi"    : -47,
+            "width"  : 0.1,
+            "offset" : 0.0
+        }
+    ] // end guidance
+}
