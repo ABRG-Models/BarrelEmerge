@@ -6,8 +6,10 @@
         <General CursorSize="3" ExtraPrecision="1"/>
         <Coords Type="0" TypeString="Cartesian" Coords="0" ScaleXTheta="0" ScaleXThetaString="Linear" ScaleYRadius="0" ScaleYRadiusString="Linear" UnitsX="0" UnitsXString="Number" UnitsY="0" UnitsYString="Number" UnitsTheta="0" UnitsThetaString="Degrees (DDD.DDDDD)" UnitsRadius="0" UnitsRadiusString="Number" UnitsDate="3" UnitsDateString="YYYY/MM/DD" UnitsTime="2" UnitsTimeString="HH:MM:SS"/>
         <DigitizeCurve CursorInnerRadius="5" CursorLineWidth="2" CursorSize="1" CursorStandardCross="True"/>
-        <Export PointsSelectionFunctions="0" PointsSelectionFunctionsString="InterpolateAllCurves" PointsIntervalFunctions="10" PointsIntervalUnitsFunctions="1" PointsSelectionRelations="0" PointsSelectionRelationsString="Interpolate" PointsIntervalUnitsRelations="1" PointsIntervalRelations="10" LayoutFunctions="0" LayoutFunctionsString="AllPerLine" Delimiter="0" OverrideCsvTsv="False" DelimiterString="Commas" ExtrapolateOutsideEndpoints="True" Header="1" HeaderString="Simple" XLabel="x">
-            <CurveNamesNotExported/>
+        <Export PointsSelectionFunctions="3" PointsSelectionFunctionsString="Raw" PointsIntervalFunctions="10" PointsIntervalUnitsFunctions="1" PointsSelectionRelations="0" PointsSelectionRelationsString="Interpolate" PointsIntervalUnitsRelations="1" PointsIntervalRelations="10" LayoutFunctions="0" LayoutFunctionsString="AllPerLine" Delimiter="0" OverrideCsvTsv="False" DelimiterString="Commas" ExtrapolateOutsideEndpoints="True" Header="1" HeaderString="Simple" XLabel="x">
+            <CurveNamesNotExported>
+                <CurveNameNotExported CurveNameNotSupportedName="Barreloids-2"/>
+            </CurveNamesNotExported>
         </Export>
         <AxesChecker Mode="1" Seconds="3" LineColor="6"/>
         <GridDisplay Stable="True" DisableX="0" CountX="4" StartX="0" StepX="0.1" StopX="0.3" DisableY="0" CountY="4" StartY="0" StepY="0.1" StopY="0.3" Color="0" ColorString="Black"/>
@@ -21,15 +23,15 @@
                 <PointStyle Radius="10" LineWidth="1" Color="6" ColorString="Red" Shape="1" ShapeString="Cross"/>
             </CurveStyle>
             <CurvePoints>
-                <Point Identifier="Axes&#9;point&#9;1" Ordinal="1" IsAxisPoint="True" IsXOnly="False" Index="115">
+                <Point Identifier="Axes&#9;point&#9;1" Ordinal="1" IsAxisPoint="True" IsXOnly="False" Index="155">
                     <PositionScreen X="1092" Y="542"/>
                     <PositionGraph X="0" Y="0"/>
                 </Point>
-                <Point Identifier="Axes&#9;point&#9;3" Ordinal="2" IsAxisPoint="True" IsXOnly="False" Index="115">
+                <Point Identifier="Axes&#9;point&#9;3" Ordinal="2" IsAxisPoint="True" IsXOnly="False" Index="155">
                     <PositionScreen X="860" Y="202"/>
                     <PositionGraph X="0.25" Y="0"/>
                 </Point>
-                <Point Identifier="Axes&#9;point&#9;5" Ordinal="3" IsAxisPoint="True" IsXOnly="False" Index="115">
+                <Point Identifier="Axes&#9;point&#9;5" Ordinal="3" IsAxisPoint="True" IsXOnly="False" Index="155">
                     <PositionScreen X="793" Y="728"/>
                     <PositionGraph X="0" Y="0.25"/>
                 </Point>
@@ -43,164 +45,293 @@
                     <PointStyle Radius="10" LineWidth="1" Color="1" ColorString="Blue" Shape="2" ShapeString="Diamond"/>
                 </CurveStyle>
                 <CurvePoints>
-                    <Point Identifier="Barreloids-2&#9;point&#9;108" Ordinal="0" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;108" Ordinal="0" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="1077" Y="574"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;113" Ordinal="1" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;113" Ordinal="1" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="859" Y="707"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;110" Ordinal="2" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;110" Ordinal="2" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="961" Y="639"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;109" Ordinal="3" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;109" Ordinal="3" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="1009" Y="609"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;111" Ordinal="4" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;111" Ordinal="4" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="907" Y="665"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;90" Ordinal="5" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;90" Ordinal="5" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="715" Y="771"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;114" Ordinal="6" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;114" Ordinal="6" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="805" Y="713"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;100" Ordinal="7" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;100" Ordinal="7" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="755" Y="740"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;112" Ordinal="8" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;112" Ordinal="8" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="845" Y="667"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;99" Ordinal="9" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;99" Ordinal="9" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="745" Y="723"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;89" Ordinal="10" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;89" Ordinal="10" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="689" Y="742"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;78" Ordinal="11" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;78" Ordinal="11" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="636" Y="774"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;107" Ordinal="12" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;107" Ordinal="12" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="779" Y="666"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;98" Ordinal="13" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;98" Ordinal="13" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="727" Y="698"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;105" Ordinal="14" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;105" Ordinal="14" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="826" Y="623"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;62" Ordinal="15" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;62" Ordinal="15" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="1085" Y="458"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;77" Ordinal="16" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;77" Ordinal="16" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="618" Y="747"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;88" Ordinal="17" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;88" Ordinal="17" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="664" Y="710"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;104" Ordinal="18" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;104" Ordinal="18" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="859" Y="586"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;103" Ordinal="19" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;103" Ordinal="19" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="900" Y="554"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;97" Ordinal="20" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;97" Ordinal="20" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="704" Y="664"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;106" Ordinal="21" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;106" Ordinal="21" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="789" Y="611"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;102" Ordinal="22" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;102" Ordinal="22" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="940" Y="511"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;101" Ordinal="23" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;101" Ordinal="23" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="987" Y="461"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;76" Ordinal="24" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;76" Ordinal="24" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="588" Y="700"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;87" Ordinal="25" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;87" Ordinal="25" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="642" Y="662"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;96" Ordinal="26" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;96" Ordinal="26" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="688" Y="627"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;86" Ordinal="27" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;86" Ordinal="27" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="628" Y="626"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;95" Ordinal="28" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;95" Ordinal="28" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="691" Y="575"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;75" Ordinal="29" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;75" Ordinal="29" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="569" Y="649"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;63" Ordinal="30" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;63" Ordinal="30" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="1013" Y="343"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;85" Ordinal="31" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;85" Ordinal="31" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="605" Y="587"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;94" Ordinal="32" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;94" Ordinal="32" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="711" Y="519"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;93" Ordinal="33" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;93" Ordinal="33" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="754" Y="473"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;74" Ordinal="34" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;74" Ordinal="34" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="544" Y="602"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;92" Ordinal="35" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;92" Ordinal="35" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="822" Y="419"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;84" Ordinal="36" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;84" Ordinal="36" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="592" Y="547"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;91" Ordinal="37" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;91" Ordinal="37" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="903" Y="349"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;73" Ordinal="38" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;73" Ordinal="38" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="523" Y="560"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;83" Ordinal="39" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;83" Ordinal="39" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="587" Y="499"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;64" Ordinal="40" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;64" Ordinal="40" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="946" Y="239"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;72" Ordinal="41" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;72" Ordinal="41" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="502" Y="513"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;82" Ordinal="42" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;82" Ordinal="42" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="604" Y="447"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;81" Ordinal="43" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;81" Ordinal="43" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="646" Y="391"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;80" Ordinal="44" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;80" Ordinal="44" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="724" Y="332"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;79" Ordinal="45" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;79" Ordinal="45" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="838" Y="256"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;71" Ordinal="46" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;71" Ordinal="46" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="483" Y="463"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;70" Ordinal="47" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;70" Ordinal="47" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="474" Y="405"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;65" Ordinal="48" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;65" Ordinal="48" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="856" Y="151"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;69" Ordinal="49" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;69" Ordinal="49" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="499" Y="345"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;66" Ordinal="50" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;66" Ordinal="50" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="718" Y="206"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;68" Ordinal="51" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;68" Ordinal="51" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="560" Y="299"/>
                     </Point>
-                    <Point Identifier="Barreloids-2&#9;point&#9;67" Ordinal="52" IsAxisPoint="False" IsXOnly="False" Index="115">
+                    <Point Identifier="Barreloids-2&#9;point&#9;67" Ordinal="52" IsAxisPoint="False" IsXOnly="False" Index="155">
                         <PositionScreen X="650" Y="243"/>
+                    </Point>
+                </CurvePoints>
+            </Curve>
+            <Curve CurveName="Boundary1">
+                <ColorFilter CurveName="Boundary1" Mode="2" ModeString="Intensity" IntensityLow="0" IntensityHigh="50" ForegroundLow="0" ForegroundHigh="10" HueLow="180" HueHigh="360" SaturationLow="50" SaturationHigh="100" ValueLow="0" ValueHigh="50"/>
+                <CurveStyle CurveName="Boundary1">
+                    <LineStyle Width="1" Color="1" ColorString="Blue" ConnectAs="0" ConnectAsString="FunctionSmooth"/>
+                    <PointStyle Radius="10" LineWidth="1" Color="1" ColorString="Blue" Shape="5" ShapeString="X"/>
+                </CurveStyle>
+                <CurvePoints>
+                    <Point Identifier="Boundary1&#9;point&#9;144" Ordinal="0" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="1027" Y="677"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;145" Ordinal="1" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="1063" Y="650"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;143" Ordinal="2" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="978" Y="696"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;146" Ordinal="3" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="1099" Y="612"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;142" Ordinal="4" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="908" Y="729"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;141" Ordinal="5" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="873" Y="735"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;147" Ordinal="6" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="1128" Y="573"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;140" Ordinal="7" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="835" Y="748"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;139" Ordinal="8" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="795" Y="764"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;138" Ordinal="9" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="755" Y="783"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;137" Ordinal="10" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="717" Y="799"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;136" Ordinal="11" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="686" Y="804"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;148" Ordinal="12" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="1132" Y="510"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;135" Ordinal="13" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="645" Y="803"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;134" Ordinal="14" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="619" Y="799"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;133" Ordinal="15" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="607" Y="782"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;149" Ordinal="16" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="1116" Y="439"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;132" Ordinal="17" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="584" Y="752"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;131" Ordinal="18" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="559" Y="704"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;150" Ordinal="19" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="1069" Y="336"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;130" Ordinal="20" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="525" Y="648"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;129" Ordinal="21" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="496" Y="601"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;151" Ordinal="22" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="1034" Y="266"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;128" Ordinal="23" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="470" Y="547"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;152" Ordinal="24" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="994" Y="205"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;127" Ordinal="25" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="448" Y="491"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;126" Ordinal="26" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="438" Y="447"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;153" Ordinal="27" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="944" Y="132"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;125" Ordinal="28" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="447" Y="398"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;154" Ordinal="29" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="907" Y="95"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;115" Ordinal="30" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="873" Y="89"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;124" Ordinal="31" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="448" Y="349"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;116" Ordinal="32" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="842" Y="97"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;117" Ordinal="33" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="804" Y="109"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;118" Ordinal="34" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="747" Y="130"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;123" Ordinal="35" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="456" Y="307"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;119" Ordinal="36" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="682" Y="160"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;120" Ordinal="37" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="615" Y="198"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;122" Ordinal="38" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="496" Y="268"/>
+                    </Point>
+                    <Point Identifier="Boundary1&#9;point&#9;121" Ordinal="39" IsAxisPoint="False" IsXOnly="False" Index="155">
+                        <PositionScreen X="547" Y="230"/>
                     </Point>
                 </CurvePoints>
             </Curve>

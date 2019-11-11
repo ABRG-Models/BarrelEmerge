@@ -6,7 +6,7 @@ import matplotlib
 matplotlib.use ('TKAgg', warn=False, force=True)
 import matplotlib.pyplot as plt
 
-from scipy.spatial import Voronoi, voronoi_plot_2d
+from scipy.spatial import Voronoi, voronoi_plot_2d, ConvexHull
 
 # First load data
 import csv
@@ -60,22 +60,26 @@ with open('barreloids_haidarliu.csv') as csvDataFile:
         g3 = y*(gmax/my)
         g4 = (my-y)*(gmax/my)
         # stick in a np array
-        ar = np.array((x,y,g1,g2,g3,g4))
+        ar = np.array((x,y,g1,g2,g3,g4,0)) # last entry is for area, filled later
         # stick array in a dictionary keyed by lbl
         D[lbl] = ar
+
+# Read the boundary points
+bndry_x = []
+bndry_y = []
+with open('barreloids_haidarliu_boundary_ordered.csv') as csvDataFile:
+    csvReader = csv.reader (csvDataFile)
+    for row in csvReader:
+        if row[0] == 'op': continue # skip header
+        x = float(row[1])
+        y = float(row[2])
+        bndry_x.append(x)
+        bndry_y.append(y)
 
 # Produce guidance interactions for 4 gradients (two opposing pairs, orthogonally
 # arranged) or two orthogonal gradients for which interactions will be positive or
 # negative.
 show_four = 0 # Else show two
-
-# Output the text for the config file
-for d in D:
-    #print ('{0}'.format(d))
-    if show_four:
-        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}, {9}, {10}] }}, // {11}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, D[d][2], D[d][3], D[d][4], D[d][5], d))
-    else:
-        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}] }}, // {9}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, (D[d][2]-D[d][3]), (D[d][4]-D[d][5]), d))
 
 # Draw a scatter graph
 fs = 16
@@ -88,8 +92,6 @@ matplotlib.rc('font', **fnt)
 F0 = plt.figure (figsize=(9,7))
 
 ax0 = F0.add_subplot (1, 1, 1)
-#ax0.set_xlim([0.0, 0.43])
-#ax0.set_ylim([0.03, 0.48])
 
 txt_xoff = 0.005
 txt_yoff = -0.02
@@ -136,30 +138,106 @@ ax0.scatter (xqui, yqui, c='k', s=70, marker='o')
 ax0.set_xlabel('Posterior to anterior axis [mm]')
 ax0.set_ylabel('Lateral to medial axis [mm]')
 
+# Plot boundary
+ax0.plot (bndry_x, bndry_y, c='grey', marker='None', linestyle='--', linewidth=2)
 
 # Plot voronoi
 vpts = np.vstack((xqui,yqui)).T
 print ('vpts shape: {0}'.format(np.shape(vpts)))
 
-vor = Voronoi(vpts)
-#F2 = voronoi_plot_2d (vor, show_vertices=False, line_colors='orange', line_width=2, line_alpha=0.6)
+vor = Voronoi (vpts, incremental=True)
 
-figured_out = False
-if figured_out:
-    vlast = []
-    first = True
-    for v in vor.vertices:
-        print ('v: {0}'.format(v))
-        if first == True:
-            first = False
-            vlast = v
+# One way to get a "full" voronoi diagram is to add points manually to produce the right vertices.
+ar = np.array(([[0.3341, -0.07811], \
+                [-0.021,-0.079], \
+                [0.065,-0.108], \
+                [0.1236, -0.1096], \
+                [0.2056, -0.1194], \
+                [0.2953, -0.1292], \
+                [0.3475, -0.0287], \
+                [0.3569, 0.0731], \
+                [0.3694, 0.1368], \
+                [0.3749, 0.2129], \
+                [0.3530, 0.2938], \
+                [0.2961, 0.3490], \
+                [0.2555, 0.3833], \
+                [0.2180, 0.3992], \
+                [0.1845, 0.4078], \
+                [0.1509, 0.4128], \
+                [0.1158, 0.4188], \
+                [0.0870, 0.4066], \
+                [0.0503, 0.4078], \
+                [-0.0092, 0.3773], \
+                [-0.0321, 0.3261], \
+                [-0.0471, 0.2770], \
+                [-0.0513, 0.2565], \
+                [-0.0497, 0.2213], \
+                [-0.0798, 0.1677], \
+                [-0.0878, 0.1246], \
+                [-0.0948, 0.0768], \
+                [-0.042, -0.0005]]))
+vor.add_points (ar)
+
+vpts2 = vor.points
+
+# A method for finding areas/volumes of the Voronoi regions
+def voronoi_volumes (v):
+    vol = np.zeros (v.npoints)
+    for i, reg_num in enumerate (v.point_region):
+        indices = v.regions[reg_num]
+        if -1 in indices: # some regions can be opened
+            vol[i] = np.inf
         else:
-            ax0.plot((vlast[0], v[0]), (vlast[1], v[1]))
-            vlast = v
+            vol[i] = ConvexHull (v.vertices[indices]).volume
+    return vol
 
+txt_xoff = txt_xoff+0.01
+areas = voronoi_volumes (vor)
+print ('areas shape: {0}'.format(np.shape(areas)))
+print ('vpts2 shape: {0}'.format(np.shape(vpts2)))
+
+areas_by_pos = np.vstack ((areas, vpts2.T)).T
+print ('areas_by_pos: {0}'.format (areas_by_pos))
+
+# For each in vts, find nearest position in areas_by_pos and show the area on the graph.
+for d in D:
+    x = D[d][0]
+    y = D[d][1]
+    mindist = 1e8
+    abest = np.array([])
+    for a in areas_by_pos:
+        if np.isinf (a[0]):
+            continue
+        dist = (x-a[1])*(x-a[1]) + (y-a[2])*(y-a[2])
+        if dist < mindist:
+            mindist = dist
+            abest = a
+    if abest.size > 0:
+        # Print? (too messy)
+        # ax0.text (abest[1], abest[2], abest[0])
+        # Store
+        D[d][6] = abest[0]
+
+# Add the Voronoi boundaries to the diagram
+voronoi_plot_2d (vor, ax=ax0, show_vertices=False, show_points=False, line_colors='grey', line_width=2, line_alpha=0.05)
+
+ax0.set_xlim([-0.06, 0.34])
+ax0.set_ylim([-0.1, 0.42])
+
+#ax0.set_xlim([-0.15, 0.44])
+#ax0.set_ylim([-0.2, 0.52])
 
 F0.tight_layout()
 
 plt.savefig ('barreloids_haidarliu_graph.png')
+
+# Output the text for the config file
+for d in D:
+    #print ('{0}'.format(d))
+    if show_four:
+        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "varea" : {12}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}, {9}, {10}] }}, // {11}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, D[d][2], D[d][3], D[d][4], D[d][5], d, D[d][6]))
+    else:
+        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "varea" : {10}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}] }}, // {9}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, (D[d][2]-D[d][3]), (D[d][4]-D[d][5]), d, D[d][6]))
+
 
 plt.show();
