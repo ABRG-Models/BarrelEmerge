@@ -200,6 +200,7 @@ areas_by_pos = np.vstack ((areas, vpts2.T)).T
 print ('areas_by_pos: {0}'.format (areas_by_pos))
 
 # For each in vts, find nearest position in areas_by_pos and show the area on the graph.
+areatotal = 0
 for d in D:
     x = D[d][0]
     y = D[d][1]
@@ -217,6 +218,9 @@ for d in D:
         # ax0.text (abest[1], abest[2], abest[0])
         # Store
         D[d][6] = abest[0]
+        areatotal = areatotal + abest[0]
+
+meanarea = areatotal / len(D)
 
 # Add the Voronoi boundaries to the diagram
 voronoi_plot_2d (vor, ax=ax0, show_vertices=False, show_points=False, line_colors='grey', line_width=2, line_alpha=0.05)
@@ -231,13 +235,19 @@ F0.tight_layout()
 
 plt.savefig ('barreloids_haidarliu_graph.png')
 
+# To scale the gain by the area of each barreloid, set to 1
+area_to_gain = 1
+
 # Output the text for the config file
 for d in D:
     #print ('{0}'.format(d))
+    gaininit = 1.0
+    if area_to_gain:
+        gaininit = (D[d][6]/meanarea)
     if show_four:
-        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "varea" : {12}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}, {9}, {10}] }}, // {11}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, D[d][2], D[d][3], D[d][4], D[d][5], d, D[d][6]))
+        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}, {9}, {10}] }}, // {11}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, D[d][2], D[d][3], D[d][4], D[d][5], d, D[d][6]))
     else:
-        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "varea" : {10}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}] }}, // {9}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, (D[d][2]-D[d][3]), (D[d][4]-D[d][5]), d, D[d][6]))
+        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}] }}, // {9}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, (D[d][2]-D[d][3]), (D[d][4]-D[d][5]), d))
 
 
 plt.show();
