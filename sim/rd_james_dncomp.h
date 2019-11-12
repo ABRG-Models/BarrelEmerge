@@ -54,6 +54,8 @@ public:
     //@{
     //! The power to which a_j is raised for the inter-TC axon competition term.
     alignas(Flt) Flt l = 3.0;
+    //! The steepness of the logistic function
+    alignas(Flt) Flt m = 1e-8;
     //! epsilon_i parameters. axon competition parameter
     alignas(alignof(vector<Flt>))
     vector<Flt> epsilon;
@@ -161,6 +163,8 @@ public:
             // Multiply sum by 2D/3d^2 to give term1
             Flt term1 = this->twoDover3dd * thesum;
 
+            // This is required if E > 0:
+#ifdef E_A_DIVN
             // Term 1.1 is E a div(n)
             Flt term1_1 = this->E * fa[hi] * this->div_n[hi];
             if (isnan(term1_1)) {
@@ -175,6 +179,8 @@ public:
                 cerr << "term1_2 isnan" << endl;
                 exit (21);
             }
+#endif
+
 #if 0
             // 2. The (a div(g)) term.
             Flt term2 = fa[hi] * this->divg_over3d[i][hi];
@@ -197,7 +203,11 @@ public:
                 }
             }
 
-            this->divJ[i][hi] = term1 - term1_1 - term1_2  - term2 - term3;
+            this->divJ[i][hi] = term1
+#ifdef E_A_DIVN
+                - term1_1 - term1_2
+#endif
+                - term2 - term3;
         }
     }
 
@@ -222,15 +232,33 @@ public:
         milliseconds ms2 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
         this->codetimes.back().a_precompute += (ms2-ms1);
 
+#if defined BRANCHCOMP_LOGISTIC_FN
+        Flt one = static_cast<Flt>(1.0);
+        Flt mhalf = static_cast<Flt>(-0.5);
+#endif
+
         // Compute eps_all once only
         this->zero_vector_variable (this->eps_all);
         for (unsigned int j=0; j<this->N; ++j) {
-#pragma omp parallel for
+#if defined BRANCHCOMP_A_TO_POWER_L
+# pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
-                eps_all[h] += static_cast<Flt>(pow (this->a[j][h], this->l));
+                Flt ea = static_cast<Flt>(pow (this->a[j][h], this->l));
+                //ea = ea > 1e6 ? 1e6 : ea;
+                eps_all[h] += ea;
             }
+#elif defined BRANCHCOMP_LOGISTIC_FN
+# pragma omp parallel for
+            for (unsigned int h=0; h<this->nhex; ++h) {
+                eps_all[h] += mhalf + one /(one + static_cast<Flt>(exp (-this->m * pow(this->a[j][h], this->l))));
+            }
+#else // LINEAR
+# pragma omp parallel for
+            for (unsigned int h=0; h<this->nhex; ++h) {
+                eps_all[h] += this->a[j][h];
+            }
+#endif
         }
-
         milliseconds ms3 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
         this->codetimes.back().a_eps_all += (ms3-ms2);
 
@@ -247,11 +275,24 @@ public:
             // for which j!=i". Call the variable just 'eps'.
 
             // Compute eps_i, for subtraction from eps_all
-#pragma omp parallel for // slows down with or without parallel for
+#ifdef BRANCHCOMP_A_TO_POWER_L
+# pragma omp parallel for // slows down with or without parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
-                eps_i[h] = static_cast<Flt>(pow (this->a[i][h], this->l));
+                Flt ea = static_cast<Flt>(pow (this->a[i][h], this->l));
+                //ea = ea > 1e6 ? 1e6 : ea;
+                eps_i[h] = ea;
             }
-
+#elif defined BRANCHCOMP_LOGISTIC_FN
+# pragma omp parallel for
+            for (unsigned int h=0; h<this->nhex; ++h) {
+                eps_i[h] = mhalf + one /(one + static_cast<Flt>(exp (-this->m * pow(this->a[i][h], this->l))));
+            }
+#else // LINEAR
+# pragma omp parallel for
+            for (unsigned int h=0; h<this->nhex; ++h) {
+                eps_i[h] = this->a[i][h];
+            }
+#endif
             milliseconds msf2 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             this->codetimes.back().a_for1 += (msf2-msf1);
 
@@ -261,6 +302,8 @@ public:
             for (unsigned int h=0; h<this->nhex; ++h) {
                 eps[h] = (eps_all[h]-eps_i[h]) * eps_over_N;
             }
+
+            //cout << "eps[3000] = " << eps[3000]<< endl;
 
             milliseconds msf3 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             this->codetimes.back().a_for2 += (msf3-msf2);
@@ -314,7 +357,8 @@ public:
             this->codetimes.back().a_for5 += (msf6-msf5);
 
             // Now apply the transfer function
-//#pragma omp parallel for
+#pragma omp parallel for
+            //cout << "(b4 xfer) this->a["<<i<<"][3000] = " << this->a[i][3000] << endl;
             for (unsigned int h=0; h<this->nhex; ++h) {
                 this->a[i][h] = this->transfer_a (this->a[i][h], i);
             }

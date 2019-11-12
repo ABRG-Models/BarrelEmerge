@@ -253,6 +253,7 @@ int main (int argc, char **argv)
 
 #if defined DNCOMP || defined DNCOMP2
     const FLT l = root.get ("l", 1).asDouble();
+    const FLT m = root.get ("m", 1e-8).asDouble();
     const double E = root.get ("E", 0.1).asDouble();
     cout << "E is set to " << E << endl;
 #endif
@@ -480,6 +481,13 @@ int main (int argc, char **argv)
 #if defined DNCOMP || defined DNCOMP2
     cout << "Setting RD.l to " << l << endl;
     RD.l = l;
+    RD.m = m;
+#ifndef E_A_DIVN
+    if (E > 0.0) {
+        cout << "ERROR: You have E>0.0, but you are using a binary without the code to compute E div n" << endl;
+        exit (1);
+    }
+#endif
     RD.E = E;
 #endif
 

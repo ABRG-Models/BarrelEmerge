@@ -270,7 +270,7 @@ adjacent cortical locations:
 \frac{\partial a_i(\mb{x},t)}{\partial t} = \nabla\vcdot\left(D \nabla a_i(\mb{x},t)-a_i(\mb{x},t)\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x})\right) - \frac{\partial c_i(\mb{x},t)}{\partial t} + \chi.
 \end{equation}
 
-The first term on the right describes the spatial gradient (indicated by
+The first term on the right describes the divergence (indicated by
 $\nabla\vcdot$) of a quantity referred to in models of heat diffusion as the
 `flux' (the term enclosed by parentheses). The central idea in heat diffusion
 models is that the change in temperature (over time) at a given location is
@@ -360,18 +360,21 @@ competition for connections built into the model.
 
 \subsection*{Competition is required to form somatotopically ordered barrels}
 
-There exists an element of competition in the model system specified by
-Eqns. \ref{eq:dc} \& \ref{eq:da}. The term $\left(1 -
-\sum_{i=1}^{N} c_i(\mb{x}, t)\right)$ in Eq.~\ref{eq:dc} ensures that once the available synaptic
-receptors in a region have been fully occupied, say by thalamocortical types
-$i=2$ and $i=3$, there is no longer the possibility for type $i=1$ to form any
-synapses. This competition turns out to be relatively weak, because it does
-not strongly affect the branching density in that region; two or more TC axon
-types can be branching equally in the region, leading to roughly equal numbers
-of connections being made up until the connection limit is reached.
+There exists an element of competition in the model system specified
+by Eqns. \ref{eq:dc} \& \ref{eq:da}. The term $\left(1 -
+\sum_{i=1}^{N} c_i(\mb{x}, t)\right)$ in Eq.~\ref{eq:dc} ensures that
+once the available synaptic receptors in a region have been fully
+occupied, say by thalamocortical type $i=1$, there is no
+longer the possibility for type $i=2$ to form any synapses. This
+competition turns out to be relatively weak, because it does not
+strongly affect the branching density in that region. In the model, it
+is possible for two or more TC axon types to have roughly equal
+branching density in some region, leading to roughly equal numbers of
+connections for each TC type being made,  up until the `hard' connection
+limit is reached.
 
-To introduce an element of competition between the branching of
-thalamocortical axon types, we introduced the new term $\chi$ given by
+To introduce competition between the \emph{branching} of thalamocortical axon
+types, we introduced the new term $\chi$ given by
 %
 \begin{equation} \label{eq:branch_comp}
 \chi(\mb{x}, t) = - \frac{\epsilon  a_i}{N-1} \sum_{i' \ne i}^{N} a_{i'}(\mb{x}, t)
@@ -385,6 +388,28 @@ This introduces a new parameter, $\epsilon$, which governs the
 strength of the branching competition. The factor $1/(N-1)$ ensures that the
 branching competition strength scales with the number of TC axons in the
 system.
+
+To increase the strength of the competition, we could take the power
+of the branching density:
+%
+\begin{equation} \label{eq:branch_comp_pow}
+\chi(\mb{x}, t) = - \frac{\epsilon  a_i}{N-1} \sum_{i' \ne i}^{N} (a_{i'})^l
+\end{equation}
+%
+with $l>1$. This competition term can quickly become excessively
+large, so to preserve the geometric shape of the function for small
+$a$, whilst representing the idea that the amount of branching
+competition has an upper bound, we pass the function through a
+logistic function.  This leads to the following branching equation:
+
+%
+\begin{equation} \label{eq:branch_comp_pow_logistic}
+\chi(\mb{x}, t) = - \frac{\epsilon a_i}{N-1} \sum_{i' \ne i}^{N}
+\frac{1}{1 + e^{-m (a_{i'})^l}} - \frac{1}{2}
+\end{equation}
+%
+$\epsilon$ represents the maximum value of the competition term for TC
+type $i$. The parameter $m$ controls the steepness of the function.
 
 \cmnt{Start from the thalamic barreloids, to generate the interaction
   parameters}

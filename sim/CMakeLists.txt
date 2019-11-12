@@ -20,7 +20,7 @@ add_executable(james_divnorm james1.cpp)
 target_compile_definitions(james_divnorm PUBLIC FLT=float COMPILE_PLOTTING DIVNORM)
 target_link_libraries(james_divnorm ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})
 
-# Divisive normalization of a_i along with competition
+# Divisive normalization of a_i along with competition (linear)
 add_executable(james_dncomp james1.cpp)
 target_compile_definitions(james_dncomp PUBLIC FLT=float COMPILE_PLOTTING DNCOMP)
 target_link_libraries(james_dncomp ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})
@@ -29,7 +29,17 @@ add_executable(james_dncompc james1.cpp)
 target_compile_definitions(james_dncompc PUBLIC FLT=float DNCOMP)
 target_link_libraries(james_dncompc ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})
 
-# Divisive normalization of a_i along with competition
+# Divisive normalization of a_i along with competition of a *logistic* nature
+add_executable(james_dncomp_lg james1.cpp)
+target_compile_definitions(james_dncomp_lg PUBLIC FLT=float COMPILE_PLOTTING DNCOMP BRANCHCOMP_LOGISTIC_FN)
+target_link_libraries(james_dncomp_lg ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})
+
+# Divisive normalization of a_i along with competition of power law nature
+add_executable(james_dncomp_pl james1.cpp)
+target_compile_definitions(james_dncomp_pl PUBLIC FLT=float COMPILE_PLOTTING DNCOMP BRANCHCOMP_A_TO_POWER_L)
+target_link_libraries(james_dncomp_pl ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})
+
+# Divisive normalization of a_i along with *per-group* competition
 add_executable(james_dncomp2 james1.cpp)
 target_compile_definitions(james_dncomp2 PUBLIC FLT=float COMPILE_PLOTTING DNCOMP2)
 target_link_libraries(james_dncomp2 ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})
