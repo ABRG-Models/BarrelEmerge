@@ -142,7 +142,8 @@ The barrels are large cortical columns, identifiable from birth in layer 4 of
 rodent primary somatosensory cortex as dense clusters of thalamocortical
 axons, which are enclosed by borders a few neurons thick from postnatal day 3
 \citep{erzurumlu_development_2012}. In the plane tangential to the cortical surface the
-barrels constitute a map of the arrangement of the whiskers on the face, such
+barrels constitute a map of the arrangement of the whiskers on the
+face (see \citealp{yamakado_subdivision_1979}), such
 that the cells of adjacent barrels respond most strongly and most quickly to
 deflection of adjacent whiskers \citep{armstrong-james_flow_1992}. The barrels
 reflect subcortical whisker maps comprising cellular aggregates known as
@@ -151,7 +152,7 @@ barrelettes in the brainstem and barreloids in the thalamus
 
 Each whisker and its corresponding barrelette, barreloid, and barrel can be
 identified by its position on a two-dimensional grid
-\citep{zucker_coding_1969,killackey_pattern_1980,van_der_loos_barreloids_1976}. The barrels are normally up to
+\citep{zucker_coding_1969,killackey_pattern_1980,van_der_loos_barreloids_1976,haidarliu_size_2001}. The barrels are normally up to
 twice as long in the axis aligned to the grid ‘rows’ compared to the ‘arcs’,
 and the rows are visible from day 2 \citep{rebsam_refinement_2002} whereas the arcs become
 distinct by day 3 \citep{erzurumlu_development_2012,rebsam_refinement_2002}. In metabotropic glutamate
@@ -188,7 +189,7 @@ initial centre points, which would itself be determined by guidance
 cues. However, the assumption of pre-arranged centres is difficult to
 resolve with the observation that thalamocortical axons arrive in the
 cortical plate as an undifferentiated bundle prior to barreloid
-formation (see \citealp{erzurumlu_development_2012} for a review).
+formation (\citealp{agmon_organized_1993}; see \citealp{erzurumlu_development_2012} for a review).
 
 Alternatively, reaction-diffusion dynamics could generate a Voronoi-like
 tesselation in the cortex without the need for pre-arranged centres, by
@@ -241,7 +242,7 @@ tesselation used to describe barrel patterning is a two-dimensional structure,
 hence we first extended the original model for simulation on a two-dimensional
 cortical sheet, and describe it here as such (i.e., substituting $x$ with the
 two-dimensional position vector $\mb{x}$ and substituting terms of the form
-$\frac{d}{dx}$ with the two-dimensional spatial gradient operator $\nabla$).
+$\frac{d}{dx}$ with the spatial gradient operator $\nabla$).
 
 The original model was derived from the assumption that the rates at which
 thalamocortical synapses form and thalamocortical axons branch are
@@ -323,55 +324,56 @@ integrated using fourth-order Runge-Kutta, and using a {\color{red} finite
 
 \section*{Results}
 
-\cmnt{If we need to present the results of the 2-D system with $\chi=0$, then
-  we'll do that first, showing a 2-D version of the simulation obtained by
-  running \code{james0 configs/karb.json}}
+%\cmnt{If we need to present the results of the 2-D system with $\chi=0$, then
+%  we'll do that first, showing a 2-D version of the simulation obtained by
+%  running \code{james0 configs/karb.json}}
 
-We first verified that the system given by Eqns. \ref{eq:dc} \&
-\ref{eq:da} described a two dimensional extension of the axon
-branching model in \citet{karbowski_model_2004}. We showed that in the presence of
-three guidance gradients varying only in one dimension (along the long axis of
-an elliptical domain), five thalamocortical axon types, each interacting
-uniquely with the three guidance gradients, would segregate into five separate
-regions. We investigated a number of configurations of the guidance gradients,
-varying their shape, $\rho(\mb{x})$, and number, $M$, and their effect on a
-varying number of thalamocortical projections, $N$. In general, we were not
-able to produce structure in the resulting patterns of the connections,
-$c(\mb{x},t\rightarrow\infty)$, which was not present in the guidance
-patterns.
+We first verified that the system given by Eqns. \ref{eq:dc} \& \ref{eq:da}
+described a two dimensional extension of the axon branching model in
+\citet{karbowski_model_2004}. We showed that in the presence of three guidance
+gradients varying only in one dimension (along the long axis of an elliptical
+domain), five thalamocortical axon types, each interacting uniquely with the
+three guidance gradients, would segregate into five separate regions. We
+investigated a number of configurations of the guidance gradients, varying
+their shape, $\rho(\mb{x})$, and number, $M$, and their effect on a varying
+number of thalamocortical projections, $N$. In general, we were not able to
+producen a complexity of structure in the resulting patterns of the
+connections, $c(\mb{x},t\rightarrow\infty)$, which was not present in the
+guidance patterns.
 
 Complex structure can indeed be observed in protein expression for some genes,
 such as the molecules Bhlhb5 \citep{joshi_bhlhb5_2008} and Lmo4
-\citep{cederquist_lmo4_2013,greig_molecular_2013}. These expression patterns can therefore
-provide a theoretical mechanism for the guidance of axons into distinct
-regions. The question of how such structures are generated becomes one of of
-how gene transcriptional interactions and mRNA diffusion and movement achieves
-this (\cmnt{Fixme: find a ref on structure in gene transcription}). However,
-complex and stable structure in gene expression data is commonly reported;
-monotonically varying expression patterns, such as those for Pax6, Emx2, Sp8
-and Coup-tf1 which display graded expression across the entire isocortex
-(\cmnt{REFS}) are more typical. Furthermore, the complex structure observed in
-the whisker barrel field has not, to our knowledge, been linked to a complex
-set of gene expression patterns matching the scale of the barrels. To
+\citep{cederquist_lmo4_2013,greig_molecular_2013}. These expression patterns
+can therefore provide a theoretical mechanism for the guidance of axons into
+distinct regions.
+%The question of how such structures are generated becomes
+%one of of how gene transcriptional interactions and mRNA diffusion and
+%movement achieves this (\cmnt{Fixme: find a ref on structure in gene
+%  transcription}).
+However, complex and stable structure in gene expression data is not commonly
+reported; monotonically varying expression patterns, such as those for Pax6,
+Emx2, Sp8 and Coup-tf1, which display graded expression across the entire
+isocortex (\cmnt{REFS}) are more typical. Furthermore, the complex structure
+observed in the whisker barrel field has not, to our knowledge, been linked to
+a set of gene expression patterns matching the scale of the barrels. To
 investigate how the whisker barrel structure might form in the presence of
 only monotonically varying morphogen gradients, we turned our attention to the
 competition for connections built into the model.
 
 
-\subsection*{Competition is required to form somatotopically ordered barrels}
+\subsection*{Branching competition is required to form somatotopically ordered barrels}
 
-There exists an element of competition in the model system specified
-by Eqns. \ref{eq:dc} \& \ref{eq:da}. The term $\left(1 -
-\sum_{i=1}^{N} c_i(\mb{x}, t)\right)$ in Eq.~\ref{eq:dc} ensures that
-once the available synaptic receptors in a region have been fully
-occupied, say by thalamocortical type $i=1$, there is no
-longer the possibility for type $i=2$ to form any synapses. This
-competition turns out to be relatively weak, because it does not
-strongly affect the branching density in that region. In the model, it
-is possible for two or more TC axon types to have roughly equal
+There exists an element of competition in the model system specified by
+Eqns. \ref{eq:dc} \& \ref{eq:da}. The term $\left(1 - \sum_{i=1}^{N}
+c_i(\mb{x}, t)\right)$ in Eq.~\ref{eq:dc} ensures that once the available
+synaptic receptors in a region have been fully occupied, say by
+thalamocortical type $i=1$, there is no longer the possibility for type $i=2$
+to form any synapses. This competition turns out to be relatively weak,
+because it does not strongly affect the branching density in that region. In
+the model, it is possible for two or more TC axon types to have roughly equal
 branching density in some region, leading to roughly equal numbers of
-connections for each TC type being made,  up until the `hard' connection
-limit is reached.
+connections for each TC type being made, up until the `hard' connection limit
+is reached.
 
 To introduce competition between the \emph{branching} of thalamocortical axon
 types, we introduced the new term $\chi$ given by
@@ -381,13 +383,57 @@ types, we introduced the new term $\chi$ given by
 \end{equation}
 %
 which leads to a reduction in the rate of increase of branching density for
-axon type $i$ in regions where the branching density of \e{other} axon
-types is high.
+axon type $i$ in regions where the branching density of \e{other} axon types
+is high.
 
-This introduces a new parameter, $\epsilon$, which governs the
-strength of the branching competition. The factor $1/(N-1)$ ensures that the
-branching competition strength scales with the number of TC axons in the
-system.
+This introduces a new parameter, $\epsilon$, which governs the strength of the
+branching competition. The factor $1/(N-1)$ ensures that the branching
+competition strength scales with the number of TC axon types in the system.
+
+We first investigate the effect of the competition by examining a system of 25
+thalamocortical axon types simulated on a square domain. The axons interact
+with two orgthogonal signalling gradients, one of which increases from the top
+edge to the bottom edge, the other of which increases from the right edge to
+the left edge. The values of $\gamma$ are chosen as a grid.
+
+\begin{figure*}
+\begin{center}
+\includegraphics[width=\textwidth]{./Fig_25N2M_square/Fig_25N2M_square.png}
+\end{center}
+%\vspace{-0em}
+\caption{\textbf{(a)--(e)} Connection densities of 25 thalamocortical axons
+  simulated on a square domain. \textbf{(a)} Connection density at simulation
+  time t=0. The left image shows a map of the identity of the thalamocortical
+  axon type with the highest absolute connection density. Hexagonal elements
+  coloured the darkest blue have the highest connection density for TC type
+  $i=1$; those coloured the darkest red have maximal connection density in TC
+  type $i=25$. The right hand image of each pair shows the hexes for which the
+  connection density passes 0.5 for each TC type, giving a contour map. At
+  t=0, connection densities are randomly distributed. \textbf{(b)} t=0.14. The
+  grid-like organisation of the TC connections is beginning to emerge.
+  \textbf{(c)} t=0.2. The 5x5 grid is now clear in the left map. Branching
+  competition and differential interaction with the two guidance gradients is
+  causing the branching, and therefore the connection densities, to localise in
+  25 different locations. \textbf{(d)} t=0.64. Connection densities for each
+  TC type have increased sufficiently for the contours to form. In (d), the
+  mapping between colour and TC type $i$ is indicated. \textbf{(e)}
+  t=1.41. Contours are well formed. In (e), the $\gamma$ values for each TC
+  type, $i$, are shown. $\gamma_{i,1}$ gives the interaction with molecule `1'
+  [red map in (f)]; $\gamma_{i,2}$ is the interaction with molecule
+  `2'. \textbf{(f)} The two guidance gradients (`1' and `2') for this
+  simulation.}
+\label{fig:square}
+\end{figure*}
+
+\subsection*{The model can transfer realistic barrel patterns}
+
+In which we show that a realistic barrel pattern in the thalamus can be
+recreated in barrel cortex.
+
+\subsubsection*{Stronger branching competition}
+
+\cmnt{The realistic barrel pattern experiment is enhanced by stronger
+  branching competition. This section may be required here or elsewhere.}
 
 To increase the strength of the competition, we could take the power
 of the branching density:
@@ -396,11 +442,11 @@ of the branching density:
 \chi(\mb{x}, t) = - \frac{\epsilon  a_i}{N-1} \sum_{i' \ne i}^{N} (a_{i'})^l
 \end{equation}
 %
-with $l>1$. This competition term can quickly become excessively
-large, so to preserve the geometric shape of the function for small
-$a$, whilst representing the idea that the amount of branching
-competition has an upper bound, we pass the function through a
-logistic function.  This leads to the following branching equation:
+with $l>1$. This competition term can quickly become excessively large, so to
+preserve the geometric shape of the function for small $a$, whilst
+representing the idea that the amount of branching competition has an upper
+bound, we pass the function through a logistic function.  This leads to the
+following branching equation:
 
 %
 \begin{equation} \label{eq:branch_comp_pow_logistic}
@@ -408,31 +454,40 @@ logistic function.  This leads to the following branching equation:
 \frac{1}{1 + e^{-m (a_{i'})^l}} - \frac{1}{2}
 \end{equation}
 %
-$\epsilon$ represents the maximum value of the competition term for TC
-type $i$. The parameter $m$ controls the steepness of the function.
+$\epsilon$ represents the maximum value of the competition term for TC type
+$i$. The parameters $l$ and $m$ control the steepness and shape of the
+function.
 
-\cmnt{Start from the thalamic barreloids, to generate the interaction
-  parameters}
+%%% End of stronger branching competition %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Include figure ../boundaries/barreloids_vanderloos_graph.png
 \begin{figure*}
 \begin{center}
-\includegraphics[width=0.7\textwidth]{../boundaries/barreloids_vanderloos_graph.png}
+\includegraphics[width=0.7\textwidth]{../boundaries/barreloids_haidarliu_graph.png}
 \end{center}
 %\vspace{-0em}
-\caption{Barreloid centres taken from \cite{van_der_loos_barreloids_1976}, Fig.~2
-  are shown as black circles. It is assumed that there are at least
-  two linearly increasing, orthogonal signalling gradients in the
-  thalamus (side graphs - addme!), such that the location of each
-  barreloid within the graded thalamic signal field can differentiate
-  the efferent axons, with the result that axons from each barreloid
-  interact to varying degrees with cortical signalling
-  gradients. Coloured arrows show, for each barreloid, the magnitude
-  of the interaction that its thalamocortical projection will have
-  with the four signalling gradients in the cortex. The mappings from
+\caption{Barreloid centres taken from \cite{haidarliu_size_2001} are shown as
+  black circles. It is assumed that there are two linearly increasing,
+  orthogonal signalling gradients (molecules A \& B) in the thalamus (side
+  graphs), such that the location of each barreloid within the graded thalamic
+  signal field can differentiate the efferent axons, with the result that
+  axons from each barreloid interact to varying degrees with cortical
+  signalling gradients. Coloured arrows show, for each barreloid, the
+  magnitude (and sign) of the interaction that its thalamocortical projection
+  will have with the signalling gradients in the cortex. The mappings from
   barreloid location to interaction strength are linear.}
 \label{fig:barreloids}
 \end{figure*}
+
+
+\begin{figure*}
+\begin{center}
+\includegraphics[width=\textwidth]{./realistic_barrels.png}
+\end{center}
+%\vspace{-0em}
+\caption{Realistic barrel pattern}
+\label{fig:barrels}
+\end{figure*}
+
 
 \subsection*{The barrel field reacts to changes in the expression pattern of guidance molecules}
 

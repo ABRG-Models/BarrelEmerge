@@ -1,0 +1,416 @@
+{
+	"D" : 0.20000000298023224,
+	"E" : 0.0,
+	"aInitialOffset" : 0.20000000000000001,
+	"aNoiseGain" : 0.20000000000000001,
+	"argv0" : "./build/sim/james_dncomp",
+	"argv1" : "configs/25N2M_square.json",
+	"boundaryFalloffDist" : 0.01,
+	"contour_threshold" : 0.5,
+	"dt" : 4.9999998736893758e-05,
+	"float_width" : 4,
+	"g_hshift" : 0.050000000000000003,
+	"git_branch" : "time_dependent_guidance",
+	"git_head" : "cf7c6f031ed73cccbb4b9f79d97ac14a299bcee7",
+	"git_modified_sim" : true,
+	"guidance" : 
+	[
+		{
+			"gain" : 1.0,
+			"offset" : 0.0,
+			"phi" : -90,
+			"shape" : "Linear1D",
+			"time_onset" : 0,
+			"width" : 0.10000000000000001
+		},
+		{
+			"gain" : 1.0,
+			"offset" : 0.0,
+			"phi" : 0,
+			"shape" : "Linear1D",
+			"time_onset" : 0,
+			"width" : 0.10000000000000001
+		}
+	],
+	"hextohex_d" : 0.019999999552965164,
+	"hshift" : 0.55000000000000004,
+	"k" : 3.0,
+	"l" : 1,
+	"logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/",
+	"logevery" : 5000,
+	"overwrite_logs" : true,
+	"plot_a" : false,
+	"plot_a_contours" : false,
+	"plot_c" : false,
+	"plot_contours" : true,
+	"plot_divJ" : false,
+	"plot_divg" : false,
+	"plot_dr" : true,
+	"plot_dr_with_guide" : false,
+	"plot_guide" : true,
+	"plot_guidegrad" : false,
+	"plot_n" : false,
+	"plotevery" : 100,
+	"rhoInit" : 1.8,
+	"scale_a" : false,
+	"scale_c" : false,
+	"scale_n" : false,
+	"sim_ran_at_time" : "Mon Oct 14 11:36:13 2019",
+	"steps" : 50000,
+	"svgpath" : "./boundaries/square.svg",
+	"tc" : 
+	[
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				-2,
+				-2
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				-1,
+				-2
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				0,
+				-2
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				1,
+				-2
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				2,
+				-2
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				-2,
+				-1
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				-1,
+				-1
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				0,
+				-1
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				1,
+				-1
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				2,
+				-1
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				-2,
+				0
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				-1,
+				0
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				0,
+				0
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				1,
+				0
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				2,
+				0
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				-2,
+				1
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				-1,
+				1
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				0,
+				1
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				1,
+				1
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				2,
+				1
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				-2,
+				2
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				-1,
+				2
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				0,
+				2
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				1,
+				2
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		},
+		{
+			"alpha" : 3,
+			"beta" : 20,
+			"epsilon" : 200,
+			"gaininit" : 1.0,
+			"gamma" : 
+			[
+				2,
+				2
+			],
+			"sigmainit" : 0.0,
+			"xinit" : -0.16,
+			"yinit" : 0.0
+		}
+	],
+	"vidframes" : true,
+	"win_width_contours" : 1920
+}

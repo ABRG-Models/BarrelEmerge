@@ -71,7 +71,7 @@ def surface (dmatrix, x, y, ix, title):
 
 # ...with names
 def surface_withnames (dmatrix, x, y, ix, title, idnames, domcentres):
-    fs = 16
+    fs = 20
     fnt = {'family' : 'DejaVu Sans',
            'weight' : 'regular',
            'size'   : fs}
@@ -116,7 +116,7 @@ def surface_withnames (dmatrix, x, y, ix, title, idnames, domcentres):
         else:
             thechar = idn_arr[count]
 
-        f1.text (dc[0], dc[1], thechar, fontsize=14, verticalalignment='center', horizontalalignment='center', color=cmap(cidx))
+        f1.text (dc[0], dc[1], thechar, fontsize=24, verticalalignment='center', horizontalalignment='center', color=cmap(cidx))
 
         count = count + 1
     return f1

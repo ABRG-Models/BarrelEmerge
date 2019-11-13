@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import h5py
 # My domcentres linear fit code:
 import domcentres as dc
+import os
 
 # Set plotting defaults
 fs = 12
@@ -46,6 +47,7 @@ if ti == -1:
 print ('ti = {0}'.format(ti))
 f1 = pt.surface_withnames (idmatrix[:,ti], x, y, 0, idstring, idnames, domcentres[ti,:,:])
 
-plt.savefig('map.png')
+mapname = '{0}_{1}'.format(os.path.basename(logdirname), ti)
+plt.savefig(mapname)
 
 plt.show()
