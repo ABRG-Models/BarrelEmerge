@@ -27,7 +27,7 @@
     // Visualization parameters (ignored by computation-only binaries)
     "win_width_contours": 1920,
     "plotevery": 100,
-    "vidframes": true,    // If true, number video frame saves consecutively, rather than by simulation step number
+    "vidframes": false,    // If true, number video frame saves consecutively, rather than by simulation step number
     "rhoInit": 1.8, // Larger to zoom out
     //
     "plot_guide" : true,
