@@ -394,11 +394,12 @@ competition strength scales with the number of TC axon types in the system.
 
 With the addition of the competition term, $\chi$, it is necessary to
 introduce a normalisation step, in order to prevent one TC type from
-out-competing every other TC type. Normalisation conforms to the idea that for
+out-competing every other TC type. Normalisation represents the idea that for
 a fixed number of afferent thalamocortical axons, the overall number of
-branches must have some upper limit; given the presumably finite resources
-available in each axon. We divisively normalize the branching density,
-dividing $a_i$ by the mean of $a_i$ per unit area; formalised as:
+branches must have some upper limit; given the finite resources available in
+each axon for building new processes. We divisively normalize the branching
+density, dividing it at each computational step by the mean branching density
+per unit area; formalised as:
 %
 \begin{equation} \label{eq:norm}
 a_i(\mathbf{x}, t) = A \; \frac {a'_i(\mathbf{x}, t)} {\int_\Omega a'_i(\mathbf{x}, t) d\sigma}
@@ -409,16 +410,20 @@ after it has been computed according to Eqs.~\ref{eq:dc}--\ref{eq:branch_comp}
 on the basis of the system state at time $t-{\delta}t$. $A$ is the area of the
 domain. This normalises $a_i(\mathbf{x}, t)$ to 1, integrated over the domain. To
 account for the possibility that there might be more axons afferent for TC
-type $1$ cf.~TC type $2$, we normalise to the integral of $a_i$ at time 0.
+type $1$ cf.~TC type $2$, we normalise to the integral of $a_i$ at time 0, so
+that Eq.~\ref{eq:norm} becomes:
 %
 \begin{equation} \label{eq:norm_time0}
 \begin{split}
 a_i(\mathbf{x}, t) & =
-\frac{\int_\Omega  a'_i(\mathbf{x}, 0) d\sigma}{A} \; A \; \frac {a'_i(\mathbf{x}, t)} {\int_\Omega
+\frac{\int_\Omega  a_i(\mathbf{x}, 0) d\sigma}{A} \; A \; \frac {a'_i(\mathbf{x}, t)} {\int_\Omega
   a'_i(\mathbf{x}, t) d\sigma} \\
 %
-& = \int_\Omega  a'_i(\mathbf{x}, 0) d\sigma \; \frac {a'_i(\mathbf{x}, t)} {\int_\Omega
+& = \int_\Omega  a_i(\mathbf{x}, 0) d\sigma \; \frac {a'_i(\mathbf{x}, t)} {\int_\Omega
   a'_i(\mathbf{x}, t) d\sigma}
+%\\
+%& = a_0 \frac {a'_i(\mathbf{x}, t)} {\int_\Omega
+%  a'_i(\mathbf{x}, t) d\sigma}
 \end{split}
 \end{equation}
 %
@@ -426,7 +431,8 @@ In the simulation, in which space is represented as $n_e$ discrete
 hexagonal tiles, the equivalent expression is:
 %
 \begin{equation} \label{eq:norm_discrete}
-{a_{i,p}}(t) = \textstyle \sum_j^{n_e} a_{i,j}(0) \; \frac {a'_{i,p}(t)} {\textstyle \sum_j^{n_e} a'_{i,j}(t) }
+  {a_{i,p}}(t) = \textstyle \sum_j^{n_e} a_{i,j}(0) \; \frac {a'_{i,p}(t)}
+  {\textstyle \sum_j^{n_e} a'_{i,j}(t) }
 \end{equation}
 %
 where $a_{i,j}(t)$ is the value of the variable $a_i$ in the $j^{\mathrm{th}}$
@@ -434,42 +440,19 @@ hexagonal element at time t.
 
 We first investigated the effect of the competition by examining a system of
 25 thalamocortical axon types simulated on a square domain, as in
-Fig.~\ref{fig:square}. The hex to hex distance was 0.02 mm and the
-square's side length was 1.16 mm. The axons interacted with two orthogonal
-signalling gradients, one of which increased from the top edge to the bottom
-edge, the other of which had its gradient increasing from the right edge to
-the left edge [Fig.~\ref{fig:square}(f)]. For each thalamocortical type, $i$,
-two interaction parameters were set; $\gamma_{i,1}$ was the interaction with
+Fig.~\ref{fig:sq}, to determine if a complex pattern could emerge. The hex
+to hex distance was 0.02 mm and the square's side length was 1.16 mm (3919 hex
+elements). The axons interacted with two orthogonal signalling gradients, one
+of which increased from the top edge to the bottom edge, the other of which
+had its expression increasing from the right edge to the left edge
+[Fig.~\ref{fig:sq}(f)]. For each thalamocortical type, $i$, two
+interaction parameters were set; $\gamma_{i,1}$ was the interaction with
 guidance molecule 1 and $\gamma_{i,2}$ was the interaction with molecule
 2. The branching of TC types with a negative interaction with molecule 2
-($\gamma_{i,2}<0$) will be pushed to the left; those with $\gamma_{i,2}>0$ are
-pushed to the right. TC types that interact negatively with molecule 1
-($\gamma_{i,1}<0$) are pushed up; those with $\gamma_{i,1}>0$ are pushed down.
-
-Fig.~\ref{fig:square}(a) shows the connection densities after the first 100
-simulation time steps (t=0.005 s). Each colour uniquely identifies the TC
-type, $i$ [the full mapping between index $i$ and the colour is shown in
-  Fig.~\ref{fig:square}(d)]. The left-hand map colours each hex according to
-which TC type has the highest connection density. At this early stage of the
-simulation, the colouring is somewhat random because the branching density is
-initialised stochastically ($a_{i,j}(0) = 0.2 + U([0,0.2])$), which results in
-a randomised pattern for ${c_i}^{max}$. The right-hand map of
-Fig.~\ref{fig:square}(a) colours those hexes which have $c_i \geq 0.5$ and an
-adjoining hex for which $c_i < 0.5$ according to the mapping shown in
-Fig.~\ref{fig:square}(d)]. Due to the initial stochasticity, there are many
-  such crossings of the threshold. The predominance of blue (for $i<10$)
-  results from the order in which the hexes have been rendered.
-Fig.~\ref{fig:square}(b) shows the simulation at t=0.14. \cmnt{CONTINUE FROM HERE.}
-
-% Later
-The full set of these interaction parameters are shown in
-Fig.~\ref{fig:square}(e). The values of $\gamma$ were chosen with the
-intention of forming a grid; the interactions for $i =$ 1, 5, 21 \& 25 (the
-corners) were strongest and the interaction parameters for $i=$13 (the centre)
-were zero. Fig.~\ref{fig:square}(d) shows the mapping between colour and TC
-type $i$ and can be used, in conjunction with Fig.~\ref{fig:square}(e), to see
-that $\gamma_{1,1}=-2$, $\gamma_{1,2}=-2$, $\gamma_{3,1}=0$,
-$\gamma_{3,2}=-2$, and so on.
+($\gamma_{i,2}<0$) were pushed to the left; those with $\gamma_{i,2}>0$ were
+pushed to the right. TC types that interacted negatively with molecule 1
+($\gamma_{i,1}<0$) were pushed up; those with $\gamma_{i,1}>0$ were pushed
+down.
 
 \begin{figure*}
 \begin{center}
@@ -478,27 +461,73 @@ $\gamma_{3,2}=-2$, and so on.
 %\vspace{-0em}
 \caption{\textbf{(a)--(e)} Connection densities of 25 thalamocortical axons
   simulated on a square domain. \textbf{(a)} Connection density at simulation
-  time t=0. The left image shows a map of the identity of the thalamocortical
+  time t=0.005. The left image shows a map of the identity of the thalamocortical
   axon type with the highest absolute connection density. Hexagonal elements
   coloured the darkest blue have the highest connection density for TC type
   $i=1$; those coloured the darkest red have maximal connection density in TC
   type $i=25$. The right hand image of each pair shows the hexes for which the
   connection density passes 0.5 for each TC type, giving a contour map. At
-  t=0, connection densities are randomly distributed. \textbf{(b)} t=0.14. The
+  t=0, connection densities are randomly distributed. \textbf{(b)} t=0.18. The
   grid-like organisation of the TC connections is beginning to emerge.
-  \textbf{(c)} t=0.2. The 5x5 grid is now clear in the left map. Branching
+  \textbf{(c)} t=0.25. The 5x5 grid is now clear in the left map. Branching
   competition and differential interaction with the two guidance gradients is
-  causing the branching, and therefore the connection densities, to localise in
-  25 different locations. \textbf{(d)} t=0.64. Connection densities for each
-  TC type have increased sufficiently for the contours to form. In (d), the
-  mapping between colour and TC type $i$ is indicated. \textbf{(e)}
-  t=1.41. Contours are well formed. In (e), the $\gamma$ values for each TC
+  causing the branching, and therefore the connection densities, to localise
+  in 25 different locations. \textbf{(d)} t=0.81. Connection densities for
+  each TC type have increased sufficiently for the contours to form. In (d),
+  the mapping between colour and TC type $i$ is indicated. \textbf{(e)}
+  t=1.77. Contours are well formed. In (e), the $\gamma$ values for each TC
   type, $i$, are shown. $\gamma_{i,1}$ gives the interaction with molecule `1'
   [red map in (f)]; $\gamma_{i,2}$ is the interaction with molecule
-  `2'. \textbf{(f)} The two guidance gradients (`1' and `2') for this
-  simulation.}
-\label{fig:square}
+  `2'. \textbf{(f)} Expression maps for the two guidance molecules (`1' and
+  `2') for this simulation. Colour saturation indicates expression intensity,
+  which for each molecule varies linearly in one direction.}
+\label{fig:sq}
 \end{figure*}
+
+Fig.~\ref{fig:sq}(a) shows the connection densities after the first 100
+simulation time steps (t=0.005 s). Each colour uniquely identifies the TC
+type, $i$ [the full mapping between index $i$ and the colour is shown in
+  Fig.~\ref{fig:sq}(d)]. The left-hand map colours each hex according to
+which TC type has the highest connection density. At this early stage of the
+simulation, the colouring is somewhat random because the branching density was
+initialised stochastically ($a_{i,j}(0) = 0.2 + U([0,0.2])$), which resulted
+in a randomised pattern for ${c_i}^{max}$. The right-hand map of
+Fig.~\ref{fig:sq}(a) colours those hexes which have $c_i \geq 0.5$ and an
+adjoining hex for which $c_i < 0.5$ according to the mapping shown in
+Fig.~\ref{fig:sq}(d)]. Due to the initial stochasticity, there are many
+  such crossings of the threshold. The predominance of blue (for $i<10$)
+  results from the order in which the hexes were rendered, with blue hexes
+  being coloured last.  Fig.~\ref{fig:sq}(b) shows the simulation at
+  t=0.14.
+%
+%
+Fig.~\ref{fig:sq}(b) shows the connection density after 0.18 s of simulation
+time (3600 steps of 5x10$^{-5}$ s). The initial randomness in the pattern has
+disappearing, to be replaced by coalesced regions in which each TC type $i$ is
+maximal.  There is a clear blue/red division from left to right. The threshold
+plot indicates that the guidance molecules have pushed the branching towards
+the corners of the square for the 4 TC types with the strongest interactions
+with the guidance molecules; these exceed the threshold of 0.5. For the other
+21 TC types, the connection densities are not yet sufficiently localised to
+cross the threshold.
+%
+0.08 s of simulation time later, in Fig.~\ref{fig:sq}(c), the 5x5 grid is
+clearly visible in the maximal value map, though the localisation of each
+connection density map is still not sufficient for the contour map to emerge.
+%
+The contour map emerges by 0.81 s and is well formed by 1.77 s
+[Figs.~\ref{fig:sq}(d) \& (e)]. Fig.~\ref{fig:sq}(e) shows the interaction
+parameters for each TC type ($\gamma$). The values of $\gamma$ were chosen
+with the intention of forming a grid; the interactions for $i =$ 1, 5, 21 \&
+25 (the corners) were strongest and the interaction parameters for $i=$13 (the
+centre) were zero. Fig.~\ref{fig:sq}(d) shows the mapping between colour and
+TC type $i$ and can be used, in conjunction with Fig.~\ref{fig:sq}(e), to see
+that $\gamma_{1,1}=-2$, $\gamma_{1,2}=-2$, $\gamma_{3,1}=0$,
+$\gamma_{3,2}=-2$, and so on.
+
+The simulation shown in Fig.~\ref{fig:sq} demonstrates that complex structure
+can form in a system with just two guidance gradients \cmnt{(provided that
+  interactions with each gradient occur in both senses; positive and negative)}.
 
 \subsection*{The model can transfer realistic barrel patterns}
 
