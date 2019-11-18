@@ -29,17 +29,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.9497474"
-     inkscape:cx="456.4102"
-     inkscape:cy="326.48535"
+     inkscape:zoom="2.4009907"
+     inkscape:cx="295.49521"
+     inkscape:cy="319.70242"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="3773"
-     inkscape:window-height="2105"
-     inkscape:window-x="67"
-     inkscape:window-y="27"
-     inkscape:window-maximized="1"
+     inkscape:window-width="2706"
+     inkscape:window-height="1860"
+     inkscape:window-x="136"
+     inkscape:window-y="155"
+     inkscape:window-maximized="0"
      fit-margin-top="1"
      fit-margin-left="1"
      fit-margin-right="6"
@@ -139,7 +139,7 @@
          id="tspan4043-4"
          x="9.2090187"
          y="86.059135"
-         style="stroke-width:0.07837752">t=0.14</tspan></text>
+         style="stroke-width:0.07837752">t=0.18</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.01616144px;line-height:1.25;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.07837752"
@@ -150,7 +150,7 @@
          id="tspan4043-4-4"
          x="9.2090187"
          y="140.18875"
-         style="stroke-width:0.07837752">t=0.20</tspan></text>
+         style="stroke-width:0.07837752">t=0.26</tspan></text>
     <image
        y="17.911671"
        x="146.00577"
@@ -199,7 +199,7 @@
          id="tspan4043-4-4-7"
          x="130.89828"
          y="30.839314"
-         style="stroke-width:0.07837752">t=0.64</tspan></text>
+         style="stroke-width:0.07837752">t=0.81</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.01616144px;line-height:1.25;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.07837752"
@@ -210,7 +210,7 @@
          id="tspan4043-4-4-1"
          x="130.89828"
          y="84.760422"
-         style="stroke-width:0.07837752">t=1.41</tspan></text>
+         style="stroke-width:0.07837752">t=1.77</tspan></text>
     <image
        y="129.63248"
        x="150.6256"
