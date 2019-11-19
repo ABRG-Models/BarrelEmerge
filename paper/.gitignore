@@ -3,6 +3,4 @@
 *.log
 *.pdf
 *.blg
-NoTremor.bib
-Eqns*.jpg
-WBEqns*
+*.out
