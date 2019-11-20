@@ -37,8 +37,9 @@ public:
     }
 
     virtual void integrate_a (void) {
-
+#ifdef PROFILE_CODE
         milliseconds ms1 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+#endif
         // 2. Do integration of a (RK in the 1D model). Involves computing axon branching flux.
 
         // Pre-compute:
@@ -49,9 +50,10 @@ public:
                 this->alpha_c[i][h] = this->alpha[i] * this->c[i][h];
             }
         }
+#ifdef PROFILE_CODE
         milliseconds ms2 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
         this->codetimes.back().a_precompute += (ms2-ms1);
-
+#endif
         // Compute eps_all once only
         this->zero_vector_variable (this->eps_all);
         for (unsigned int j=0; j<this->N; ++j) {
@@ -61,16 +63,18 @@ public:
             }
         }
 
+#ifdef PROFILE_CODE
         milliseconds ms3 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
         this->codetimes.back().a_eps_all += (ms3-ms2);
-
+#endif
         // Runge-Kutta:
         // No OMP here - there are only N(<10) loops, which isn't
         // enough to load the threads up.
         for (unsigned int i=0; i<this->N; ++i) {
 
+#ifdef PROFILE_CODE
             milliseconds msf1 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-
+#endif
             // Compute epsilon * a_hat^l. a_hat is "the sum of all a_j
             // for which j!=i". Call the variable just 'eps'.
 
@@ -91,8 +95,10 @@ public:
                 }
             }
 
+#ifdef PROFILE_CODE
             milliseconds msf2 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             this->codetimes.back().a_for1 += (msf2-msf1);
+#endif
 
             // Multiply it by epsilon[i]/(N-1). Now it's ready to subtract from the solutions
             Flt eps_over_N = this->epsilon[i]/(this->N-1);
@@ -105,15 +111,18 @@ public:
                 this->eps[h] += xi_final[h];
             }
 
+#ifdef PROFILE_CODE
             milliseconds msf3 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             this->codetimes.back().a_for2 += (msf3-msf2);
-
+#endif
             // Runge-Kutta integration for A
             vector<Flt> qq(this->nhex, 0.0);
             this->compute_divJ (this->a[i], i); // populates divJ[i]
 
+#ifdef PROFILE_CODE
             milliseconds msf4 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             this->codetimes.back().a_for3 += (msf4-msf3);
+#endif
 
             vector<Flt> k1(this->nhex, 0.0);
 #pragma omp parallel for
@@ -147,14 +156,17 @@ public:
                 this->a[i][h] += (k1[h] + 2.0 * (k2[h] + k3[h]) + k4[h]) * this->sixthdt;
             }
 
+#ifdef PROFILE_CODE
             milliseconds msf5 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             this->codetimes.back().a_for4 += (msf5-msf4);
-
+#endif
             // Do any necessary computation which involves summing a here
             this->sum_a_computation (i);
 
+#ifdef PROFILE_CODE
             milliseconds msf6 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             this->codetimes.back().a_for5 += (msf6-msf5);
+#endif
 
             // Now apply the transfer function
 //#pragma omp parallel for
@@ -162,8 +174,10 @@ public:
                 this->a[i][h] = this->transfer_a (this->a[i][h], i);
             }
 
+#ifdef PROFILE_CODE
             milliseconds msf7 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             this->codetimes.back().a_for6 += (msf7-msf6);
+#endif
         }
     }
 

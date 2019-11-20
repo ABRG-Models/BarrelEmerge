@@ -4,6 +4,7 @@
 
 #include "rd_james_divnorm.h"
 
+#ifdef PROFILE_CODE
 #include <chrono>
 using namespace std::chrono;
 
@@ -44,6 +45,7 @@ public:
              << endl;
     }
 };
+#endif
 
 template <class Flt>
 class RD_James_dncomp : public RD_James_divnorm<Flt>
@@ -218,7 +220,9 @@ public:
 
     virtual void integrate_a (void) {
 
+#ifdef PROFILE_CODE
         milliseconds ms1 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+#endif
         // 2. Do integration of a (RK in the 1D model). Involves computing axon branching flux.
 
         // Pre-compute:
@@ -229,8 +233,10 @@ public:
                 this->alpha_c[i][h] = this->alpha[i] * this->c[i][h];
             }
         }
+#ifdef PROFILE_CODE
         milliseconds ms2 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
         this->codetimes.back().a_precompute += (ms2-ms1);
+#endif
 
 #if defined BRANCHCOMP_LOGISTIC_FN
         Flt one = static_cast<Flt>(1.0);
@@ -259,16 +265,18 @@ public:
             }
 #endif
         }
+#ifdef PROFILE_CODE
         milliseconds ms3 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
         this->codetimes.back().a_eps_all += (ms3-ms2);
-
+#endif
         // Runge-Kutta:
         // No OMP here - there are only N(<10) loops, which isn't
         // enough to load the threads up.
         for (unsigned int i=0; i<this->N; ++i) {
 
+#ifdef PROFILE_CODE
             milliseconds msf1 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-
+#endif
             //this->zero_vector_variable (this->eps_i);
 
             // Compute epsilon * a_hat^l. a_hat is "the sum of all a_j
@@ -293,9 +301,10 @@ public:
                 eps_i[h] = this->a[i][h];
             }
 #endif
+#ifdef PROFILE_CODE
             milliseconds msf2 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             this->codetimes.back().a_for1 += (msf2-msf1);
-
+#endif
             // Multiply it by epsilon[i]/(N-1). Now it's ready to subtract from the solutions
             Flt eps_over_N = this->epsilon[i]/(this->N-1);
 #pragma omp parallel for
@@ -304,17 +313,18 @@ public:
             }
 
             //cout << "eps[3000] = " << eps[3000]<< endl;
-
+#ifdef PROFILE_CODE
             milliseconds msf3 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             this->codetimes.back().a_for2 += (msf3-msf2);
-
+#endif
             // Runge-Kutta integration for A
             vector<Flt> qq(this->nhex, 0.0);
             this->compute_divJ (this->a[i], i); // populates divJ[i]
 
+#ifdef PROFILE_CODE
             milliseconds msf4 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             this->codetimes.back().a_for3 += (msf4-msf3);
-
+#endif
             vector<Flt> k1(this->nhex, 0.0);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
@@ -347,33 +357,34 @@ public:
                 this->a[i][h] += (k1[h] + 2.0 * (k2[h] + k3[h]) + k4[h]) * this->sixthdt;
             }
 
+#ifdef PROFILE_CODE
             milliseconds msf5 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             this->codetimes.back().a_for4 += (msf5-msf4);
-
-            // Do any necessary computation which involves summing a here
-            this->sum_a_computation (i);
-
-            milliseconds msf6 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-            this->codetimes.back().a_for5 += (msf6-msf5);
-
-            // Now apply the transfer function
-#pragma omp parallel for
-            //cout << "(b4 xfer) this->a["<<i<<"][3000] = " << this->a[i][3000] << endl;
-            for (unsigned int h=0; h<this->nhex; ++h) {
-                this->a[i][h] = this->transfer_a (this->a[i][h], i);
-            }
-
-            milliseconds msf7 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-            this->codetimes.back().a_for6 += (msf7-msf6);
+#endif
         }
     }
 
+    //! Sum up the integration and pass through the transfer function (i.e. the normalization)
+    virtual void summation_a (void) {
+        for (unsigned int i=0; i<this->N; ++i) {
+            // Do any necessary computation which involves summing a here
+            this->sum_a_computation (i);
+            // Now apply the transfer function
+#pragma omp parallel for
+            for (unsigned int h=0; h<this->nhex; ++h) {
+                this->a[i][h] = this->transfer_a (this->a[i][h], i);
+            }
+        }
+    }
+
+#ifdef PROFILE_CODE
     //! Counters for timing.
     vector<Codetime> codetimes;
+#endif
 
     //! Override step() as have to compute div_n and grad_n
     virtual void step (void) {
-
+#ifdef PROFILE_CODE
         if ((this->stepCount % 100) == 0) {
             if (!codetimes.empty()) {
                 codetimes.back().output();
@@ -381,29 +392,41 @@ public:
             Codetime ct;
             codetimes.push_back (ct);
         }
+#endif
         this->stepCount++;
-
+#ifdef PROFILE_CODE
         milliseconds ms1 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+#endif
         // 1. Compute Karb2004 Eq 3. (coupling between connections made by each TC type)
         this->compute_n();
 
+#ifdef PROFILE_CODE
         milliseconds ms2 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
         codetimes.back().compute_n_time += (ms2-ms1);
+#endif
         // 1.1 Compute divergence and gradient of n
         this->compute_divn();
+#ifdef PROFILE_CODE
         milliseconds ms3 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
         codetimes.back().compute_divn_time += (ms3-ms2);
+#endif
         this->spacegrad2D (this->n, this->grad_n);
+#ifdef PROFILE_CODE
         milliseconds ms4 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
         codetimes.back().compute_spacegrad_n_time += (ms4-ms3);
-
+#endif
         // 2. Call Runge Kutta numerical integration code
         this->integrate_a();
+        this->summation_a();
+#ifdef PROFILE_CODE
         milliseconds ms5 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
         codetimes.back().integrate_a_time += (ms5-ms4);
+#endif
         this->integrate_c();
+#ifdef PROFILE_CODE
         milliseconds ms6 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
         codetimes.back().integrate_c_time += (ms6-ms5);
+#endif
     }
 
 }; // RD_James_norm
