@@ -24,6 +24,15 @@ public:
         // Anything additional
     }
 
+    //! A function to call after both self and the mirror have been initilalised, called only from
+    //! the 'self' object.
+    void init_sums (void) {
+        for (unsigned int i=0; i<this->N; ++i) {
+            this->sum_a[i] += this->mirror->sum_a[i];
+            this->mirror->sum_a[i] = this->sum_a[i];
+        }
+    }
+
     //! Do summation using both self and mirror
     virtual void summation_a (void) {
         for (unsigned int i=0; i<this->N; ++i) {

@@ -552,7 +552,12 @@ int main (int argc, char **argv)
 
     // Now have the guidance molecule densities and their gradients computed, call init()
     RD.init();
+    // Reseed RNG
+    srand (morph::Tools::randomSeed());
+    // Init RD2
     RD2.init();
+
+    RD.init_sums();
 
     /*
      * Now create a log directory if necessary, and exit on any
@@ -581,7 +586,7 @@ int main (int argc, char **argv)
     // Duplicate test for logpath2:
     if (morph::Tools::dirExists (logpath2) == false) {
         morph::Tools::createDir (logpath2);
-        if (morph::Tools::dirExists (logpath) == false) {
+        if (morph::Tools::dirExists (logpath2) == false) {
             cerr << "Failed to create the logpath directory "
                  << logpath2 << " which does not exist."<< endl;
             return 1;
@@ -699,6 +704,7 @@ int main (int argc, char **argv)
             DBG2("Plot at step " << RD.stepCount);
             // Do a plot of the ctrs as found.
             vector<list<Hex> > ctrs = ShapeAnalysis<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
+            vector<list<Hex> > ctrs2 = ShapeAnalysis<FLT>::get_contours (RD2.hg, RD2.c, RD2.contour_threshold);
 
             if (do_dirichlet_analysis == true) {
                 RD.dirichlet();
@@ -751,7 +757,7 @@ int main (int argc, char **argv)
                                                                hshift, vshift, g_hshift, g_vshift);
                     } else {
                         plt.plot_contour_and_scalar (displays[dr_id], RD.hg, ctrs, RD.regions, hshift, g_hshift);
-                        plt.plot_contour_and_scalar (displays[dr2_id], RD2.hg, ctrs, RD2.regions, hshift, g_hshift);
+                        plt.plot_contour_and_scalar (displays[dr2_id], RD2.hg, ctrs2, RD2.regions, hshift, g_hshift);
                     }
                 } else {
                     plt.scalarfields (displays[dr_id], RD.hg, RD.regions);
