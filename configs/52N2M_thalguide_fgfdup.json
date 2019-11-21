@@ -5,11 +5,11 @@
 {
     // Global simulation parameters
     "steps" : 6000,                // Number of steps to simulate for
-    "logevery": 1000,
+    "logevery": 100,
     "overwrite_logs": true,
     "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/",
     "hextohex_d" : 0.015,           // Hex to hex distance, determines num hexes
-    "svgpath" : "./boundaries/whiskerbarrels_rot.svg",
+    "svgpath" : "./boundaries/whiskerbarrels_twofields.svg",
     "boundaryFalloffDist" : 0.03,
     "D" : 0.2,
     "E" : 0.0,
@@ -26,14 +26,15 @@
 
     "contour_threshold" : 0.35,
 
-    // FGF misexpression - causes one gradient to take on a mirrored form.
+    // FGF misexpression - causes one gradient to take on a mirrored
+    // form. Fixme: Will put this into guidance gradient table (mirrorx=true, that sort of thing).
     "do_fgf_duplication" : true,
 
     // Visualization parameters (ignored by computation-only binaries)
-    "win_width_contours": 1920,
-    "plotevery": 4,
+    "win_width_contours": 1280,
+    "plotevery": 100,
     "vidframes": true,    // If true, number video frame saves consecutively, rather than by simulation step number
-    "rhoInit": 1.8, // Larger to zoom out
+    "rhoInit": 4, // Larger to zoom out
     //
     "plot_guide" : true,
     "plot_contours" : true,
@@ -53,7 +54,7 @@
     "do_dirichlet_analysis": true,
 
     "plot_dr_with_guide" : false,
-    "hshift" : 0.5,
+    "hshift" : 0.3,
     "vshift" : 0.4,
     "g_hshift" : 0.3,
     "g_vshift" : -0.4,
