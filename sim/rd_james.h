@@ -343,6 +343,7 @@ public:
         Flt scale_m = 1.0;
         Flt scale_c = 0.0;
         if (this->doFgfDuplication == true) {
+            DBG2 ("doFgfDuplication is true. N=" << this->N);
             // First compute min and max x, for scaling
             for (unsigned int i = 0; i<this->N && i < gp.size(); ++i) {
                 if (!(gp[i].sigma > 0.0)) {
@@ -366,13 +367,15 @@ public:
             }
             vector<Flt> vv_cpy(vv[i].size());
             if (this->doFgfDuplication == true) {
+                // Note: this duplicates the initial branching density
+                // distribution. For the guidance gradients, see code elsewhere.
                 gp[i].x = scale_c + scale_m * gp[i].x;
                 // In this case, narrow sigma:
                 gp[i].sigma /= 2.0;
 
                 // Also copy vv[i] so that we can do the mirrored contribution to the initial state
                 vv_cpy.assign(vv[i].begin(), vv[i].end());
-                cout << "Copied. vv_cpy[0] = " << vv_cpy[0] << " vv[i][0] = " << vv[i][0] << endl;
+                DBG ("Copied. vv_cpy[0] = " << vv_cpy[0] << " vv[i][0] = " << vv[i][0]);
             }
 
             Flt one_over_sigma_root_2_pi = 1 / gp[i].sigma * root_2_pi;
@@ -392,7 +395,7 @@ public:
             }
 
             if (this->doFgfDuplication == true) {
-                cout << "-1 * gp[i].x = " << (-1 * gp[i].x) << endl;
+                DBG ("-1 * gp[i].x = " << (-1 * gp[i].x));
                 // Do mirror contribution
                 for (auto h : this->hg->hexen) {
                     Flt rx = (-1 * gp[i].x) - h.x;
@@ -461,7 +464,7 @@ public:
      */
     virtual void init (void) {
 
-        cout << "RD_James::init() called" << endl;
+        DBG ("RD_James::init() called");
 
         this->stepCount = 0;
 
@@ -484,7 +487,6 @@ public:
         this->zero_vector_array_vector (this->J, this->N);
 
         // Initialise a with noise
-        cout << "init a..." << endl;
         this->noiseify_vector_vector (this->a, this->initmasks);
 
         // Mask the noise off (set sigmas to 0 to ignore the masking)
@@ -1142,9 +1144,9 @@ public:
         for (auto h : this->hg->hexen) {
             Flt cosphi = (Flt) cos (this->TWOPI_OVER_360 * this->guidance_phi[m]);
             Flt sinphi = (Flt) sin (this->TWOPI_OVER_360 * this->guidance_phi[m]);
-            //DBG("phi= " << this->guidance_phi[m] << ". cosphi: " << cosphi << " sinphi: " << sinphi);
+            DBG2 ("phi= " << this->guidance_phi[m] << ". cosphi: " << cosphi << " sinphi: " << sinphi);
             Flt x_ = (h.x * cosphi) + (h.y * sinphi);
-            //DBG ("x_[" << h.vi << "] = " << x_);
+            DBG2 ("x_[" << h.vi << "] = " << x_);
             this->rho[m][h.vi] = guidance_gain[m] / (1.0 + exp(-(x_-guidance_offset[m])/this->guidance_width[m]));
         }
     }
@@ -1156,7 +1158,12 @@ public:
         for (auto h : this->hg->hexen) {
             Flt cosphi = (Flt) cos (this->TWOPI_OVER_360 * this->guidance_phi[m]);
             Flt sinphi = (Flt) sin (this->TWOPI_OVER_360 * this->guidance_phi[m]);
-            Flt x_ = (h.x * cosphi) + (h.y * sinphi);
+            Flt x_ = 0.0;
+            if (this->doFgfDuplication == true) {
+                x_ = (abs(h.x) * cosphi) + (h.y * sinphi);
+            } else {
+                x_ = (h.x * cosphi) + (h.y * sinphi);
+            }
             this->rho[m][h.vi] = (x_-guidance_offset[m]) * this->guidance_gain[m];
         }
     }
@@ -1183,23 +1190,18 @@ public:
      * Compute Dirichlet analysis on the c variable
      */
     void dirichlet (void) {
+        // Clear out previous results from an earlier timestep
         this->regions.clear();
         this->vertices.clear();
-
         // Find regions. Based on an 'ID field'.
         this->regions = morph::ShapeAnalysis<Flt>::dirichlet_regions (this->hg, this->c);
-
         // Compute the centroids of the regions; used to determine aligned-ness of the barrels
         this->reg_centroids = morph::ShapeAnalysis<Flt>::region_centroids (this->hg, this->regions);
-        DBG2 ("reg_centroids size after region_centroids() is " << reg_centroids.size());
-
-
+        // Find the vertices and construct domains
         this->domains = morph::ShapeAnalysis<Flt>::dirichlet_vertices (this->hg, this->regions, this->vertices);
-
         // Carry out the analysis.
         vector<pair<float, float>> d_centres;
         this->honda = morph::ShapeAnalysis<float>::dirichlet_analyse (this->domains, d_centres);
-        //cout << "Result of analysis: " << this->honda << endl;
     }
 
 }; // RD_James

@@ -221,7 +221,6 @@ int main (int argc, char **argv)
             logbase += '/';
         }
         logpath = logbase + justfile;
-        cout << "logpath: " << logpath << endl;
     }
     if (argc == 3) {
         string argpath(argv[2]);
@@ -255,12 +254,12 @@ int main (int argc, char **argv)
     const FLT l = root.get ("l", 1).asDouble();
     const FLT m = root.get ("m", 1e-8).asDouble();
     const double E = root.get ("E", 0.1).asDouble();
-    cout << "E is set to " << E << endl;
+    DBG2 ("E is set to " << E);
 #endif
 
     bool do_fgf_duplication = root.get ("do_fgf_duplication", false).asBool();
 
-    cout << "steps to simulate: " << steps << endl;
+    DBG ("steps to simulate: " << steps);
 
     // Thalamocortical populations array of parameters:
     const Json::Value tcs = root["tc"];
@@ -402,7 +401,7 @@ int main (int argc, char **argv)
         displays.back().redrawDisplay();
         dr_id = windowId++;
     } else if (plot_dr && !do_dirichlet_analysis) {
-        cout << "Note: To plot the dirichlet regions (dr), do_dirichlet_analysis must be set." << endl;
+        DBG ("Note: To plot the dirichlet regions (dr), do_dirichlet_analysis must be set.");
     }
 
     if (plot_guidegrad) {
@@ -479,12 +478,12 @@ int main (int argc, char **argv)
     RD.set_D (D);
 
 #if defined DNCOMP || defined DNCOMP2
-    cout << "Setting RD.l to " << l << endl;
+    DBG2 ("Setting RD.l to " << l);
     RD.l = l;
     RD.m = m;
 #ifndef E_A_DIVN
     if (E > 0.0) {
-        cout << "ERROR: You have E>0.0, but you are using a binary without the code to compute E div n" << endl;
+        cerr << "ERROR: You have E>0.0, but you are using a binary without the code to compute E div n" << endl;
         exit (1);
     }
 #endif
@@ -506,16 +505,16 @@ int main (int argc, char **argv)
         gp.gain = v.get("gaininit", 1.0).asDouble();
         gp.sigma = v.get("sigmainit", 0.0).asDouble();
         gp.x = v.get("xinit", 0.0).asDouble();
-        cout << "Set xinit["<<i<<"] to " << gp.x << endl;
+        DBG2 ("Set xinit["<<i<<"] to " << gp.x);
         gp.y = v.get("yinit", 0.0).asDouble();
         RD.initmasks.push_back (gp);
 #if defined DNCOMP || defined DNCOMP2
         RD.epsilon[i] = v.get("epsilon", 0.0).asDouble();
-        cout << "Set RD.epsilon["<<i<<"] to " << RD.epsilon[i] << endl;
+        DBG2 ("Set RD.epsilon["<<i<<"] to " << RD.epsilon[i]);
 #endif
 #if defined DNCOMP2
         RD.xi[i] = v.get("xi", 0.0).asDouble();
-        cout << "Set RD.xi["<<i<<"] to " << RD.xi[i] << endl;
+        DBG2 ("Set RD.xi["<<i<<"] to " << RD.xi[i]);
 #endif
     }
 
@@ -524,7 +523,7 @@ int main (int argc, char **argv)
         Json::Value v = guid[j];
         // What guidance molecule method will we use?
         string rmeth = v.get ("shape", "Sigmoid1D").asString();
-        DBG ("guidance modelecule shape: " << rmeth);
+        DBG2 ("guidance molecule shape: " << rmeth);
         if (rmeth == "Sigmoid1D") {
             RD.rhoMethod[j] = FieldShape::Sigmoid1D;
         } else if (rmeth == "Linear1D") {
@@ -540,7 +539,7 @@ int main (int argc, char **argv)
         }
         // Set up guidance molecule method parameters
         RD.guidance_gain.push_back (v.get("gain", 1.0).asDouble());
-        DBG ("guidance modelecule gain: " << RD.guidance_gain.back());
+        DBG2 ("guidance modelecule gain: " << RD.guidance_gain.back());
         RD.guidance_phi.push_back (v.get("phi", 1.0).asDouble());
         RD.guidance_width.push_back (v.get("width", 1.0).asDouble());
         RD.guidance_offset.push_back (v.get("offset", 1.0).asDouble());
@@ -560,7 +559,7 @@ int main (int argc, char **argv)
             // Set up gamma values using a setter which checks we
             // don't set a value that's off the end of the gamma
             // container.
-            cout << "Set gamma for guidance " << j << " over TC " << i << " = " << gamma[j] << endl;
+            DBG2 ("Set gamma for guidance " << j << " over TC " << i << " = " << gamma[j]);
             paramRtn += RD.setGamma (j, i, gamma[j].asDouble(), groupgamma);
         }
     }
@@ -630,7 +629,7 @@ int main (int argc, char **argv)
                 }
             }
         }
-        cout << "min g = " << ming << " and max g = " << maxg << endl;
+        DBG2 ("min g = " << ming << " and max g = " << maxg);
     }
 
     FLT mindivg = 1e7;
@@ -646,7 +645,7 @@ int main (int argc, char **argv)
                 }
             }
         }
-        cout << "min div(g) = " << mindivg << " and max div(g) = " << maxdivg << endl;
+        DBG2 ("min div(g) = " << mindivg << " and max div(g) = " << maxdivg);
     }
 
     // Now plot fields and redraw display
@@ -696,7 +695,7 @@ int main (int argc, char **argv)
 
             if (do_dirichlet_analysis == true) {
                 RD.dirichlet();
-                //cout << "dirich_value = " << RD.honda << endl;
+                DBG2 ("dirich_value = " << RD.honda);
             }
 
             vector<list<Hex> > a_ctrs;
@@ -803,7 +802,7 @@ int main (int argc, char **argv)
 
         // Save data every 'logevery' steps
         if ((RD.stepCount % logevery) == 0) {
-            cout << "Logging data at step " << RD.stepCount << endl;
+            DBG ("Logging data at step " << RD.stepCount);
             RD.save();
             if (do_dirichlet_analysis == true) {
 #ifndef COMPILE_PLOTTING // Then it won't have been done above:

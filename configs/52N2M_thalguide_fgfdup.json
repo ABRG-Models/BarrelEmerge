@@ -1,0 +1,139 @@
+/*
+ * 52 barrels to arrange, corresponding to A, B, C, D, E rows, rhinal
+ * whiskers and the 4 straddlers.
+ */
+{
+    // Global simulation parameters
+    "steps" : 6000,                // Number of steps to simulate for
+    "logevery": 1000,
+    "overwrite_logs": true,
+    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/",
+    "hextohex_d" : 0.015,           // Hex to hex distance, determines num hexes
+    "svgpath" : "./boundaries/whiskerbarrels_rot.svg",
+    "boundaryFalloffDist" : 0.03,
+    "D" : 0.2,
+    "E" : 0.0,
+
+    // gamma gain
+    "G" : 1.0,
+
+    // Exponent parameters
+    "k" : 3,
+    "l" : 1, // If not 1, then sim tends to blow up.
+
+    // Timestep. Defaults to 0.00001 if omitted here
+    "dt" : 0.0001,
+
+    "contour_threshold" : 0.35,
+
+    // FGF misexpression - causes one gradient to take on a mirrored form.
+    "do_fgf_duplication" : true,
+
+    // Visualization parameters (ignored by computation-only binaries)
+    "win_width_contours": 1920,
+    "plotevery": 4,
+    "vidframes": true,    // If true, number video frame saves consecutively, rather than by simulation step number
+    "rhoInit": 1.8, // Larger to zoom out
+    //
+    "plot_guide" : true,
+    "plot_contours" : true,
+    "plot_a_contours" : false,
+    "plot_a" : false,
+    "plot_c" : false,
+    "plot_n" : false,
+    "scale_a" : false,
+    "scale_c" : false,
+    "scale_n" : false,
+
+    //
+    "plot_guidegrad" : false,
+    "plot_divg" : false,
+    "plot_divJ" : false,
+    "plot_dr": true,
+    "do_dirichlet_analysis": true,
+
+    "plot_dr_with_guide" : false,
+    "hshift" : 0.5,
+    "vshift" : 0.4,
+    "g_hshift" : 0.3,
+    "g_vshift" : -0.4,
+
+    "aNoiseGain" : 0.2,
+    "aInitialOffset" : 0.2,
+
+    // Array of parameters for N thalamocortical populations.
+    "tc": [
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.3842487739182971, -2.327640621446677], "name":"a" }, // a
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.1579780537281996, -1.7601517563467544], "name":"A1" }, // A1
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.1071053670819424, -1.1618678898879025], "name" : "A2" }, // A2
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.1080774566356926, -0.7160281547959112], "name" : "A3" }, // A3
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.05516608217532, -0.2488892833173405], "name" : "A4" }, // A4
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.27065268387850216, -2.3697729756113795], "name" : "b" }, // b
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.980291559359906, -1.676186567122786], "name" : "B1" }, // B1
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.1249843891868538, -1.148001264636223], "name" : "B2" }, // B2
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.2512480212239552, -0.6964928531413453], "name" : "B3" }, // B3
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.2965176916923469, -0.2873497551153982], "name" : "B4" }, // B4
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.7446138475507055, -2.3955870851799053], "name" : "c" }, // c
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.1644248976436955, -1.6268546611274122], "name" : "C1" }, // C1
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.02775180663518617, -0.788423031909878], "name" : "C2" }, // C2
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.05378220468560668, -0.10571915091880257], "name" : "C3" }, // C3
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.1879440643469279, 0.37865870907265553], "name" : "C4" }, // C4
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.49151953123681524, 0.7576945903521568], "name" : "C5" }, // C5
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.8409047183471776, 1.0082700553001014], "name" : "C6" }, // C6
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.1681343643783184, 1.0684844887929934], "name" : "C7" }, // C7
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.5047878785833142, 1.069782404916551], "name" : "C8" }, // C8
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.7570586190252775, 1.0636589032054085], "name" : "C9" }, // C9
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.9188845272370714, 1.0740755120944705], "name" : "C10" }, // C10
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.7480802918968912, -2.2005557743400876], "name" : "d" }, // d
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.0943500669999224, -1.6168263177453976], "name" : "D1" }, // D1
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.0589228032632505, -0.5368491699438124], "name" : "D2" }, // D2
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.9858945755377713, 0.23318117023223817], "name" : "D3" }, // D3
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.7777053961096165, 0.7554759303118881], "name" : "D4" }, // D4
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.4890218011334292, 1.0972050430142715], "name" : "D5" }, // D5
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.13281848590301382, 1.2779259965943566], "name" : "D6" }, // D6
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.20230938775234686, 1.370998785283628], "name" : "D7" }, // D7
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.5738096122105248, 1.394516581710476], "name" : "D8" }, // D8
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.8854048179188507, 1.463306136259006], "name" : "D9" }, // D9
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.3152979218210477, 1.533327047129886], "name" : "D10" }, // D10
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.6466994521870324, 1.5127156953557894], "name" : "D11" }, // D11
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.9615214551640567, 1.4722695228216918], "name" : "D12" }, // D12
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.9630470957136927, -1.0576019612954757], "name" : "E1" }, // E1
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [2.0, -0.45043236137534726], "name" : "E2" }, // E2
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.9999054912933856, 0.3844050385769512], "name" : "E3" }, // E3
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.9437808208081169, 0.9859836151956026], "name" : "E4" }, // E4
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.6340082830130722, 1.4153497994885988], "name" : "E5" }, // E5
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.190775950234415, 1.6144412582021088], "name" : "E6" }, // E6
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.7599512605098743, 1.71288320418883], "name" : "E7" }, // E7
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.3413586976700227, 1.7849674688971593], "name" : "E8" }, // E8
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.04238715491664646, 1.8348429466023992], "name" : "E9" }, // E9
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.4783288160421778, 1.8808801424379742], "name" : "E10" }, // E10
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.9161201475685946, 1.983759408505233], "name" : "E11" }, // E11
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.3737313049964728, 1.9972377682498654], "name" : "E12" }, // E12
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.639935329042188, 2.0], "name" : "E13" }, // E13
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.1397783770829886, 0.250264852542307], "name" : "R1" }, // R1
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.9474801616098882, 0.6285463894081169], "name" : "R2" }, // R2
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.5072181024676898, 0.5890098674905291], "name" : "R3" }, // R3
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.8003166041671588, 0.16370383107122433], "name" : "R4" }, // R4
+        { "alpha" : 3, "beta" : 20, "epsilon" : 1200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.411305266497676, 0.0919301787685326], "name" : "R5"  } // R5
+    ], // end tc
+
+    // Array of parameters for the guidance molecules
+    "guidance": [
+        {
+            "shape"  : "Linear1D", // 'x'
+            "gain"   : 1.0,
+            "phi"    : 0,
+            "width"  : 0.1,
+            "offset" : 0.0,
+            "mirrorx" : true
+        },
+        {
+            "shape"  : "Linear1D", // 'y'
+            "gain"   : 1.0,
+            "phi"    : -90,
+            "width"  : 0.1,
+            "offset" : 0.0,
+            "mirrorx" : false
+        }
+    ] // end guidance
+}

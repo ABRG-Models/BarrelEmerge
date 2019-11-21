@@ -34,17 +34,18 @@ public:
     }
 
     virtual void init (void) {
-        cout << "RD_James_divnorm::init() called" << endl;
         RD_James<Flt>::init();
         // Now compute sum of a and record this as sum_a_init.
         for (unsigned int i = 0; i < this->N; ++i) {
             this->sum_a_computation(i);
         }
         this->sum_a_init = this->sum_a;
+#if 0
         // Print these on screen
         for (unsigned int ii = 0; ii < this->sum_a_init.size(); ++ii) {
             cout << "sum_a_init["<<ii<<"] = " << this->sum_a_init[ii] << endl;
         }
+#endif
     }
 
     /*!
@@ -71,10 +72,13 @@ public:
      * The normalization/transfer function.
      */
     virtual inline Flt transfer_a (const Flt& _a, const unsigned int _i) {
-        // Divisive normalization step
-        //Flt a_rtn = this->nhex * _a / this->sum_a[_i];
+#ifdef NORMALIZE_TO_ONE
+        // Divisive normalization to one
+        Flt a_rtn = this->nhex * _a / this->sum_a[_i];
+#else
         // Divisive norm with initial sum multiplier
         Flt a_rtn = this->sum_a_init[_i] * _a / this->sum_a[_i];
+#endif
         // Prevent a from becoming negative, necessary only when competition is implemented:
         return (a_rtn < 0.0) ? 0.0 : a_rtn;
     }
