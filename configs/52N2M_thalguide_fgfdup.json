@@ -19,7 +19,7 @@
 
     // Exponent parameters
     "k" : 3,
-    "l" : 1, // If not 1, then sim tends to blow up.
+    "l" : 3, // Used only for _lg and _pl binaries
 
     // Timestep. Defaults to 0.00001 if omitted here
     "dt" : 0.0001,
