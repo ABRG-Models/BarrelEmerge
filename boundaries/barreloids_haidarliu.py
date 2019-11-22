@@ -11,11 +11,13 @@ from scipy.spatial import Voronoi, voronoi_plot_2d, ConvexHull
 # First load data
 import csv
 
+import math
+
 # The dictionary of data
 D = {}
 
 # Params for the output text
-epsilon = 170
+epsilon = 1200
 alpha = 3
 beta = 20
 xinit = -0.16
@@ -23,11 +25,21 @@ yinit = 0.0
 sigmainit = 0.0
 gaininit = 1.0
 
-mx = -1.0
-my = -1.0
+maxx = -1000.0
+maxy = -1000.0
+minx = 1000.0
+miny = 1000.0
 labels = []
 xar = []
 yar = []
+
+# A rotational transformation is applied with this many degrees:
+phi = -40
+
+# Compute cos(phi) and sin(phi)
+pr = phi/360.0 * 2.0 * math.pi # "phi in radians"
+cosphi = math.cos(pr)
+sinphi = math.sin(pr)
 
 # gmax/gmin delimit the ranges that I want for the guidance
 # gradient interactions. I'll compute this so that four guidance
@@ -38,27 +50,45 @@ gmin = 0.0
 with open('barreloids_haidarliu.csv') as csvDataFile:
     csvReader = csv.reader (csvDataFile)
 
-    # Run through and find max x and max y, and read x, y and label
-    # into python lists
+    # First run reads the raw x/y values out and transform them.
     for row in csvReader:
         if row[0] == 'x': continue # skip header
         x = float(row[0])
         y = float(row[1])
-        xar.append(x)
-        yar.append(y)
+        # Transform here:
+        x_ = x * cosphi - y * sinphi
+        y_ = y * cosphi + x * sinphi
+        xar.append(x_)
+        yar.append(y_)
         labels.append(row[2])
-        if x > mx: mx = x
-        if y > my: my = y
 
+    # Run through and find max x and max y,
+    for i in range(0,len(xar)):
+        if xar[i] > maxx: maxx = xar[i]
+        if yar[i] > maxy: maxy = yar[i]
+        if xar[i] < minx: minx = xar[i]
+        if yar[i] < miny: miny = yar[i]
+
+    # Now compute the tradients
     for i in range(0,len(xar)):
         x = xar[i]
         y = yar[i]
         lbl = labels[i]
-        # compute g1 to g4
-        g1 = x*(gmax/mx)
-        g2 = (mx-x)*(gmax/mx)
-        g3 = y*(gmax/my)
-        g4 = (my-y)*(gmax/my)
+        # compute g1 to g4 - 4 gradients (combine into two later if required)
+        #g1 = x*(gmax/maxx)
+        #g2 = (maxx-x)*(gmax/maxx)
+        #g3 = y*(gmax/maxy)
+        #g4 = (maxy-y)*(gmax/maxy)
+        gd = (gmax-gmin)/(maxx-minx)
+        g1 = gd * (x + maxx - minx)
+        x_ = minx - x + maxx
+        print ('minx: {0} maxx: {1}, x: {2} x_: {3}'.format (minx, maxx, x, x_))
+        g2 = gd * (x_ + maxx - minx)
+        gd = (gmax-gmin)/(maxy-miny)
+        g3 = gd * (y + maxy - miny)
+        y_ = miny - y + maxy
+        g4 = gd * (y_ + maxy - miny)
+
         # stick in a np array
         ar = np.array((x,y,g1,g2,g3,g4,0)) # last entry is for area, filled later
         # stick array in a dictionary keyed by lbl
@@ -73,8 +103,10 @@ with open('barreloids_haidarliu_boundary_ordered.csv') as csvDataFile:
         if row[0] == 'op': continue # skip header
         x = float(row[1])
         y = float(row[2])
-        bndry_x.append(x)
-        bndry_y.append(y)
+        x_ = x * cosphi - y * sinphi
+        y_ = y * cosphi + x * sinphi
+        bndry_x.append(x_)
+        bndry_y.append(y_)
 
 # Produce guidance interactions for 4 gradients (two opposing pairs, orthogonally
 # arranged) or two orthogonal gradients for which interactions will be positive or
@@ -182,6 +214,13 @@ ar = np.array(([[0.3341, -0.07811], \
                 [-0.0878, 0.1246], \
                 [-0.0948, 0.0768], \
                 [-0.042, -0.0005]]))
+
+# Transform points
+x__ = ar[:,0] * cosphi - ar[:,1] * sinphi
+y__ = ar[:,1] * cosphi + ar[:,0] * sinphi
+ar[:,0] = x__
+ar[:,1] = y__
+
 vor.add_points (ar)
 
 vpts2 = vor.points
@@ -232,24 +271,27 @@ meanarea = areatotal / len(D)
 # Add the Voronoi boundaries to the diagram
 voronoi_plot_2d (vor, ax=ax0, show_vertices=False, show_points=False, line_colors='grey', line_width=2, line_alpha=0.05)
 
-ax0.set_xlim([-0.06, 0.34])
-ax0.set_ylim([-0.1, 0.42])
+xbord = 0.05
+ybord = 0.06
+
+ax0.set_xlim([minx-xbord, maxx+xbord])
+ax0.set_ylim([miny-ybord, maxy+ybord])
 ax0.yaxis.set_ticks_position('both')
 ax0.xaxis.set_ticks_position('both')
 # Tick labels on top, not bottom:
 ax0.xaxis.set_tick_params (labeltop=True,labelbottom=False)
 
-ax_r.plot ([0,1],[-0.1,0.42],'-',color='b')
+ax_r.plot ([0,1],[miny,maxy],'-',color='b')
 ax_r.set_xlabel ('Mol. B')
 ax_r.yaxis.tick_right()
 #ax_r.xaxis.set_ticks_position('both')
 ax_r.yaxis.set_ticks_position('both')
-ax_d.plot ([-0.06,0.34],[0,1],'-',color='r')
+ax_d.plot ([minx,maxx],[0,1],'-',color='r')
 ax_d.xaxis.set_ticks_position('both')
 #ax_d.yaxis.set_ticks_position('both')
 ax_d.set_ylabel ('Mol. A')
-ax_d.set_xlim([-0.06, 0.34])
-ax_r.set_ylim([-0.1, 0.42])
+ax_d.set_xlim([minx-xbord, maxx+xbord])
+ax_r.set_ylim([miny-ybord, maxy+ybord])
 
 ax0.set_xlabel('Posterior to anterior axis [mm]', labelpad=20)
 ax0.xaxis.set_label_position('top')
