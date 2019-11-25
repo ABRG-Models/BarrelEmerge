@@ -36,6 +36,12 @@ yar = []
 # A rotational transformation is applied with this many degrees:
 phi = -40
 
+# -110 rotates the barreloids so that they appear in the same (though mirrored)
+# orientation as in the Erzurumli 2012 review paper
+# phi = -110
+
+#phi = 0
+
 # Compute cos(phi) and sin(phi)
 pr = phi/360.0 * 2.0 * math.pi # "phi in radians"
 cosphi = math.cos(pr)
@@ -179,6 +185,38 @@ ax0.scatter (xqui, yqui, c='k', s=70, marker='o')
 # Plot boundary
 ax0.plot (bndry_x, bndry_y, c='grey', marker='None', linestyle='--', linewidth=2, label='boundary')
 
+# Plot AP axis. Maybe use pyplot.arrow to make these
+ap = np.array(([[-0.04185,-0.0133],[0.3425,0.1232]]))
+x__ = ap[:,0] * cosphi - ap[:,1] * sinphi
+y__ = ap[:,1] * cosphi + ap[:,0] * sinphi
+ap[:,0] = x__
+ap[:,1] = y__
+ax0.plot (ap[:,0], ap[:,1], c='grey', marker='None', linestyle='-.', linewidth=2)
+
+# Anterior
+txt1 = [-0.08, -0.01]
+x__ = txt1[0] * cosphi - txt1[1] * sinphi
+y__ = txt1[1] * cosphi + txt1[0] * sinphi
+ax0.text (x__,y__,'ant.')
+
+# Posterior
+txt2 = [0.36, 0.12]
+x__ = txt2[0] * cosphi - txt2[1] * sinphi
+y__ = txt2[1] * cosphi + txt2[0] * sinphi
+ax0.text (x__,y__,'post.')
+
+# Lateral by the stragglers 0.14v-0.1
+txt3 = [0.14, -0.125]
+x__ = txt3[0] * cosphi - txt3[1] * sinphi
+y__ = txt3[1] * cosphi + txt3[0] * sinphi
+ax0.text (x__,y__,'lat.')
+
+# Medial
+txt4 = [0.165, 0.4]
+x__ = txt4[0] * cosphi - txt4[1] * sinphi
+y__ = txt4[1] * cosphi + txt4[0] * sinphi
+ax0.text (x__,y__,'med.')
+
 # Plot voronoi
 vpts = np.vstack((xqui,yqui)).T
 print ('vpts shape: {0}'.format(np.shape(vpts)))
@@ -293,12 +331,12 @@ ax_d.set_ylabel ('Mol. A')
 ax_d.set_xlim([minx-xbord, maxx+xbord])
 ax_r.set_ylim([miny-ybord, maxy+ybord])
 
-ax0.set_xlabel('Posterior to anterior axis [mm]', labelpad=20)
+ax0.set_xlabel('Axis 1 [mm]', labelpad=20)
 ax0.xaxis.set_label_position('top')
-ax_d.set_xlabel('Posterior to anterior axis [mm]', labelpad=20)
+ax_d.set_xlabel('Axis 1 [mm]', labelpad=20)
 
-ax0.set_ylabel('Lateral to medial axis [mm]')
-ax_r.set_ylabel('Lateral to medial axis [mm]', labelpad=10)
+ax0.set_ylabel('Axis 2 [mm]')
+ax_r.set_ylabel('Axis 2 [mm]', labelpad=10)
 ax_r.yaxis.set_label_position('right')
 
 F0.subplots_adjust (wspace=0.2, hspace=0.2)
