@@ -14,7 +14,7 @@
     "logevery": 1000,
     "overwrite_logs": true,
     "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/",
-    "hextohex_d" : 0.015,           // Hex to hex distance, determines num hexes
+    "hextohex_d" : 0.0155,  // Hex to hex distance, determines num hexes. Odd bug shows if this is 0.015.
     "svgpath" : "./boundaries/whiskerbarrels_twofields3.svg",
     "boundaryFalloffDist" : 0.03,
     "D" : 0.2,
@@ -60,7 +60,7 @@
     "do_dirichlet_analysis": true,
 
     "plot_dr_with_guide" : false,
-    "hshift" : 0.3,
+    "hshift" : 0.1,
     "vshift" : 0.4,
     "g_hshift" : 0.3,
     "g_vshift" : -0.4,
