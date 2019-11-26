@@ -3,9 +3,10 @@
  * whiskers and the 4 straddlers.
  *
  * Guidance gradients are in line with the Anterior-Posterior (AP)
- * axis and perpendicular to the AP axis, which is 3.7 degrees off
- * horizontal for whiskerbarrels.svg, according to my estimate from
- * the image in the Shimogori & Grove 2005 paper (Fig 1).
+ * axis and perpendicular to the AP axis (which is approximately the
+ * Medial-Lateral (ML) axis). The AP axis is 6 degrees off horizontal for
+ * whiskerbarrels.svg, according to my estimate from the image in the
+ * Shimogori & Grove 2005 paper (Fig 1).
  */
 {
     // Global simulation parameters
@@ -124,14 +125,14 @@
         {
             "shape"  : "Linear1D", // 'x'
             "gain"   : 1.0,
-            "phi"    : 3.7,
+            "phi"    : 6,
             "width"  : 0.1,
             "offset" : 0.0
         },
         {
             "shape"  : "Linear1D", // 'y'
             "gain"   : 1.0,
-            "phi"    : -86.3,
+            "phi"    : -84,
             "width"  : 0.1,
             "offset" : 0.0
         }
