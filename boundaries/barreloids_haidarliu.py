@@ -146,7 +146,7 @@ g3qui = np.array([])
 g4qui = np.array([])
 xqui = np.array([])
 yqui = np.array([])
-small_size = ["E6","E7","E8","E9","E9","E10","E11","E12","E13","D6","D7","D8","D9","D9","D10","D11","D12","C10"]
+small_size = ["E6","E7","E8","E9","E9","E10","E11","E12","E13","D6","D7","D8","D9","D9","D10","D11","D12","C10","C9","C8","C7","C6"]
 for d in D: # Care, requires that there are no duplicate labels
     if d == 'a':
         ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\alpha$')
@@ -193,29 +193,30 @@ ap[:,0] = x__
 ap[:,1] = y__
 ax0.plot (ap[:,0], ap[:,1], c='grey', marker='None', linestyle='-.', linewidth=2)
 
+fs2 = 42
 # Anterior
-txt1 = [-0.08, -0.01]
+txt1 = [-0.09, -0.06]
 x__ = txt1[0] * cosphi - txt1[1] * sinphi
 y__ = txt1[1] * cosphi + txt1[0] * sinphi
-ax0.text (x__,y__,'ant.')
+ax0.text (x__,y__,'ant.',fontsize=fs2)
 
 # Posterior
 txt2 = [0.36, 0.12]
 x__ = txt2[0] * cosphi - txt2[1] * sinphi
 y__ = txt2[1] * cosphi + txt2[0] * sinphi
-ax0.text (x__,y__,'post.')
+ax0.text (x__,y__,'post.',fontsize=fs2)
 
 # Lateral by the stragglers 0.14v-0.1
-txt3 = [0.14, -0.125]
+txt3 = [0.12, -0.135]
 x__ = txt3[0] * cosphi - txt3[1] * sinphi
 y__ = txt3[1] * cosphi + txt3[0] * sinphi
-ax0.text (x__,y__,'lat.')
+ax0.text (x__,y__,'lat.',fontsize=fs2)
 
 # Medial
 txt4 = [0.165, 0.4]
 x__ = txt4[0] * cosphi - txt4[1] * sinphi
 y__ = txt4[1] * cosphi + txt4[0] * sinphi
-ax0.text (x__,y__,'med.')
+ax0.text (x__,y__,'med.',fontsize=fs2)
 
 # Plot voronoi
 vpts = np.vstack((xqui,yqui)).T
@@ -339,9 +340,11 @@ ax0.set_ylabel('Axis 2 [mm]')
 ax_r.set_ylabel('Axis 2 [mm]', labelpad=10)
 ax_r.yaxis.set_label_position('right')
 
+ax0.set_axis_off()
+
 F0.subplots_adjust (wspace=0.2, hspace=0.2)
 
-plt.savefig ('barreloids_haidarliu_graph.png')
+plt.savefig ('barreloids_haidarliu_graph.svg', transparent=True)
 
 # To scale the gain by the area of each barreloid, set to 1
 area_to_gain = 0
@@ -352,9 +355,9 @@ for d in D:
     if area_to_gain:
         gaininit = (D[d][6]/meanarea)
     if show_four:
-        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}, {9}, {10}] }}, // {11}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, D[d][2], D[d][3], D[d][4], D[d][5], d, D[d][6]))
+        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}, {9}, {10}] , "name" : "{11}" }}, // {11}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, D[d][2], D[d][3], D[d][4], D[d][5], d, D[d][6]))
     else:
-        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}] }}, // {9}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, (D[d][2]-D[d][3]), (D[d][4]-D[d][5]), d))
+        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}], "name" : "{9}" }}, // {9}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, (D[d][2]-D[d][3]), (D[d][4]-D[d][5]), d))
 
 
 plt.show();

@@ -192,6 +192,34 @@ def readSimDataFiles (logdir):
 
     return (x, y, t, cmatrix, amatrix, nmatrix, idmatrix, totalarea, idnames, domcentre)
 
+# Read in the positions and the guidance molecules
+def readGuidance (logdir):
+
+    # Take off any trailing directory slash
+    logdir = logdir.rstrip ('/')
+
+    # Read x and y first
+    pf = h5py.File(logdir+'/positions.h5', 'r')
+    x = np.array(pf['x']); # HDF5 dataset object converted into numpy array
+    y = np.array(pf['y']);
+
+    # Read guidance expression
+    gf = h5py.File(logdir+'/guidance.h5', 'r')
+    # Count up how many c files we have in each time point once only:
+    gklist = list(gf.keys())
+    M = 0
+    numhexes = 0
+    for k in gklist:
+        if k[0] == 'r': # rh0, rh1 etc
+            M = M + 1
+            numhexes = len(gf[k])
+
+    gmatrix = np.zeros([numhexes, M], dtype=float)
+    for m in range (0, M):
+        gmatrix[:,m] = np.array(gf['rh{0}'.format(m)]);
+
+    return (x, y, gmatrix)
+
 #
 # targ is a container of a target x,y coordinate. x and y are the
 # vectors of positions of the hexes in the hexgrid. This returns the

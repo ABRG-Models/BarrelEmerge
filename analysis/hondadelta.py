@@ -55,9 +55,10 @@ print ('total area: {0}'.format (totalarea))
 # And plot this longhand here:
 F1 = plt.figure (figsize=(9,8))
 
+xmax = 12000
 ax1 = F1.add_subplot(1,1,1)
 l1, = ax1.plot(t1, hondadelta, 'o', markersize=12, color=col.springgreen2, label='Honda $\delta$')
-l2, = ax1.plot((0,200000), (0.003, 0.003), '--', color=col.orange, linewidth=3, label="'good'\npattern")
+l2, = ax1.plot((0,xmax), (0.003, 0.003), '--', color=col.orange, linewidth=3, label="'good'\npattern")
 #l2, = ax1.plot(t1, edgedev, 'o', label='Edge deviation')
 #l3, = ax1.plot(t1, domarea/totalarea[0], 'go', label='Domain area proportion')
 #l5, = ax1.plot(t1, s_resid, 's', label='Summed residuals to vert. line fits')
@@ -65,9 +66,9 @@ l2, = ax1.plot((0,200000), (0.003, 0.003), '--', color=col.orange, linewidth=3, 
 #ax1.set_title ('Honda Dirichletiform measure');
 ax1.set_xlabel ('Simulation step')
 ax1.set_ylabel ('Honda $\delta$ measure')
-ax1.set_xlim ((0,200000))
+ax1.set_xlim ((0,xmax))
 ax1.set_ylim ((0,0.05))
-ax1.set_xticks ((0,100000,200000))
+ax1.set_xticks ((0,0.5*xmax,xmax))
 plt.legend()
 
 #ax2 = F1.add_subplot(1,1,1, sharex=ax1, frameon=False)
@@ -79,6 +80,6 @@ plt.legend()
 
 plt.tight_layout()
 
-plt.savefig('hondadelta.png')
+plt.savefig('hondadelta.svg', transparent=True)
 
 plt.show()

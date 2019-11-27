@@ -14,13 +14,6 @@ import h5py
 import domcentres as dc
 import os
 
-# Set plotting defaults
-fs = 12
-fnt = {'family' : 'DejaVu Sans',
-       'weight' : 'regular',
-       'size'   : fs}
-matplotlib.rc('font', **fnt)
-
 # Get target x/y hex to show trace for and the time step to show the
 # map for from the arguments:
 if len(sys.argv) < 2:
@@ -28,10 +21,16 @@ if len(sys.argv) < 2:
     exit(1)
 logdirname = sys.argv[1]
 
+# time index
 if len(sys.argv) > 2:
     ti = int(sys.argv[2])
 else:
     ti = -1
+
+shownames = 0
+if len(sys.argv) > 3:
+    shownames = int(sys.argv[3])
+
 
 # Read the data
 (x, y, t, cmatrix, amatrix, nmatrix, idmatrix, tarea, idnames, domcentres) = ld.readSimDataFiles (logdirname)
@@ -39,15 +38,31 @@ else:
 idstring = 'id{0}'.format(0);
 print ('idstring: {0}'.format(idstring))
 
-# Plot one of the a matrices:
+# Plot one of the matrices:
 shp = np.shape(idmatrix)
 print ('idmatrix shape: {0}'.format(shp))
 if ti == -1:
     ti = shp[1]-1
 print ('ti = {0}'.format(ti))
-f1 = pt.surface_withnames (idmatrix[:,ti], x, y, 0, idstring, idnames, domcentres[ti,:,:])
 
-mapname = '{0}_{1}'.format(os.path.basename(logdirname), ti)
-plt.savefig(mapname)
+print ('basename: {0}'.format(os.path.basename(logdirname)))
+winwidth = 12
+winheight = 11
+if os.path.basename(logdirname) == '52N2M_thalguide_fgfdup':
+    winwidth = 22
+    winheight = 14.3
+pl = pt.RDPlot (winwidth, winheight)
+pl.fs = 16
+pl.fs2 = 24
+pl.showAxes = False
+pl.showNames = False
+if shownames > 0:
+    pl.showNames = True
 
-plt.show()
+f1 = pl.surface_withnames (idmatrix[:,ti], x, y, 0, idstring, idnames, domcentres[ti,:,:])
+
+# Put saving into the class?
+mapname = '{0}_{1}.png'.format(os.path.basename(logdirname), ti)
+plt.savefig (mapname, dpi=300, transparent=True)
+
+#plt.show()
