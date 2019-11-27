@@ -186,10 +186,10 @@ barrels to stretch, shrink, shift, skew, and even duplicate \cite{assimacopoulos
 %\citep{shimogori_fibroblast_2005,assimacopoulos_fibroblast_2012,borello_sp8_2014,sahara_sp8_2007,ypsilanti_transcriptional_2016,sur_patterning_2005}.
 %
 While complex structure in protein expression can be observed for some genes,
-such as the molecules Bhlhb5 \citep{joshi_bhlhb5_2008}, a complex gene
-expression pattern with the complexity of the barrel field has not, to our
-knowledge been reported and so the mechanism by which the barrels form seems
-likely to be one in which the structure forms by self-organization.
+such as the molecules Bhlhb5 \citep{joshi_bhlhb5_2008}, we are not aware of
+any report of gene expression patterns with the complexity of the barrel field
+and so the mechanism by which the barrels form seems likely to be one in which
+the structure forms by self-organization.
 
 The boundaries of the barrels form a Voronoi tesselation across the cortical
 sheet \citep{senft_mouse_1991}. This patterning suggests that the barreloid
@@ -342,6 +342,42 @@ Supplementary Materials).
 
 \section*{Results}
 
+\begin{figure*}
+\begin{center}
+\includegraphics[width=\textwidth]{./MainFig.png}
+\end{center}
+%\vspace{-0em}
+\caption{\textbf{A.} Barreloid centres taken from \cite{haidarliu_size_2001}
+  are shown as black circles. Barreloids are labelled according to the usual
+  convention. Labels R1 to R5 are the rhinal whisker barreloids. The dashed
+  grey line represents the boundary of the barreloid field; the dot-dash line
+  shows the anterior-posterior axis. It is assumed that there are two linearly
+  increasing, orthogonal signalling gradients (molecules T1 \& T2) in the
+  thalamus (side graphs), such that the location of each barreloid within the
+  graded thalamic signal field can differentiate the efferent axons, with the
+  result that axons from each barreloid interact to varying degrees with
+  cortical signalling gradients (shown in panel B). Coloured arrows show, for
+  each barreloid, the magnitude (and sign) of the interaction that its
+  thalamocortical projection will have with the signalling gradients in the
+  cortex. The mappings from barreloid location to interaction strength are
+  linear. \textbf{B.} Guidance molecules in the simulated cortex. Molecule 1
+  is expressed high to low in an approximately anterior to posterior
+  gradient. Molecule 2 is expressed lateral to medial (analogously to ephrin -
+  Vanderhaegen et al) \textbf{C.}  Whisker barrels from
+  \cite{shimogori_fibroblast_2005}, with annotations for barrel identity and
+  approximate axes.  \textbf{D-F.} Barrel cortex simulation. The maps indicate
+  which thalomocortical axons make maximum connection density. Each hex
+  element is coloured one of 52 unique colours depending on which e
+  thalamocortical axon makes the most connections in that element. The mapping
+  between barrel identity and colour is given in F.  \textbf{G.} The Honda
+  Dirichlet measure as a function of simluation time for the simulations show
+  in D-F. \textbf{H.}  Guidance molecules in the simulated Fgf8 misexpression
+  experiment. Molecule 1 is mirrored over the anterior-posterior axis
+  \textbf{I.} The simulation indicates that the mirroring of the barrel field
+  can occur as a result of the mirroring of guidance molecule 1.}
+\label{fig:main}
+\end{figure*}
+
 %\cmnt{If we need to present the results of the 2-D system with $\chi=0$, then
 %  we'll do that first, showing a 2-D version of the simulation obtained by
 %  running \code{james0 configs/karb.json}}
@@ -362,42 +398,44 @@ guidance patterns.
 
 \subsection*{Branching competition is required to form somatotopically ordered barrels}
 
-To investigate how the whisker barrel structure might form in the presence of
-only monotonically varying morphogen gradients, we turned our attention to the
-competition for connections built into the model. There does exist an element
-of competition in the original model (Eqs.~\ref{eq:dc} \& \ref{eq:da}). The
-term $\left(1 - \sum_{i=1}^{N} c_i\right)$ in Eq.~\ref{eq:dc} ensures that
-once the available synaptic receptors in a region have been fully occupied by
-one thalamocortical axon type, there is no longer the possibility for other
-types to form synapses. This competition turns out to be relatively weak,
-because it does not strongly affect the branching density in that region; it
-is possible for two or more TC axon types to have roughly equal branching
-density in some region, leading to roughly equal numbers of connections
-forming for each TC type, up until the `hard' connection limit is reached.
+To investigate how the whisker barrel structure (Fig.~\ref{fig:main}.\,C) might
+form in the presence of only monotonically varying morphogen gradients, we
+turned our attention to the competition for connections built into the
+model. There \emph{does} exist an element of competition in the original model
+(Eqs.~\ref{eq:dc} \& \ref{eq:da}). The term $\left(1 - \sum_{i=1}^{N}
+c_i\right)$ in Eq.~\ref{eq:dc} ensures that once the available synaptic
+receptors in a region have been fully occupied by one thalamocortical axon
+type, there is no longer the possibility for other types to form
+synapses. This competition turns out to be relatively weak, because it does
+not strongly affect the branching density in that region; it is possible for
+two or more TC axon types to have roughly equal branching density in some
+region, leading to roughly equal numbers of connections forming for each TC
+type, up until the `hard' connection limit is reached.
 
 To introduce competition between the \emph{branching} of thalamocortical axon
 types, we introduced the new term $\chi$ given by
 %
 \begin{equation} \label{eq:comp}
-\chi(\mb{x}, t) = - \frac{\epsilon  a_i}{N-1} \sum_{i' \ne i}^{N} f(a_{i'}).
+\chi(\mb{x}, t) = - \frac{\epsilon  a_i}{N-1} \sum_{i' \ne i}^{N} a_{i'}
 \end{equation}
 %
-with the choice $f(a) = a$, which leads to a reduction in the rate of increase
+%with the choice $f(a) = a$,
+which leads to a reduction in the rate of increase
 of branching density for axon type $i$ in regions where the branching density
 of \emph{other} axon types is high. The new parameter $\epsilon$ governs the
 strength of the branching competition and the factor $1/(N-1)$ ensures that the
 strength scales with $N$.
 
-With the addition of the competition term, $\chi$, it is necessary to
-introduce a normalisation step, in order to prevent one TC type from
-out-competing every other TC type. Normalisation represents the idea that for
-a fixed number of afferent thalamocortical axons, the overall number of
-branches must have some upper limit; given the finite resources available in
-each axon for building new processes. We divisively normalize the branching
-density, dividing it at each computational step by the mean branching density
-per unit area. It is then multiplied by the branching density per unit area at
-time 0, to account for the possibility that there might be more axons afferent
-for TC type $1$ cf.~TC type $2$:
+With the addition of branching competition, it is necessary to introduce a
+normalisation step, in order to prevent one TC type from out-competing every
+other type. This represents the idea that for a fixed number of afferent
+thalamocortical axons, the overall number of branches must have some upper
+limit, given the finite resources available in each axon for building new
+processes. We divisively normalize the branching density, dividing it at each
+computational step by the mean branching density per unit area. It is then
+multiplied by the branching density per unit area at time 0, to account for
+the possibility that there might be more axons afferent for TC type $1$ cf.~TC
+type $2$:
 %
 \begin{equation} \label{eq:norm}
   a_i(\mathbf{x}, t) = \int_\Omega  a_i(\mathbf{x}, 0) d\sigma \; \frac {a'_i(\mathbf{x}, t)} {\int_\Omega
@@ -410,40 +448,46 @@ basis of the system state at time $t-{\delta}t$.
 
 \subsection*{The model can transfer realistic barrel patterns}
 
-In which we show that a realistic barrel pattern in the thalamus can be
-recreated in barrel cortex.
+With these changes we were able to generate grid-like patterns with
+appropriate (linearly spaced) choices of the interaction parameters,
+$\gamma$. To determine the $\gamma$ values suitable to recreate the cortical
+barrel field by a principled method, we postulated that the interaction of
+each thalamocortical axon group with the ephrin gradients in the cortical
+sub-plate might be determined by the location of the barreloid within
+signalling gradents \emph{in the thalamus}. We therefore sought a map of the
+thalamic barreloids from the literature. \cite{haidarliu_size_2001} provided a
+comprehensive map of the layout of the barreloids in rat, which is similar to
+mouse \cite{van_der_loos_barreloids_1976}. We used these data to create the
+map of 52 barreloids shown in Fig.~\ref{fig:main}A. We postulated two linearly
+varying molecules and used the barreloids' positions within this field to
+generate the interaction parameters represented by the blue and red arrows.
 
-\cmnt{The realistic barrel pattern experiment is enhanced by stronger
-  branching competition:}
+We configured a simulation based on Eqs.~\ref{eq:dc}--\ref{eq:norm} to run on
+a domain whose shape was matched to data from \cite{shimogori_fibroblast_2005}
+(Fig.~\ref{fig:main}A). 52 separate thalamocortical fields were initialised
+with random noise in the branching density and given our thalamic interaction
+parameters. Two orthogonal gradients were specified; molecule 1 with an
+posterior to anterior gradient and molecule 2 resembling ephrin A5, with a
+medial-lateral gradient. Fig.~\ref{fig:main}D--E shows snapshots of the
+connection density at simulation times x (800 steps), y (2000) and z (3200).
 
-To increase the strength of the competition, we choose an alternative form for
-$f(a)$ in Eq.~\ref{eq:comp} which has a geometric form for small $a$: $f(a) = \frac{1}{1 + e^{-m[a]^l}} - \frac{1}{2}$. The parameters $l$ and $m$ control the steepness and shape of the
-function.
-
+% On stronger branching; not used in the results presented here.
+% \cmnt{The realistic barrel pattern experiment is enhanced by stronger
+%  branching competition:}
+%
+% To increase the strength of the competition, we choose an alternative form for
+% $f(a)$ in Eq.~\ref{eq:comp} which has a geometric form for small $a$: $f(a) =
+% \frac{1}{1 + e^{-m[a]^l}} - \frac{1}{2}$. The parameters $l$ and $m$ control
+% the steepness and shape of the function.
 %%% End of stronger branching competition %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{figure*}
-\begin{center}
-\includegraphics[width=\textwidth]{./MainFig.png}
-\end{center}
-%\vspace{-0em}
-\caption{A. Barreloid centres taken from \cite{haidarliu_size_2001} are shown as
-  black circles. It is assumed that there are two linearly increasing,
-  orthogonal signalling gradients (molecules A \& B) in the thalamus (side
-  graphs), such that the location of each barreloid within the graded thalamic
-  signal field can differentiate the efferent axons, with the result that
-  axons from each barreloid interact to varying degrees with cortical
-  signalling gradients. Coloured arrows show, for each barreloid, the
-  magnitude (and sign) of the interaction that its thalamocortical projection
-  will have with the signalling gradients in the cortex. The mappings from
-  barreloid location to interaction strength are linear. B. }
-\label{fig:main}
-\end{figure*}
 
 \subsection*{The barrel field reacts to changes in the expression pattern of guidance molecules}
 
 To cover the reaction to changes in the guidance molecules caused by
 experiments like those by Shimogori \& Grove.
+
+The code and configuration required to reproduce the results in this paper are
+available at \url{https://github.com/ABRG-Models/BarrelEmerge}.
 
 \section*{Discussion}
 
