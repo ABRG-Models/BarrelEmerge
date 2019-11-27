@@ -45,6 +45,24 @@ pl.fs = 16
 pl.fs2 = 24
 pl.showAxes = False
 pl.showNames = False
+
+if os.path.basename(logdirname) == '52N2M_thalguide_fgfdup':
+    pl.showScalebar = True
+    pl.sb1 = [0, -0.6]
+    pl.sb2 = [0.5, -0.6]
+    pl.sbtext = '0.5 mm'
+    pl.sbtpos = [0.0, -0.8]
+    pl.sblw = 5
+    pl.sbfs = 48
+else:
+    pl.showScalebar = True
+    pl.sb1 = [-0.8, -0.8]
+    pl.sb2 = [-0.1, -0.8]
+    pl.sbtext = '0.7 mm'
+    pl.sbtpos = [-0.7, -1]
+    pl.sblw = 5
+    pl.sbfs = 48
+
 if mi==0:
     pl.cmap = plt.cm.Blues
 else:
