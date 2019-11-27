@@ -804,6 +804,10 @@ int main (int argc, char **argv)
         if ((RD.stepCount % logevery) == 0) {
             DBG ("Logging data at step " << RD.stepCount);
             RD.save();
+
+            // Fixme. Save the hex contours in their own file. Each Hex has a save() method.
+            vector<list<Hex> > sv_ctrs = ShapeAnalysis<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
+
             if (do_dirichlet_analysis == true) {
 #ifndef COMPILE_PLOTTING // Then it won't have been done above:
                 RD.dirichlet();
