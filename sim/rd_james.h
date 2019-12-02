@@ -1218,15 +1218,21 @@ public:
         this->sos_distances = 0.0;
         for (unsigned int i = 0; i < this->N; ++i) {
             Flt idx = (Flt)i/(Flt)this->N;
-            Flt dx = this->reg_centroids[idx].first - this->identified_coords[tcnames[idx]].first - this->hg->originalBoundaryCentroid.first;
-            Flt dy = this->reg_centroids[idx].second - (-this->identified_coords[tcnames[idx]].second) - this->hg->originalBoundaryCentroid.second;
+            Flt dx = this->reg_centroids[idx].first - (this->identified_coords[tcnames[idx]].first - this->hg->originalBoundaryCentroid.first);
+            Flt dy = this->reg_centroids[idx].second - (this->identified_coords[tcnames[idx]].second - this->hg->originalBoundaryCentroid.second);
             Flt dsq = dx*dx + dy*dy;
-            DBG ("For barrel ID " << tcnames[idx] << ", the sim has centroid locn ("
-                 << this->reg_centroids[idx].first << "," << this->reg_centroids[idx].second << ") "
-                 << "to compare with expt ("
-                 << this->identified_coords[tcnames[idx]].first << "-" <<  this->hg->originalBoundaryCentroid.first << ","
-                 << -this->identified_coords[tcnames[idx]].second << "-" <<  this->hg->originalBoundaryCentroid.second
-                 <<  ") which adds to sos_distances: " << dsq);
+#if 0
+            DBG2 ("For barrel ID " << tcnames[idx] << ", the sim has centroid locn ("
+                  << this->reg_centroids[idx].first << "," << this->reg_centroids[idx].second << ") "
+                  << "to compare with expt ("
+                  << this->identified_coords[tcnames[idx]].first << "-" <<  this->hg->originalBoundaryCentroid.first << ","
+                  << this->identified_coords[tcnames[idx]].second << "-" <<  this->hg->originalBoundaryCentroid.second
+                  <<  ") which adds to sos_distances: " << dsq);
+#endif
+            cout << tcnames[idx] << ","
+                 << this->reg_centroids[idx].first << "," << this->reg_centroids[idx].second << ","
+                 << this->identified_coords[tcnames[idx]].first << "," << this->identified_coords[tcnames[idx]].second << ","
+                 << this->hg->originalBoundaryCentroid.first <<  "," << this->hg->originalBoundaryCentroid.second << endl;
             this->sos_distances += dsq;
         }
         DBG ("overall sos_distances = " << this->sos_distances);
