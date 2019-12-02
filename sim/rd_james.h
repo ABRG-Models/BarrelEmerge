@@ -148,6 +148,13 @@ public:
     alignas(alignof(vector<GaussParams<Flt> >))
     vector<GaussParams<Flt> > initmasks;
 
+    /*!
+     * The string identifiers for each TC type. This is of size N. Can be populated from the config
+     * file. This allows me to look up the name, as given in the config file, from the floating
+     * point index, obtained from (integer index / N)
+     */
+    alignas(alignof(map<Flt, string>)) map<Flt, string> tcnames;
+
 protected: // We have a setter for gamma.
     /*!
      * gamma_A/B/C_i (etc) parameters from Eq 4. There are M vectors of Flts in here.
@@ -273,7 +280,7 @@ public:
      * up the locations of the Gaussians used to set inital conditions (along the x axis) and then
      * duplicate.
      *
-     * Note that this is the old approach to Fgf8 mis-expression. See jamesdual.cpp and
+     * Note that this is the original approach to Fgf8 mis-expression. See jamesdual.cpp and
      * rd_james_dncomp_dual.h (Seb, Nov 2019).
      */
     bool doFgfDuplication = false;
@@ -296,6 +303,12 @@ public:
     //! The overall Honda 1983 Dirichlet approximation. 0.003 is a good fit. 0.05 not so good.
     Flt honda = 0.0;
     //@}
+
+    /*!
+     * A metric to determine the difference between the current pattern and the experimentally
+     * observed pattern.
+     */
+    Flt sos_distances = 0.0;
 
     /*!
      * Simple constructor; no arguments. Just calls RD_Base constructor
@@ -694,6 +707,8 @@ public:
         }
         // Save the overall honda value for the system
         data.add_val ("/honda", this->honda);
+        // Save sum of square distances
+        data.add_val ("/sos_distances", this->sos_distances);
         // Save the region centroids
         vector<Flt> keys;
         vector<Flt> x_;
@@ -1197,6 +1212,25 @@ public:
         this->regions = morph::ShapeAnalysis<Flt>::dirichlet_regions (this->hg, this->c);
         // Compute the centroids of the regions; used to determine aligned-ness of the barrels
         this->reg_centroids = morph::ShapeAnalysis<Flt>::region_centroids (this->hg, this->regions);
+
+        // based on the reg_centroids, find the sum of squared distances between each simulated
+        // barrel and it's experimentally determined location.
+        this->sos_distances = 0.0;
+        for (unsigned int i = 0; i < this->N; ++i) {
+            Flt idx = (Flt)i/(Flt)this->N;
+            Flt dx = this->reg_centroids[idx].first - this->identified_coords[tcnames[idx]].first - this->hg->originalBoundaryCentroid.first;
+            Flt dy = this->reg_centroids[idx].second - (-this->identified_coords[tcnames[idx]].second) - this->hg->originalBoundaryCentroid.second;
+            Flt dsq = dx*dx + dy*dy;
+            DBG ("For barrel ID " << tcnames[idx] << ", the sim has centroid locn ("
+                 << this->reg_centroids[idx].first << "," << this->reg_centroids[idx].second << ") "
+                 << "to compare with expt ("
+                 << this->identified_coords[tcnames[idx]].first << "-" <<  this->hg->originalBoundaryCentroid.first << ","
+                 << -this->identified_coords[tcnames[idx]].second << "-" <<  this->hg->originalBoundaryCentroid.second
+                 <<  ") which adds to sos_distances: " << dsq);
+            this->sos_distances += dsq;
+        }
+        DBG ("overall sos_distances = " << this->sos_distances);
+
         // Find the vertices and construct domains
         this->domains = morph::ShapeAnalysis<Flt>::dirichlet_vertices (this->hg, this->regions, this->vertices);
         // Carry out the analysis.
