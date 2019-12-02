@@ -32,6 +32,10 @@ logdirname = sys.argv[1]
 # Load the dirichlet data, domcentres, etc
 [t1, hondadelta, edgedev, numdoms, domarea, domcentres, dirichcentre] = ld.readDirichData (logdirname)
 
+# Timestep is 0.0001
+dt = 0.0001
+t1 = t1 * dt
+
 # The ID colour maps
 do_maps = 0
 if do_maps:
@@ -55,21 +59,21 @@ print ('total area: {0}'.format (totalarea))
 # And plot this longhand here:
 F1 = plt.figure (figsize=(9,8))
 
-xmax = 12000
+xmax = 12000 * dt
 ax1 = F1.add_subplot(1,1,1)
-l1, = ax1.plot(t1, hondadelta, 'o', markersize=12, color=col.springgreen2, label='Honda $\delta$')
-l2, = ax1.plot((0,xmax), (0.003, 0.003), '--', color=col.orange, linewidth=3, label="'good'\npattern")
+l1, = ax1.plot(t1, hondadelta, 'o', markersize=12, color=col.black, label='Honda $\delta$')
+l2, = ax1.plot((0,xmax), (0.003, 0.003), '--', color=col.black, linewidth=3, label="threshold")
 #l2, = ax1.plot(t1, edgedev, 'o', label='Edge deviation')
 #l3, = ax1.plot(t1, domarea/totalarea[0], 'go', label='Domain area proportion')
 #l5, = ax1.plot(t1, s_resid, 's', label='Summed residuals to vert. line fits')
 #l7, = ax1.plot(t1, s_resid_h, 's', label='Summed residuals to horz. line fits')
 #ax1.set_title ('Honda Dirichletiform measure');
-ax1.set_xlabel ('Simulation step')
+ax1.set_xlabel ('Simulation time')
 ax1.set_ylabel ('Honda $\delta$ measure')
 ax1.set_xlim ((0,xmax))
 ax1.set_ylim ((0,0.05))
 ax1.set_xticks ((0,0.5*xmax,xmax))
-plt.legend()
+#plt.legend()
 
 #ax2 = F1.add_subplot(1,1,1, sharex=ax1, frameon=False)
 #l4, = ax2.plot(t1, numdoms, 'ro', label='Number of domains')
