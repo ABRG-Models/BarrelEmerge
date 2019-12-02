@@ -30,7 +30,7 @@ if len(sys.argv) < 2:
 logdirname = sys.argv[1]
 
 # Load the dirichlet data, domcentres, etc
-[t1, hondadelta, edgedev, numdoms, domarea, domcentres, dirichcentre] = ld.readDirichData (logdirname)
+[t1, hondadelta, edgedev, numdoms, domarea, domcentres, dirichcentre, sos_dist] = ld.readDirichData (logdirname)
 
 # Timestep is 0.0001
 dt = 0.0001
@@ -63,6 +63,10 @@ xmax = 12000 * dt
 ax1 = F1.add_subplot(1,1,1)
 l1, = ax1.plot(t1, hondadelta, 'o', markersize=12, color=col.black, label='Honda $\delta$')
 l2, = ax1.plot((0,xmax), (0.003, 0.003), '--', color=col.black, linewidth=3, label="threshold")
+
+ax2 = ax1.twinx()
+l3, = ax2.plot(t1, sos_dist, 's', markersize=12, color=col.blue, label='$\Sigma d^2$')
+
 #l2, = ax1.plot(t1, edgedev, 'o', label='Edge deviation')
 #l3, = ax1.plot(t1, domarea/totalarea[0], 'go', label='Domain area proportion')
 #l5, = ax1.plot(t1, s_resid, 's', label='Summed residuals to vert. line fits')
@@ -70,8 +74,10 @@ l2, = ax1.plot((0,xmax), (0.003, 0.003), '--', color=col.black, linewidth=3, lab
 #ax1.set_title ('Honda Dirichletiform measure');
 ax1.set_xlabel ('Simulation time')
 ax1.set_ylabel ('Honda $\delta$ measure')
+ax2.set_ylabel ('$\Sigma d^2$')
+ax2.tick_params (axis='y', labelcolor=col.blue)
 ax1.set_xlim ((0,xmax))
-ax1.set_ylim ((0,0.05))
+#ax1.set_ylim ((0,0.05))
 ax1.set_xticks ((0,0.5*xmax,xmax))
 #plt.legend()
 
