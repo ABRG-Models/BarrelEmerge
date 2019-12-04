@@ -427,6 +427,7 @@ public:
         milliseconds ms6 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
         codetimes.back().integrate_c_time += (ms6-ms5);
 #endif
+        this->dirichletComputed = false;
     }
 
 }; // RD_James_norm

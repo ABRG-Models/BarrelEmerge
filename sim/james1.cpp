@@ -812,9 +812,9 @@ int main (int argc, char **argv)
             vector<list<Hex> > sv_ctrs = ShapeAnalysis<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
 
             if (do_dirichlet_analysis == true) {
-#ifndef COMPILE_PLOTTING // Then it won't have been done above:
+                // We HAVE to RD.dirichlet again, in case the frequency at which we're plotting is
+                // different from the frequency at which we're loggin.
                 RD.dirichlet();
-#endif
                 RD.saveDirichletDomains();
             }
         }

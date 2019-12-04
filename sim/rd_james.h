@@ -300,6 +300,12 @@ public:
     list<DirichVtx<Flt>> vertices;
     list<DirichDom<Flt>> domains;
 
+    //! Set to true after calling dirichet() and to false after running step().
+    bool dirichletComputed = false;
+
+    //! Key-mapped coordinates of experimental barrels
+    map<string, pair<float, float>> identified_coords;
+
     //! The overall Honda 1983 Dirichlet approximation. 0.003 is a good fit. 0.05 not so good.
     Flt honda = 0.0;
     //@}
@@ -432,6 +438,20 @@ public:
 
         morph::RD_Base<Flt>::allocate();
 
+        // Copy the list of circles from the ReadCurves object
+        this->identified_coords = this->r.circles;
+        // Invert the y axis of these coordinates, just as the y axis is inverted in void
+        // morph::HexGrid::setBoundary (const BezCurvePath& p)
+        for (auto& c : this->identified_coords) {
+            c.second.second = -c.second.second;
+        }
+
+        list<BezCurvePath> ers = this->r.getEnclosedRegions();
+        for (auto er : ers) {
+            DBG ("Found enclosed path: " << er.name);
+        }
+
+
         // Resize and zero-initialise the various containers
         this->resize_vector_vector (this->c, this->N);
         this->resize_vector_vector (this->dc, this->N);
@@ -480,6 +500,7 @@ public:
         DBG ("RD_James::init() called");
 
         this->stepCount = 0;
+        this->dirichletComputed = false;
 
         // Zero c and n and other temporary variables
         this->zero_vector_vector (this->c, this->N);
@@ -950,6 +971,8 @@ public:
         // 2. Call Runge Kutta numerical integration code
         this->integrate_a();
         this->integrate_c();
+
+        this->dirichletComputed = false;
     }
 
     /*!
@@ -1205,6 +1228,13 @@ public:
      * Compute Dirichlet analysis on the c variable
      */
     void dirichlet (void) {
+
+        // Don't recompute unnecessarily
+        if (this->dirichletComputed == true) {
+            DBG ("dirichlet already computed, no need to recompute.");
+            return;
+        }
+
         // Clear out previous results from an earlier timestep
         this->regions.clear();
         this->vertices.clear();
@@ -1242,6 +1272,8 @@ public:
         // Carry out the analysis.
         vector<pair<float, float>> d_centres;
         this->honda = morph::ShapeAnalysis<float>::dirichlet_analyse (this->domains, d_centres);
+
+        this->dirichletComputed = true;
     }
 
 }; // RD_James

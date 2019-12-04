@@ -94,6 +94,8 @@ public:
         // Do the final independent steps on self, then on mirror:
         this->integrate_c();
         this->mirror->integrate_c();
+
+        this->dirichletComputed = false;
     }
 
 }; // RD_James_dncomp_dual
