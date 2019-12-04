@@ -59,13 +59,40 @@ print ('total area: {0}'.format (totalarea))
 # And plot this longhand here:
 F1 = plt.figure (figsize=(9,8))
 
-xmax = 12000 * dt
+# Clean zeros out of honda delta and sos_distances
+hondadelta = np.ma.masked_equal (hondadelta, 0)
+sos_dist =  np.ma.masked_equal (sos_dist, 0)
+mask_combined = np.invert(hondadelta.mask | sos_dist.mask)
+#print ('mask {0}'.format(mask_combined))
+# Apply the mask to the time:
+t1_masked = t1[mask_combined].T
+print ('t1 shape {0}, t1_masked shape {1}'.format(np.shape(t1),np.shape(t1_masked)))
+# Remove the masked values:
+
+sos_dist = sos_dist.compressed()
+hondadelta = hondadelta.compressed()
+print ('sos_dist shape: {0}, hondadelta shape: {1}'.format (np.shape (sos_dist), np.shape (hondadelta)))
+
+xmax = 30000 * dt
 ax1 = F1.add_subplot(1,1,1)
-l1, = ax1.plot(t1, hondadelta, 'o', markersize=12, color=col.black, label='Honda $\delta$')
+l1, = ax1.plot(t1_masked, hondadelta, 'o', markersize=12, color=col.black, label='Honda $\delta$')
 l2, = ax1.plot((0,xmax), (0.003, 0.003), '--', color=col.black, linewidth=3, label="threshold")
 
 ax2 = ax1.twinx()
-l3, = ax2.plot(t1, sos_dist, 's', markersize=12, color=col.blue, label='$\Sigma d^2$')
+l3, = ax2.plot(t1_masked, sos_dist, 's', markersize=12, color=col.blue, label='$\Sigma d^2$')
+
+sos_min = np.min(sos_dist)
+sos_end = sos_dist[-1]
+
+# Objective is the value 1-sos_min/sos_end, which tends to 0 as the
+# pattern is as good at the end as it is at the "best" point, possibly
+# multiplied by the honda delta value at the end of the simulation,
+# and possibly multiplied by the minimum of the pattern.
+obj1 = (1. - sos_min/sos_end)
+obj2 = (1. - sos_min/sos_end) * np.min(sos_dist)
+obj3 = (1. - sos_min/sos_end) * np.min(sos_dist) * hondadelta[-1]
+
+print ('obj1: {0}, obj2: {1}, obj3: {2}'.format (obj1,obj2,obj3))
 
 #l2, = ax1.plot(t1, edgedev, 'o', label='Edge deviation')
 #l3, = ax1.plot(t1, domarea/totalarea[0], 'go', label='Domain area proportion')
@@ -77,7 +104,8 @@ ax1.set_ylabel ('Honda $\delta$ measure')
 ax2.set_ylabel ('$\Sigma d^2$')
 ax2.tick_params (axis='y', labelcolor=col.blue)
 ax1.set_xlim ((0,xmax))
-#ax1.set_ylim ((0,0.05))
+ax1.set_ylim ((0,0.25))
+ax2.set_ylim ((0,5))
 ax1.set_xticks ((0,0.5*xmax,xmax))
 #plt.legend()
 
