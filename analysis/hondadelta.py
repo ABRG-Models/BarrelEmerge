@@ -30,7 +30,7 @@ if len(sys.argv) < 2:
 logdirname = sys.argv[1]
 
 # Load the dirichlet data, domcentres, etc
-[t1, hondadelta, edgedev, numdoms, domarea, domcentres, dirichcentre, sos_dist] = ld.readDirichData (logdirname)
+[t1, hondadelta, edgedev, numdoms, domarea, domcentres, dirichcentre, sos_dist, mapdiff, area_diff] = ld.readDirichData (logdirname)
 
 # Timestep is 0.0001
 dt = 0.0001
@@ -66,20 +66,30 @@ mask_combined = np.invert(hondadelta.mask | sos_dist.mask)
 #print ('mask {0}'.format(mask_combined))
 # Apply the mask to the time:
 t1_masked = t1[mask_combined].T
+mapdiff = mapdiff[mask_combined].T
+area_diff = area_diff[mask_combined].T
+area_diff = area_diff / np.max(area_diff)
+
 print ('t1 shape {0}, t1_masked shape {1}'.format(np.shape(t1),np.shape(t1_masked)))
 # Remove the masked values:
 
 sos_dist = sos_dist.compressed()
 hondadelta = hondadelta.compressed()
-print ('sos_dist shape: {0}, hondadelta shape: {1}'.format (np.shape (sos_dist), np.shape (hondadelta)))
 
-xmax = 30000 * dt
+print ('sos_dist shape: {0}, area_diff shape: {1}'.format (np.shape (sos_dist), np.shape (area_diff[:,0])))
+
+xmax = max(t1_masked)
+xmax = xmax[0]
+print ('xmax = {0}'.format(xmax))
 ax1 = F1.add_subplot(1,1,1)
 l1, = ax1.plot(t1_masked, hondadelta, 'o', markersize=12, color=col.black, label='Honda $\delta$')
 l2, = ax1.plot((0,xmax), (0.003, 0.003), '--', color=col.black, linewidth=3, label="threshold")
 
 ax2 = ax1.twinx()
 l3, = ax2.plot(t1_masked, sos_dist, 's', markersize=12, color=col.blue, label='$\Sigma d^2$')
+l4, = ax2.plot(t1_masked, mapdiff, 'v', markersize=12, color=col.red, label='mapdiff')
+
+l5, = ax2.plot(t1_masked, area_diff[:,0]*sos_dist, '^', markersize=12, color=col.green, label='area_diff * sos_dist')
 
 sos_min = np.min(sos_dist)
 sos_end = sos_dist[-1]

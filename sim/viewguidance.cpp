@@ -268,6 +268,7 @@ int main (int argc, char **argv)
     for (unsigned int i = 0; i < tcs.size(); ++i) {
         Json::Value tcv = tcs[i];
         Json::Value gamma = tcv["gamma"];
+        Json::Value tcname = tcv["name"];
         for (unsigned int j = 0; j < guid.size(); ++j) {
             // Set up gamma values using a setter which checks we
             // don't set a value that's off the end of the gamma
@@ -275,6 +276,8 @@ int main (int argc, char **argv)
             cout << "Set gamma for guidance " << j << " over TC " << i << " = " << gamma[j] << endl;
             paramRtn += RD.setGamma (j, i, gamma[j].asDouble());
         }
+        // Make a map of name to float id value
+        RD.tcnames[(FLT)i/(FLT)tcs.size()] = tcname.asString();
     }
 
     if (paramRtn && M_GUID>0) {

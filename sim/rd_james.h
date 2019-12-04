@@ -7,6 +7,7 @@
 #include "morph/ShapeAnalysis.h"
 
 #include <list>
+#include <map>
 
 /*!
  * Enumerates the way that the guidance molecules are set up
@@ -296,6 +297,9 @@ public:
     //! values separated by 1/N.
     map<Flt, pair<Flt, Flt> > reg_centroids;
 
+    //! The area of each region, by Flt ID (area in number of hexes).
+    map<Flt, int> region_areas;
+
     //! Dirichlet vertices
     list<DirichVtx<Flt>> vertices;
     list<DirichDom<Flt>> domains;
@@ -306,15 +310,39 @@ public:
     //! Key-mapped coordinates of experimental barrels
     map<string, pair<float, float>> identified_coords;
 
+    /*!
+     * From the contour information in the SVG, determine experimental barrel identity for each Hex,
+     * This is a float between 0 and 1, with -1 meaning that there is no barrel in that hex on the
+     * experimental map (it might be inter-barrel tissue).
+     */
+    vector<Flt> expt_barrel_id;
+
+    /*!
+     * The areas (in number of hexes) of each of the barrels, by Flt id.
+     */
+    map<Flt, int> expt_areas;
+
     //! The overall Honda 1983 Dirichlet approximation. 0.003 is a good fit. 0.05 not so good.
     Flt honda = 0.0;
     //@}
 
     /*!
      * A metric to determine the difference between the current pattern and the experimentally
-     * observed pattern.
+     * observed pattern. Based on a sum of centroid distances between expt and sim barrels.
      */
     Flt sos_distances = 0.0;
+
+    /*!
+     * The sum of the square of the absolute differences in area (in num hexes) between the
+     * experimental and simulated barrel fields.
+     */
+    Flt area_diff = 0.0;
+
+    /*!
+     * Another metric to determine the difference between the current pattern and the experimentally
+     * observed pattern, this one is based on traced barrel boundaries.
+     */
+    Flt mapdiff = 0.0;
 
     /*!
      * Simple constructor; no arguments. Just calls RD_Base constructor
@@ -446,12 +474,6 @@ public:
             c.second.second = -c.second.second;
         }
 
-        list<BezCurvePath> ers = this->r.getEnclosedRegions();
-        for (auto er : ers) {
-            DBG ("Found enclosed path: " << er.name);
-        }
-
-
         // Resize and zero-initialise the various containers
         this->resize_vector_vector (this->c, this->N);
         this->resize_vector_vector (this->dc, this->N);
@@ -475,6 +497,8 @@ public:
         this->resize_vector_array_vector (this->grad_a, this->N);
         this->resize_vector_vector_array_vector (this->g, this->N, this->M);
         this->resize_vector_array_vector (this->J, this->N);
+
+        this->resize_vector_variable (this->expt_barrel_id);
 
         // rhomethod is a vector of size M
         this->rhoMethod.resize (this->M);
@@ -519,6 +543,12 @@ public:
         this->zero_vector_array_vector (this->grad_a, this->N);
         this->zero_vector_vector_array_vector (this->g, this->N, this->M);
         this->zero_vector_array_vector (this->J, this->N);
+
+        // Init this one to -1:
+#pragma omp parallel for
+        for (unsigned int h = 0; h<this->nhex; h++) {
+            this->expt_barrel_id[h] = (Flt)-1.0f;
+        }
 
         // Initialise a with noise
         this->noiseify_vector_vector (this->a, this->initmasks);
@@ -582,6 +612,23 @@ public:
             }
         }
 
+        // Set up the barrel regions
+        list<BezCurvePath> ers = this->r.getEnclosedRegions();
+        for (auto er : ers) {
+            pair<float, float> regCentroid; // Don't use it for now...
+            vector<list<Hex>::iterator> regHexes = this->hg->getRegion (er, regCentroid);
+            string idstr("unknown");
+            if (er.name.substr(0,3) == "ol_") { // "ol_" for "outline"
+                idstr = er.name.substr(3);
+            }
+            DBG ("Barrel " << idstr << "/" << er.name << " contains " << regHexes.size() << " hexes");
+            Flt theid = this->tc_name_to_id (idstr);
+            this->expt_areas[theid] = static_cast<int>(regHexes.size());
+            for (auto rh : regHexes) {
+                this->expt_barrel_id[rh->vi] = theid;
+            }
+        }
+
         // Compute gradients of guidance molecule concentrations once only
         for (unsigned int m = 0; m<this->M; ++m) {
             this->spacegrad2D (this->rho[m], this->grad_rho[m]);
@@ -604,6 +651,24 @@ public:
     }
 
 protected:
+    /*!
+     * Given a TC id string @idstr, look it up in tcnames and find the Flt ID that it corresponds
+     * to. Client code should have set up tcnames.
+     */
+    Flt tc_name_to_id (const string& idstr) {
+        Flt theid = -1.0;
+        typename std::map<Flt, string>::iterator tcn = this->tcnames.begin();
+        while (tcn != this->tcnames.end()) {
+            DBG2 ("Compare " << tcn->second << " and " << idstr << "...");
+            if (tcn->second == idstr) {
+                theid = tcn->first;
+                break;
+            }
+            ++tcn;
+        }
+        return theid;
+    }
+
     /*!
      * Require private setter for d. Slightly different from the base class version.
      */
@@ -730,6 +795,10 @@ public:
         data.add_val ("/honda", this->honda);
         // Save sum of square distances
         data.add_val ("/sos_distances", this->sos_distances);
+        // Save sum of square of area differences
+        data.add_val ("/area_diff", this->area_diff);
+        // The difference between the experimental barrel map and the simulated map
+        data.add_val ("/mapdiff", this->mapdiff);
         // Save the region centroids
         vector<Flt> keys;
         vector<Flt> x_;
@@ -762,6 +831,8 @@ public:
 
     /*!
      * Save the guidance molecules to a file (guidance.h5)
+     *
+     * Also save the experimental ID map in this file, as this is something that needs saving once only.
      */
     void saveGuidance (void) {
         stringstream fname;
@@ -783,6 +854,7 @@ public:
                 data.add_contained_vals (pth.c_str(), this->divg_over3d[m][i]);
             }
         }
+        data.add_contained_vals ("/expt_barrel_id", this->expt_barrel_id);
     }
 
     /*!
@@ -1266,6 +1338,33 @@ public:
             this->sos_distances += dsq;
         }
         DBG ("overall sos_distances = " << this->sos_distances);
+
+        this->area_diff = 0.0;
+        // What's the area of each identified region?
+        for (unsigned int i = 0; i < this->N; ++i) {
+            Flt idx = (Flt)i/(Flt)this->N;
+            int acount = 0;
+            for (unsigned int h = 0; h < this->nhex; ++h) {
+                acount += this->regions[h] == idx ? 1 : 0;
+            }
+            this->region_areas[idx] = acount;
+            this->area_diff += abs(static_cast<Flt>(this->region_areas[idx] - this->expt_areas[idx]));
+        }
+        DBG ("overall area_diff = " << this->area_diff);
+
+        // Compute differences based on barrel ID map. Where hexes are differen between the maps,
+        // add 1.0 to the metric; if expt barrel is unset, add 0.5.
+        this->mapdiff = 0.0;
+        for (unsigned int h = 0; h < this->nhex; ++h) {
+            if (this->expt_barrel_id[h] == (Flt)-1.0) {
+                this->mapdiff += (Flt)0.5;
+            } else {
+                this->mapdiff += (this->expt_barrel_id[h] == this->regions[h]) ? 0.0 : 1.0;
+            }
+        }
+        // Normalize by the number of hexes:
+        this->mapdiff = this->mapdiff / (Flt)this->nhex;
+        DBG ("overall mapdiff = " << this->mapdiff);
 
         // Find the vertices and construct domains
         this->domains = morph::ShapeAnalysis<Flt>::dirichlet_vertices (this->hg, this->regions, this->vertices);

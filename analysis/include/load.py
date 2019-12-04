@@ -28,6 +28,8 @@ def readDirichData (logdir):
     honda = np.zeros([numtimes], dtype=float)
     # To hold the sos_distance values
     sos_dist = np.zeros([numtimes], dtype=float)
+    mapdiff = np.zeros([numtimes], dtype=float)
+    area_diff = np.zeros([numtimes], dtype=float)
     # To hold the edgedeviation
     edgedev = np.zeros([numtimes], dtype=float)
     # To hold a count of number of domains
@@ -58,6 +60,8 @@ def readDirichData (logdir):
 
         # The sum of squared distances between the simulated barrels and the experimentally determined pattern
         sos_dist[fi] = list(f['sos_distances'])[0]
+        mapdiff[fi] = list(f['mapdiff'])[0]
+        area_diff[fi] = list(f['area_diff'])[0]
 
         # Coordinates, but need to re-cast them so that they have all ids. Or do I do that in the C++?
         dom_id_list = list(f['reg_centroids_id'])
@@ -66,7 +70,7 @@ def readDirichData (logdir):
         #print ('x coords: {0}'.format(domcentre[fi, :, 0]))
 
         # Now process the domains.
-        nondomset = set(['honda', 'N', 'reg_centroids_id', 'reg_centroids_x', 'reg_centroids_y', 'reg_centroids_id_all', 'sos_distances'])
+        nondomset = set(['honda', 'N', 'reg_centroids_id', 'reg_centroids_x', 'reg_centroids_y', 'reg_centroids_id_all', 'sos_distances', 'mapdiff', 'area_diff'])
         kset = set(f.keys()) # dom000, dom001, dom002, etc, honda
         domset = kset.difference(nondomset); # Removes 'honda'
 
@@ -88,7 +92,7 @@ def readDirichData (logdir):
 
         fi = fi + 1
 
-    return [t, honda, edgedev, numdoms, domarea, domcentre, dirichcentre, sos_dist]
+    return [t, honda, edgedev, numdoms, domarea, domcentre, dirichcentre, sos_dist, mapdiff, area_diff]
 #
 # Load and read all the c_NNNNN.h5 files in logdir which contain a, c,
 # etc. Also reads x and y data which is stored in positions.h5.
@@ -223,7 +227,9 @@ def readGuidance (logdir):
     for m in range (0, M):
         gmatrix[:,m] = np.array(gf['rh{0}'.format(m)]);
 
-    return (x, y, gmatrix)
+    exptmatrix = np.array(gf['expt_barrel_id'])
+
+    return (x, y, gmatrix, exptmatrix)
 
 #
 # targ is a container of a target x,y coordinate. x and y are the
