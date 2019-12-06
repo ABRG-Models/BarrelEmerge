@@ -288,6 +288,9 @@ int main (int argc, char **argv)
     // Now have the guidance molecule densities and their gradients computed, call init()
     RD.init();
 
+    // Work out Honda for real barrels
+    RD.expt_dirichlet();
+
     vector<vector<FLT> > gx = plt.separateVectorField (RD.g[0], 0);
     vector<vector<FLT> > gy = plt.separateVectorField (RD.g[0], 1);
     FLT ming = 1e7;
