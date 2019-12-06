@@ -30,7 +30,7 @@
 \keywords{Barrel cortex $|$ Self-organization $|$ Somatotopic map $|$ Axon guidance}
 
 \begin{abstract}
-Brain development relies on an interplay of genetic specification and self-organisation. Striking examples of this interplay can be found in the rodent somatosensory brainstem, thalamus, and cortex, where the arrangement of the facial whiskers is preserved in the arrangement of cellular aggregates to form precise somatotopic maps. We show in simulation how realistic whisker maps can self-organize, by assuming that information is exchanged between adjacent cells only, under the guidance of gene expression gradients. The resulting model provides a simple account of how genetic information can constrain spontaneous pattern formation to faithfully reproduce functional maps in subsequent brain structures.
+Brain development relies on an interplay of genetic specification and self-organisation. Striking examples of this interplay can be found in the rodent somatosensory brainstem, thalamus, and cortex, where the arrangement of the facial whiskers is preserved in the arrangement of cell aggregates to form precise somatotopic maps. We show in simulation how realistic whisker maps can self-organize, by assuming that information is exchanged between adjacent cells only, under the guidance of gene expression gradients. The resulting model provides a simple account of how genetic information can constrain spontaneous pattern formation to faithfully reproduce functional maps in subsequent brain structures.
 \end{abstract}
 
 \dates{This manuscript was compiled on \today}
@@ -76,7 +76,7 @@ Karbowski \& Ermentrout \citep{karbowski_model_2004} developed a reaction-diffus
 \frac{\partial c_i}{\partial t} =-\alpha c_i +\beta  \left(1 - \sum_{k=1}^{N} c_{k}\right)[a_i]^l.
 \end{equation}
 %
-When the final term evaluates to zero, i.e., when the total density of connections sums to one, the density of thalamocortical connections decays at rate $\alpha$. Otherwise the synaptic connection density increases non-linearly ($l>1$) with the axon branching density. Changes in axon branching are modelled as 
+Accordingly, when the total density of connections sums to one, the density of thalamocortical connections decays at rate $\alpha$. Otherwise the synaptic connection density increases non-linearly ($l>1$) with the axon branching density. Changes in axon branching are modelled as 
 %
 \begin{equation} \label{eq:da}
 \frac{\partial a_i}{\partial t} = \nabla\vcdot\left(D \nabla a_i-a_i\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x})\right) - \frac{\partial c_i}{\partial t} + \chi_i.
@@ -99,7 +99,7 @@ Software tools for modelling the cortical sheet as a hexagonal lattice with no-f
 
 First we verified that all results established for a 1D axis could be reproduced using our extension to a 2D cortical sheet. Using an elliptical boundary with $M=3$ guidance gradients aligned to the longer axis, $N=5$ thalamocortical projections gave rise to five distinct cortical fields at locations that preserved the topographic ordering defined by the original $\gamma$ values of \cite{karbowski_model_2004}. However, we found that specifying $N$ ordered areas required $M\approx N$ signalling fields. As the number of distinct guidance fields is unlikely to approach the number of barrels, further extensions were required.
 
-The term in parentheses in Eq.~\ref{eq:dc} represents competition between thalamic projections for a limited availability of cortical connections. To introduce competition also in terms of axon branching we introduced
+The term in parentheses in Eq.~\ref{eq:dc} represents competition between thalamic projections for a limited availability of cortical connections. To introduce competition also in terms of axon branching we redefined
 %
 \begin{equation} \label{eq:comp}
 \chi_i(\mb{x}, t) = - \frac{\epsilon  a_i}{N-1} \sum_{j \ne i}^{N} a_{j},
