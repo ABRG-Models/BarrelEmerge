@@ -621,13 +621,15 @@ public:
             if (er.name.substr(0,3) == "ol_") { // "ol_" for "outline"
                 idstr = er.name.substr(3);
             }
-            DBG ("Barrel " << idstr << "/" << er.name << " contains " << regHexes.size() << " hexes");
-            Flt theid = this->tc_name_to_id (idstr);
-            this->expt_areas[theid] = static_cast<int>(regHexes.size());
-            // This line instead of the code in the ifdef block "USE_USER_SUPPLIED_CIRCLES":
-            this->expt_centroids[idstr] = regCentroid;
-            for (auto rh : regHexes) {
-                this->expt_barrel_id[rh->vi] = theid;
+            if (idstr != "unknown") {
+                DBG ("Barrel " << idstr << "/" << er.name << " contains " << regHexes.size() << " hexes");
+                Flt theid = this->tc_name_to_id (idstr);
+                this->expt_areas[theid] = static_cast<int>(regHexes.size());
+                // This line instead of the code in the ifdef block "USE_USER_SUPPLIED_CIRCLES":
+                this->expt_centroids[idstr] = regCentroid;
+                for (auto rh : regHexes) {
+                    this->expt_barrel_id[rh->vi] = theid;
+                }
             }
         }
 
