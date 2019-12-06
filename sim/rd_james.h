@@ -308,7 +308,7 @@ public:
     bool dirichletComputed = false;
 
     //! Key-mapped coordinates of experimental barrels
-    map<string, pair<float, float>> identified_coords;
+    map<string, pair<float, float>> expt_centroids;
 
     /*!
      * From the contour information in the SVG, determine experimental barrel identity for each Hex,
@@ -465,15 +465,15 @@ public:
     virtual void allocate (void) {
 
         morph::RD_Base<Flt>::allocate();
-
+#ifdef USE_USER_SUPPLIED_CIRCLES
         // Copy the list of circles from the ReadCurves object
-        this->identified_coords = this->r.circles;
+        this->expt_centroids = this->r.circles;
         // Invert the y axis of these coordinates, just as the y axis is inverted in void
         // morph::HexGrid::setBoundary (const BezCurvePath& p)
-        for (auto& c : this->identified_coords) {
+        for (auto& c : this->expt_centroids) {
             c.second.second = -c.second.second;
         }
-
+#endif
         // Resize and zero-initialise the various containers
         this->resize_vector_vector (this->c, this->N);
         this->resize_vector_vector (this->dc, this->N);
@@ -624,6 +624,8 @@ public:
             DBG ("Barrel " << idstr << "/" << er.name << " contains " << regHexes.size() << " hexes");
             Flt theid = this->tc_name_to_id (idstr);
             this->expt_areas[theid] = static_cast<int>(regHexes.size());
+            // This line instead of the code in the ifdef block "USE_USER_SUPPLIED_CIRCLES":
+            this->expt_centroids[idstr] = regCentroid;
             for (auto rh : regHexes) {
                 this->expt_barrel_id[rh->vi] = theid;
             }
@@ -1320,8 +1322,8 @@ public:
         this->sos_distances = 0.0;
         for (unsigned int i = 0; i < this->N; ++i) {
             Flt idx = (Flt)i/(Flt)this->N;
-            Flt dx = this->reg_centroids[idx].first - (this->identified_coords[tcnames[idx]].first - this->hg->originalBoundaryCentroid.first);
-            Flt dy = this->reg_centroids[idx].second - (this->identified_coords[tcnames[idx]].second - this->hg->originalBoundaryCentroid.second);
+            Flt dx = this->reg_centroids[idx].first - (this->expt_centroids[tcnames[idx]].first - this->hg->originalBoundaryCentroid.first);
+            Flt dy = this->reg_centroids[idx].second - (this->expt_centroids[tcnames[idx]].second - this->hg->originalBoundaryCentroid.second);
             Flt dsq = dx*dx + dy*dy;
 #if 0
             DBG2 ("For barrel ID " << tcnames[idx] << ", the sim has centroid locn ("
@@ -1331,10 +1333,12 @@ public:
                   << this->identified_coords[tcnames[idx]].second << "-" <<  this->hg->originalBoundaryCentroid.second
                   <<  ") which adds to sos_distances: " << dsq);
 #endif
+#if 0
             cout << tcnames[idx] << ","
                  << this->reg_centroids[idx].first << "," << this->reg_centroids[idx].second << ","
-                 << this->identified_coords[tcnames[idx]].first << "," << this->identified_coords[tcnames[idx]].second << ","
+                 << this->expt_centroids[tcnames[idx]].first << "," << this->expt_centroids[tcnames[idx]].second << ","
                  << this->hg->originalBoundaryCentroid.first <<  "," << this->hg->originalBoundaryCentroid.second << endl;
+#endif
             this->sos_distances += dsq;
         }
         DBG ("overall sos_distances = " << this->sos_distances);
