@@ -324,6 +324,9 @@ public:
 
     //! The overall Honda 1983 Dirichlet approximation. 0.003 is a good fit. 0.05 not so good.
     Flt honda = 0.0;
+
+    //! Honda Dirichlet approx for the experimentally supplied barrels
+    Flt expt_honda = 0.0;
     //@}
 
     /*!
@@ -665,6 +668,7 @@ protected:
         while (tcn != this->tcnames.end()) {
             DBG2 ("Compare " << tcn->second << " and " << idstr << "...");
             if (tcn->second == idstr) {
+                DBG ("ID string " << idstr << " matches; set theid to " << tcn->first);
                 theid = tcn->first;
                 break;
             }
@@ -859,6 +863,8 @@ public:
             }
         }
         data.add_contained_vals ("/expt_barrel_id", this->expt_barrel_id);
+        // Save the Honda Dirichliform measure for the map
+        data.add_val ("/expt_honda", this->expt_honda);
     }
 
     /*!
@@ -1298,6 +1304,20 @@ public:
             Flt r_ = sqrt(x_*x_ + y_*y_);
             this->rho[m][h.vi] = (this->guidance_gain[m] - r_) * this->guidance_gain[m];
         }
+    }
+
+    /*!
+     * Compute experimental pattern Dirichlet metric
+     */
+    void expt_dirichlet (void) {
+        //expt_barrel_id is 'regions'
+        this->vertices.clear();
+        // Find the vertices and construct domains
+        this->domains = morph::ShapeAnalysis<Flt>::dirichlet_vertices (this->hg, this->expt_barrel_id, this->vertices);
+        // Carry out the analysis.
+        vector<pair<float, float>> d_centres;
+        this->expt_honda = morph::ShapeAnalysis<float>::dirichlet_analyse (this->domains, d_centres);
+        DBG ("Real barrels have Honda: " << this->expt_honda);
     }
 
     /*!
