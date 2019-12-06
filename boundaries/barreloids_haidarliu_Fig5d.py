@@ -17,7 +17,7 @@ import math
 D = {}
 
 # Params for the output text
-epsilon = 1200
+epsilon = 200
 alpha = 3
 beta = 20
 xinit = -0.16
@@ -34,13 +34,7 @@ xar = []
 yar = []
 
 # A rotational transformation is applied with this many degrees:
-phi = 0#-40
-
-# -110 rotates the barreloids so that they appear in the same (though mirrored)
-# orientation as in the Erzurumli 2012 review paper
-# phi = -110
-
-#phi = 0
+phi = 105
 
 # Compute cos(phi) and sin(phi)
 pr = phi/360.0 * 2.0 * math.pi # "phi in radians"
@@ -103,16 +97,19 @@ with open('barreloids_haidarliu_Fig5d.csv') as csvDataFile:
 # Read the boundary points
 bndry_x = []
 bndry_y = []
-with open('barreloids_haidarliu_boundary_ordered.csv') as csvDataFile:
+bndry_idstr = []
+with open('barreloids_haidarliu_Fig5d_boundary.csv') as csvDataFile:
     csvReader = csv.reader (csvDataFile)
     for row in csvReader:
         if row[0] == 'op': continue # skip header
+        idstr = row[0]
         x = float(row[1])
         y = float(row[2])
         x_ = x * cosphi - y * sinphi
         y_ = y * cosphi + x * sinphi
         bndry_x.append(x_)
         bndry_y.append(y_)
+        bndry_idstr.append(idstr)
 
 # Produce guidance interactions for 4 gradients (two opposing pairs, orthogonally
 # arranged) or two orthogonal gradients for which interactions will be positive or
@@ -184,6 +181,9 @@ ax0.scatter (xqui, yqui, c='k', s=70, marker='o')
 
 # Plot boundary
 ax0.plot (bndry_x, bndry_y, c='grey', marker='None', linestyle='--', linewidth=2, label='boundary')
+# Optionally add labels
+#for ii in range(0,len(bndry_x)):
+#    ax0.text (bndry_x[ii]+txt_xoff, bndry_y[ii]+txt_yoff, bndry_idstr[ii])
 
 # Plot AP axis. Maybe use pyplot.arrow to make these
 ap = np.array(([[-0.04185,-0.0133],[0.3425,0.1232]]))
@@ -310,8 +310,8 @@ meanarea = areatotal / len(D)
 # Add the Voronoi boundaries to the diagram
 voronoi_plot_2d (vor, ax=ax0, show_vertices=False, show_points=False, line_colors='grey', line_width=2, line_alpha=0.05)
 
-xbord = 0.05
-ybord = 0.06
+xbord = 0.3
+ybord = 0.3
 
 ax0.set_xlim([minx-xbord, maxx+xbord])
 ax0.set_ylim([miny-ybord, maxy+ybord])
@@ -350,14 +350,18 @@ plt.savefig ('barreloids_haidarliu_Fig5d_graph.svg', transparent=True)
 area_to_gain = 0
 
 # Output the text for the config file
+omit_from_config = ["E11","D11","R1","R2","R3","R4","R5"]
 for d in D:
     gaininit = 1.0
     if area_to_gain:
         gaininit = (D[d][6]/meanarea)
-    if show_four:
-        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}, {9}, {10}] , "name" : "{11}" }}, // {11}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, D[d][2], D[d][3], D[d][4], D[d][5], d, D[d][6]))
+    if d in omit_from_config:
+        print ("// Omit {0} as there is no corresponding barrel visible, or it's a rhinal barrel.".format(d))
     else:
-        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}], "name" : "{9}" }}, // {9}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, (D[d][2]-D[d][3]), (D[d][4]-D[d][5]), d))
+        if show_four:
+            print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}, {9}, {10}] , "name" : "{11}" }}, // {11}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, D[d][2], D[d][3], D[d][4], D[d][5], d, D[d][6]))
+        else:
+            print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}], "name" : "{9}" }}, // {9}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, (D[d][2]-D[d][3]), (D[d][4]-D[d][5]), d))
 
 
 plt.show();
