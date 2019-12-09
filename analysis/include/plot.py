@@ -10,6 +10,7 @@ import matplotlib
 matplotlib.use ('TKAgg', warn=False, force=True)
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
+from matplotlib.patches import RegularPolygon
 
 class RDPlot:
 
@@ -113,6 +114,17 @@ class RDPlot:
             f1.set_axis_off()
 
         return f1
+
+    # Plot a hex map using nice hexes that scale
+    def plotHexMap (f, Col, X, Y, n, rad=0.012):
+        for i in range(n):
+            hex = RegularPolygon((X[i], Y[i]),numVertices=6, radius=rad,
+                                 facecolor=Col[i],edgecolor='none')
+            f.add_patch (hex)
+            f.axis(np.array([-1,1,-1,1])*0.9)
+            f.set_aspect(np.diff(f.get_xlim())/np.diff(f.get_ylim()))
+            f.set_xticks([])
+            f.set_yticks([])
 
     # ...with names (and axes) as an option
     def surface_withnames (self, dmatrix, x, y, ix, title, idnames, domcentres):
