@@ -20,7 +20,7 @@ def loadfile(positionFile,dataFile,nDomains):
     h5f.close()
     return C[1:,:],A[1:,:],x,y,n
 
-def plotHexMap(f,Col,X,Y,n,rad=0.006):
+def plotHexMap(f,Col,X,Y,n,rad=0.012):
     for i in range(n):
         hex = RegularPolygon((X[i], Y[i]),numVertices=6, radius=rad,
                              facecolor=Col[i],edgecolor='none')
@@ -30,10 +30,15 @@ def plotHexMap(f,Col,X,Y,n,rad=0.006):
         f.set_xticks([])
         f.set_yticks([])
 
-C,A,X,Y,n = loadfile('/home/seb/gdrive_usfd/data/BarrelEmerge/25N2M_rect_1/positions.h5','/home/seb/gdrive_usfd/data/BarrelEmerge/25N2M_rect_1/c_04000.h5',25)
+C,A,X,Y,n = loadfile('/home/seb/gdrive_usfd/data/BarrelEmerge/25N2M_square/positions.h5','/home/seb/gdrive_usfd/data/BarrelEmerge/25N2M_square/c_50000.h5',25)
 
+print ('Shape of C is {0}'.format(np.shape(C)))
+# argmax with axis 0 gets the *index* of the max of the 25 TC types
 Cid = np.argmax(C,axis=0)
+print ('Shape of Cid is {0}'.format(np.shape(Cid)))
+# The value of the max
 Cmax  = np.max(C,axis=0)
+# The sum over all TC of C.
 Csum  = np.sum(C,axis=0)
 Csumsum = np.sum(Csum)
 
@@ -55,7 +60,8 @@ for i in range(n):
 F = pl.figure(figsize=(12,12))
 f = F.add_subplot(111)
 plotHexMap(f,Col,X,Y,n)
-f.tricontour(X, Y, Cmax/Csum,linewidths=3.0, colors="white", levels=[0.95])
-pl.savefig('fig.pdf')
+print ('shapes: X: {0}, Y: {1}, Cmax/Csum: {2}'.format (np.shape(X), np.shape(Y), np.shape(Cmax/Csum)  ))
+f.tricontour (X, Y, Cmax/Csum,linewidths=1.0, colors="white", levels=[0.5])
+#pl.savefig('fig.pdf')
 
-#pl.show()
+pl.show()
