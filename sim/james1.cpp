@@ -253,7 +253,7 @@ int main (int argc, char **argv)
 #if defined DNCOMP || defined DNCOMP2
     const FLT l = root.get ("l", 1).asDouble();
     const FLT m = root.get ("m", 1e-8).asDouble();
-    const double E = root.get ("E", 0.1).asDouble();
+    const double E = root.get ("E", 0.0).asDouble();
     DBG2 ("E is set to " << E);
 #endif
 
