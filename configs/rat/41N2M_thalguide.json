@@ -15,7 +15,7 @@
     "overwrite_logs": true,
     "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/",
     "hextohex_d" : 0.03,           // Hex to hex distance, determines num hexes
-    "svgpath" : "./boundaries/wb_110405_DirichletKind.svg",
+    "svgpath" : "./boundaries/rat_barrels/wb_110405_DirichletKind.svg",
     "boundaryFalloffDist" : 0.03,
     "D" : 0.2,
     "E" : 0.0,
