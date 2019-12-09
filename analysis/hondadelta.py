@@ -83,16 +83,18 @@ xmax = xmax[0]
 print ('xmax = {0}'.format(xmax))
 ax1 = F1.add_subplot(1,1,1)
 l1, = ax1.plot(t1_masked, hondadelta, 'o', markersize=12, color=col.black, label='Honda $\delta$')
-l2, = ax1.plot((0,xmax), (0.003, 0.003), '--', color=col.black, linewidth=3, label="threshold")
+l2, = ax1.plot((0,xmax), (0.003, 0.003), '-.', color=col.black, linewidth=3, label="excellent (cells)")
+l2_1, = ax1.plot((0,xmax), (0.03, 0.03), '--', color=col.black, linewidth=3, label="good (S&W)")
+l2_2, = ax1.plot((0,xmax), (0.15, 0.15), '-.', color=col.black, linewidth=3, label="awful (non Dirichlet)")
 
 ax2 = ax1.twinx()
-l3, = ax2.plot(t1_masked, sos_dist, 's', markersize=12, color=col.blue, label='$\Sigma d^2$')
-l4, = ax2.plot(t1_masked, mapdiff, 'v', markersize=12, color=col.red, label='mapdiff')
+#l3, = ax2.plot(t1_masked, sos_dist, 's', markersize=12, color=col.blue, label='$\Sigma d^2$')
+#l4, = ax2.plot(t1_masked, mapdiff, 'v', markersize=12, color=col.red, label='mapdiff')
+area_and_centroids = area_diff[:,0]*sos_dist
+l5, = ax2.plot(t1_masked, area_and_centroids, '^', markersize=12, color=col.green, label='area_diff * sos_dist')
 
-l5, = ax2.plot(t1_masked, area_diff[:,0]*sos_dist, '^', markersize=12, color=col.green, label='area_diff * sos_dist')
-
-sos_min = np.min(sos_dist)
-sos_end = sos_dist[-1]
+sos_min = np.min(area_and_centroids)
+sos_end = area_and_centroids[-1]
 
 # Objective is the value 1-sos_min/sos_end, which tends to 0 as the
 # pattern is as good at the end as it is at the "best" point, possibly
@@ -101,7 +103,6 @@ sos_end = sos_dist[-1]
 obj1 = (1. - sos_min/sos_end)
 obj2 = (1. - sos_min/sos_end) * np.min(sos_dist)
 obj3 = (1. - sos_min/sos_end) * np.min(sos_dist) * hondadelta[-1]
-
 print ('obj1: {0}, obj2: {1}, obj3: {2}'.format (obj1,obj2,obj3))
 
 #l2, = ax1.plot(t1, edgedev, 'o', label='Edge deviation')
@@ -111,11 +112,11 @@ print ('obj1: {0}, obj2: {1}, obj3: {2}'.format (obj1,obj2,obj3))
 #ax1.set_title ('Honda Dirichletiform measure');
 ax1.set_xlabel ('Simulation time')
 ax1.set_ylabel ('Honda $\delta$ measure')
-ax2.set_ylabel ('$\Sigma d^2$')
+ax2.set_ylabel ('Pattern quality')
 ax2.tick_params (axis='y', labelcolor=col.blue)
-ax1.set_xlim ((0,xmax))
-ax1.set_ylim ((0,0.25))
-ax2.set_ylim ((0,5))
+#ax1.set_xlim ((0,xmax))
+#ax1.set_ylim ((0,0.25))
+#ax2.set_ylim ((0,5))
 ax1.set_xticks ((0,0.5*xmax,xmax))
 #plt.legend()
 
