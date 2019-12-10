@@ -58,45 +58,11 @@ using morph::RD_Plot;
 #include "morph/tools.h"
 
 /*!
- * A class to launch a process (git status) and obtain the output.
+ * A jsoncpp-wrapping class for configuration.
  */
-#include "morph/Process.h"
-using morph::Process;
-using morph::ProcessData;
-using morph::ProcessCallbacks;
-
-/*!
- * I'm using JSON to read in simulation parameters
- */
-#include <json/json.h>
+#include "morph/Config.h"
 
 using namespace std;
-
-/*!
- * Callbacks class extends ProcessCallbacks
- */
-class RDProcessCallbacks : public ProcessCallbacks
-{
-public:
-    RDProcessCallbacks (ProcessData* p) {
-        this->parent = p;
-    }
-    void startedSignal (std::string msg) {}
-    void errorSignal (int err) {
-        this->parent->setErrorNum (err);
-    }
-    void processFinishedSignal (std::string msg) {
-        this->parent->setProcessFinishedMsg (msg);
-    }
-    void readyReadStandardOutputSignal (void) {
-        this->parent->setStdOutReady (true);
-    }
-    void readyReadStandardErrorSignal (void) {
-        this->parent->setStdErrReady (true);
-    }
-private:
-    ProcessData* parent;
-};
 
 /*!
  * main(): Run a simulation, using parameters obtained from a JSON
@@ -155,58 +121,33 @@ int main (int argc, char **argv)
     }
     string paramsfile (argv[1]);
 
-    /*
-     * Set up JSON code for reading the parameters
-     */
-
-    // Test for existence of the JSON file.
-    ifstream jsonfile_test;
-    int srtn = system ("pwd");
-    if (srtn) {
-        cerr << "system call returned " << srtn << endl;
-    }
-    jsonfile_test.open (paramsfile, ios::in);
-    if (jsonfile_test.is_open()) {
-        // Good, file exists.
-        jsonfile_test.close();
-    } else {
-        cerr << "json config file " << paramsfile << " not found." << endl;
-        return 1;
-    }
-
-    // Parse the JSON
-    ifstream jsonfile (paramsfile, ifstream::binary);
-    Json::Value root;
-    string errs;
-    Json::CharReaderBuilder rbuilder;
-    rbuilder["collectComments"] = false;
-    bool parsingSuccessful = Json::parseFromStream (rbuilder, jsonfile, &root, &errs);
-    if (!parsingSuccessful) {
-        // report to the user the failure and their locations in the document.
-        cerr << "Failed to parse JSON: " << errs;
+    // Set up a morph::Config object for reading configuration
+    morph::Config conf(paramsfile);
+    if (!conf.ready) {
+        cerr << "Error setting up JSON config: " << conf.emsg << endl;
         return 1;
     }
 
     /*
      * Get simulation-wide parameters from JSON
      */
-    const unsigned int steps = root.get ("steps", 1000).asUInt();
+    const unsigned int steps = conf.getUInt ("steps", 1000UL);
     if (steps == 0) {
         cerr << "Not much point simulating 0 steps! Exiting." << endl;
         return 1;
     }
-    const unsigned int logevery = root.get ("logevery", 100).asUInt();
+    const unsigned int logevery = conf.getUInt ("logevery", 100UL);
     if (logevery == 0) {
         cerr << "Can't log every 0 steps. Exiting." << endl;
         return 1;
     }
-    const float hextohex_d = root.get ("hextohex_d", 0.01).asFloat();
-    const float boundaryFalloffDist = root.get ("boundaryFalloffDist", 0.01).asFloat();
-    const string svgpath = root.get ("svgpath", "./ellipse.svg").asString();
-    bool overwrite_logs = root.get ("overwrite_logs", false).asBool();
+    const float hextohex_d = conf.getFloat ("hextohex_d", 0.01f);
+    const float boundaryFalloffDist = conf.getFloat ("boundaryFalloffDist", 0.01f);
+    const string svgpath = conf.getString ("svgpath", "./ellipse.svg");
+    bool overwrite_logs = conf.getBool ("overwrite_logs", false);
     // Do we carry out dirichlet analysis? Default to true, because it's computationally cheap.
-    bool do_dirichlet_analysis = root.get ("do_dirichlet_analysis", true).asBool();
-    string logpath = root.get ("logpath", "fromfilename").asString();
+    bool do_dirichlet_analysis = conf.getBool ("do_dirichlet_analysis", true);
+    string logpath = conf.getString ("logpath", "fromfilename");
     string logbase = "";
     if (logpath == "fromfilename") {
         // Using json filename as logpath
@@ -216,7 +157,7 @@ int main (int argc, char **argv)
         justfile = pth.back();
         morph::Tools::searchReplace (".json", "", justfile);
         // Use logbase as the subdirectory into which this should go
-        logbase = root.get ("logbase", "logs/").asString();
+        logbase = conf.getString ("logbase", "logs/");
         if (logbase.back() != '/') {
             logbase += '/';
         }
@@ -234,35 +175,35 @@ int main (int argc, char **argv)
     }
 
     // Used to initialise a
-    const double aNoiseGain = root.get ("aNoiseGain", 0.1).asDouble();
-    const double aInitialOffset = root.get ("aInitialOffset", 0.1).asDouble();
+    const double aNoiseGain = conf.getDouble ("aNoiseGain", 0.1);
+    const double aInitialOffset = conf.getDouble ("aInitialOffset", 0.1);
 
-    const FLT dt = static_cast<FLT>(root.get ("dt", 0.00001).asDouble());
+    const FLT dt = static_cast<FLT>(conf.getDouble ("dt", 0.00001));
 
-    const FLT contour_threshold = root.get ("contour_threshold", 0.6).asDouble();
+    const FLT contour_threshold = conf.getDouble ("contour_threshold", 0.6);
 
     // For the maxval/contour/guidance window, used for movies
-    const FLT hshift = root.get ("hshift", 0.6).asDouble();
-    const FLT vshift = root.get ("vshift", 0.4).asDouble();
-    const FLT g_hshift = root.get ("g_hshift", -0.2).asDouble();
-    const FLT g_vshift = root.get ("g_vshift", -0.4).asDouble();
+    const FLT hshift = conf.getDouble ("hshift", 0.6);
+    const FLT vshift = conf.getDouble ("vshift", 0.4);
+    const FLT g_hshift = conf.getDouble ("g_hshift", -0.2);
+    const FLT g_vshift = conf.getDouble ("g_vshift", -0.4);
 
-    const double D = root.get ("D", 0.1).asDouble();
-    const FLT k = root.get ("k", 3).asDouble();
+    const double D = conf.getDouble ("D", 0.1);
+    const FLT k = conf.getDouble ("k", 3.0);
 
 #if defined DNCOMP || defined DNCOMP2
-    const FLT l = root.get ("l", 1).asDouble();
-    const FLT m = root.get ("m", 1e-8).asDouble();
-    const double E = root.get ("E", 0.0).asDouble();
+    const FLT l = conf.getDouble ("l", 1.0);
+    const FLT m = conf.getDouble ("m", 1e-8);
+    const double E = conf.getDouble ("E", 0.0);
     DBG2 ("E is set to " << E);
 #endif
 
-    bool do_fgf_duplication = root.get ("do_fgf_duplication", false).asBool();
+    bool do_fgf_duplication = conf.getBool ("do_fgf_duplication", false);
 
     DBG ("steps to simulate: " << steps);
 
     // Thalamocortical populations array of parameters:
-    const Json::Value tcs = root["tc"];
+    const Json::Value tcs = conf.getArray ("tc");
     unsigned int N_TC = static_cast<unsigned int>(tcs.size());
     if (N_TC == 0) {
         cerr << "Zero thalamocortical populations makes no sense for this simulation. Exiting."
@@ -271,38 +212,38 @@ int main (int argc, char **argv)
     }
 
     // Guidance molecule array of parameters:
-    const Json::Value guid = root["guidance"];
+    const Json::Value guid = conf.getArray("guidance");
     unsigned int M_GUID = static_cast<unsigned int>(guid.size());
 
 #ifdef COMPILE_PLOTTING
 
     // Parameters from the config that apply only to plotting:
-    const unsigned int plotevery = root.get ("plotevery", 10).asUInt();
+    const unsigned int plotevery = conf.getUInt ("plotevery", 10UL);
 
     // If true, then write out the logs in consecutive order numbers,
     // rather than numbers that relate to the simulation timestep.
-    const bool vidframes = root.get ("vidframes", false).asBool();
+    const bool vidframes = conf.getBool ("vidframes", false);
     unsigned int framecount = 0;
 
     // Which windows to plot?
-    const bool plot_guide = root.get ("plot_guide", true).asBool();
-    const bool plot_contours = root.get ("plot_contours", true).asBool();
-    const bool plot_a_contours = root.get ("plot_a_contours", true).asBool();
-    const bool plot_a = root.get ("plot_a", true).asBool();
-    const bool scale_a = root.get ("scale_a", true).asBool();
-    const bool plot_c = root.get ("plot_c", true).asBool();
-    const bool scale_c = root.get ("scale_c", true).asBool();
-    const bool plot_n = root.get ("plot_n", true).asBool();
-    const bool plot_dr = root.get ("plot_dr", true).asBool();
+    const bool plot_guide = conf.getBool ("plot_guide", true);
+    const bool plot_contours = conf.getBool ("plot_contours", true);
+    const bool plot_a_contours = conf.getBool ("plot_a_contours", true);
+    const bool plot_a = conf.getBool ("plot_a", true);
+    const bool scale_a = conf.getBool ("scale_a", true);
+    const bool plot_c = conf.getBool ("plot_c", true);
+    const bool scale_c = conf.getBool ("scale_c", true);
+    const bool plot_n = conf.getBool ("plot_n", true);
+    const bool plot_dr = conf.getBool ("plot_dr", true);
     // Should the guidance be plotted in same window as the dr stuff?
-    const bool plot_dr_with_guide = root.get ("plot_dr_with_guide", false).asBool();
-    const bool scale_n = root.get ("scale_n", true).asBool();
+    const bool plot_dr_with_guide = conf.getBool ("plot_dr_with_guide", false);
+    const bool scale_n = conf.getBool ("scale_n", true);
     // Window IDs
     unsigned int guide_id = 0xffff, contours_id = 0xffff, a_id = 0xffff, c_id = 0xffff, n_id = 0xffff, dr_id = 0xffff, a_contours_id = 0xffff;
 
-    const bool plot_guidegrad = root.get ("plot_guidegrad", false).asBool();
-    const bool plot_divg = root.get ("plot_divg", false).asBool();
-    const bool plot_divJ = root.get ("plot_divJ", false).asBool();
+    const bool plot_guidegrad = conf.getBool ("plot_guidegrad", false);
+    const bool plot_divg = conf.getBool ("plot_divg", false);
+    const bool plot_divJ = conf.getBool ("plot_divJ", false);
     unsigned int guidegrad_x_id = 0xffff;
     unsigned int guidegrad_y_id = 0xffff;
     unsigned int divg_id = 0xffff;
@@ -319,7 +260,7 @@ int main (int argc, char **argv)
     RD_Plot<FLT> plt(fix, eye, rot);
     plt.scalarFieldsSingleColour = true;
 
-    double rhoInit = root.get ("rhoInit", 1.0).asDouble(); // This is effectively a zoom control. Increase to zoom out.
+    double rhoInit = conf.getDouble ("rhoInit", 1.0); // This is effectively a zoom control. Increase to zoom out.
     double thetaInit = 0.0;
     double phiInit = 0.0;
 
@@ -327,11 +268,11 @@ int main (int argc, char **argv)
     unsigned int windowId = 0;
     string winTitle = "";
 
-    const unsigned int win_width = root.get ("win_width", 340).asUInt();
+    const unsigned int win_width = conf.getUInt ("win_width", 340UL);
     unsigned int win_height = static_cast<unsigned int>(0.8824f * (float)win_width);
 
     // Default the contours to 720p format 16:9 ratio for nice movies
-    const unsigned int win_width_contours = root.get ("win_width_contours", 1280).asUInt();
+    const unsigned int win_width_contours = conf.getUInt ("win_width_contours", 1280UL);
     unsigned int win_height_contours = static_cast<unsigned int>(0.5625f * (float)win_width_contours);
 
     // SW - Contours. Always plot
@@ -547,7 +488,7 @@ int main (int argc, char **argv)
     }
 
     // Which of the gammas is the "group" defining gamma?
-    const unsigned int groupgamma = root.get ("groupgamma", 0).asUInt();
+    const unsigned int groupgamma = conf.getUInt ("groupgamma", 0UL);
 
     // Set up the interaction parameters between the different TC
     // populations and the guidance molecules (aka gamma).
@@ -831,28 +772,25 @@ int main (int argc, char **argv)
     // in there, such as the FLT. If float_width is 4, then
     // results were computed with single precision, if 8, then double
     // precision was used. Also save various parameters from the RD system.
-    root["float_width"] = (unsigned int)sizeof(FLT);
+    conf.set ("float_width", (unsigned int)sizeof(FLT));
     string tnow = morph::Tools::timeNow();
-    root["sim_ran_at_time"] = tnow.substr(0,tnow.size()-1);
-    root["hextohex_d"] = RD.hextohex_d;
-    root["D"] = RD.get_D();
-    root["k"] = RD.k;
-    root["dt"] = RD.get_dt();
+    conf.set ("sim_ran_at_time", tnow.substr(0,tnow.size()-1));
+    conf.set ("hextohex_d", RD.hextohex_d);
+    conf.set ("D", RD.get_D());
+    conf.set ("k", RD.k);
+    conf.set ("dt", RD.get_dt());
     // Call our function to place git information into root.
-    morph::Tools::insertGitInfo (root, "sim/");
+    //morph::Tools::insertGitInfo (conf.root, "sim/");
+    conf.insertGitInfo ("sim/");
     // Store the binary name and command argument into root, too.
-    if (argc > 0) { root["argv0"] = argv[0]; }
-    if (argc > 1) { root["argv1"] = argv[1]; }
+    if (argc > 0) { conf.set("argv0", argv[0]); }
+    if (argc > 1) { conf.set("argv1", argv[1]); }
 
     // We'll save a copy of the parameters for the simulation in the log directory as params.json
     const string paramsCopy = logpath + "/params.json";
-    ofstream paramsConf;
-    paramsConf.open (paramsCopy.c_str(), ios::out|ios::trunc);
-    if (paramsConf.is_open()) {
-        paramsConf << root;
-        paramsConf.close();
-    } else {
-        cerr << "Warning: Failed to open file to write a copy of the params.json" << endl;
+    conf.write (paramsCopy);
+    if (conf.ready == false) {
+        cerr << "Warning: Something went wrong writing a copy of the params.json: " << conf.emsg << endl;
     }
 
     // Extract contours
