@@ -3,7 +3,8 @@ import sys
 sys.path.insert (0, './include')
 import numpy as np
 # Import data loading code
-import load as ld
+#import load as ld
+import BarrelData as bd
 # Import MY plotting code:
 import plot as pt
 import matplotlib
@@ -29,48 +30,51 @@ if len(sys.argv) < 2:
     exit(1)
 logdirname = sys.argv[1]
 
-# Load the dirichlet data, domcentres, etc
-[t1, hondadelta, edgedev, numdoms, domarea, domcentres, dirichcentre, sos_dist, mapdiff, area_diff] = ld.readDirichData (logdirname)
+suffix = ''
+if len(sys.argv) > 2:
+    suffix = '_{0}'.format(sys.argv[2])
 
-# Timestep is 0.0001
-dt = 0.0001
-t1 = t1 * dt
+# Load the dirichlet data, domcentres, etc
+bdo = bd.BarrelData()
+bdo.loadAnalaysisData = True
+bdo.loadPositions = True # for totalarea
+bdo.loadGuidance = False
+bdo.loadSimData = False
+bdo.loadDivisions = False
+bdo.load (logdirname)
 
 # The ID colour maps
 do_maps = 0
 if do_maps:
     # Read the data
-    (x, y, t, cmatrix, amatrix, nmatrix, idmatrix, tarea) = ld.readSimDataFiles (logdirname)
     for tg in range(0,23,4):
         idstring = 'id{0}'.format(tg*1000);
-        f1 = pt.surface (idmatrix[:,tg], x, y, 0, idstring)
+        f1 = pt.surface (bdo.id_c[:,tg], bdo.x, bdo.y, 0, idstring)
         # Plot centroids:
-        f1.plot (domcentres[tg][:,0], domcentres[tg][:,1], 'o')
+        f1.plot (bdo.domcentres[tg][:,0], bdo.domcentres[tg][:,1], 'o')
 
 vert = True
 horz = False
-gfits, s_resid = dc.domcentres_analyse (domcentres, vert)
-gfits_h, s_resid_h = dc.domcentres_analyse (domcentres, horz)
+gfits, s_resid = dc.domcentres_analyse (bdo.domcentres, vert)
+gfits_h, s_resid_h = dc.domcentres_analyse (bdo.domcentres, horz)
 
-pf = h5py.File(logdirname+'/positions.h5', 'r')
-totalarea = np.array(pf['area']);
-print ('total area: {0}'.format (totalarea))
+print ('total area: {0}'.format (bdo.totalarea))
 
 # And plot this longhand here:
 F1 = plt.figure (figsize=(9,8))
 
 # Clean zeros out of honda delta and sos_distances
-hondadelta = np.ma.masked_equal (hondadelta, 0)
-sos_dist =  np.ma.masked_equal (sos_dist, 0)
+hondadelta = np.ma.masked_equal (bdo.honda, 0)
+sos_dist =  np.ma.masked_equal (bdo.sos_dist, 0)
 mask_combined = np.invert(hondadelta.mask | sos_dist.mask)
 #print ('mask {0}'.format(mask_combined))
 # Apply the mask to the time:
-t1_masked = t1[mask_combined].T
-mapdiff = mapdiff[mask_combined].T
-area_diff = area_diff[mask_combined].T
+t1_masked = bdo.t[mask_combined].T
+mapdiff = bdo.mapdiff[mask_combined].T
+area_diff = bdo.area_diff[mask_combined].T
 area_diff = area_diff / np.max(area_diff)
 
-print ('t1 shape {0}, t1_masked shape {1}'.format(np.shape(t1),np.shape(t1_masked)))
+print ('t shape {0}, t1_masked shape {1}'.format(np.shape(bdo.t),np.shape(t1_masked)))
 # Remove the masked values:
 
 sos_dist = sos_dist.compressed()
@@ -83,40 +87,33 @@ xmax = xmax[0]
 print ('xmax = {0}'.format(xmax))
 ax1 = F1.add_subplot(1,1,1)
 l1, = ax1.plot(t1_masked, hondadelta, 'o', markersize=12, color=col.black, label='Honda $\delta$')
-l2, = ax1.plot((0,xmax), (0.003, 0.003), '-.', color=col.black, linewidth=3, label="excellent (cells)")
-l2_1, = ax1.plot((0,xmax), (0.03, 0.03), '--', color=col.black, linewidth=3, label="good (S&W)")
-l2_2, = ax1.plot((0,xmax), (0.15, 0.15), '-.', color=col.black, linewidth=3, label="awful (non Dirichlet)")
+#l2, = ax1.plot((0,xmax), (0.003, 0.003), '-.', color=col.black, linewidth=3, label="excellent (cells)")
+# 0.054 is Senft and Woolsey's result for barrels (mouse 0,054, other rodents about 0.055)
+l2, = ax1.plot((0,xmax), (0.055, 0.055), '--', color=col.black, linewidth=3, label="good (S&W)")
+l3, = ax1.plot((0,xmax), (0.15, 0.15), '-.', color=col.black, linewidth=3, label="awful (non Dirichlet)")
 
 ax2 = ax1.twinx()
-#l3, = ax2.plot(t1_masked, sos_dist, 's', markersize=12, color=col.blue, label='$\Sigma d^2$')
-#l4, = ax2.plot(t1_masked, mapdiff, 'v', markersize=12, color=col.red, label='mapdiff')
-area_and_centroids = area_diff[:,0]*sos_dist
-l5, = ax2.plot(t1_masked, area_and_centroids, '^', markersize=12, color=col.green, label='area_diff * sos_dist')
 
-sos_min = np.min(area_and_centroids)
-sos_end = area_and_centroids[-1]
+area_measure = area_diff[:,0]*sos_dist
 
-# Objective is the value 1-sos_min/sos_end, which tends to 0 as the
-# pattern is as good at the end as it is at the "best" point, possibly
-# multiplied by the honda delta value at the end of the simulation,
-# and possibly multiplied by the minimum of the pattern.
-obj1 = (1. - sos_min/sos_end)
-obj2 = (1. - sos_min/sos_end) * np.min(sos_dist)
-obj3 = (1. - sos_min/sos_end) * np.min(sos_dist) * hondadelta[-1]
-print ('obj1: {0}, obj2: {1}, obj3: {2}'.format (obj1,obj2,obj3))
+#l4, = ax2.plot(t1_masked, sos_dist, '^', markersize=12, color=col.blue)
+l4, = ax2.plot(t1_masked, area_measure, 'v', markersize=12, color=col.green)
 
-#l2, = ax1.plot(t1, edgedev, 'o', label='Edge deviation')
-#l3, = ax1.plot(t1, domarea/totalarea[0], 'go', label='Domain area proportion')
-#l5, = ax1.plot(t1, s_resid, 's', label='Summed residuals to vert. line fits')
-#l7, = ax1.plot(t1, s_resid_h, 's', label='Summed residuals to horz. line fits')
-#ax1.set_title ('Honda Dirichletiform measure');
+sos_min = np.min(sos_dist)
+sos_end = sos_dist[-1]
+
+#l5, = ax1.plot(t1, edgedev, 'o', label='Edge deviation')
+#l6, = ax1.plot(t1, domarea/totalarea[0], 'go', label='Domain area proportion')
+#l7, = ax1.plot(t1, s_resid, 's', label='Summed residuals to vert. line fits')
+#l8, = ax1.plot(t1, s_resid_h, 's', label='Summed residuals to horz. line fits')
+
 ax1.set_xlabel ('Simulation time')
 ax1.set_ylabel ('Honda $\delta$ measure')
 ax2.set_ylabel ('Pattern quality')
 ax2.tick_params (axis='y', labelcolor=col.blue)
-#ax1.set_xlim ((0,xmax))
-#ax1.set_ylim ((0,0.25))
-#ax2.set_ylim ((0,5))
+ax1.set_xlim ((0,xmax))
+ax1.set_ylim ((0,0.3))
+ax2.set_ylim ((0,500))
 ax1.set_xticks ((0,0.5*xmax,xmax))
 #plt.legend()
 
@@ -129,6 +126,6 @@ ax1.set_xticks ((0,0.5*xmax,xmax))
 
 plt.tight_layout()
 
-plt.savefig('hondadelta.svg', transparent=True)
+plt.savefig('hondadelta{0}.svg'.format(suffix), transparent=True)
 
 plt.show()

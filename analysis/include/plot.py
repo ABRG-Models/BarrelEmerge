@@ -187,6 +187,71 @@ class RDPlot:
 
         return f1
 
+    def surface_withnames_andboundaries (self, dmatrix, x, y, ix, title, idnames, domcentres, boundaries):
+        fnt = {'family' : 'DejaVu Sans',
+               'weight' : 'regular',
+               'size'   : self.fs}
+        matplotlib.rc('font', **fnt)
+        F1 = plt.figure (figsize=(self.width,self.height))
+        f1 = F1.add_subplot(1,1,1)
+
+        f1.scatter (x, y, c=dmatrix, marker='h', cmap=self.cmap)
+
+        if self.showScalebar == True:
+            f1.plot ([self.sb1[0],self.sb2[0]], [self.sb1[1],self.sb2[1]], color=self.sbcolour, linewidth=self.sblw)
+            f1.text (self.sbtpos[0], self.sbtpos[1], self.sbtext, fontsize=self.sbfs)
+
+        if self.showAxes == False:
+            f1.set_axis_off()
+        else:
+            f1.set_xlabel('x (mm)')
+            f1.set_ylabel('y (mm)')
+
+        print ('size of boundaries = {0}'.format(len(boundaries)))
+        for bnd1 in boundaries:
+            for bnd in bnd1:
+                f1.plot (bnd[0,:],bnd[1,:], color='k', marker='None', linewidth=1)
+
+        if self.showNames == True:
+            count = 0
+            idn_arr = []
+            for idn in idnames:
+                idn_arr.append(idn)
+                print ('{0}'.format(idn))
+                count = count + 1
+            N = count
+            count = 0
+            cmap_ = matplotlib.cm.get_cmap('Greys')
+            for dc in domcentres:
+                print('dc: {0}'.format(dc))
+
+                # Compute a greyscale colour for the text
+                cidx = count/N
+                clow = 0.2
+                cmid = 0.31
+                chi = 0.7
+                if cidx > clow and cidx < cmid:
+                    cidx = clow
+                if cidx >= cmid and cidx < chi:
+                    cidx = chi
+                # Place the text label for the barrel
+                if idn_arr[count] == 'a':
+                    thechar = r'$\alpha$'
+                elif idn_arr[count] == 'b':
+                    thechar = r'$\beta$'
+                elif idn_arr[count] == 'c':
+                    thechar = r'$\gamma$'
+                elif idn_arr[count] == 'd':
+                    thechar = r'$\delta$'
+                else:
+                    thechar = idn_arr[count]
+
+                f1.text (dc[0], dc[1], thechar, fontsize=self.fs2, verticalalignment='center', horizontalalignment='center', color=cmap_(cidx))
+
+                count = count + 1
+
+        return f1
+
     # Like surface, but make it a 3d projection
     def surface2 (self, dmatrix, x, y, ix, title):
         fs = 12

@@ -3,7 +3,7 @@ import sys
 sys.path.insert (0, './include')
 import numpy as np
 # Import data loading code
-import load as ld
+import BarrelData as bd
 # Import MY plotting code:
 import plot as pt
 import matplotlib
@@ -17,7 +17,7 @@ import os
 # Get target x/y hex to show trace for and the time step to show the
 # map for from the arguments:
 if len(sys.argv) < 2:
-    print('Provide logdirname on cmd line please. Optionally provide time index.')
+    print('Provide logdirname on cmd line please. Optionally provide the simulation step time (e.g. 1000).')
     exit(1)
 logdirname = sys.argv[1]
 
@@ -31,19 +31,26 @@ shownames = 0
 if len(sys.argv) > 3:
     shownames = int(sys.argv[3])
 
-
 # Read the data
-(x, y, t, cmatrix, amatrix, nmatrix, idmatrix, tarea, idnames, domcentres) = ld.readSimDataFiles (logdirname)
-#for tg in range(0,4,4):
+bdo = bd.BarrelData()
+# Set True for inter-lines
+bdo.loadAnalaysisData = True
+bdo.loadDivisions = True
+bdo.loadSimData = True
+bdo.loadTimeStep = ti
+bdo.load (logdirname)
+
 idstring = 'id{0}'.format(0);
 print ('idstring: {0}'.format(idstring))
 
 # Plot one of the matrices:
-shp = np.shape(idmatrix)
+shp = np.shape(bdo.id_c)
 print ('idmatrix shape: {0}'.format(shp))
 if ti == -1:
-    ti = shp[1]-1
-print ('ti = {0}'.format(ti))
+    mi = shp[1]-1 # matrix index
+else:
+    mi = 0
+print ('mi = {0}'.format(mi))
 
 print ('basename: {0}'.format(os.path.basename(logdirname)))
 winwidth = 12
@@ -79,7 +86,10 @@ if do_scalebar:
         pl.sblw = 5
         pl.sbfs = 48
 
-f1 = pl.surface_withnames (idmatrix[:,ti], x, y, 0, idstring, idnames, domcentres[ti,:,:])
+if bdo.loadDivisions == False:
+    f1 = pl.surface_withnames (bdo.id_c[:,mi], bdo.x, bdo.y, 0, idstring, bdo.idnames, bdo.domcentres[mi,:,:])
+else:
+    f1 = pl.surface_withnames_andboundaries (bdo.id_c[:,mi], bdo.x, bdo.y, 0, idstring, bdo.idnames, bdo.domcentres[mi,:,:], bdo.domdivision[mi])
 
 # Put saving into the class?
 mapname = '{0}_{1}.png'.format(os.path.basename(logdirname), ti)
