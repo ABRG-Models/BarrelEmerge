@@ -1,0 +1,128 @@
+/*
+ * 41 RAT barrels, using Haidarliu_Fig12 to get interaction paramters
+ * and comparing against Jason's cortical barrel field in
+ * wb_110405.svg
+ *
+ * Guidance gradients are in line with the Anterior-Posterior (AP)
+ * axis and perpendicular to the AP axis (which is approximately the
+ * Medial-Lateral (ML) axis). The AP axis is perhaps 6? degrees off horizontal for
+ * wb_110405.svg, according to my estimate from the image.
+ */
+{
+    // Global simulation parameters
+    "steps" : 20000,                // Number of steps to simulate for
+    "logevery": 500,
+    "overwrite_logs": true,
+    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/",
+    "hextohex_d" : 0.03,           // Hex to hex distance, determines num hexes
+    "svgpath" : "./boundaries/rat_barrels/wb_110405_Dirichlet.svg",
+    "boundaryFalloffDist" : 0.03,
+    // Diffusion const
+    "D" : 0.2,
+    // gamma gain
+    "G" : 1.0,
+    // Exponent on a
+    "k" : 3,
+    // Timestep. Defaults to 0.00001 if omitted here
+    "dt" : 0.0001,
+
+    "contour_threshold" : 0.35,
+
+    // Visualization parameters (ignored by computation-only binaries)
+    "win_width_contours": 800,
+    "plotevery": 500,
+    "vidframes": false,    // If true, number video frame saves consecutively, rather than by simulation step number
+    "rhoInit": 4, // Larger to zoom out
+    //
+    "plot_guide" : true,
+    "plot_contours" : true,
+    "plot_a_contours" : false,
+    "plot_a" : false,
+    "plot_c" : false,
+    "plot_n" : false,
+    "scale_a" : false,
+    "scale_c" : false,
+    "scale_n" : false,
+
+    //
+    "plot_guidegrad" : false,
+    "plot_divg" : false,
+    "plot_divJ" : false,
+    "plot_dr": true,
+    "do_dirichlet_analysis": true,
+
+    "plot_dr_with_guide" : false,
+    "hshift" : 0.6, // spacing - sort of
+    "vshift" : 0.4,
+    "g_hshift" : 1.2, // overall right-shift - sort of
+    "g_vshift" : -0.4,
+
+    "aNoiseGain" : 0.2,
+    "aInitialOffset" : 0.2,
+
+    // Array of parameters for N thalamocortical populations.
+    "tc": [
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.8895859609019112, -0.7562053892340763], "name" : "a" }, // a
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.0000000000000004, -0.08248169401024352], "name" : "A1" }, // A1
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.6236706354217816, 0.2621783195335228], "name" : "A2" }, // A2
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.36533902287615, 0.5354230340326438], "name" : "A3" }, // A3
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.0640020227171099, 0.7989678538286593], "name" : "A4" }, // A4
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.2808694146232371, -1.2518273352175477], "name" : "b" }, // b
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.281621529207479, -0.5279778788397618], "name" : "B1" }, // B1
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.0571929877918036, -0.1437038447473009], "name" : "B2" }, // B2
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.866809484244579, 0.1858717712523137], "name" : "B3" }, // B3
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.6549736240285879, 0.4553493855380719], "name" : "B4" }, // B4
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.7185867684951219, -1.6959768715430419], "name" : "c" }, // c
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.6020999433173948, -0.980757699447462], "name" : "C1" }, // C1
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.19296170230079746, -0.41000998920049314], "name" : "C2" }, // C2
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.15710222339175628, 0.04217529331763714], "name" : "C3" }, // C3
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.3620810585334491, 0.3951979375131396], "name" : "C4" }, // C4
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.4095641459427961, 0.7552333751729199], "name" : "C5" }, // C5
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.3564075107623368, 1.0559842487541358], "name" : "C6" }, // C6
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.20531199866130212, 1.2308947551556397], "name" : "C7" }, // C7
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.014647288178104123, 1.3737269449780685], "name" : "C8" }, // C8
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.13234745518576085, 1.4764155033181707], "name" : "C9" }, // C9
+// Omit C10 as there is no corresponding barrel visible, or it's a rhinal barrel.
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.03477594833848352, -2.0000000000000004], "name" : "d" }, // d
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.06752915793377401, -1.3669667243642953], "name" : "D1" }, // D1
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.5394340766508612, -0.6911203926215221], "name" : "D2" }, // D2
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.9450418956715212, -0.18908379119844376], "name" : "D3" }, // D3
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.129946502313012, 0.21837531378674324], "name" : "D4" }, // D4
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.1642341811958326, 0.5492975782903817], "name" : "D5" }, // D5
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.066638619565503, 0.8101771662460697], "name" : "D6" }, // D6
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.9301319975477513, 1.008527912224926], "name" : "D7" }, // D7
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.7325560865052676, 1.1796599257584492], "name" : "D8" }, // D8
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.5953294743136923, 1.353221687263721], "name" : "D9" }, // D9
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.3915546761916513, 1.5774482053092334], "name" : "D10" }, // D10
+// Omit D11 as there is no corresponding barrel visible, or it's a rhinal barrel.
+// Omit D12 as there is no corresponding barrel visible, or it's a rhinal barrel.
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.751127713953168, -1.391258767108052], "name" : "E1" }, // E1
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.1247020573771702, -1.0352881566617873], "name" : "E2" }, // E2
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.6094106862482747, -0.5243640058796695], "name" : "E3" }, // E3
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.9268153789350384, -0.13254437870586555], "name" : "E4" }, // E4
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [2.0000000000000004, 0.26090563548337853], "name" : "E5" }, // E5
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.8635876107469396, 0.5697457015683063], "name" : "E6" }, // E6
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.6757862723879295, 0.8117577068855348], "name" : "E7" }, // E7
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.4796349883049014, 1.0324790820208445], "name" : "E8" }, // E8
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.2904013462923416, 1.2249074220635947], "name" : "E9" }, // E9
+{ "alpha" : 3, "beta" : 20, "epsilon" : 200, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.0692608420334242, 1.4370089014703349], "name" : "E10" } // E10
+    ], // end tc
+
+    // Array of parameters for the guidance molecules
+    "guidance": [
+        {
+            "shape"  : "Linear1D", // 'x'
+            "gain"   : 1.0,
+            "phi"    : 6,
+            "width"  : 0.1,
+            "offset" : 0.0
+        },
+        {
+            "shape"  : "Linear1D", // 'y'
+            "gain"   : 1.0,
+            "phi"    : -84, // -84
+            "width"  : 0.1,
+            "offset" : 0.0
+        }
+    ] // end guidance
+}

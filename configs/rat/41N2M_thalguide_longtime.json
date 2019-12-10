@@ -10,8 +10,8 @@
  */
 {
     // Global simulation parameters
-    "steps" : 10000,                // Number of steps to simulate for
-    "logevery": 500,
+    "steps" : 100000,                // Number of steps to simulate for
+    "logevery": 1000,
     "overwrite_logs": true,
     "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/",
     "hextohex_d" : 0.03,           // Hex to hex distance, determines num hexes
@@ -30,7 +30,7 @@
 
     // Visualization parameters (ignored by computation-only binaries)
     "win_width_contours": 800,
-    "plotevery": 500,
+    "plotevery": 1000,
     "vidframes": false,    // If true, number video frame saves consecutively, rather than by simulation step number
     "rhoInit": 4, // Larger to zoom out
     //
