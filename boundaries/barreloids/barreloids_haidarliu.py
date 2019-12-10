@@ -17,7 +17,7 @@ import math
 D = {}
 
 # Params for the output text
-epsilon = 1200
+epsilon = 150
 alpha = 3
 beta = 20
 xinit = -0.16
@@ -349,15 +349,22 @@ plt.savefig ('barreloids_haidarliu_graph.svg', transparent=True)
 # To scale the gain by the area of each barreloid, set to 1
 area_to_gain = 0
 
+# Output only for the 41 barrels in the rat images from Jason?
+omit_from_config = ["E13","E12","E11","D12","D11","C10","R1","R2","R3","R4","R5"]
+
 # Output the text for the config file
 for d in D:
     gaininit = 1.0
     if area_to_gain:
         gaininit = (D[d][6]/meanarea)
-    if show_four:
-        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}, {9}, {10}] , "name" : "{11}" }}, // {11}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, D[d][2], D[d][3], D[d][4], D[d][5], d, D[d][6]))
+
+    if d in omit_from_config:
+        print ("// Omit {0} as there is no corresponding barrel visible, or it's a rhinal barrel.".format(d))
     else:
-        print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}], "name" : "{9}" }}, // {9}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, (D[d][2]-D[d][3]), (D[d][4]-D[d][5]), d))
+        if show_four:
+            print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}, {9}, {10}] , "name" : "{11}" }}, // {11}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, D[d][2], D[d][3], D[d][4], D[d][5], d, D[d][6]))
+        else:
+            print ('{{ "alpha" : {0}, "beta" : {1}, "epsilon" : {2}, "xinit" : {3},   "yinit" : {4}, "sigmainit" : {5}, "gaininit" : {6}, "gamma" : [{7}, {8}], "name" : "{9}" }}, // {9}'.format(alpha, beta, epsilon, xinit, yinit, sigmainit, gaininit, (D[d][2]-D[d][3]), (D[d][4]-D[d][5]), d))
 
 
 plt.show();
