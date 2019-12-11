@@ -17,7 +17,7 @@ import os
 # Get target x/y hex to show trace for and the time step to show the
 # map for from the arguments:
 if len(sys.argv) < 2:
-    print('Provide logdirname on cmd line please. Optionally provide the simulation step time (e.g. 1000).')
+    print('Provide logdirname on cmd line please. Optionally provide time index (in sim steps).')
     exit(1)
 logdirname = sys.argv[1]
 
@@ -36,6 +36,8 @@ bdo = bd.BarrelData()
 # Set True for inter-lines
 bdo.loadAnalaysisData = True
 bdo.loadDivisions = True
+# If loadGuidance is true, then expt id map will be plotted
+bdo.loadGuidance = True
 bdo.loadSimData = True
 bdo.loadTimeStep = ti
 bdo.load (logdirname)
@@ -45,7 +47,6 @@ print ('idstring: {0}'.format(idstring))
 
 # Plot one of the matrices:
 shp = np.shape(bdo.id_c)
-print ('idmatrix shape: {0}'.format(shp))
 if ti == -1:
     mi = shp[1]-1 # matrix index
 else:
@@ -85,14 +86,25 @@ if do_scalebar:
         pl.sbtpos = [-0.7, -1]
         pl.sblw = 5
         pl.sbfs = 48
-
 if bdo.loadDivisions == False:
     f1 = pl.surface_withnames (bdo.id_c[:,mi], bdo.x, bdo.y, 0, idstring, bdo.idnames, bdo.domcentres[mi,:,:])
 else:
     f1 = pl.surface_withnames_andboundaries (bdo.id_c[:,mi], bdo.x, bdo.y, 0, idstring, bdo.idnames, bdo.domcentres[mi,:,:], bdo.domdivision[mi])
 
-# Put saving into the class?
-mapname = '{0}_{1}.png'.format(os.path.basename(logdirname), ti)
+mapname = '{0}_{1}_sim.png'.format(os.path.basename(logdirname), ti)
 plt.savefig (mapname, dpi=300, transparent=True)
+
+if bdo.loadGuidance == True:
+    # Remove exptmatrix entries with -1, and corresponding x,y:
+    exptmatrix = np.ma.masked_equal (bdo.expt_id, -1.0)
+    mask_combined = np.invert(exptmatrix.mask)
+    # Apply the mask to x/y vectors
+    x = bdo.x[mask_combined].T
+    y = bdo.y[mask_combined].T
+
+    f2 = pl.surface_withnames (exptmatrix.compressed(), x, y, 0, idstring, bdo.idnames, bdo.domcentres[mi,:,:])
+
+    mapname = '{0}_{1}_expt.png'.format(os.path.basename(logdirname), ti)
+    plt.savefig (mapname, dpi=300, transparent=True)
 
 plt.show()
