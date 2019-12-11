@@ -1,18 +1,12 @@
-# To access argv and also include the include dir
+import os
 import sys
 sys.path.insert (0, './include')
 import numpy as np
-# Import data loading code
-import BarrelData as bd
-# Import MY plotting code:
-import plot as pt
-import matplotlib
 import matplotlib.pyplot as plt
-# Direct HDF5 access
-import h5py
-# My domcentres linear fit code:
-import domcentres as dc
-import os
+# Import data loading code:
+import BarrelData as bd
+# Import my plotting code:
+import plot as pt
 
 # Get target x/y hex to show trace for and the time step to show the
 # map for from the arguments:
@@ -33,10 +27,10 @@ if len(sys.argv) > 3:
 
 # Read the data
 bdo = bd.BarrelData()
-# Set True for inter-lines
-bdo.loadAnalaysisData = True
+# Set True for inter-lines:
+bdo.loadAnalysisData = True
 bdo.loadDivisions = True
-# If loadGuidance is true, then expt id map will be plotted
+# If loadGuidance is True, then expt id map will be plotted:
 bdo.loadGuidance = True
 bdo.loadSimData = True
 bdo.loadTimeStep = ti
@@ -86,7 +80,7 @@ if do_scalebar:
         pl.sbtpos = [-0.7, -1]
         pl.sblw = 5
         pl.sbfs = 48
-if bdo.loadDivisions == False:
+if bdo.loadAnalysisData == False or bdo.loadDivisions == False:
     f1 = pl.surface_withnames (bdo.id_c[:,mi], bdo.x, bdo.y, 0, idstring, bdo.idnames, bdo.domcentres[mi,:,:])
 else:
     f1 = pl.surface_withnames_andboundaries (bdo.id_c[:,mi], bdo.x, bdo.y, 0, idstring, bdo.idnames, bdo.domcentres[mi,:,:], bdo.domdivision[mi])

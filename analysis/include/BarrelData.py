@@ -19,121 +19,120 @@ import json
 class BarrelData:
 
     #
-    # Attributes which control what is loaded:
-    #
-
-    # Set to True to load simulation data (a, c etc), False not to.
-    loadSimData = True
-
-    # Set to True to load the analysis data, False not to.
-    loadAnalysisData = True
-
-    # Set to True if you want to load all the domdivisions (makes the
-    # loading slower). Only relevant if loadAnalysisData == True
-    loadDivisions = False
-
-    # Set to True if you want to load the guidance molecule data
-    loadGuidance = False
-
-    # Set to True if you want to load the x/y position info
-    loadPositions = True
-
-    # Set to t>=0 to load a specific time step. Otherwise, all time
-    # steps are loaded.
-    loadTimeStep = -1
-
-    # The log directory
-    logdir = ''
-
-    #
-    # Data attributes:
-    #
-
-    # The number of thalamocortical types
-    N = 0
-
-    # The length of time per step. Obtained from params.json in the log directory.
-    dt = 1.0
-
-    # Time in steps.
-    t_steps = np.array([])
-
-    # Does this instance hold a time series of data or data for a
-    # single time? Make it possible to load either series or single
-    # time, because this avoids the lengthy waits that my original,
-    # hacked together code made inevitable. The length of t will tell
-    # us this. This is t_steps * dt.
-    t = np.array([])
-
-    # Position, total area of hexes
-    x = np.array([])
-    y = np.array([])
-    totalarea = np.array([])
-
-    # idnames are read from the parameters json file
-    idnames = {}
-
-    # Simulation variables
-    a = np.array([])
-    c = np.array([])
-    n = np.array([])
-
-    # Guidance molecules
-    g = np.array([])
-
-    # The barrel ID of each hex, according to the drawing/experimental data
-    expt_id = np.array([])
-
-    # The ID of each hex based on the ID of the highest c_i
-    id_c = np.array([])
-    # The ID of each hex based on the ID of the highest a_i
-    id_a = np.array([])
-
-    # The Honda delta value, Shape: len(t)
-    honda = np.array([])
-
-    # The edge deviation value, Shape: len(t). How much the edges in the
-    # pattern deviate from the straight lines which connect the
-    # vertices.
-    edgedev = np.array([])
-
-    # The number of Dirichlet domains at time t, Shape: len(t)
-    numdoms = np.array([])
-
-    # The area of the Dirichlet domains/total area, Shape: len(t)
-    domarea = np.array([])
-
-    # Domain id list
-    dom_id_list = np.array([])
-
-    # Coordinates of the centroids of the domains, Shape: len(t)*N*2
-    domcentres = np.array([])
-
-    # Coordinates of the centres of the domains determined by Honda's
-    # method, Shape: len(t)*N*2
-    dirichcentres = np.array([])
-
-    # The sum of squared distances between the centroids of the
-    # experimental barrels and the simulated barrels. len(t)
-    sos_dist = np.array([])
-
-    # The 'map difference'. if Hex n expt. ID != Hex n sim. ID, then
-    # add one to this, len(t)
-    mapdiff = np.array([])
-
-    # The sum of the absolute difference in areas of each
-    # experimental domain and simulated domain. len(t)
-    area_diff = np.array([])
-
-    # The divisions between domains. All those paths that the C++ code
-    # walks.
-    domdivision = []
-
-    #
     # No arguments for the constructor
     #
     def __init__ (self):
-        return
+
+        #
+        # Attributes which control what is loaded:
+        #
+
+        # Set to True to load simulation data (a, c etc), False not to.
+        self.loadSimData = True
+
+        # Set to True to load the analysis data, False not to.
+        self.loadAnalysisData = True
+
+        # Set to True if you want to load all the domdivisions (makes the
+        # loading slower). Only relevant if loadAnalysisData == True
+        self.loadDivisions = False
+
+        # Set to True if you want to load the guidance molecule data
+        self.loadGuidance = False
+
+        # Set to True if you want to load the x/y position info
+        self.loadPositions = True
+
+        # Set to t>=0 to load a specific time step. Otherwise, all time
+        # steps are loaded.
+        self.loadTimeStep = -1
+
+        # The log directory
+        self.logdir = ''
+
+        #
+        # Data attributes:
+        #
+
+        # The number of thalamocortical types
+        self.N = 0
+
+        # The length of time per step. Obtained from params.json in the log directory.
+        self.dt = 1.0
+
+        # Time in steps.
+        self.t_steps = np.array([])
+
+        # Does this instance hold a time series of data or data for a
+        # single time? Make it possible to load either series or single
+        # time, because this avoids the lengthy waits that my original,
+        # hacked together code made inevitable. The length of t will tell
+        # us this. This is t_steps * dt.
+        self.t = np.array([])
+
+        # Position, total area of hexes
+        self.x = np.array([])
+        self.y = np.array([])
+        self.totalarea = np.array([])
+
+        # idnames are read from the parameters json file
+        self.idnames = {}
+
+        # Simulation variables
+        self.a = np.array([])
+        self.c = np.array([])
+        self.n = np.array([])
+
+        # Guidance molecules
+        self.g = np.array([])
+
+        # The barrel ID of each hex, according to the drawing/experimental data
+        self.expt_id = np.array([])
+
+        # The ID of each hex based on the ID of the highest c_i
+        self.id_c = np.array([])
+        # The ID of each hex based on the ID of the highest a_i
+        self.id_a = np.array([])
+
+        # The Honda delta value, Shape: len(t)
+        self.honda = np.array([])
+
+        # The edge deviation value, Shape: len(t). How much the edges in the
+        # pattern deviate from the straight lines which connect the
+        # vertices.
+        self.edgedev = np.array([])
+
+        # The number of Dirichlet domains at time t, Shape: len(t)
+        self.numdoms = np.array([])
+
+        # The area of the Dirichlet domains/total area, Shape: len(t)
+        self.domarea = np.array([])
+
+        # Domain id list
+        self.dom_id_list = np.array([])
+
+        # Coordinates of the centroids of the domains, Shape: len(t)*N*2
+        self.domcentres = np.array([])
+
+        # Coordinates of the centres of the domains determined by Honda's
+        # method, Shape: len(t)*N*2
+        self.dirichcentres = np.array([])
+
+        # The sum of squared distances between the centroids of the
+        # experimental barrels and the simulated barrels. len(t)
+        self.sos_dist = np.array([])
+
+        # The 'map difference'. if Hex n expt. ID != Hex n sim. ID, then
+        # add one to this, len(t)
+        self.mapdiff = np.array([])
+
+        # The sum of the absolute difference in areas of each
+        # experimental domain and simulated domain. len(t)
+        self.area_diff = np.array([])
+
+        # The divisions between domains. All those paths that the C++ code
+        # walks.
+        self.domdivision = []
 
     #
     # Create self.t and self.t_steps, first checking to see if they've
@@ -180,18 +179,17 @@ class BarrelData:
         # Load anything relevant from JSON params data. Currently, this is the timestep, dt.
         self.loadParams()
 
-        if self.loadGuidance:
+        if self.loadGuidance == True:
             self.readGuidance()
 
-        if self.loadPositions:
+        if self.loadPositions == True:
             self.readPositions()
 
-        if self.loadAnalysisData:
+        if self.loadAnalysisData == True:
             self.readDirichData()
 
-        if self.loadSimData:
-            self.readGuidance()
-            self.readPositions()
+        if self.loadSimData == True:
+            self.readPositions() # override position reading option in this case
             self.readSimDataFiles()
 
     #
@@ -377,7 +375,7 @@ class BarrelData:
         self.id_a = np.zeros([numhexes, numtimes], dtype=float)
 
         if readDomCentres:
-            self.domcentres = np.zeros([numtimes, N, 2], dtype=float)
+            self.domcentres = np.zeros([numtimes, self.N, 2], dtype=float)
 
         fileidx = 0
         for filename in files:
