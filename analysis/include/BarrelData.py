@@ -57,6 +57,9 @@ class BarrelData:
         # The number of thalamocortical types
         self.N = 0
 
+        # The number of guidance gradients
+        self.M = 0
+
         # The length of time per step. Obtained from params.json in the log directory.
         self.dt = 1.0
 
@@ -440,15 +443,15 @@ class BarrelData:
         gf = h5py.File(self.logdir+'/guidance.h5', 'r')
         # Count up how many c files we have in each time point once only:
         gklist = list(gf.keys())
-        M = 0
+        self.M = 0
         numhexes = 0
         for k in gklist:
             if k[0] == 'r': # rh0, rh1 etc
-                M = M + 1
+                self.M = self.M + 1
                 numhexes = len(gf[k])
 
-        self.g = np.zeros([numhexes, M], dtype=float)
-        for m in range (0, M):
+        self.g = np.zeros([numhexes, self.M], dtype=float)
+        for m in range (0, self.M):
             self.g[:,m] = np.array(gf['rh{0}'.format(m)])
 
         self.expt_id = np.array(gf['expt_barrel_id'])
