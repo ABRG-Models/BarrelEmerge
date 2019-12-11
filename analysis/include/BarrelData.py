@@ -447,9 +447,9 @@ class BarrelData:
                 M = M + 1
                 numhexes = len(gf[k])
 
-        g = np.zeros([numhexes, M], dtype=float)
+        self.g = np.zeros([numhexes, M], dtype=float)
         for m in range (0, M):
-            g[:,m] = np.array(gf['rh{0}'.format(m)])
+            self.g[:,m] = np.array(gf['rh{0}'.format(m)])
 
         self.expt_id = np.array(gf['expt_barrel_id'])
 
