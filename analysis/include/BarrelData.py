@@ -60,6 +60,9 @@ class BarrelData:
         # The number of guidance gradients
         self.M = 0
 
+        # Number of hexes
+        self.nhex = 0
+
         # The length of time per step. Obtained from params.json in the log directory.
         self.dt = 1.0
 
@@ -79,7 +82,9 @@ class BarrelData:
         self.totalarea = np.array([])
 
         # idnames are read from the parameters json file
-        self.idnames = {}
+        self.id_byname = {}
+        self.gamma_byname = {}
+        self.gamma_byid = {} # indexed by a float32
 
         # Simulation variables
         self.a = np.array([])
@@ -137,6 +142,7 @@ class BarrelData:
         # walks.
         self.domdivision = []
 
+        self.gammaColour_byid = {}
     #
     # Create self.t and self.t_steps, first checking to see if they've
     # already been created.
@@ -156,22 +162,26 @@ class BarrelData:
                 self.t = np.zeros([numtimes], dtype=float)
 
     #
-    # Read idnames and timestep
+    # Read id_byname and timestep
     #
     def loadParams (self):
-        count = 0
+        count = np.float32(0.0)
         with open (self.logdir+'/params.json') as f:
             jd = json.load(f)
             self.dt = jd["dt"]
+            self.hextohex_d = jd["hextohex_d"]
             tc = jd["tc"]
             print ('tc length: {0}'.format(len(jd["tc"])))
             self.N = len(jd["tc"])
             for i in tc:
                 # Do a key-value thing
-                self.idnames[i["name"]] = count/self.N
-                # print ('Set idnames["{0}"] = {1}'.format(i["name"], count/self.N))
-                count = count + 1
-
+                theid = count/np.float32(self.N)
+                self.id_byname[i["name"]] = theid
+                self.gamma_byname[i["name"]] = i["gamma"]
+                self.gamma_byid[theid] = i["gamma"]
+                self.gammaColour_byid[theid] = (0.5+i["gamma"][0]/4.0, 0, 0.5+i["gamma"][1]/4.0)
+                #print ('Setting gammaColour_byid[{0}] to {1}'.format (theid, self.gammaColour_byid[theid]))
+                count = count + np.float32(1.0)
     #
     # Load in data
     #
@@ -357,25 +367,25 @@ class BarrelData:
         f = h5py.File(files[0], 'r')
         klist = list(f.keys())
         numcs = 0
-        numhexes = 0
+        self.numhexes = 0
         for k in klist:
             if k[0] == 'c':
                 numcs = numcs + 1
-                numhexes = len(f[k])
+                self.nhex = len(f[k])
 
         # We're expecting the data from this file to be a matrix with c0,
         # c1 etc as cols and spatial index as rows, all relating to a
         # single time point.
         #print ('Creating empty 3d matrix of dims [{0},{1},{2}]'.format (numcs, numhexes, numtimes))
-        self.c = np.zeros([numcs, numhexes, numtimes], dtype=float)
+        self.c = np.zeros([numcs, self.nhex, numtimes], dtype=float)
         # There are as many 'a's as 'c's:
-        self.a = np.zeros([numcs, numhexes, numtimes], dtype=float)
+        self.a = np.zeros([numcs, self.nhex, numtimes], dtype=float)
         # The n matrix is 2-D; there is only one n.
-        self.n = np.zeros([numhexes, numtimes], dtype=float)
+        self.n = np.zeros([self.nhex, numtimes], dtype=float)
         # Same for id matrix
-        self.id_c = np.zeros([numhexes, numtimes], dtype=float)
+        self.id_c = np.zeros([self.nhex, numtimes], dtype=float)
         # id matrix based on a
-        self.id_a = np.zeros([numhexes, numtimes], dtype=float)
+        self.id_a = np.zeros([self.nhex, numtimes], dtype=float)
 
         if readDomCentres:
             self.domcentres = np.zeros([numtimes, self.N, 2], dtype=float)
@@ -444,13 +454,13 @@ class BarrelData:
         # Count up how many c files we have in each time point once only:
         gklist = list(gf.keys())
         self.M = 0
-        numhexes = 0
+        self.nhex = 0
         for k in gklist:
             if k[0] == 'r': # rh0, rh1 etc
                 self.M = self.M + 1
-                numhexes = len(gf[k])
+                self.nhex = len(gf[k])
 
-        self.g = np.zeros([numhexes, self.M], dtype=float)
+        self.g = np.zeros([self.nhex, self.M], dtype=float)
         for m in range (0, self.M):
             self.g[:,m] = np.array(gf['rh{0}'.format(m)])
 
