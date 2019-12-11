@@ -13,7 +13,7 @@ import plot as pt
 if len(sys.argv) < 2:
     print('Provide logdirname on cmd line please. Optionally provide time index (in sim steps).')
     exit(1)
-logdirname = sys.argv[1]
+logdirname = sys.argv[1].rstrip ('/')
 
 # time index
 if len(sys.argv) > 2:
@@ -85,7 +85,7 @@ if bdo.loadAnalysisData == False or bdo.loadDivisions == False:
 else:
     f1 = pl.surface_withnames_andboundaries (bdo.id_c[:,mi], bdo.x, bdo.y, 0, idstring, bdo.idnames, bdo.domcentres[mi,:,:], bdo.domdivision[mi])
 
-mapname = '{0}_{1}_sim.png'.format(os.path.basename(logdirname), ti)
+mapname = 'plots/{0}_{1}_sim.png'.format(os.path.basename(logdirname), ti)
 plt.savefig (mapname, dpi=300, transparent=True)
 
 if bdo.loadGuidance == True:
@@ -98,7 +98,7 @@ if bdo.loadGuidance == True:
 
     f2 = pl.surface_withnames (exptmatrix.compressed(), x, y, 0, idstring, bdo.idnames, bdo.domcentres[mi,:,:])
 
-    mapname = '{0}_{1}_expt.png'.format(os.path.basename(logdirname), ti)
+    mapname = 'plots/{0}_{1}_expt.png'.format(os.path.basename(logdirname), ti)
     plt.savefig (mapname, dpi=300, transparent=True)
 
 plt.show()
