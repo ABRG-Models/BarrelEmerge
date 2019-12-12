@@ -84,8 +84,10 @@ class Surface:
         self.y = BarrelDataObject.y
         self.nhex = BarrelDataObject.nhex
         self.id_byname = BarrelDataObject.id_byname
-        self.domcentres = BarrelDataObject.domcentres
-        self.domdivision = BarrelDataObject.domdivision
+        self.gammaColour_byid = BarrelDataObject.gammaColour_byid
+        # FIXME: These are different for different sims and may have variable shape
+        #self.domcentres = BarrelDataObject.domcentres
+        #self.domdivision = BarrelDataObject.domdivision
 
     #
     # Initialisation code for the figure onto which the surface will be drawn
@@ -99,6 +101,12 @@ class Surface:
         self.F1 = plt.figure (figsize=(self.width,self.height))
         self.f1 = self.F1.add_subplot (1,1,1)
         self.ready = True
+
+    def resetFig (self):
+        #self.F1.clf()
+        #self.f1 = self.F1.add_subplot (1,1,1)
+        # plt.cla() worked, so perhaps self.F1.cla() would work
+        self.f1.cla()
 
     def addContour (self, contourData, contourLevel, colour="white", width=1.0):
         if contourLevel == 0:
@@ -129,7 +137,8 @@ class Surface:
                 self.f1.add_patch (hex)
 
         self.f1.axis (np.array ([min(self.x),max(self.x),min(self.y),max(self.y)])*1.0)
-        self.f1.set_aspect (np.diff(self.f1.get_xlim())/np.diff(self.f1.get_ylim()))
+        print ('xlim: {0}, ylim: {1}'.format(self.f1.get_xlim(), self.f1.get_ylim()))
+        #self.f1.set_aspect (np.diff(self.f1.get_xlim())/np.diff(self.f1.get_ylim()))
 
         if self.showScalebar == True:
             self.f1.plot ([self.sb1[0],self.sb2[0]], [self.sb1[1],self.sb2[1]], color=self.sbcolour, linewidth=self.sblw)
@@ -157,18 +166,19 @@ class Surface:
             N = count
             count = 0
             cmap_ = matplotlib.cm.get_cmap('Greys')
-            for dc in self.domcentres[0]:
-                #print('dc: {0}'.format(dc))
 
-                # Compute a greyscale colour for the text
-                cidx = count/N
-                clow = 0.2
-                cmid = 0.31
-                chi = 0.7
-                if cidx > clow and cidx < cmid:
-                    cidx = clow
-                if cidx >= cmid and cidx < chi:
-                    cidx = chi
+            print ('In Surface. domcentres shape: {0}'.format (self.domcentres))
+            for dc in self.domcentres:
+                print('dc: {0}'.format(dc))
+
+                # Compute a greyscale colour for the text from the raw index:
+                cidx = np.float32(count)/np.float32(N)
+                # or using the sum of the rgb values
+                cidx = (self.gammaColour_byid[cidx][0] + self.gammaColour_byid[cidx][1] + self.gammaColour_byid[cidx][2]) / 3.0
+
+                # Transfer from background lightness to text colour via a sigmoid:
+                cout = 1.0 / ( 1.0 + np.exp(-80.0*(cidx-0.3)));
+
                 # Place the text label for the barrel
                 if idn_arr[count] == 'a':
                     thechar = r'$\alpha$'
@@ -181,6 +191,8 @@ class Surface:
                 else:
                     thechar = idn_arr[count]
 
-                self.f1.text (dc[0], dc[1], thechar, fontsize=self.fs2, verticalalignment='center', horizontalalignment='center', color=cmap_(cidx))
+                #print ('cidx for {0} is {1} and cout is {2}'.format (thechar, cidx, cout))
+                #print ('dc shape: {0}'.format (np.shape(dc)))
+                self.f1.text (dc[0], dc[1], thechar, fontsize=self.fs2, verticalalignment='center', horizontalalignment='center', color=cmap_(cout))
 
                 count = count + 1

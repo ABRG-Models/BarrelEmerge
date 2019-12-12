@@ -97,7 +97,7 @@ ax2 = ax1.twinx()
 area_measure = area_diff[:,0]*sos_dist
 
 #l4, = ax2.plot(t1_masked, sos_dist, '^', markersize=12, color=col.blue)
-l4, = ax2.plot(t1_masked, area_measure, 'v', markersize=12, color=col.green)
+l4, = ax2.plot(t1_masked, area_measure, 'v', markersize=12, color=col.blue)
 
 sos_min = np.min(sos_dist)
 sos_end = sos_dist[-1]
@@ -109,7 +109,7 @@ sos_end = sos_dist[-1]
 
 ax1.set_xlabel ('Simulation time')
 ax1.set_ylabel ('Honda $\delta$ measure')
-ax2.set_ylabel ('Pattern quality')
+ax2.set_ylabel ('Pattern metric')
 ax2.tick_params (axis='y', labelcolor=col.blue)
 ax1.set_xlim ((0,xmax))
 ax1.set_ylim ((0,0.3))
@@ -126,6 +126,6 @@ ax1.set_xticks ((0,0.5*xmax,xmax))
 
 plt.tight_layout()
 
-plt.savefig('hondadelta{0}.svg'.format(suffix), transparent=True)
+plt.savefig('plots/hondadelta{0}.svg'.format(suffix), transparent=True)
 
 plt.show()

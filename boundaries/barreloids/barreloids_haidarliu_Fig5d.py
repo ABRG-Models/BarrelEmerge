@@ -35,6 +35,7 @@ yar = []
 
 # A rotational transformation is applied with this many degrees:
 phi = 105
+#phi = 0
 
 # Compute cos(phi) and sin(phi)
 pr = phi/360.0 * 2.0 * math.pi # "phi in radians"
@@ -69,7 +70,7 @@ with open('barreloids_haidarliu_Fig5d.csv') as csvDataFile:
         if xar[i] < minx: minx = xar[i]
         if yar[i] < miny: miny = yar[i]
 
-    # Now compute the tradients
+    # Now compute the gradients
     for i in range(0,len(xar)):
         x = xar[i]
         y = yar[i]
@@ -130,8 +131,8 @@ gs = F0.add_gridspec (gw, gw)
 
 ax0 = F0.add_subplot (gs[:-1,:-1])
 
-ax_r = F0.add_subplot (gs[:-1,gw-1])
-ax_d = F0.add_subplot (gs[gw-1,:-1])
+#ax_r = F0.add_subplot (gs[:-1,gw-1])
+#ax_d = F0.add_subplot (gs[gw-1,:-1])
 
 
 txt_xoff = 0.003
@@ -143,10 +144,36 @@ g3qui = np.array([])
 g4qui = np.array([])
 xqui = np.array([])
 yqui = np.array([])
-small_size = ["E6","E7","E8","E9","E9","E10","E11","E12","E13","D6","D7","D8","D9","D9","D10","D11","D12","C10","C9","C8","C7","C6"]
+small_size = ["D2","E6","E7","E8","E9","E9","E10","E11","E12","E13","D6","D7","D8","D9","D9","D10","D11","D12","C10","C9","C8","C7","C6"]
+omit = ["R1","R2","R3","R4","R5"]
 for d in D: # Care, requires that there are no duplicate labels
+
+    # Build lists for quiver plots
+    g1qui = np.append(g1qui, D[d][2])
+    g2qui = np.append(g2qui, D[d][3])
+    g3qui = np.append(g3qui, D[d][4])
+    g4qui = np.append(g4qui, D[d][5])
+    xqui = np.append(xqui, D[d][0])
+    yqui = np.append(yqui, D[d][1])
+
+    if show_four:
+        print ('Fixme')
+    else:
+        if (g1qui[-1]-g2qui[-1])<0:
+            algn = 'left'
+            if d in small_size:
+                txt_xoff = 0.03
+            else:
+                txt_xoff = 0.03
+        else:
+            algn = 'right'
+            if d in small_size:
+                txt_xoff = -0.08
+            else:
+                txt_xoff = -0.08
+
     if d == 'a':
-        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\alpha$')
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\alpha$', horizontalalignment=algn)
     elif d == 'b':
         ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\beta$')
     elif d == 'c':
@@ -155,15 +182,10 @@ for d in D: # Care, requires that there are no duplicate labels
         ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\delta$')
     elif d in small_size:
         ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '{0}'.format(d), fontsize=14)
+    elif d in omit:
+        print ('omit {0}'.format(d))
     else:
         ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '{0}'.format(d))
-    # Build lists for quiver plots
-    g1qui = np.append(g1qui, D[d][2])
-    g2qui = np.append(g2qui, D[d][3])
-    g3qui = np.append(g3qui, D[d][4])
-    g4qui = np.append(g4qui, D[d][5])
-    xqui = np.append(xqui, D[d][0])
-    yqui = np.append(yqui, D[d][1])
 
 sm = 12 # scalemult
 
@@ -173,8 +195,8 @@ if show_four:
     ax0.quiver (xqui, yqui, 0, g3qui, color='b', width=0.003, scale=gmax*sm)
     ax0.quiver (xqui, yqui, 0, -g4qui, color='c', width=0.003, scale=gmax*sm)
 else:
-    ax0.quiver (xqui, yqui, g1qui-g2qui, 0, color='r', width=0.003, scale=gmax*sm)
-    ax0.quiver (xqui, yqui, 0, g3qui-g4qui, color='b', width=0.003, scale=gmax*sm)
+    ax0.quiver (xqui, yqui, g1qui-g2qui, 0, color='b', width=0.003, scale=gmax*sm)
+    ax0.quiver (xqui, yqui, 0, g3qui-g4qui, color='g', width=0.003, scale=gmax*sm)
 
 # Plot the actual centres:
 ax0.scatter (xqui, yqui, c='k', s=70, marker='o')
@@ -195,28 +217,28 @@ ax0.plot (ap[:,0], ap[:,1], c='grey', marker='None', linestyle='-.', linewidth=2
 
 fs2 = 42
 # Anterior
-txt1 = [-0.09, -0.06]
+txt1 = [0.15, 1.15]
 x__ = txt1[0] * cosphi - txt1[1] * sinphi
 y__ = txt1[1] * cosphi + txt1[0] * sinphi
-ax0.text (x__,y__,'ant.',fontsize=fs2)
+ax0.text (x__,y__,'ant.',fontsize=fs2, horizontalalignment='center', verticalalignment='center')
 
 # Posterior
-txt2 = [0.36, 0.12]
+txt2 = [1.58, 0.8]
 x__ = txt2[0] * cosphi - txt2[1] * sinphi
 y__ = txt2[1] * cosphi + txt2[0] * sinphi
-ax0.text (x__,y__,'post.',fontsize=fs2)
+ax0.text (x__,y__,'post.',fontsize=fs2, horizontalalignment='center', verticalalignment='center')
 
 # Lateral by the stragglers 0.14v-0.1
-txt3 = [0.12, -0.135]
+txt3 = [1.3, 1.75]
 x__ = txt3[0] * cosphi - txt3[1] * sinphi
 y__ = txt3[1] * cosphi + txt3[0] * sinphi
-ax0.text (x__,y__,'lat.',fontsize=fs2)
+ax0.text (x__,y__,'lat.',fontsize=fs2, horizontalalignment='center', verticalalignment='center')
 
 # Medial
-txt4 = [0.165, 0.4]
+txt4 = [0.6, 0.4]
 x__ = txt4[0] * cosphi - txt4[1] * sinphi
 y__ = txt4[1] * cosphi + txt4[0] * sinphi
-ax0.text (x__,y__,'med.',fontsize=fs2)
+ax0.text (x__,y__,'med.',fontsize=fs2, horizontalalignment='center', verticalalignment='center')
 
 # Plot voronoi
 vpts = np.vstack((xqui,yqui)).T
@@ -308,7 +330,9 @@ for d in D:
 meanarea = areatotal / len(D)
 
 # Add the Voronoi boundaries to the diagram
-voronoi_plot_2d (vor, ax=ax0, show_vertices=False, show_points=False, line_colors='grey', line_width=2, line_alpha=0.05)
+show_voronoi_in_grey = True
+if show_voronoi_in_grey:
+    voronoi_plot_2d (vor, ax=ax0, show_vertices=False, show_points=False, line_colors='grey', line_width=2, line_alpha=0.05)
 
 xbord = 0.3
 ybord = 0.3
@@ -320,29 +344,28 @@ ax0.xaxis.set_ticks_position('both')
 # Tick labels on top, not bottom:
 ax0.xaxis.set_tick_params (labeltop=True,labelbottom=False)
 
-ax_r.plot ([0,1],[miny,maxy],'-',color='b')
-ax_r.set_xlabel ('Mol. B')
-ax_r.yaxis.tick_right()
-#ax_r.xaxis.set_ticks_position('both')
-ax_r.yaxis.set_ticks_position('both')
-ax_d.plot ([minx,maxx],[0,1],'-',color='r')
-ax_d.xaxis.set_ticks_position('both')
-#ax_d.yaxis.set_ticks_position('both')
-ax_d.set_ylabel ('Mol. A')
-ax_d.set_xlim([minx-xbord, maxx+xbord])
-ax_r.set_ylim([miny-ybord, maxy+ybord])
+#ax_r.plot ([0,1],[miny,maxy],'-',color='b')
+#ax_r.set_xlabel ('Mol. B')
+#ax_r.yaxis.tick_right()
+#ax_r.yaxis.set_ticks_position('both')
+#ax_d.plot ([minx,maxx],[0,1],'-',color='r')
+#ax_d.xaxis.set_ticks_position('both')
+#ax_d.set_ylabel ('Mol. A')
+#ax_d.set_xlim([minx-xbord, maxx+xbord])
+#ax_r.set_ylim([miny-ybord, maxy+ybord])
 
 ax0.set_xlabel('Axis 1 [mm]', labelpad=20)
 ax0.xaxis.set_label_position('top')
-ax_d.set_xlabel('Axis 1 [mm]', labelpad=20)
+#ax_d.set_xlabel('Axis 1 [mm]', labelpad=20)
 
 ax0.set_ylabel('Axis 2 [mm]')
-ax_r.set_ylabel('Axis 2 [mm]', labelpad=10)
-ax_r.yaxis.set_label_position('right')
+#ax_r.set_ylabel('Axis 2 [mm]', labelpad=10)
+#ax_r.yaxis.set_label_position('right')
 
+# Axes on/off
 ax0.set_axis_off()
 
-F0.subplots_adjust (wspace=0.2, hspace=0.2)
+#F0.subplots_adjust (wspace=0.2, hspace=0.2)
 
 plt.savefig ('barreloids_haidarliu_Fig5d_graph.svg', transparent=True)
 

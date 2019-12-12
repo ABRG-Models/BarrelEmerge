@@ -60,11 +60,24 @@ sf.sbtpos = [-1.1, -1.1]
 sf.sblw = 5
 sf.sbfs = 48
 sf.showNames = True
+if sf.showNames == True:
+    sf.domcentres = bdo.domcentres[0]
 sf.showBoundaries = True
+if sf.showBoundaries == True:
+    sf.domdivision = bdo.domdivision
 sf.plotPoly()
 
 # Add two contours, for different levels of localization
-sf.addContour (maxc[:,0], 0.8, 'white', 1.0);
-sf.addContour (maxc[:,0], 0.4, 'grey', 1.6);
+#sf.addContour (maxc[:,0], 0.8, 'white', 1.0);
+#sf.addContour (maxc[:,0], 0.4, 'grey', 1.6);
+
+# Or single contour for each field
+for ii in range(0,bdo.N):
+    c = bdo.c[ii,:,0]
+    #c_norm = c/np.max(a)
+    sf.addContour (c, 0.5, 'white', 1.0);
+
+mapname = 'plots/{0}_c_id_{1:06d}.png'.format(os.path.basename(logdirname), ti)
+plt.savefig (mapname, dpi=300, transparent=True)
 
 plt.show()
