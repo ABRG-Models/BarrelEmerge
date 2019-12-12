@@ -12,6 +12,9 @@ from matplotlib.patches import RegularPolygon
 
 class Surface:
 
+    #
+    # Initialise; set up member attributes (in pythonese, 'instance attributes')
+    #
     def __init__ (self, width, height):
         # Overall figure width and height
         self.width = width
@@ -30,7 +33,7 @@ class Surface:
         self.threeDimensions = False
         # If the graph wants a title
         self.title = ''
-        # Default colour map
+        # The colourmap to use when plotting z values vs x,y (i.e., when c is empty)
         self.cmap = plt.cm.jet
         # Scale bar parameters
         self.showScalebar = False
@@ -54,11 +57,12 @@ class Surface:
         self.hexrad = 0.1
         # Should the hex edges be visible?
         self.showHexEdges = False
+
         # The data to plot
         self.x = np.array([])
         self.y = np.array([])
         self.z = np.array([]) # For 3-D surface plots
-        self.c = np.array([]) # colour. rgb triplets
+        self.c = np.array([]) # colour array. rgb triplets
         self.id_byname = {}
         self.nhex = 0
         # Set true once figure is set up and ready to be plotted into
@@ -68,7 +72,11 @@ class Surface:
         # ...and the colour
         self.contourColour = "white"
 
-    # Associate the important information in the BarrelData object.
+    #
+    # Associate the important information in the BarrelData object
+    # with this Surface object. This involves copying in selected
+    # parts of the BarrelData object.
+    #
     def associate (self, BarrelDataObject):
         self.hextohex_d = BarrelDataObject.hextohex_d
         self.hexrad = self.hextohex_d/np.sqrt(3)
@@ -79,6 +87,9 @@ class Surface:
         self.domcentres = BarrelDataObject.domcentres
         self.domdivision = BarrelDataObject.domdivision
 
+    #
+    # Initialisation code for the figure onto which the surface will be drawn
+    #
     def initFig (self):
         # Create the actual figure.
         fnt = {'family' : 'DejaVu Sans',
@@ -95,16 +106,27 @@ class Surface:
         else:
             self.f1.tricontour (self.x, self.y, contourData, linewidths=width, colors=colour, levels=[contourLevel])
 
+    #
+    # Plot using polygons
+    #
     def plotPoly (self):
-        # Plot using polygons
         if self.ready == False:
             self.initFig()
 
-        for i in range(self.nhex):
-            ec = self.c[i] if self.showHexEdges == False else 'none'
-            hex = RegularPolygon((self.x[i], self.y[i]), numVertices=6, radius=self.hexrad,
-                                 facecolor=self.c[i], edgecolor=ec)
-            self.f1.add_patch (hex)
+        # Either: Plot z values using self.cmap...
+        if self.c.size == 0:
+            for i in range(self.nhex):
+                clr = self.cmap(self.z[i])
+                ec = clr if self.showHexEdges == False else 'none'
+                hex = RegularPolygon((self.x[i], self.y[i]), numVertices=6, radius=self.hexrad,
+                                     facecolor=clr, edgecolor=ec)
+                self.f1.add_patch (hex)
+        else: # ... or plot provided colours
+            for i in range(self.nhex):
+                ec = self.c[i] if self.showHexEdges == False else 'none'
+                hex = RegularPolygon((self.x[i], self.y[i]), numVertices=6, radius=self.hexrad,
+                                     facecolor=self.c[i], edgecolor=ec)
+                self.f1.add_patch (hex)
 
         self.f1.axis (np.array ([min(self.x),max(self.x),min(self.y),max(self.y)])*1.0)
         self.f1.set_aspect (np.diff(self.f1.get_xlim())/np.diff(self.f1.get_ylim()))
@@ -119,12 +141,11 @@ class Surface:
             self.f1.set_xlabel ('x (mm)')
             self.f1.set_ylabel ('y (mm)')
 
-        for bnd1 in self.domdivision:
-            #print ('bnd1 shape: {0}'.format(np.shape(bnd1)))
-            for bnd in bnd1:
-                #print ('bnd: {0}'.format(bnd))
-                for bnd0 in bnd:
-                    self.f1.plot (bnd0[0,:],bnd0[1,:], color='k', marker='None', linewidth=1)
+        if self.showBoundaries == True:
+            for bnd1 in self.domdivision:
+                for bnd in bnd1:
+                    for bnd0 in bnd:
+                        self.f1.plot (bnd0[0,:],bnd0[1,:], color='k', marker='None', linewidth=1)
 
         if self.showNames == True:
             count = 0

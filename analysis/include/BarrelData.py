@@ -143,6 +143,8 @@ class BarrelData:
         self.domdivision = []
 
         self.gammaColour_byid = {}
+
+        self.gammaColourScheme = 'greenblue'
     #
     # Create self.t and self.t_steps, first checking to see if they've
     # already been created.
@@ -179,7 +181,11 @@ class BarrelData:
                 self.id_byname[i["name"]] = theid
                 self.gamma_byname[i["name"]] = i["gamma"]
                 self.gamma_byid[theid] = i["gamma"]
-                self.gammaColour_byid[theid] = (0.5+i["gamma"][0]/4.0, 0, 0.5+i["gamma"][1]/4.0)
+                #
+                if self.gammaColourScheme == 'redblue':
+                    self.gammaColour_byid[theid] = (0.5+i["gamma"][0]/4.0, 0, 0.5+i["gamma"][1]/4.0)
+                else: # green blue
+                    self.gammaColour_byid[theid] = (0, 0.5+i["gamma"][0]/4.0, 0.5+i["gamma"][1]/4.0)
                 #print ('Setting gammaColour_byid[{0}] to {1}'.format (theid, self.gammaColour_byid[theid]))
                 count = count + np.float32(1.0)
     #
