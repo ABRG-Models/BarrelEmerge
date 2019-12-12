@@ -31,9 +31,6 @@ bdo.loadSimData = True
 bdo.loadTimeStep = ti
 bdo.load (logdirname)
 
-idstring = 'id{0}'.format(0);
-print ('idstring: {0}'.format(idstring))
-
 # Get matrix index from time index
 shp = np.shape(bdo.id_c)
 if ti == -1:
@@ -42,23 +39,28 @@ else:
     mi = 0
 print ('mi = {0}'.format(mi))
 
-# Figure out the colour map
-idc = bdo.id_c[:,mi]
+# Compute max of c
+maxc = np.max (bdo.c, axis=0)
+
+# Either use the precomputed ID map:
+c_id = bdo.id_c[:,mi]
+# or compute it here:
+# c_id_int = np.argmax (bdo.c, axis=0)
+# c_id = c_id_int[:,0].astype(np.float32) / np.float32(bdo.N)
+
+# Compute the colour map
 colmap = np.zeros([bdo.nhex,3], dtype=float)
-print ('colmap shape {0}'.format (np.shape(colmap)))
 ii = 0
-for oneid in idc:
+for oneid in c_id:
     colmap[ii] = bdo.gammaColour_byid[oneid]
     ii = ii + 1
-
-print ('colmap shape {0}'.format (np.shape(colmap)))
 
 # Plot a surface
 import Surface as surf
 sf = surf.Surface (12, 11)
 sf.associate(bdo)
 
-sf.c = colmap # assign colour map
+sf.c = colmap # assign the colour map computed above
 sf.showScalebar = True
 sf.showAxes = False
 sf.sb1 = [-1.3, -0.8]
@@ -70,5 +72,9 @@ sf.sbfs = 48
 sf.showNames = True
 sf.showBoundaries = True
 sf.plotPoly()
+
+# Add two contours, for different levels of localization
+sf.addContour (maxc[:,0], 0.8, 'white', 1.0);
+sf.addContour (maxc[:,0], 0.4, 'grey', 1.6);
 
 plt.show()

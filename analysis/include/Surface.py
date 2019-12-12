@@ -32,30 +32,41 @@ class Surface:
         self.title = ''
         # Default colour map
         self.cmap = plt.cm.jet
-        # Scalebar parameters
+        # Scale bar parameters
         self.showScalebar = False
+        # Scale bar coordinate 1
         self.sb1 = [0,0]
+        # Scale bar coordinate 2
         self.sb2 = [1,0]
+        # The label text for the scalebar
         self.sbtext = '1 unit'
-        self.sbtpos = [0.5, -0.1] # scale bar position
-        self.sbfs = 18 # scale bar fontsize
-        self.sblw = 4 # scale bar line width
+        # Scale bar position
+        self.sbtpos = [0.5, -0.1]
+        # Scale bar fontsize
+        self.sbfs = 18
+        # Scale bar line width
+        self.sblw = 4
+        # Scale bar colour
         self.sbcolour = 'k'
-
+        # The hex to hex distance between adjacent hexes
         self.hextohex_d = 0.03
+        # The hex radius - the distance from the centre to one of the vertices of the hex
         self.hexrad = 0.1
-
+        # Should the hex edges be visible?
         self.showHexEdges = False
-
         # The data to plot
         self.x = np.array([])
         self.y = np.array([])
-        self.z = np.array([])
+        self.z = np.array([]) # For 3-D surface plots
         self.c = np.array([]) # colour. rgb triplets
         self.id_byname = {}
         self.nhex = 0
-
+        # Set true once figure is set up and ready to be plotted into
         self.ready = False
+        # The line width for contour plots...
+        self.contourLinewidth = 1.0
+        # ...and the colour
+        self.contourColour = "white"
 
     # Associate the important information in the BarrelData object.
     def associate (self, BarrelDataObject):
@@ -78,9 +89,14 @@ class Surface:
         self.f1 = self.F1.add_subplot (1,1,1)
         self.ready = True
 
-    # Plot using polygons
-    def plotPoly (self):
+    def addContour (self, contourData, contourLevel, colour="white", width=1.0):
+        if contourLevel == 0:
+            self.f1.tricontour (self.x, self.y, contourData, linewidths=width, colors=colour)
+        else:
+            self.f1.tricontour (self.x, self.y, contourData, linewidths=width, colors=colour, levels=[contourLevel])
 
+    def plotPoly (self):
+        # Plot using polygons
         if self.ready == False:
             self.initFig()
 
@@ -115,13 +131,13 @@ class Surface:
             idn_arr = []
             for idn in self.id_byname:
                 idn_arr.append(idn)
-                print ('{0}'.format(idn))
+                #print ('{0}'.format(idn))
                 count = count + 1
             N = count
             count = 0
             cmap_ = matplotlib.cm.get_cmap('Greys')
             for dc in self.domcentres[0]:
-                print('dc: {0}'.format(dc))
+                #print('dc: {0}'.format(dc))
 
                 # Compute a greyscale colour for the text
                 cidx = count/N
@@ -147,16 +163,3 @@ class Surface:
                 self.f1.text (dc[0], dc[1], thechar, fontsize=self.fs2, verticalalignment='center', horizontalalignment='center', color=cmap_(cidx))
 
                 count = count + 1
-
-    # Like surface, but make it a 3d projection
-    def _surface2 (self, dmatrix, x, y, ix, title):
-        fs = 12
-        fnt = {'family' : 'DejaVu Sans',
-               'weight' : 'regular',
-               'size'   : fs}
-        matplotlib.rc('font', **fnt)
-        F1 = plt.figure (figsize=(self.width,self.height))
-        f1 = F1.add_subplot(1,1,1, projection='3d')
-        f1.set_title(title)
-        f1.scatter (x, y, dmatrix, c=dmatrix, marker='h', cmap=self.cmap)
-        #f1.scatter (x[ix], y[ix], s=32, marker='o', color='k')
