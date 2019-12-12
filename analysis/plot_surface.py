@@ -18,8 +18,6 @@ print ('basename: {0}'.format(os.path.basename(logdirname)))
 # time index
 ti = int(sys.argv[2])
 
-shownames = 0
-
 # Read the data
 bdo = bd.BarrelData()
 # Set True for inter-lines:
@@ -31,19 +29,11 @@ bdo.loadSimData = True
 bdo.loadTimeStep = ti
 bdo.load (logdirname)
 
-# Get matrix index from time index
-shp = np.shape(bdo.id_c)
-if ti == -1:
-    mi = shp[1]-1 # matrix index
-else:
-    mi = 0
-print ('mi = {0}'.format(mi))
-
 # Compute max of c
 maxc = np.max (bdo.c, axis=0)
 
 # Either use the precomputed ID map:
-c_id = bdo.id_c[:,mi]
+c_id = bdo.id_c[:,0]
 # or compute it here:
 # c_id_int = np.argmax (bdo.c, axis=0)
 # c_id = c_id_int[:,0].astype(np.float32) / np.float32(bdo.N)
