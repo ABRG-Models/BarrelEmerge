@@ -37,7 +37,7 @@ sf = surf.Surface (12, 11)
 sf.associate(bdo)
 
 # Plot a single field using a colour map
-sf.z = bdo.a[13,:,0]
+sf.z = 2.0*bdo.a[13,:,0] # 13 should be barrel/barreloid C4
 sf.showScalebar = True
 sf.showAxes = False
 sf.sb1 = [-1.3, -0.8]
@@ -48,7 +48,7 @@ sf.sblw = 5
 sf.sbfs = 48
 sf.showNames = False
 sf.showBoundaries = False
-sf.cmap = plt.cm.gray
+sf.cmap = plt.cm.Greys
 sf.plotPoly()
 
 mapname = 'plots/{0}_a_{1:06d}.png'.format(os.path.basename(logdirname), ti)

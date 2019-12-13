@@ -47,16 +47,16 @@ for oneid in c_id:
 
 # Plot a surface
 import Surface as surf
-sf = surf.Surface (20, 11)
+sf = surf.Surface (17, 11)
 sf.associate(bdo)
 
 sf.c = colmap # assign the colour map computed above
 sf.showScalebar = True
 sf.showAxes = False
-sf.sb1 = [-1.3, -0.8]
-sf.sb2 = [-0.3, -0.8]
+sf.sb1 = [-0.5, -0.8]
+sf.sb2 = [0.5, -0.8]
 sf.sbtext = '1 mm'
-sf.sbtpos = [-1.1, -1.1]
+sf.sbtpos = [-0.45, -1.1]
 sf.sblw = 5
 sf.sbfs = 48
 sf.showNames = False
@@ -80,4 +80,4 @@ for ii in range(0,bdo.N):
 mapname = 'plots/{0}_c_id_{1:06d}.png'.format(os.path.basename(logdirname), ti)
 plt.savefig (mapname, dpi=300, transparent=True)
 
-#plt.show()
+plt.show()

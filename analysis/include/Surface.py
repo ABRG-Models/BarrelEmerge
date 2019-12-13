@@ -136,10 +136,6 @@ class Surface:
                                      facecolor=self.c[i], edgecolor=ec)
                 self.f1.add_patch (hex)
 
-        self.f1.axis (np.array ([min(self.x),max(self.x),min(self.y),max(self.y)])*1.0)
-        print ('xlim: {0}, ylim: {1}'.format(self.f1.get_xlim(), self.f1.get_ylim()))
-        #self.f1.set_aspect (np.diff(self.f1.get_xlim())/np.diff(self.f1.get_ylim()))
-
         if self.showScalebar == True:
             self.f1.plot ([self.sb1[0],self.sb2[0]], [self.sb1[1],self.sb2[1]], color=self.sbcolour, linewidth=self.sblw)
             self.f1.text (self.sbtpos[0], self.sbtpos[1], self.sbtext, fontsize=self.sbfs)
@@ -196,3 +192,8 @@ class Surface:
                 self.f1.text (dc[0], dc[1], thechar, fontsize=self.fs2, verticalalignment='center', horizontalalignment='center', color=cmap_(cout))
 
                 count = count + 1
+
+        # Finally, set the axes up.
+        self.f1.axis (np.array ([min(self.x)-self.hextohex_d, max(self.x)+self.hextohex_d, min(self.y)-self.hextohex_d, max(self.y)+self.hextohex_d]))
+        self.f1.set_aspect ('equal')
+        self.F1.tight_layout()

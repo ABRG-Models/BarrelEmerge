@@ -78,6 +78,6 @@ for t in range(0,bdo.t_steps.size):
         a_norm = a/np.max(a)
         sf.addContour (a_norm, 0.7, 'white', 1.0);
 
-    mapname = 'plots/{0}_a_id_{1:06d}.png'.format(os.path.basename(logdirname), t)
+    mapname = 'plots/aid_all/{0}_a_id_{1:06d}.png'.format(os.path.basename(logdirname), t)
     plt.savefig (mapname, dpi=300, transparent=False)
     sf.resetFig()

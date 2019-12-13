@@ -45,18 +45,13 @@ sf.sbfs = 48
 sf.showNames = True
 sf.showBoundaries = False
 
-print ('bdo.c shape: {0}'.format (np.shape(bdo.c)))
 for t in range(0,bdo.t_steps.size):
 
     # Compute max of c
     maxc = np.max (bdo.c[:,:,t], axis=0)
 
     # Either use the precomputed ID map:
-    print ('bdo.id_c shape: {0}'.format (np.shape(bdo.id_c)))
     c_id = bdo.id_c[:,t]
-    # or compute it here:
-    # c_id_int = np.argmax (bdo.c[:,:,t], axis=0)
-    # c_id = c_id_int[:,0].astype(np.float32) / np.float32(bdo.N)
 
     # Compute the colour map
     colmap = np.zeros([bdo.nhex,3], dtype=float)
@@ -67,11 +62,8 @@ for t in range(0,bdo.t_steps.size):
 
     sf.c = colmap # assign the colour map computed above
     if sf.showNames == True:
-        print ('domcentres shape: {0}'.format (np.shape (bdo.domcentres)))
         sf.domcentres = bdo.domcentres[t]
-        print ('sf.domcentres shape: {0}'.format (np.shape (sf.domcentres)))
     if sf.showBoundaries == True:
-        print ('domdivision shape: {0}'.format (np.shape (bdo.domdivision)))
         sf.domdivision = bdo.domdivision
 
     sf.plotPoly()
@@ -81,6 +73,6 @@ for t in range(0,bdo.t_steps.size):
         c = bdo.c[ii,:,t]
         sf.addContour (c, 0.5, 'white', 1.0);
 
-    mapname = 'plots/{0}_c_id_{1:06d}.png'.format(os.path.basename(logdirname), t)
+    mapname = 'plots/cid_all/{0}_c_id_{1:06d}.png'.format(os.path.basename(logdirname), t)
     plt.savefig (mapname, dpi=300, transparent=False)
     sf.resetFig()
