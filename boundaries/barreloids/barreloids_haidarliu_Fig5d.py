@@ -235,25 +235,25 @@ fs2 = 42
 txt1 = [0.15, 1.15]
 x__ = txt1[0] * cosphi - txt1[1] * sinphi
 y__ = txt1[1] * cosphi + txt1[0] * sinphi
-ax0.text (x__,y__,'ant.',fontsize=fs2, horizontalalignment='center', verticalalignment='center')
+ax0.text (x__,y__,'ant',fontsize=fs2, horizontalalignment='center', verticalalignment='center')
 
 # Posterior
 txt2 = [1.58, 0.8]
 x__ = txt2[0] * cosphi - txt2[1] * sinphi
 y__ = txt2[1] * cosphi + txt2[0] * sinphi
-ax0.text (x__,y__,'post.',fontsize=fs2, horizontalalignment='center', verticalalignment='center')
+ax0.text (x__,y__,'post',fontsize=fs2, horizontalalignment='center', verticalalignment='center')
 
 # Lateral by the stragglers 0.14v-0.1
 txt3 = [1.3, 1.75]
 x__ = txt3[0] * cosphi - txt3[1] * sinphi
 y__ = txt3[1] * cosphi + txt3[0] * sinphi
-ax0.text (x__,y__,'lat.',fontsize=fs2, horizontalalignment='center', verticalalignment='center')
+ax0.text (x__+0.02,y__,'lat',fontsize=fs2, horizontalalignment='center', verticalalignment='center')
 
 # Medial
 txt4 = [0.6, 0.4]
 x__ = txt4[0] * cosphi - txt4[1] * sinphi
 y__ = txt4[1] * cosphi + txt4[0] * sinphi
-ax0.text (x__+0.1,y__+0.01,'med.',fontsize=fs2, horizontalalignment='center', verticalalignment='center')
+ax0.text (x__+0.05,y__+0.01,'med',fontsize=fs2, horizontalalignment='center', verticalalignment='center')
 
 # Plot voronoi
 vpts = np.vstack((xqui,yqui)).T
