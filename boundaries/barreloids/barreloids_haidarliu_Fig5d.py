@@ -144,22 +144,34 @@ g3qui = np.array([])
 g4qui = np.array([])
 xqui = np.array([])
 yqui = np.array([])
-small_size = ["D2","E6","E7","E8","E9","E9","E10","E11","E12","E13","D6","D7","D8","D9","D9","D10","D11","D12","C10","C9","C8","C7","C6"]
+omitx = np.array([]) # x and y of 'omit' list
+omity = np.array([])
+small_size = ["D2","E7","E8","E9","E9","E10","E11","E12","E13","D6","D7","D8","D9","D9","D10","D11","D12","C10","C9","C8","C7","C6"]
 omit = ["R1","R2","R3","R4","R5"]
 for d in D: # Care, requires that there are no duplicate labels
 
     # Build lists for quiver plots
-    g1qui = np.append(g1qui, D[d][2])
-    g2qui = np.append(g2qui, D[d][3])
-    g3qui = np.append(g3qui, D[d][4])
-    g4qui = np.append(g4qui, D[d][5])
-    xqui = np.append(xqui, D[d][0])
-    yqui = np.append(yqui, D[d][1])
+    if not d in omit:
+        g1qui = np.append(g1qui, D[d][2])
+        g2qui = np.append(g2qui, D[d][3])
+        g3qui = np.append(g3qui, D[d][4])
+        g4qui = np.append(g4qui, D[d][5])
+        xqui = np.append(xqui, D[d][0])
+        yqui = np.append(yqui, D[d][1])
+    else:
+        g1qui = np.append(g1qui, 0.0)
+        g2qui = np.append(g2qui, 0.0)
+        g3qui = np.append(g3qui, 0.0)
+        g4qui = np.append(g4qui, 0.0)
+        xqui = np.append(xqui, D[d][0])
+        yqui = np.append(yqui, D[d][1])
+        omitx = np.append(omitx, D[d][0])
+        omity = np.append(omity, D[d][1])
 
     if show_four:
         print ('Fixme')
     else:
-        if (g1qui[-1]-g2qui[-1])<0:
+        if (g1qui[-1]-g2qui[-1])<0.01:
             algn = 'left'
             if d in small_size:
                 txt_xoff = 0.03
@@ -168,24 +180,26 @@ for d in D: # Care, requires that there are no duplicate labels
         else:
             algn = 'right'
             if d in small_size:
-                txt_xoff = -0.08
+                txt_xoff = -0.03
             else:
-                txt_xoff = -0.08
+                txt_xoff = -0.03
 
+    fs_small = 14
+    fs_large = 18
     if d == 'a':
-        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\alpha$', horizontalalignment=algn)
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\alpha$', horizontalalignment=algn, fontsize=fs_large)
     elif d == 'b':
-        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\beta$')
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\beta$', horizontalalignment=algn, fontsize=fs_large)
     elif d == 'c':
-        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\gamma$')
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\gamma$', horizontalalignment=algn, fontsize=fs_large)
     elif d == 'd':
-        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\delta$')
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\delta$', horizontalalignment=algn, fontsize=fs_large)
     elif d in small_size:
-        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '{0}'.format(d), fontsize=14)
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '{0}'.format(d), horizontalalignment=algn, fontsize=fs_small)
     elif d in omit:
         print ('omit {0}'.format(d))
     else:
-        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '{0}'.format(d))
+        ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, '{0}'.format(d), horizontalalignment=algn, fontsize=fs_large)
 
 sm = 12 # scalemult
 
@@ -195,11 +209,12 @@ if show_four:
     ax0.quiver (xqui, yqui, 0, g3qui, color='b', width=0.003, scale=gmax*sm)
     ax0.quiver (xqui, yqui, 0, -g4qui, color='c', width=0.003, scale=gmax*sm)
 else:
-    ax0.quiver (xqui, yqui, g1qui-g2qui, 0, color='b', width=0.003, scale=gmax*sm)
-    ax0.quiver (xqui, yqui, 0, g3qui-g4qui, color='g', width=0.003, scale=gmax*sm)
+    ax0.quiver (xqui, yqui, g1qui-g2qui, 0, color='b', width=0.006, scale=gmax*sm)
+    ax0.quiver (xqui, yqui, 0, g3qui-g4qui, color='g', width=0.006, scale=gmax*sm)
 
 # Plot the actual centres:
 ax0.scatter (xqui, yqui, c='k', s=70, marker='o')
+ax0.scatter (omitx, omity, c='grey', s=70, marker='o')
 
 # Plot boundary
 ax0.plot (bndry_x, bndry_y, c='grey', marker='None', linestyle='--', linewidth=2, label='boundary')
@@ -238,7 +253,7 @@ ax0.text (x__,y__,'lat.',fontsize=fs2, horizontalalignment='center', verticalali
 txt4 = [0.6, 0.4]
 x__ = txt4[0] * cosphi - txt4[1] * sinphi
 y__ = txt4[1] * cosphi + txt4[0] * sinphi
-ax0.text (x__,y__,'med.',fontsize=fs2, horizontalalignment='center', verticalalignment='center')
+ax0.text (x__+0.1,y__+0.01,'med.',fontsize=fs2, horizontalalignment='center', verticalalignment='center')
 
 # Plot voronoi
 vpts = np.vstack((xqui,yqui)).T
