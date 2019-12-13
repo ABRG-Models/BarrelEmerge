@@ -108,11 +108,47 @@ class Surface:
         # plt.cla() worked, so perhaps self.F1.cla() would work
         self.f1.cla()
 
-    def addContour (self, contourData, contourLevel, colour="white", width=1.0):
+    def addContour (self, contourData, contourLevel, colour="white", width=1.0, labelIdx=0, showContourLabel=False):
         if contourLevel == 0:
-            self.f1.tricontour (self.x, self.y, contourData, linewidths=width, colors=colour)
+            tcset = self.f1.tricontour (self.x, self.y, contourData, linewidths=width, colors=colour)
         else:
-            self.f1.tricontour (self.x, self.y, contourData, linewidths=width, colors=colour, levels=[contourLevel])
+            tcset = self.f1.tricontour (self.x, self.y, contourData, linewidths=width, colors=colour, levels=[contourLevel])
+        print ("tcset levels: {0}".format (tcset.levels))
+        #print ("tcset collections: {0}".format (tcset.collections))
+        if showContourLabel == True:
+            if len(tcset.levels) > 0 and tcset.levels[0] == contourLevel:
+                idn_arr = []
+                N = 0
+                for idn in self.id_byname:
+                    idn_arr.append(idn)
+                    print ('ind_arr, appended idn = {0}'.format(idn))
+                    N = N + 1
+
+                cmap_ = matplotlib.cm.get_cmap('Greys')
+
+                # Compute a greyscale colour for the text from the raw index:
+                cidx = np.float32(labelIdx)/np.float32(N)
+                # or using the sum of the rgb values
+                cidx = (self.gammaColour_byid[cidx][0] + self.gammaColour_byid[cidx][1] + self.gammaColour_byid[cidx][2]) / 3.0
+
+                # Transfer from background lightness to text colour via a sigmoid:
+                cout = 1.0 / ( 1.0 + np.exp(-80.0*(cidx-0.3)));
+
+                # Place the text label for the barrel
+                if idn_arr[labelIdx] == 'a':
+                    thechar = r'$\alpha$'
+                elif idn_arr[labelIdx] == 'b':
+                    thechar = r'$\beta$'
+                elif idn_arr[labelIdx] == 'c':
+                    thechar = r'$\gamma$'
+                elif idn_arr[labelIdx] == 'd':
+                    thechar = r'$\delta$'
+                else:
+                    thechar = idn_arr[labelIdx]
+
+                self.f1.text (self.domcentres[labelIdx][0], self.domcentres[labelIdx][1], thechar, fontsize=self.fs2, verticalalignment='center', horizontalalignment='center', color=cmap_(cout))
+
+
 
     #
     # Plot using polygons
