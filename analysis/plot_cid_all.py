@@ -42,7 +42,7 @@ sf.sbtext = '1 mm'
 sf.sbtpos = [-1.1, -1.1]
 sf.sblw = 5
 sf.sbfs = 48
-sf.showNames = True
+sf.showNames = False
 sf.showBoundaries = False
 
 for t in range(0,bdo.t_steps.size):
@@ -61,8 +61,7 @@ for t in range(0,bdo.t_steps.size):
         ii = ii + 1
 
     sf.c = colmap # assign the colour map computed above
-    if sf.showNames == True:
-        sf.domcentres = bdo.domcentres[t]
+    sf.domcentres = bdo.domcentres[t]
     if sf.showBoundaries == True:
         sf.domdivision = bdo.domdivision
 
@@ -71,7 +70,8 @@ for t in range(0,bdo.t_steps.size):
     # A single contour for each field
     for ii in range(0,bdo.N):
         c = bdo.c[ii,:,t]
-        sf.addContour (c, 0.5, 'white', 1.0);
+        sf.addContour (c, 0.5, 'white', 1.0, ii, True);
+
 
     mapname = 'plots/cid_all/{0}_c_id_{1:06d}.png'.format(os.path.basename(logdirname), t)
     plt.savefig (mapname, dpi=300, transparent=False)
