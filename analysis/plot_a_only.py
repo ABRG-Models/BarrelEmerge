@@ -51,4 +51,6 @@ sf.showBoundaries = False
 sf.cmap = plt.cm.gray
 sf.plotPoly()
 
+mapname = 'plots/{0}_a_{1:06d}.png'.format(os.path.basename(logdirname), ti)
+plt.savefig (mapname, dpi=300, transparent=True)
 plt.show()

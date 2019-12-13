@@ -142,6 +142,7 @@ int main (int argc, char **argv)
         return 1;
     }
     const float hextohex_d = conf.getFloat ("hextohex_d", 0.01f);
+    const float hexspan = conf.getFloat ("hexspan", 4.0f);
     const float boundaryFalloffDist = conf.getFloat ("boundaryFalloffDist", 0.01f);
     const string svgpath = conf.getString ("svgpath", "./ellipse.svg");
     bool overwrite_logs = conf.getBool ("overwrite_logs", false);
@@ -405,6 +406,7 @@ int main (int argc, char **argv)
 
     // Control the size of the hexes, and therefore the number of hexes in the grid
     RD.hextohex_d = hextohex_d;
+    RD.hexspan = hexspan;
 
     // Boundary fall-off distance
     RD.boundaryFalloffDist = boundaryFalloffDist;

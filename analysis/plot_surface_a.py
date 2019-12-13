@@ -70,4 +70,6 @@ for ii in range(0,bdo.N):
     a_norm = a/np.max(a)
     sf.addContour (a_norm, 0.7, 'white', 1.0);
 
-plt.show()
+mapname = 'plots/{0}_a_id_{1:06d}.png'.format(os.path.basename(logdirname), ti)
+plt.savefig (mapname, dpi=300, transparent=True)
+#plt.show()

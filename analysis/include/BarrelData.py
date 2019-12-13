@@ -223,6 +223,7 @@ class BarrelData:
         if self.loadTimeStep > -1:
             globstr = 'dirich_{0:05d}.h5'.format (self.loadTimeStep)
         else:
+            print ("WARNING: Loading data for all times, this may be slow...")
             globstr = 'dirich_*.h5'
 
         files = list(p.glob(globstr))

@@ -29,7 +29,7 @@ bdo.loadPositions = True
 bdo.load (logdirname)
 
 print ('basename: {0}'.format(os.path.basename(logdirname)))
-winwidth = 12
+winwidth = 20
 winheight = 11
 if os.path.basename(logdirname) == '52N2M_thalguide_fgfdup':
     winwidth = 22
@@ -40,32 +40,20 @@ pl.fs2 = 24
 pl.showAxes = False
 pl.showNames = False
 
-if os.path.basename(logdirname) == '52N2M_thalguide_fgfdup':
-    pl.showScalebar = True
-    pl.sb1 = [0, -0.6]
-    pl.sb2 = [0.5, -0.6]
-    pl.sbtext = '0.5 mm'
-    pl.sbtpos = [0.0, -0.8]
-    pl.sblw = 5
-    pl.sbfs = 48
-else:
-    pl.showScalebar = True
-    pl.sb1 = [-0.8, -0.8]
-    pl.sb2 = [-0.1, -0.8]
-    pl.sbtext = '0.7 mm'
-    pl.sbtpos = [-0.7, -1]
-    pl.sblw = 5
-    pl.sbfs = 48
+pl.showScalebar = False
+pl.sb1 = [-1.3, -0.8]
+pl.sb2 = [-0.3, -0.8]
+pl.sbtext = '1 mm'
+pl.sbtpos = [-1.1, -1.1]
+pl.sblw = 5
+pl.sbfs = 48
 
-if mi==0:
-    pl.cmap = plt.cm.Blues
-else:
-    pl.cmap = plt.cm.Reds
+pl.cmap = plt.cm.gray
 
 print ("bdo.g shape: {0}".format (np.shape(bdo.g)))
 f1 = pl.surface (bdo.g[:,mi], bdo.x, bdo.y)
 
-mapname = 'plots/{0}_guide{1}.png'.format(os.path.basename(logdirname), mi)
+mapname = 'plots/{0}_guide_m{1}.png'.format(os.path.basename(logdirname), mi)
 plt.savefig (mapname, dpi=300, transparent=True)
 
 plt.show()
