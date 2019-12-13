@@ -55,9 +55,9 @@
     "do_dirichlet_analysis": true,
 
     "plot_dr_with_guide" : false,
-    "hshift" : 0.6, // spacing - sort of
+    "hshift" : 0.2, // spacing - sort of
     "vshift" : 0.4,
-    "g_hshift" : 1.2, // overall right-shift - sort of
+    "g_hshift" : 1.8, // overall right-shift - sort of
     "g_vshift" : -0.4,
 
     "aNoiseGain" : 0.2,
