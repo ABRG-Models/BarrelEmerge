@@ -54,14 +54,13 @@ sf.c = colmap # assign the colour map computed above
 sf.showScalebar = True
 sf.showAxes = False
 sf.sb1 = [-1.3, -0.8]
-sf.sb2 = [-0.3, -0.8]
-sf.sbtext = '1 mm'
+sf.sb2 = [-0.8, -0.8]
+sf.sbtext = ''
 sf.sbtpos = [-1.1, -1.1]
 sf.sblw = 5
 sf.sbfs = 48
-sf.showNames = True
-if sf.showNames == True:
-    sf.domcentres = bdo.domcentres[0]
+sf.showNames = False
+sf.domcentres = bdo.domcentres[0]
 sf.showBoundaries = True
 if sf.showBoundaries == True:
     sf.domdivision = bdo.domdivision
@@ -75,7 +74,7 @@ sf.plotPoly()
 for ii in range(0,bdo.N):
     c = bdo.c[ii,:,0]
     #c_norm = c/np.max(a)
-    sf.addContour (c, 0.5, 'white', 1.0);
+    sf.addContour (c, 0.5, 'white', 1.0, ii, True);
 
 mapname = 'plots/{0}_c_id_{1:06d}.png'.format(os.path.basename(logdirname), ti)
 plt.savefig (mapname, dpi=300, transparent=True)

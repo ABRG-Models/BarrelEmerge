@@ -27,7 +27,7 @@ bdo.loadDivisions = True
 bdo.loadGuidance = False
 bdo.loadSimData = True
 bdo.loadTimeStep = ti
-bdo.gammaColourScheme = 'redblue'
+#bdo.gammaColourScheme = 'redblue' # 'redblue' for red/blue, anything else for green/blue (the default)
 bdo.load (logdirname)
 
 # Plot a surface
