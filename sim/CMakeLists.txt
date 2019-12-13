@@ -61,6 +61,6 @@ target_compile_definitions(honda PUBLIC FLT=float)
 target_link_libraries(honda ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})
 
 # Dual barrel fields with shared branching normalization
-add_executable(jamesdual jamesdual.cpp)
-target_compile_definitions(jamesdual PUBLIC FLT=float COMPILE_PLOTTING)
-target_link_libraries(jamesdual ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})
+##add_executable(jamesdual jamesdual.cpp)
+##target_compile_definitions(jamesdual PUBLIC FLT=float COMPILE_PLOTTING)
+##target_link_libraries(jamesdual ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})
