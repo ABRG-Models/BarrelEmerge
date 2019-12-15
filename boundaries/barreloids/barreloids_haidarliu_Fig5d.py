@@ -180,11 +180,11 @@ for d in D: # Care, requires that there are no duplicate labels
         else:
             algn = 'right'
             if d in small_size:
-                txt_xoff = -0.03
+                txt_xoff = -0.02
             else:
-                txt_xoff = -0.03
+                txt_xoff = -0.02
 
-    fs_small = 14
+    fs_small = 18
     fs_large = 18
     if d == 'a':
         ax0.text (D[d][0]+txt_xoff, D[d][1]+txt_yoff, r'$\alpha$', horizontalalignment=algn, fontsize=fs_large)
@@ -230,7 +230,7 @@ ap[:,0] = x__
 ap[:,1] = y__
 ax0.plot (ap[:,0], ap[:,1], c='grey', marker='None', linestyle='-.', linewidth=2)
 
-fs2 = 42
+fs2 = 24
 # Anterior
 txt1 = [0.15, 1.15]
 x__ = txt1[0] * cosphi - txt1[1] * sinphi
@@ -345,7 +345,7 @@ for d in D:
 meanarea = areatotal / len(D)
 
 # Add the Voronoi boundaries to the diagram
-show_voronoi_in_grey = True
+show_voronoi_in_grey = False
 if show_voronoi_in_grey:
     voronoi_plot_2d (vor, ax=ax0, show_vertices=False, show_points=False, line_colors='grey', line_width=2, line_alpha=0.05)
 
