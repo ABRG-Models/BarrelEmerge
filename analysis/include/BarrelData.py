@@ -43,6 +43,9 @@ class BarrelData:
         # Set to True if you want to load the x/y position info
         self.loadPositions = True
 
+        # Set True to load the hex flags from the hexgrid.h5 file
+        self.loadHexFlags = False
+
         # Set to t>=0 to load a specific time step. Otherwise, all time
         # steps are loaded.
         self.loadTimeStep = -1
@@ -80,6 +83,8 @@ class BarrelData:
         self.x = np.array([])
         self.y = np.array([])
         self.totalarea = np.array([])
+        # Hex flags (read from HexGrid.h5)
+        self.hex_flags = np.array([], dtype=int)
 
         # idnames are read from the parameters json file
         self.id_byname = {}
@@ -145,6 +150,7 @@ class BarrelData:
         self.gammaColour_byid = {}
 
         self.gammaColourScheme = 'greenblue'
+
     #
     # Create self.t and self.t_steps, first checking to see if they've
     # already been created.
@@ -204,12 +210,22 @@ class BarrelData:
         if self.loadPositions == True:
             self.readPositions()
 
+        if self.loadHexFlags == True:
+            self.readHexGrid()
+
         if self.loadAnalysisData == True:
             self.readDirichData()
 
         if self.loadSimData == True:
             self.readPositions() # override position reading option in this case
             self.readSimDataFiles()
+
+    #
+    # Read hexgrid.h5 for the flags
+    #
+    def readHexGrid (self):
+        pf = h5py.File(self.logdir+'/hexgrid.h5', 'r')
+        self.hex_flags = np.array(pf['d_flags'], dtype=int)
 
     #
     # Read analysis data from the dirich_*.h5 files.

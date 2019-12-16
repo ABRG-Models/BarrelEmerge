@@ -49,6 +49,12 @@ class Surface:
         self.sbfs = 18
         # Scale bar line width
         self.sblw = 4
+        # Boundary line width
+        self.boundarylw = 1
+        # Boundary colour
+        self.boundaryColour = 'k'
+        # A hex outside the boundary
+        self.boundaryOuterHexColour = 'grey'
         # Scale bar colour
         self.sbcolour = 'k'
         # The hex to hex distance between adjacent hexes
@@ -65,12 +71,9 @@ class Surface:
         self.c = np.array([]) # colour array. rgb triplets
         self.id_byname = {}
         self.nhex = 0
+        self.hex_flags = np.array([], dtype=int)
         # Set true once figure is set up and ready to be plotted into
         self.ready = False
-        # The line width for contour plots...
-        self.contourLinewidth = 1.0
-        # ...and the colour
-        self.contourColour = "white"
 
     #
     # Associate the important information in the BarrelData object
@@ -85,6 +88,7 @@ class Surface:
         self.nhex = BarrelDataObject.nhex
         self.id_byname = BarrelDataObject.id_byname
         self.gammaColour_byid = BarrelDataObject.gammaColour_byid
+        self.hex_flags = BarrelDataObject.hex_flags
         # FIXME: These are different for different sims and may have variable shape
         #self.domcentres = BarrelDataObject.domcentres
         #self.domdivision = BarrelDataObject.domdivision
@@ -103,9 +107,6 @@ class Surface:
         self.ready = True
 
     def resetFig (self):
-        #self.F1.clf()
-        #self.f1 = self.F1.add_subplot (1,1,1)
-        # plt.cla() worked, so perhaps self.F1.cla() would work
         self.f1.cla()
 
     def addContour (self, contourData, contourLevel, colour="white", width=1.0, labelIdx=0, showContourLabel=False):
@@ -113,8 +114,6 @@ class Surface:
             tcset = self.f1.tricontour (self.x, self.y, contourData, linewidths=width, colors=colour)
         else:
             tcset = self.f1.tricontour (self.x, self.y, contourData, linewidths=width, colors=colour, levels=[contourLevel])
-        print ("tcset levels: {0}".format (tcset.levels))
-        #print ("tcset collections: {0}".format (tcset.collections))
         if showContourLabel == True:
             if len(tcset.levels) > 0 and tcset.levels[0] == contourLevel:
                 idn_arr = []
@@ -147,8 +146,6 @@ class Surface:
                     thechar = idn_arr[labelIdx]
 
                 self.f1.text (self.domcentres[labelIdx][0], self.domcentres[labelIdx][1], thechar, fontsize=self.fs2, verticalalignment='center', horizontalalignment='center', color=cmap_(cout))
-
-
 
     #
     # Plot using polygons
@@ -186,7 +183,7 @@ class Surface:
             for bnd1 in self.domdivision:
                 for bnd in bnd1:
                     for bnd0 in bnd:
-                        self.f1.plot (bnd0[0,:],bnd0[1,:], color='k', marker='None', linewidth=1)
+                        self.f1.plot (bnd0[0,:],bnd0[1,:], color=self.boundaryColour, marker='None', linewidth=self.boundarylw)
 
         if self.showNames == True:
             count = 0
@@ -223,13 +220,79 @@ class Surface:
                 else:
                     thechar = idn_arr[count]
 
-                #print ('cidx for {0} is {1} and cout is {2}'.format (thechar, cidx, cout))
-                #print ('dc shape: {0}'.format (np.shape(dc)))
                 self.f1.text (dc[0], dc[1], thechar, fontsize=self.fs2, verticalalignment='center', horizontalalignment='center', color=cmap_(cout))
 
                 count = count + 1
 
         # Finally, set the axes up.
-        self.f1.axis (np.array ([min(self.x)-self.hextohex_d, max(self.x)+self.hextohex_d, min(self.y)-self.hextohex_d, max(self.y)+self.hextohex_d]))
+        self.f1.axis (np.array ([min(self.x)-2.0*self.hextohex_d, max(self.x)+2.0*self.hextohex_d, min(self.y)-2.0*self.hextohex_d, max(self.y)+2.0*self.hextohex_d]))
         self.f1.set_aspect ('equal')
         self.F1.tight_layout()
+
+    def addOuterBoundary (self):
+        for i in range(self.nhex):
+            # Boundary flag is 0x40 (see morph::Hex)
+            # Neighbour flags:
+            #define HEX_HAS_NE                0x1
+            #define HEX_HAS_NNE               0x2
+            #define HEX_HAS_NNW               0x4
+            #define HEX_HAS_NW                0x8
+            #define HEX_HAS_NSW              0x10
+            #define HEX_HAS_NSE              0x20
+            if (self.hex_flags[i] & 0x40) == 0x40:
+
+                if (self.hex_flags[i] & 0x1) != 0x1:
+                    # No NE, so draw line and hex
+                    xr = self.x[i]+self.hextohex_d/2.0
+                    linex = [xr, xr]
+                    liney = [self.y[i] + self.hexrad/2.0, self.y[i] - self.hexrad/2.0]
+                    self.f1.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
+                    hex = RegularPolygon((self.x[i]+self.hextohex_d, self.y[i]), numVertices=6, radius=self.hexrad,
+                                         facecolor=self.boundaryOuterHexColour, edgecolor='none', zorder=10000)
+                    self.f1.add_patch (hex)
+
+                if (self.hex_flags[i] & 0x2) != 0x2:
+                    # No NNE
+                    linex = [self.x[i], self.x[i]+self.hextohex_d/2.0]
+                    liney = [self.y[i] + self.hexrad, self.y[i] + self.hexrad/2.0]
+                    self.f1.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
+                    hex = RegularPolygon((self.x[i]+self.hextohex_d/2.0, self.y[i]+1.5*self.hexrad), numVertices=6, radius=self.hexrad,
+                                         facecolor=self.boundaryOuterHexColour, edgecolor='none', zorder=10000)
+                    self.f1.add_patch (hex)
+
+                if (self.hex_flags[i] & 0x4) != 0x4:
+                    # No NNW
+                    linex = [self.x[i], self.x[i]-self.hextohex_d/2.0]
+                    liney = [self.y[i] + self.hexrad, self.y[i] + self.hexrad/2.0]
+                    self.f1.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
+                    hex = RegularPolygon((self.x[i]-self.hextohex_d/2.0, self.y[i]+1.5*self.hexrad), numVertices=6, radius=self.hexrad,
+                                         facecolor=self.boundaryOuterHexColour, edgecolor='none', zorder=10000)
+                    self.f1.add_patch (hex)
+
+                if (self.hex_flags[i] & 0x8) != 0x8:
+                    # No NW
+                    xr = self.x[i]-self.hextohex_d/2.0
+                    linex = [xr, xr]
+                    liney = [self.y[i] + self.hexrad/2.0, self.y[i] - self.hexrad/2.0]
+                    self.f1.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
+                    hex = RegularPolygon((self.x[i]-self.hextohex_d, self.y[i]), numVertices=6, radius=self.hexrad,
+                                         facecolor=self.boundaryOuterHexColour, edgecolor='none', zorder=10000)
+                    self.f1.add_patch (hex)
+
+                if (self.hex_flags[i] & 0x10) != 0x10:
+                    # No NSW
+                    linex = [self.x[i], self.x[i]-self.hextohex_d/2.0]
+                    liney = [self.y[i] - self.hexrad, self.y[i] - self.hexrad/2.0]
+                    self.f1.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
+                    hex = RegularPolygon((self.x[i]-self.hextohex_d/2.0, self.y[i]-1.5*self.hexrad), numVertices=6, radius=self.hexrad,
+                                         facecolor=self.boundaryOuterHexColour, edgecolor='none', zorder=10000)
+                    self.f1.add_patch (hex)
+
+                if (self.hex_flags[i] & 0x20) != 0x20:
+                    # No NSE
+                    linex = [self.x[i], self.x[i]+self.hextohex_d/2.0]
+                    liney = [self.y[i] - self.hexrad, self.y[i] - self.hexrad/2.0]
+                    self.f1.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
+                    hex = RegularPolygon((self.x[i]+self.hextohex_d/2.0, self.y[i]-1.5*self.hexrad), numVertices=6, radius=self.hexrad,
+                                         facecolor=self.boundaryOuterHexColour, edgecolor='none', zorder=10000)
+                    self.f1.add_patch (hex)

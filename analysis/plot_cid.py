@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import BarrelData as bd
 # Import my plotting code:
 import plot as pt
+import sebcolour as sc
 
 # Get target x/y hex to show trace for and the time step to show the
 # map for from the arguments:
@@ -27,6 +28,7 @@ bdo.loadDivisions = True
 bdo.loadGuidance = False
 bdo.loadSimData = True
 bdo.loadTimeStep = ti
+bdo.loadHexFlags = True
 bdo.load (logdirname)
 
 # Compute max of c
@@ -51,16 +53,26 @@ sf = surf.Surface (12, 11)
 sf.associate(bdo)
 
 sf.c = colmap # assign the colour map computed above
-sf.showScalebar = False
+if ti < 5000:
+    sf.showScalebar = True
+else:
+    sf.showScalebar = False
 sf.showAxes = False
-sf.sb1 = [-1.3, -0.8]
-sf.sb2 = [-0.8, -0.8]
+sf.sb1 = [-1.3, -0.9]
+sf.sb2 = [-0.3, -0.9]
 sf.sbtext = ''
 sf.sbtpos = [-1.1, -1.1]
 sf.sblw = 5
 sf.sbfs = 48
-sf.showNames = True
+if ti > 12000:
+    sf.showNames = True
+else:
+    sf.showNames = False
 sf.domcentres = bdo.domcentres[0]
+col = sc.Colour()
+sf.boundarylw = 1.0
+sf.boundaryColour = col.black
+sf.boundaryOuterHexColour = col.gray50
 sf.showBoundaries = True
 if sf.showBoundaries == True:
     sf.domdivision = bdo.domdivision
@@ -73,8 +85,9 @@ sf.plotPoly()
 # Or single contour for each field
 for ii in range(0,bdo.N):
     c = bdo.c[ii,:,0]
-    #c_norm = c/np.max(a)
     sf.addContour (c, 0.5, 'white', 1.0, ii, False);
+
+sf.addOuterBoundary()
 
 mapname = 'plots/{0}_c_id_{1:06d}.png'.format(os.path.basename(logdirname), ti)
 plt.savefig (mapname, dpi=300, transparent=True)

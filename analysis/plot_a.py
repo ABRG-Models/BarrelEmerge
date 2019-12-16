@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import BarrelData as bd
 # Import my plotting code:
 import plot as pt
+import sebcolour as col
 
 # Get target x/y hex to show trace for and the time step to show the
 # map for from the arguments:
@@ -25,6 +26,7 @@ bdo.loadAnalysisData = False
 bdo.loadDivisions = False
 # If loadGuidance is True, then expt id map will be plotted:
 bdo.loadGuidance = False
+bdo.loadHexFlags = True
 bdo.loadSimData = True
 bdo.loadTimeStep = ti
 bdo.load (logdirname)
@@ -37,7 +39,7 @@ sf = surf.Surface (12, 11)
 sf.associate(bdo)
 
 # Plot a single field using a colour map
-sf.z = 2.0*bdo.a[0,:,0] # 13 should be barrel/barreloid C4
+sf.z = 2.0*bdo.a[13,:,0] # 13 is barrel/barreloid C4
 sf.showScalebar = False
 sf.showAxes = False
 sf.sb1 = [-1.3, -0.8]
@@ -49,7 +51,13 @@ sf.sbfs = 48
 sf.showNames = False
 sf.showBoundaries = False
 sf.cmap = plt.cm.Greys
+sf.boundarylw = 1.0
+col = col.Colour()
+sf.boundaryColour = col.gray25
+sf.boundaryOuterHexColour = col.gray83
+
 sf.plotPoly()
+sf.addOuterBoundary()
 
 mapname = 'plots/{0}_a_{1:06d}.png'.format(os.path.basename(logdirname), ti)
 plt.savefig (mapname, dpi=300, transparent=True)
