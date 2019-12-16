@@ -69,7 +69,7 @@ sos_dist =  np.ma.masked_equal (bdo.sos_dist, 0)
 mask_combined = np.invert(hondadelta.mask | sos_dist.mask)
 #print ('mask {0}'.format(mask_combined))
 # Apply the mask to the time:
-t1_masked = bdo.t[mask_combined].T
+t1_masked = bdo.t_steps[mask_combined].T
 mapdiff = bdo.mapdiff[mask_combined].T
 area_diff = bdo.area_diff[mask_combined].T
 area_diff = area_diff / np.max(area_diff)
@@ -87,6 +87,10 @@ xmax = xmax[0]
 print ('xmax = {0}'.format(xmax))
 ax1 = F1.add_subplot(1,1,1)
 l1, = ax1.plot(t1_masked, hondadelta, 'o', markersize=12, color=col.black, label='Honda $\delta$')
+
+np.save ('postproc/honda_t.npy', t1_masked)
+np.save ('postproc/honda_delta.npy', hondadelta)
+
 #l2, = ax1.plot((0,xmax), (0.003, 0.003), '-.', color=col.black, linewidth=3, label="excellent (cells)")
 # 0.054 is Senft and Woolsey's result for barrels (mouse 0,054, other rodents about 0.055)
 l2, = ax1.plot((0,xmax), (0.055, 0.055), '--', color=col.black, linewidth=3, label="good (S&W)")
@@ -98,6 +102,7 @@ area_measure = area_diff[:,0]*sos_dist
 
 #l4, = ax2.plot(t1_masked, sos_dist, '^', markersize=12, color=col.blue)
 l4, = ax2.plot(t1_masked, area_measure, 'v', markersize=12, color=col.blue)
+np.save ('postproc/area_measure.npy', area_measure)
 
 sos_min = np.min(sos_dist)
 sos_end = sos_dist[-1]
@@ -107,9 +112,9 @@ sos_end = sos_dist[-1]
 #l7, = ax1.plot(t1, s_resid, 's', label='Summed residuals to vert. line fits')
 #l8, = ax1.plot(t1, s_resid_h, 's', label='Summed residuals to horz. line fits')
 
-ax1.set_xlabel ('Simulation time')
-ax1.set_ylabel ('Honda $\delta$ measure')
-ax2.set_ylabel ('Pattern metric')
+ax1.set_xlabel ('Steps')
+ax1.set_ylabel ('$\delta$')
+ax2.set_ylabel ('$\zeta$')
 ax2.tick_params (axis='y', labelcolor=col.blue)
 ax1.set_xlim ((0,xmax))
 ax1.set_ylim ((0,0.3))
