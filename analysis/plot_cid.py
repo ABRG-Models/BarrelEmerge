@@ -23,7 +23,7 @@ ti = int(sys.argv[2])
 bdo = bd.BarrelData()
 # Set True for inter-lines:
 bdo.loadAnalysisData = True
-bdo.loadDivisions = True
+bdo.loadDivisions = False
 # If loadGuidance is True, then expt id map will be plotted:
 bdo.loadGuidance = False
 bdo.loadSimData = True

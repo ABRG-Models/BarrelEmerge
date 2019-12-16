@@ -226,6 +226,13 @@ class BarrelData:
     def readHexGrid (self):
         pf = h5py.File(self.logdir+'/hexgrid.h5', 'r')
         self.hex_flags = np.array(pf['d_flags'], dtype=int)
+        # Read in neighbours
+        self.d_ne = np.array(pf['d_ne'], dtype=int)
+        self.d_nne = np.array(pf['d_nne'], dtype=int)
+        self.d_nnw = np.array(pf['d_nnw'], dtype=int)
+        self.d_nw = np.array(pf['d_nw'], dtype=int)
+        self.d_nsw = np.array(pf['d_nsw'], dtype=int)
+        self.d_nse = np.array(pf['d_nse'], dtype=int)
 
     #
     # Read analysis data from the dirich_*.h5 files.
