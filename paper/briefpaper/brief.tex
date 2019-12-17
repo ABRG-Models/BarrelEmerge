@@ -93,38 +93,41 @@ Software tools for modelling the cortical sheet as a hexagonal lattice with no-f
 \includegraphics[width=\textwidth]{../briefpaper/MainFig.png}
 \end{center}
 
-\caption{\textbf{C.} Cortical whisker barrels from \cite{zheng_signal_2001}
-  with annotations for approximate axes and lines drawn to join the
-  interstices into a putative Voronoi diagram.  \textbf{B.}  Top: Stochastic
-  initial condition for $a_i$ with $i=13$ (barrel C4). The roll-off towards
-  the boundary (thin line) ensures the boundary conditions are
-  satisfied. Bottom: Guidance molecules in the simulated cortex. Molecule 1 is
-  expressed high to low in an approximately anterior to posterior
-  gradient. Molecule 2 is expressed lateral to medial (analogously to ephrin -
-  Vanderhaegen et al) \textbf{C.}  Barreloid centres for mystacial whiskers
-  taken from \cite{haidarliu_size_2001} are shown as black circles. The dashed
-  grey line shows the boundary of the barreloid field. It is assumed that
-  there are two linearly increasing, orthogonal signalling molecules in the
-  thalamus, such that the location of each barreloid within the graded
-  thalamic signal field can differentiate the efferent axons, with the result
-  that axons from each barreloid interact to varying degrees with the cortical
-  signalling gradients shown in B. Coloured arrows show, for each barreloid,
-  the magnitude (and sign) of the interaction that its thalamocortical
-  projection will have with each signalling gradient in the cortex. The
-  mappings from barreloid location to interaction strength are
-  linear. \textbf{D.}  Barrel cortex simulation. Colours indicate
-  $\arg\max_i(c_i)$ for 41 is. Parameters:
-  $\alpha=3$, $\beta=20$, $k=3$, $D=0.2$, $\gamma\in\pm 2$,
-  $\delta{t}=0.0001$. \textbf{E.}  The Honda Dirichlet measure, $\delta$, as a
-  function of simulation time for the simulations show in D. \textbf{F.}
-  Guidance molecules in the simulated Fgf8 misexpression experiment. Molecule
-  1 is mirrored over the anterior-posterior axis The simulation indicates that
-  the mirroring of the barrel field can occur as a result of the mirroring of
-  guidance molecule 1.}
+\caption{\textbf{A.} Cortical whisker barrels from \cite{zheng_signal_2001}
+  annotated with lines joining interstices into a putative Voronoi diagram
+  ($\delta=0.022$). \textbf{B.}  Top: Stochastic initial condition for $a_i$
+  with $i=1$ (barrel `$\alpha$'). The roll-off towards the boundary (thin line)
+  ensures the boundary conditions are satisfied. Bottom: Guidance molecules
+  $\rho_1(\mathbf{x})$ and $\rho_2(\mathbf{x})$ in the simulated
+  cortex. $\rho_1(\mathbf{x})$ varies along the anterior-posterior axis;
+  $\rho_2(\mathbf{x})$ is expressed along the lateral/medial axis, analogous
+  to ephrin A5 \citep{vanderhaeghen_mapping_2000}. \textbf{C.}  Barreloid
+  centres for mystacial whiskers taken from \cite{haidarliu_size_2001} are
+  shown as black circles. The dashed grey line shows the boundary of the
+  barreloid field. It is assumed that there are two linearly increasing,
+  orthogonal signalling molecules in the thalamus, such that the location of
+  each barreloid within the graded thalamic signal field can differentiate the
+  efferent axons, with the result that axons from each barreloid interact to
+  varying degrees with the cortical signalling gradients $\rho_1$ and
+  $\rho_2$. Blue (green) arrows show, for each barreloid, the magnitude (and
+  sign) of the interaction that its thalamocortical projection will have with
+  $\rho_1$ ($\rho_2$). The mappings from barreloid location to interaction
+  strength are linear. \textbf{D.}  Barrel cortex simulation with parameters
+  $\alpha=3$, $\beta=20$, $k=3$, $D=0.2$, $\gamma\in\pm 2$ and
+  $\delta{t}=0.0001$. Colours indicate $\arg\max_i(c_i)$ for 41 TC
+  projections.  \textbf{E.}  The Honda Voronoi measure, $\delta$, (red) and a
+  pattern fitting metric based on the distance, $d_i$, between simulated and
+  experimental barrel centroids and the absolute difference in their areas,
+  $\Delta A_i$ given by $\sigma = \sum_i^N d_i^2 \times \sum_i^N \Delta A_i$
+  (black) plotted as a function of time for the simulations shown in
+  D. \textbf{F.}  Guidance molecules in the simulated Fgf8 misexpression
+  experiment. $\rho_1$ is mirrored over the anterior-posterior axis. The
+  simulation indicates that the mirroring of the barrel field can occur as a
+  result of the mirroring of guidance molecule 1.}
 \label{fig:main}
 \end{figure*}
 
-First we verified that all results established by \cite{karbowski_model_2004} for a 1D axis could be reproduced using our extension to a 2D cortical sheet. Using an elliptical boundary with $M=3$ offset guidance gradients aligned to the longer axis, $N=5$ thalamocortical projections gave rise to five distinct cortical fields at locations that preserved the topographic ordering defined by the original $\gamma$ values. However, we found that specifying $N$ ordered areas required $M\approx N$ signalling fields. As the number of distinct guidance fields is unlikely to approach the number of barrels, further extensions were required.
+First we verified that all results established by \cite{karbowski_model_2004} for a 1D axis could be reproduced using our extension to a 2D cortical sheet. Using an elliptical boundary with $M=3$ offset guidance gradients aligned to the longer axis, $N=5$ thalamocortical projections gave rise to five distinct cortical fields at locations that preserved the topographic ordering defined by the original $\gamma$ values. However, we found that specifying $N$ ordered areas required $M\approx (N+1)/2$ signalling fields. As the number of distinct guidance fields is unlikely to approach the number of barrels, further extensions were required.
 
 The term in parentheses in Eq.~\ref{eq:dc} represents competition between thalamocortical projections for a limited availability of cortical connections. To introduce competition also in terms of axon branching we redefined
 %
