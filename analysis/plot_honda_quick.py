@@ -45,7 +45,7 @@ l4, = ax2.plot(t1_masked, area_measure, 's', markersize=12, color=col.black)
 
 ax1.set_xlabel ('10k steps')
 ax1.set_ylabel ('$\delta$',rotation=0)
-ax2.set_ylabel ('$\sigma$',rotation=0)
+ax2.set_ylabel ('$\eta$',rotation=0)
 ax2.tick_params (axis='y', labelcolor=col.black)
 ax1.set_xlim ((0,xmax))
 ax1.set_ylim ((0,0.3))

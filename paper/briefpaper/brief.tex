@@ -56,10 +56,12 @@ Brain development relies on an interplay of genetic specification and self-organ
 \modulolinenumbers{}
 \linenumbers
 
-\dropcap{S}patial patterns in neural connectivity provide clues about the constraints under which brains evolve and develop \citep{purves_iterated_1992}. Perhaps the most distinctive pattern can be found in the rodent barrel cortex \cite{woolsey_structural_1970}. The barrels are large cortical columns, identifiable from birth in layer 4 of primary somatosensory cortex as dense clusters of thalamocortical axons, which are enclosed by borders a few neurons thick from postnatal day 3 \citep{erzurumlu_development_2012}. In the plane tangential to the cortical surface the barrels constitute a somatotopic map of the whiskers, with cells of adjacent barrels responding most strongly and quickly to deflection of adjacent whiskers \citep{armstrong-james_flow_1992}. Barrel patterning reflects subcortical whisker maps comprising cell aggregates called barrelettes in the brainstem and barreloids in the thalamus \cite{van_der_loos_barreloids_1976}.
+\dropcap{S}patial patterns in neural connectivity provide clues about the constraints under which brains evolve and develop \citep{purves_iterated_1992}. Perhaps the most distinctive pattern can be found in the rodent barrel cortex \cite{woolsey_structural_1970}. The barrels are large cortical columns, identifiable from birth in layer 4 of primary somatosensory cortex as dense clusters of thalamocortical axons, which are enclosed by borders a few neurons thick from postnatal day 3 \citep{erzurumlu_development_2012}. In the plane tangential to the cortical surface the barrels constitute a somatotopic map of the whiskers, with cells of adjacent barrels responding most strongly and quickly to deflection of adjacent whiskers \citep{armstrong-james_flow_1992}. Barrel patterning reflects subcortical whisker maps comprising cell aggregates called barrelettes in the brainstem and barreloids in the thalamus.
+%\cite{van_der_loos_barreloids_1976}.
 
 Barrel formation requires afferent input from whisker stimulation and thalamic calcium waves \citep{anton-bolanos_prenatal_2019}, and depends on a complex network of axon guidance molecules such as ephrin-A5 and A7 and adhesion molecules such as cadherin-6 and 8 \citep{miller_epha7-ephrin-a5_2006}.
-This network is orchestrated by interactions between morphogens Fgf8 and Fgf17 and transcription factors Emx2, Pax6, Sp8, and Coup-tf1 \citep{shimogori_fibroblast_2005,bishop_regulation_2000}, which are expressed in gradients that mark orthogonal axes and can be manipulated to stretch, shrink, shift, and even duplicate barrels \cite{assimacopoulos_fibroblast_2012}.
+This network is orchestrated by interactions between morphogens Fgf8 and Fgf17 and transcription factors Emx2, Pax6, Sp8, and Coup-tf1 \citep{shimogori_fibroblast_2005}, which are expressed in gradients that mark orthogonal axes and can be manipulated to stretch, shrink, shift, and even duplicate barrels \cite{assimacopoulos_fibroblast_2012}.
+% Removed ref: ,bishop_regulation_2000 after ..Coup-tf1
 
 The barrel boundaries form a Voronoi tessellation across the cortical sheet \citep{senft_mouse_1991}, suggesting that barreloid topology is preserved in the projection of thalamocortical axons into the cortex, and that a barrel forms by lateral axon branching from an initial centre-point that ceases upon contact with axons branching from adjacent centres. But the assumption of pre-arranged centres is difficult to resolve with the observation that  axons arrive in the cortical plate as an undifferentiated bundle, prior to barreloid formation \cite{agmon_organized_1993}.
 
@@ -96,9 +98,9 @@ Software tools for modelling the cortical sheet as a hexagonal lattice with no-f
 \caption{\textbf{A.} Cortical whisker barrels from \cite{zheng_signal_2001}
   annotated with lines joining interstices into a putative Voronoi diagram
   ($\delta=0.022$). \textbf{B.}  Top: Stochastic initial condition for $a_i$
-  with $i=1$ (barrel `$\alpha$'). The roll-off towards the boundary (thin line)
-  ensures the boundary conditions are satisfied. Bottom: Guidance molecules
-  $\rho_1(\mathbf{x})$ and $\rho_2(\mathbf{x})$ in the simulated
+  with $i=1$ (barrel `$\alpha$'). The roll-off towards the boundary (thin
+  line) ensures the boundary conditions are satisfied. Bottom: Guidance
+  molecules $\rho_1(\mathbf{x})$ and $\rho_2(\mathbf{x})$ in the simulated
   cortex. $\rho_1(\mathbf{x})$ varies along the anterior-posterior axis;
   $\rho_2(\mathbf{x})$ is expressed along the lateral/medial axis, analogous
   to ephrin A5 \citep{vanderhaeghen_mapping_2000}. \textbf{C.}  Barreloid
@@ -118,9 +120,9 @@ Software tools for modelling the cortical sheet as a hexagonal lattice with no-f
   projections.  \textbf{E.}  The Honda Voronoi measure, $\delta$, (red) and a
   pattern fitting metric based on the distance, $d_i$, between simulated and
   experimental barrel centroids and the absolute difference in their areas,
-  $\Delta A_i$ given by $\sigma = \sum_i^N d_i^2 \times \sum_i^N \Delta A_i$
-  (black) plotted as a function of time for the simulations shown in
-  D. \textbf{F.}  Guidance molecules in the simulated Fgf8 misexpression
+  $\Delta A_i$ given by $\eta = \sum_i^N d_i^2 \times \sum_i^N \Delta A_i$
+  (black, units L$^4$) plotted as a function of time for the simulations shown
+  in D. \textbf{F.}  Guidance molecules in the simulated Fgf8 misexpression
   experiment. $\rho_1$ is mirrored over the anterior-posterior axis. The
   simulation indicates that the mirroring of the barrel field can occur as a
   result of the mirroring of guidance molecule 1.}
