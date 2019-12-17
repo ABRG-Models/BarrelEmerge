@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import BarrelData as bd
 # Import my plotting code:
 import plot as pt
+import sebcolour
 
 # Get target x/y hex to show trace for and the time step to show the
 # map for from the arguments:
@@ -22,9 +23,10 @@ ti = -1
 bdo = bd.BarrelData()
 # Set True for inter-lines:
 bdo.loadAnalysisData = True
-bdo.loadDivisions = True
+bdo.loadDivisions = False
 # If loadGuidance is True, then expt id map will be plotted:
 bdo.loadGuidance = False
+bdo.loadHexFlags = True
 bdo.loadSimData = True
 bdo.loadTimeStep = ti
 #bdo.gammaColourScheme = 'redblue' # 'redblue' for red/blue, anything else for green/blue (the default)
@@ -35,7 +37,7 @@ import Surface as surf
 sf = surf.Surface (12, 11)
 sf.associate(bdo)
 
-sf.showScalebar = True
+sf.showScalebar = False
 sf.showAxes = False
 sf.sb1 = [-1.3, -0.8]
 sf.sb2 = [-0.3, -0.8]
@@ -44,7 +46,11 @@ sf.sbtpos = [-1.1, -1.1]
 sf.sblw = 5
 sf.sbfs = 48
 sf.showNames = False
-sf.showBoundaries = False
+sf.showBoundaries = True
+col = sebcolour.Colour()
+sf.boundarylw = 1.0
+sf.boundaryColour = col.black
+sf.boundaryOuterHexColour = col.gray50
 
 print ('bdo.a shape: {0}'.format (np.shape(bdo.a)))
 for t in range(0,bdo.t_steps.size):
@@ -63,12 +69,7 @@ for t in range(0,bdo.t_steps.size):
 
     sf.c = colmap # assign the colour map computed above
     if sf.showNames == True:
-        print ('domcentres shape: {0}'.format (np.shape (bdo.domcentres)))
         sf.domcentres = bdo.domcentres[t]
-        print ('sf.domcentres shape: {0}'.format (np.shape (sf.domcentres)))
-    if sf.showBoundaries == True:
-        print ('domdivision shape: {0}'.format (np.shape (bdo.domdivision)))
-        sf.domdivision = bdo.domdivision
 
     sf.plotPoly()
 
@@ -77,6 +78,8 @@ for t in range(0,bdo.t_steps.size):
         a = bdo.a[ii,:,t]
         a_norm = a/np.max(a)
         sf.addContour (a_norm, 0.7, 'white', 1.0);
+
+    sf.addOuterBoundary()
 
     mapname = 'plots/aid_all/{0}_a_id_{1:06d}.png'.format(os.path.basename(logdirname), t)
     plt.savefig (mapname, dpi=300, transparent=False)

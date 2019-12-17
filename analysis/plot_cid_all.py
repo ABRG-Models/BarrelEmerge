@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import BarrelData as bd
 # Import my plotting code:
 import plot as pt
+import sebcolour
 
 # Get target x/y hex to show trace for and the time step to show the
 # map for from the arguments:
@@ -22,9 +23,10 @@ ti = -1
 bdo = bd.BarrelData()
 # Set True for inter-lines:
 bdo.loadAnalysisData = True
-bdo.loadDivisions = True
+bdo.loadDivisions = False
 # If loadGuidance is True, then expt id map will be plotted:
 bdo.loadGuidance = False
+bdo.loadHexFlags = True
 bdo.loadSimData = True
 bdo.loadTimeStep = ti
 bdo.load (logdirname)
@@ -43,7 +45,11 @@ sf.sbtpos = [-1.1, -1.1]
 sf.sblw = 5
 sf.sbfs = 48
 sf.showNames = False
-sf.showBoundaries = False
+sf.showBoundaries = True
+col = sebcolour.Colour()
+sf.boundarylw = 1.0
+sf.boundaryColour = col.black
+sf.boundaryOuterHexColour = col.gray50
 
 for t in range(0,bdo.t_steps.size):
 
@@ -62,8 +68,8 @@ for t in range(0,bdo.t_steps.size):
 
     sf.c = colmap # assign the colour map computed above
     sf.domcentres = bdo.domcentres[t]
-    if sf.showBoundaries == True:
-        sf.domdivision = bdo.domdivision
+    #if sf.showBoundaries == True:
+    #    sf.domdivision = bdo.domdivision
 
     sf.plotPoly()
 
@@ -72,6 +78,7 @@ for t in range(0,bdo.t_steps.size):
         c = bdo.c[ii,:,t]
         sf.addContour (c, 0.5, 'white', 1.0, ii, True);
 
+    sf.addOuterBoundary()
 
     mapname = 'plots/cid_all/{0}_c_id_{1:06d}.png'.format(os.path.basename(logdirname), t)
     plt.savefig (mapname, dpi=300, transparent=False)
