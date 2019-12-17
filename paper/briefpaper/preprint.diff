@@ -1,0 +1,25 @@
+--- brief.tex	2019-12-17 14:14:51.929513923 +0000
++++ brief_pp.tex	2019-12-17 14:05:27.425632192 +0000
+@@ -7,7 +7,9 @@
+ % barrels. Everything in the paper should be tailored towards arguing
+ % this idea.
+ 
+-\documentclass[9pt,twocolumn,twoside,lineno]{pnas-new}
++%\documentclass[9pt,twocolumn,twoside,lineno]{pnas-new}
++% Different documentclass for Biorxiv version:
++\documentclass[9pt,twocolumn,twoside]{pnas-notpnas}
+ \templatetype{pnasresearcharticle}
+ 
+ \title{Modelling the emergence of whisker barrels}
+@@ -53,8 +55,9 @@
+ \thispagestyle{firststyle}
+ \ifthenelse{\boolean{shortarticle}}{\ifthenelse{\boolean{singlecolumn}}{\abscontentformatted}{\abscontent}}{}
+ 
+-\modulolinenumbers{}
+-\linenumbers
++% Comment out for Biorxiv version:
++%\modulolinenumbers{}
++%\linenumbers
+ 
+ \dropcap{S}patial patterns in neural connectivity provide clues about the constraints under which brains evolve and develop \citep{purves_iterated_1992}. Perhaps the most distinctive pattern can be found in the rodent barrel cortex \cite{woolsey_structural_1970}. The barrels are large cortical columns, identifiable from birth in layer 4 of primary somatosensory cortex as dense clusters of thalamocortical axons, which are enclosed by borders a few neurons thick from postnatal day 3 \citep{erzurumlu_development_2012}. In the plane tangential to the cortical surface the barrels constitute a somatotopic map of the whiskers, with cells of adjacent barrels responding most strongly and quickly to deflection of adjacent whiskers \citep{armstrong-james_flow_1992}. Barrel patterning reflects subcortical whisker maps comprising cell aggregates called barrelettes in the brainstem and barreloids in the thalamus \cite{van_der_loos_barreloids_1976}.
+ 
