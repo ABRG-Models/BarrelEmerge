@@ -64,7 +64,7 @@ Barrel formation requires afferent input from whisker stimulation and thalamic c
 This network is orchestrated by interactions between morphogens Fgf8 and Fgf17 and transcription factors Emx2, Pax6, Sp8, and Coup-tf1 \citep{shimogori_fibroblast_2005}, which are expressed in gradients that mark orthogonal axes and can be manipulated to stretch, shrink, shift, and even duplicate barrels \cite{assimacopoulos_fibroblast_2012}.
 % Removed ref: ,bishop_regulation_2000 after ..Coup-tf1
 
-The barrel boundaries form a Voronoi tessellation across the cortical sheet \citep{senft_mouse_1991}, suggesting that barreloid topology is preserved in the projection of thalamocortical axons into the cortex, and that a barrel forms by lateral axon branching from an initial centre-point that ceases upon contact with axons branching from adjacent centres. But the assumption of pre-arranged centres is difficult to resolve with the observation that  axons arrive in the cortical plate as an undifferentiated bundle, prior to barreloid formation \cite{agmon_organized_1993}.
+The barrel boundaries form a Voronoi tessellation across the cortical sheet \citep{senft_mouse_1991} (Fig.\,1A), suggesting that barreloid topology is preserved in the projection of thalamocortical axons into the cortex, and that a barrel forms by lateral axon branching from an initial centre-point that ceases upon contact with axons branching from adjacent centres. But the assumption of pre-arranged centres is difficult to resolve with the observation that  axons arrive in the cortical plate as an undifferentiated bundle, prior to barreloid formation \cite{agmon_organized_1993}.
 
 Alternatively, reaction-diffusion dynamics could generate a Voronoi tessellation without pre-arranged centres, by amplifying characteristic modes in a noisy initial distribution of axon branches, as a net effect of short-range cooperative and longer-range competitive interactions. Accordingly, the barrel pattern would be determined by the relative strength of these interactions and by the shape of the cortical field boundary. However, intrinsic cortical dynamics alone cannot account for the topographic correspondence between thalamic and cortical domains, the irregular sizes and specific arrangement of the barrels in rows and arcs, or the influence of gene expression gradients.
 
@@ -73,7 +73,7 @@ The centre-point and reaction-diffusion models are not mutually exclusive. Pre-o
 
 \section*{Models}
 
-Karbowski \& Ermentrout \citep{karbowski_model_2004} developed a reaction-diffusion style model of how extrinsic signalling gradients can constrain the emergence of distinct fields from intrinsic cortical dynamics. Their model defines how the density of connections $c(x,t)$ and axon branches $a(x,t)$ interact at time $t$, along a 1D anterior-posterior axis $x$, for $N$ thalamocortical projections indexed by $i$. The model was derived from the assumption that the rates at which $a_i$ and $c_i$ grow are reciprocally coupled. Extending the original 1D model to simulate arealization on a 2D cortical sheet, we use $a_i(\mb{x},t)$ and $c_i(\mb{x},t)$, and  model synaptogenesis as
+Karbowski \& Ermentrout \citep{karbowski_model_2004} developed a reaction-diffusion style model of how extrinsic signalling gradients can constrain the emergence of distinct fields from intrinsic cortical dynamics. Their model defines how the density of connections $c(x,t)$ and axon branches $a(x,t)$ interact at time $t$, along a 1D anterior-posterior axis $x$, for $N$ thalamocortical projections indexed by $i$. The model was derived from the assumption that the rates at which $a_i$ and $c_i$ grow are reciprocally coupled. Extending the original 1D model to simulate arealization on a 2D cortical sheet, we use $a_i(\mb{x},t)$ and $c_i(\mb{x},t)$, and model synaptogenesis as
 %
 \begin{equation} \label{eq:dc}
 \frac{\partial c_i}{\partial t} =-\alpha c_i +\beta  \left(1 - \sum_{j=1}^{N} c_{j}\right)[a_i]^k.
@@ -96,39 +96,9 @@ fourth-order Runge-Kutta method, and for reproducing these results is available 
 
 \begin{figure*}
 \begin{center}
-\includegraphics[width=\textwidth]{../briefpaper/MainFig.png}
+\includegraphics[width=0.8\textwidth]{../briefpaper/MainFig.pdf}
 \end{center}
-
-\caption{\textbf{A.} Cortical whisker barrels from \cite{zheng_signal_2001}
-  annotated with lines joining interstices into a putative Voronoi diagram
-  ($\delta=0.022$). \textbf{B.}  Top: Stochastic initial condition for $a_1$
-  (barrel `$\alpha$'). The roll-off towards the boundary (thin line) ensures
-  the boundary conditions are satisfied. Bottom: Guidance molecules
-  $\rho_1(\mathbf{x})$ and $\rho_2(\mathbf{x})$ in the simulated
-  cortex. $\rho_1(\mathbf{x})$ varies along the anterior-posterior axis,
-  $\rho_2(\mathbf{x})$ along the lateral/medial axis (cf.~ephrin A5,
-  \cite{vanderhaeghen_mapping_2000}). \textbf{C.}  Barreloid centres for
-  mystacial whiskers taken from \cite{haidarliu_size_2001} are shown as black
-  circles; the dashed grey line indicates the boundary. Assuming two linearly
-  increasing, orthogonal signalling molecules in the thalamus, the location of
-  each barreloid within this signal field can differentiate the efferent
-  axons. Axons from each barreloid interact to varying degrees with the
-  cortical signals $\rho_1$ and $\rho_2$. Blue (green) arrows show, for each
-  barreloid's projection, the magnitude (and sign) of the interaction that it
-  will have with $\rho_1$ ($\rho_2$). \textbf{D.}  Barrel cortex simulation
-  with parameters $\alpha=3$, $\beta=20$, $k=3$, $D=0.2$, $\gamma\in\pm 2$ and
-  $\delta{t}=0.0001$. Colours indicate $\arg\max_i(c_i)$ for 41 TC
-  projections; black lines indicate boundaries. \textbf{E.}
-  The Honda Voronoi measure, $\delta$, (red) and a pattern fitness metric
-  based on the distance, $d_i$, between simulated and observed barrel
-  centroids and the absolute difference in their areas, $\Delta A_i$ given by
-  $\eta = \sum_i^N d_i^2 \times \sum_i^N \Delta A_i$ (black, units mm$^4$)
-  plotted as a function of time for the simulations shown in D. \textbf{F.}
-  Guidance molecules and resulting pattern in the simulated Fgf8 misexpression
-  experiment. Parameters as in D, but $\rho_1$ is mirrored over the
-  anterior-posterior axis. The simulation indicates that the mirroring of the
-  barrel field can occur as a result of the mirroring of guidance molecule 1.
-  All scale bars are 1~mm.}
+\caption{\textbf{A} Left shows a cytochrome oxidase stain obtained from rat S1 by \cite{zheng_signal_2001}, with black lines to delineate barrels and to measure departure ($\delta$) from a perfect Voronoi tesselation. Right shows the initial distribution of axon branching density ($a$) for one thalamocortical projection and two molecular guidance fields ($\rho$). \textbf{B} The strength of interaction $\gamma$ for each of 41 projections with field $\rho_1$ and $\rho_2$ are indicated by the lengths of green and blue arrows respectively, assuming that similar fields aligned to the posterior-anterior and medial-lateral axes in the ventroposterior medial nucleus of the thalamus are sampled at the locations of barreloid centers (reconstructed from \cite{haidarliu_size_2001}). \textbf{C} Simulation results for parameters $N=41$, $\alpha=3$, $\beta=20$, $k=3$, $D=0.2$, $\gamma\in\pm 2$ and $\delta{t}=0.0001$. Colours indicate the thalamic projection for which the connection density is maximal, black lines delineate boundaries, and overlaid contours show $c>0.2$. \textbf{D} The Honda $\delta$ metric (red dots; see \cite{senft_mouse_1991}) measures departure from a Voronoi tesselation (dotted line corresponds to the barrels in $A$), and $\eta$ (black squares) measures the correspondence between the real and simulated barrel shapes (the product of the sum of squared differences between real and simulated centers and the sum of squared differences in area; units mm$^4$). \textbf{F.} Guidance fields and emergent barrel pattern in a Fgf8 misexpression experiment (c.f. \cite{assimacopoulos_fibroblast_2012}), simulated by reflecting $\rho_1$ about the anterior-posterior axis. All scale bars 1mm.}
 \label{fig:main}
 \end{figure*}
 
@@ -149,21 +119,21 @@ which reduces branching for each projection where the branches of other projecti
 %
 where prime symbols indicate the use of intermediate values computed from Eqs.~\ref{eq:dc}--\ref{eq:comp} at time $t-{\delta}t$.
 
-The only differences between thalamic projections are their strengths of interaction with the guidance fields, $\gamma$, hence any reliable differences between emergent cortical fields must be due to differences in these values only. We speculate that a projection interacts with a given ephrin field in the cortical subplate with a strength determined by the concentration of a similar molecule at its thalamic origin, i.e., the putative barreloid center. As such, two orthogonal linear thalamic gradients were defined, from which 41 pairs of $\gamma$ values were sampled, at the coordinates of 41 barreloid centers recreated from \cite{haidarliu_size_2001}.
+The only differences between thalamic projections are their strengths of interaction with the guidance fields, $\gamma$, hence any reliable differences between emergent cortical fields must be due to differences in these values only. We speculate that a projection interacts with a given ephrin field in the cortical subplate with a strength determined by the concentration of a similar molecule at its thalamic origin, i.e., the putative barreloid center. As such, two orthogonal linear thalamic gradients were defined, from which 41 pairs of $\gamma$ values were sampled, at the coordinates of 41 barreloid centers recreated from \cite{haidarliu_size_2001} (Fig.\,1B).
 
-A cortical boundary enclosing 41 corresponding barrels was traced from a cytochrome oxidase stain from \cite{zheng_signal_2001}, and Eqs.~\ref{eq:dc}--\ref{eq:norm} were solved for $N=41$ projections on the resulting domain, using $M=2$ linear signalling gradients aligned with the anterior-posterior and  medial-lateral axes. From random initial conditions for $a({\bf x},0)$ and $c({\bf x},0)$, a clear Voronoi-like tesselation emerged. A reduction in the Honda delta metric (see \cite{senft_mouse_1991}) confirmed that a `good' Voronoi pattern emerged within $\approx 3000$ iterations (see Figure 1). The sum of squared differences between the real and simulated barrel centres revealed a strong correspondence.
+A cortical boundary enclosing 41 corresponding barrels was traced from a cytochrome oxidase stain from \cite{zheng_signal_2001}, and Eqs.~\ref{eq:dc}--\ref{eq:norm} were solved for $N=41$ projections on the resulting domain, using $M=2$ linear signalling gradients aligned with the anterior-posterior and medial-lateral axes. From random initial conditions for $a({\bf x},0)$ and $c({\bf x},0)$, a clear Voronoi-like tesselation emerged (Fig.\,1C). A reduction in the Honda delta metric (see \cite{senft_mouse_1991}) confirmed that a `good' Voronoi pattern emerged within $\approx 3000$ iterations (see Fig.\,1D). A measure of the difference in shape between real and simulated barrels revealed a strong correspondence (see Fig.\,1D).
 
-To further investigate the interplay of genetic and intrinsic mechanisms we simulated a seminal barrel duplication experiment \cite{shimogori_fibroblast_2005},  first by solving on a cortical domain comprising two separate, identically shaped cortical boundaries. In this case one distinct cortical field per thalamic projection emerged, within one of the two boundaries only, i.e., no duplication. However, merging the two fields to create an extended mirror-symmetric boundary shape, with an anterior-posterior guidance field reflected at the join, gave rise to two mirror-symmetrical barrel fields comprising NN barrels, i.e., two cortical fields for each thalamic projection (see Figure 2). Together these results suggest that by the misexpression of Fgf8, Shimogori \& Grove \citep{shimogori_fibroblast_2005} effectively created one large barrel field rather than two distinct fields.
+To further investigate the interplay of genetic and intrinsic mechanisms we simulated a seminal barrel duplication experiment \cite{shimogori_fibroblast_2005},  first by solving on a cortical domain comprising two separate, identically shaped cortical boundaries. In this case one distinct cortical field per thalamic projection emerged, within one of the two boundaries only, i.e., no duplication. However, merging the two fields to create an extended mirror-symmetric boundary shape, with an anterior-posterior guidance field reflected at the join, gave rise to two mirror-symmetrical barrel fields comprising 2N barrels, i.e., two cortical fields for each thalamic projection (Fig.\,1E). Together these results suggest that by the misexpression of Fgf8, Shimogori \& Grove \citep{shimogori_fibroblast_2005} effectively created one large barrel field rather than two distinct cortical fields.
 
 \section*{Discussion}
 
 The present results suggest that the key requirements for the emergence of realistic barrel patterning are i) at each cortical location thalamocortical projections compete for a limited number of available synaptic connections (Eqs.~\ref{eq:dc}--\ref{eq:da}), ii) at each location the branching rate of a given projection is reduced by the density of other projections (Eq.~\ref{eq:comp}), and iii) the branch density of each projection is conserved (Eq.~\ref{eq:norm}).
 
-It is important to emphasize that the formulation of the model is entirely local, insofar as simulation requires no information to be communicated between thalamic projections, or from a given cortical location to any but those immediately adjacent. Hence the simulations demonstrate how a self-organising system, constrained by genetically specified guidance cues, can faithfully reproduce an arrangement of cell aggregates in one neural structure as a topographic map in another.
+It is important to emphasize that the formulation of the model is entirely local, insofar as simulation requires no information to be communicated from a given cortical grid cell to any but those immediately adjacent (via diffusion). Hence the simulations demonstrate how a self-organising system, constrained by genetically specified guidance cues, can faithfully reproduce an arrangement of cell aggregates in one neural structure as a topographic map in another.
 %
 The model also shows that the shape of the barrels may be primarily determined
 by the competitive and cooperative interactions between cells relative to the
-shape of the cortical field boundary and that somatotopic map formation does
+shape of the cortical field boundary. And that somatotopic map formation does
 not require the pre-specification of centre-points by as yet undetermined
 additional developmental mechanisms.
 
