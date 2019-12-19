@@ -31,7 +31,7 @@
 \keywords{Barrel cortex $|$ Self-organization $|$ Somatotopic map $|$ Axon guidance}
 
 \begin{abstract}
-Brain development relies on an interplay of genetic specification and self-organisation. Striking examples of this interplay can be found in the rodent somatosensory brainstem, thalamus, and cortex, where the arrangement of the facial whiskers is preserved in the arrangement of cell aggregates to form precise somatotopic maps. We show in simulation how realistic whisker maps can self-organize, by assuming that information is exchanged between adjacent cells only, under the guidance of gene expression gradients. The resulting model provides a simple account of how genetic information can constrain spontaneous pattern formation to faithfully reproduce functional maps in subsequent brain structures.
+Brain development relies on an interplay between genetic specification and self-organisation. Striking examples of this relationship can be found in the  somatosensory brainstem, thalamus, and cortex of rats and mice, where the arrangement of the facial whiskers is preserved in the arrangement of cell aggregates to form precise somatotopic maps. We show in simulation how realistic whisker maps can self-organize, by assuming that information is exchanged between adjacent cells only, under the guidance of gene expression gradients. The resulting model provides a simple account of how patterns of gene expression can constrain spontaneous pattern formation to faithfully reproduce functional maps in subsequent brain structures.
 \end{abstract}
 
 \dates{This manuscript was compiled on \today}
@@ -57,14 +57,14 @@ Brain development relies on an interplay of genetic specification and self-organ
 \modulolinenumbers{}
 \linenumbers
 
-\dropcap{S}patial patterns in neural connectivity provide clues about the constraints under which brains evolve and develop \citep{purves_iterated_1992}. Perhaps the most distinctive pattern can be found in the rodent barrel cortex \cite{woolsey_structural_1970}. The barrels are large cortical columns, identifiable from birth in layer 4 of primary somatosensory cortex as dense clusters of thalamocortical axons, which are enclosed by borders a few neurons thick from postnatal day 3 \citep{erzurumlu_development_2012}. In the plane tangential to the cortical surface the barrels constitute a somatotopic map of the whiskers, with cells of adjacent barrels responding most strongly and quickly to deflection of adjacent whiskers \citep{armstrong-james_flow_1992}. Barrel patterning reflects subcortical whisker maps comprising cell aggregates called barrelettes in the brainstem and barreloids in the thalamus.
+\dropcap{S}patial patterns in neural connectivity provide clues about the constraints under which brains evolve and develop \citep{purves_iterated_1992}. Perhaps the most distinctive pattern can be found in the barrel cortex of many rodent species \cite{woolsey_structural_1970}. The barrels are identifiable soon after birth in layer 4 of primary somatosensory cortex as dense clusters of thalamocortical axons, which are enclosed by borders a few neurons thick from postnatal day 3 \citep{erzurumlu_development_2012}. In the plane tangential to the cortical surface the barrels constitute a somatotopic map of the whiskers, with cells within adjacent barrels responding most strongly and quickly to deflection of adjacent whiskers \citep{armstrong-james_flow_1992}. Barrel patterning reflects subcortical whisker maps comprising cell aggregates called barrelettes in the brainstem and barreloids in the thalamus.
 %\cite{van_der_loos_barreloids_1976}.
 
 Barrel formation requires afferent input from whisker stimulation and thalamic calcium waves \citep{anton-bolanos_prenatal_2019}, and depends on a complex network of axon guidance molecules such as ephrin-A5 and A7 and adhesion molecules such as cadherin-6 and 8 \citep{vanderhaeghen_mapping_2000,miller_epha7-ephrin-a5_2006}.
 This network is orchestrated by interactions between morphogens Fgf8 and Fgf17 and transcription factors Emx2, Pax6, Sp8, and Coup-tf1 \citep{shimogori_fibroblast_2005}, which are expressed in gradients that mark orthogonal axes and can be manipulated to stretch, shrink, shift, and even duplicate barrels \cite{assimacopoulos_fibroblast_2012}.
 % Removed ref: ,bishop_regulation_2000 after ..Coup-tf1
 
-The barrel boundaries form a Voronoi tessellation across the cortical sheet \citep{senft_mouse_1991} (Fig.\,1A), suggesting that barreloid topology is preserved in the projection of thalamocortical axons into the cortex, and that a barrel forms by lateral axon branching from an initial centre-point that ceases upon contact with axons branching from adjacent centres. But the assumption of pre-arranged centres is difficult to resolve with the observation that  axons arrive in the cortical plate as an undifferentiated bundle, prior to barreloid formation \cite{agmon_organized_1993}.
+The barrel boundaries form a Voronoi tessellation across the cortical sheet \citep{senft_mouse_1991} (Fig.\,1A), suggesting that barreloid topology is preserved in the projection of thalamocortical axons into the cortex, and that a barrel forms by lateral axon branching from an initial centre-point that ceases upon contact with axons branching from adjacent centres. But the assumption of pre-arranged centres is difficult to resolve with the observation that axons arrive in the cortical plate as an undifferentiated bundle, prior to barreloid formation \cite{agmon_organized_1993}.
 
 Alternatively, reaction-diffusion dynamics could generate a Voronoi tessellation without pre-arranged centres, by amplifying characteristic modes in a noisy initial distribution of axon branches, as a net effect of short-range cooperative and longer-range competitive interactions. Accordingly, the barrel pattern would be determined by the relative strength of these interactions and by the shape of the cortical field boundary. However, intrinsic cortical dynamics alone cannot account for the topographic correspondence between thalamic and cortical domains, the irregular sizes and specific arrangement of the barrels in rows and arcs, or the influence of gene expression gradients.
 
@@ -127,15 +127,16 @@ To further investigate the interplay of genetic and intrinsic mechanisms we simu
 
 \section*{Discussion}
 
-The present results suggest that the key requirements for the emergence of realistic barrel patterning are i) at each cortical location thalamocortical projections compete for a limited number of available synaptic connections (Eqs.~\ref{eq:dc}--\ref{eq:da}), ii) at each location the branching rate of a given projection is reduced by the density of other projections (Eq.~\ref{eq:comp}), and iii) the branch density of each projection is conserved (Eq.~\ref{eq:norm}).
+The present results suggest that the key requirements for the emergence of realistic barrel patterning are i) at each cortical location thalamocortical projections compete for a limited number of available synaptic connections (Eqs.~\ref{eq:dc}--\ref{eq:da}), ii) at each location the branching rate of a given projection is reduced by the density of other projections (Eq.~\ref{eq:comp}), and iii) the branch density of each projection is conserved over time (Eq.~\ref{eq:norm}).
 
-It is important to emphasize that the formulation of the model is entirely local, insofar as simulation requires no information to be communicated from a given cortical grid cell to any but those immediately adjacent (via diffusion). Hence the simulations demonstrate how a self-organising system, constrained by genetically specified guidance cues, can faithfully reproduce an arrangement of cell aggregates in one neural structure as a topographic map in another.
-%
-The model also shows that the shape of the barrels may be primarily determined
-by the competitive and cooperative interactions between cells relative to the
-shape of the cortical field boundary. And that somatotopic map formation does
-not require the pre-specification of centre-points by as yet undetermined
-additional developmental mechanisms.
+It is important to emphasize that the formulation of the model is entirely local, insofar as simulation requires no information to be communicated from a given cortical grid cell to any but those immediately adjacent (via diffusion). Hence the simulations demonstrate how a self-organising system, constrained by genetically specified guidance cues and by the shape of the cortical field boundary, can faithfully reproduce an arrangement of cell aggregates in one neural structure as a topographic map in another.
+
+The emergence of barrels in simulation required competition between thalamic projections in terms of synaptic connectivity, and also in terms of cortical space (as represented by $\chi$). This requirement may account for the absence of barrels in rodents with larger brains, such as capybara, for which competition for space is presumably weaker \citep{Woolsey1975}. Hence, irrespective of whether barrels are necessary for adaptive whisker function, the emergence of somatotopically ordered modular structures may be an inevitable consequence of local competition for cortical territory driven by input from an array of discrete sensory organs \citep{purves_iterated_1992}.
+
+Moreover, the present results confirm that such structures can emerge without requiring the pre-specification of centre-points by as yet undetermined additional developmental mechanisms.
+
+%The model also shows that the shape of the barrels may be primarily determined by the competitive and cooperative interactions between cells relative to the shape of the cortical field boundary. And that somatotopic map formation does not require the pre-specification of centre-points by as yet undetermined additional developmental mechanisms.
+
 
 \bibliography{../BarrelEmerge}
 
