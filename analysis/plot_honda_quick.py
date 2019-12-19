@@ -36,7 +36,8 @@ print ('xmax = {0}'.format(xmax))
 ax1 = F1.add_subplot(1,1,1)
 l1, = ax1.plot(t1_masked, hondadelta, 'o', markersize=12, color=col.red, label='Honda $\delta$')
 
-l2, = ax1.plot((0,xmax), (0.055, 0.055), '--', color=col.red, linewidth=3, label="good (S&W)")
+l2, = ax1.plot((0,xmax), (0.022, 0.022), '--', color=col.red, linewidth=3, label="Fig 1A")
+#l2, = ax1.plot((0,xmax), (0.055, 0.055), '--', color=col.red, linewidth=3, label="good (S&W)")
 #l3, = ax1.plot((0,xmax), (0.15, 0.15), '-.', color=col.black, linewidth=3, label="awful (non Dirichlet)")
 
 ax2 = ax1.twinx()
