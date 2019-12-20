@@ -125,6 +125,15 @@ A cortical boundary enclosing 41 corresponding barrels was traced from a cytochr
 
 To further investigate the interplay of genetic and intrinsic mechanisms we simulated a seminal barrel duplication experiment \cite{shimogori_fibroblast_2005},  first by solving on a cortical domain comprising two separate, identically shaped cortical boundaries. In this case one distinct cortical field per thalamic projection emerged, within one of the two boundaries only, i.e., no duplication. However, merging the two fields to create an extended mirror-symmetric boundary shape, with an anterior-posterior guidance field reflected at the join, gave rise to two mirror-symmetrical barrel fields comprising 2N barrels, i.e., two cortical fields for each thalamic projection (Fig.\,1E). Together these results suggest that by the misexpression of Fgf8, Shimogori \& Grove \citep{shimogori_fibroblast_2005} effectively created one large barrel field rather than two distinct cortical fields.
 
+\subsection*{Movie S1 caption}
+
+Movie corresponding to Fig.\,1C in the main paper. Simulation parameters were
+$N=41$, $\alpha=3$, $\beta=20$, $k=3$, $D=0.2$, $\gamma\in\pm 2$,
+$\epsilon=150$ and $\delta{t}=0.0001$. Colours indicate the thalamic
+projection for which the connection density is maximal, black lines delineate
+boundaries, and overlaid contours show $c>0.5$. The final frame in the movie
+is step 25000 of the simulation.
+
 \section*{Discussion}
 
 The present results suggest that the key requirements for the emergence of realistic barrel patterning are i) at each cortical location thalamocortical projections compete for a limited number of available synaptic connections (Eqs.~\ref{eq:dc}--\ref{eq:da}), ii) at each location the branching rate of a given projection is reduced by the density of other projections (Eq.~\ref{eq:comp}), and iii) the branch density of each projection is conserved over time (Eq.~\ref{eq:norm}).
@@ -135,6 +144,12 @@ It is important to emphasize that the formulation of the model is entirely local
 
 Moreover, the present results confirm that somatotopic map formation does not require the pre-specification of centre-points by as yet undetermined additional developmental mechanisms.
 
+\acknow{The authors thank Jason Berwick at the University of Sheffield for
+  access to original rat barrel stains. This work was supported by a
+  Collaborative Activity Award, \emph{Cortical Plasticity Within and Across
+  Lifetimes}, from the James S.~McDonnell Foundation (grant 220020516).}
+
+\showacknow{} % Display the acknowledgments section
 
 \bibliography{../BarrelEmerge}
 
