@@ -18,22 +18,18 @@
 # error "Please define FLT when compiling (hint: See CMakeLists.txt)"
 #endif
 
-/*!
- * General STL includes
- */
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <list>
 #include <string>
 #include <limits>
+#include <cmath>
 #include <chrono>
 using namespace std::chrono;
 using std::chrono::steady_clock;
 
-/*!
- * Include the reaction diffusion class
- */
+//! Include the reaction diffusion class
 #if defined DIVNORM
 #include "rd_james_divnorm.h"
 #elif defined DNCOMP2
@@ -43,6 +39,7 @@ using std::chrono::steady_clock;
 #else
 #include "rd_james.h" // 2D Karbowski, no additional competition/features
 #endif
+
 #include "morph/ShapeAnalysis.h"
 using morph::ShapeAnalysis;
 
@@ -54,15 +51,10 @@ using morph::Visual;
 using morph::MathAlgo;
 #endif
 
-
-/*!
- * Included for directory manipulation code
- */
+//! Included for directory manipulation code
 #include "morph/tools.h"
 
-/*!
- * A jsoncpp-wrapping class for configuration.
- */
+//! A jsoncpp-wrapping class for configuration.
 #include "morph/Config.h"
 
 using namespace std;
@@ -257,14 +249,15 @@ int main (int argc, char **argv)
     unsigned int windowId = 0;
     string winTitle = "";
 
-    const unsigned int win_width = conf.getUInt ("win_width", 340UL);
+    const unsigned int win_width = conf.getUInt ("win_width", 1025UL);
     unsigned int win_height = static_cast<unsigned int>(0.8824f * (float)win_width);
 
     // Set up the morph::Visual object
     Visual plt (win_width, win_height, "James-Wilson barrel simulation");
     plt.zNear = 0.001;
-    plt.zFar = 15;
+    plt.zFar = 50;
     plt.fov = 45;
+    plt.setZDefault (20.0);
 #endif
 
     /*
@@ -447,28 +440,34 @@ int main (int argc, char **argv)
     // The a variable
     vector<unsigned int> agrids;
     array<float, 3> offset;
+    unsigned int side = static_cast<unsigned int>(floor (sqrt (RD.N)));
     if (plot_a) {
-        offset = { -0.5*RD.hg->width(), 0.0, 0.0 };
+        float a_offs = +RD.hg->width() * side;
+        // -0.5*RD.hg->width()
+        offset = {0.0, 0.0, 0.0 };
         for (unsigned int i = 0; i<RD.N; ++i) {
+            offset[0] = a_offs + RD.hg->width() * (i/side);
+            offset[1] = RD.hg->width() * (i%side);
             unsigned int idx = plt.addHexGridVisual (RD.hg, offset, RD.a[i], scaling);
             agrids.push_back (idx);
-            offset[2] += 0.5;
         }
     }
 
     // The c variable
     vector<unsigned int> cgrids;
     if (plot_c) {
-        offset = { +0.5*RD.hg->width(), 0.0, 0.0 };
+        float c_offs = -2.0*RD.hg->width();
+        offset = {0.0, 0.0, 0.0 };
         for (unsigned int i = 0; i<RD.N; ++i) {
+            offset[0] = c_offs + RD.hg->width() * (i/side);
+            offset[1] = RD.hg->width() * (i%side);
             unsigned int idx = plt.addHexGridVisual (RD.hg, offset, RD.c[i], scaling);
             cgrids.push_back (idx);
-            offset[2] += 0.5;
         }
     }
 
     // n
-    offset = { +1.5*RD.hg->width(), 0.0, 0.0 };
+    offset = { 0.0, -1.0*RD.hg->depth(), 0.0 };
     unsigned int ngrid = plt.addHexGridVisual (RD.hg, offset, RD.n, scaling);
 
 #if 0
@@ -579,14 +578,17 @@ int main (int argc, char **argv)
                 // updateHexGridVisual
             }
             if (plot_a) {
-                //plt.scalarfields (displays[a_id], RD.hg, RD.a); // scale between min and max
-                // updateHexGridVisual
+                for (unsigned int i = 0; i<RD.N; ++i) {
+                    plt.updateHexGridVisual (agrids[i], RD.a[i], scaling);
+                }
             }
             if (plot_c) {
-                // updateHexGridVisual
+                for (unsigned int i = 0; i<RD.N; ++i) {
+                    plt.updateHexGridVisual (cgrids[i], RD.c[i], scaling);
+                }
             }
             if (plot_n) {
-                // updateHexGridVisual
+                plt.updateHexGridVisual (ngrid, RD.n, scaling);
             }
             if (plot_dr && do_dirichlet_analysis) {
                 // updateHexGridVisual
