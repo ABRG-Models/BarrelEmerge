@@ -27,6 +27,9 @@
 #include <list>
 #include <string>
 #include <limits>
+#include <chrono>
+using namespace std::chrono;
+using std::chrono::steady_clock;
 
 /*!
  * Include the reaction diffusion class
@@ -44,13 +47,13 @@
 using morph::ShapeAnalysis;
 
 #ifdef COMPILE_PLOTTING
-/*!
- * Include display and plotting code
- */
-# include "morph/display.h"
-# include "morph/RD_Plot.h"
-using morph::RD_Plot;
+# include <GLFW/glfw3.h>
+# include "morph/Visual.h"
+using morph::Visual;
+# include <morph/MathAlgo.h>
+using morph::MathAlgo;
 #endif
+
 
 /*!
  * Included for directory manipulation code
@@ -250,21 +253,6 @@ int main (int argc, char **argv)
     unsigned int divg_id = 0xffff;
     unsigned int divJ_id = 0xffff;
 
-    // Create some displays
-    vector<morph::Gdisplay> displays;
-    vector<double> fix(3, 0.0);
-    vector<double> eye(3, 0.0);
-    eye[2] = 0.12; // This also acts as a zoom. more +ve to zoom out, more -ve to zoom in.
-    vector<double> rot(3, 0.0);
-
-    // A plot object.
-    RD_Plot<FLT> plt(fix, eye, rot);
-    plt.scalarFieldsSingleColour = true;
-
-    double rhoInit = conf.getDouble ("rhoInit", 1.0); // This is effectively a zoom control. Increase to zoom out.
-    double thetaInit = 0.0;
-    double phiInit = 0.0;
-
     string worldName("j");
     unsigned int windowId = 0;
     string winTitle = "";
@@ -272,113 +260,11 @@ int main (int argc, char **argv)
     const unsigned int win_width = conf.getUInt ("win_width", 340UL);
     unsigned int win_height = static_cast<unsigned int>(0.8824f * (float)win_width);
 
-    // Default the contours to 720p format 16:9 ratio for nice movies
-    const unsigned int win_width_contours = conf.getUInt ("win_width_contours", 1280UL);
-    unsigned int win_height_contours = static_cast<unsigned int>(0.5625f * (float)win_width_contours);
-
-    // SW - Contours. Always plot
-    if (plot_contours) {
-        winTitle = worldName + ": contours (from c)"; //3
-
-        displays.push_back (morph::Gdisplay (win_width_contours, win_height_contours, 100, 1500,
-                                             winTitle.c_str(), rhoInit*0.7, thetaInit, phiInit,
-                                             (windowId==0?0:displays[0].win)));
-        displays.back().resetDisplay (fix, eye, rot);
-        displays.back().redrawDisplay();
-        contours_id = windowId++;
-    }
-    // a contours.
-    if (plot_a_contours) {
-        winTitle = worldName + ": contours (from a)"; //3
-        displays.push_back (morph::Gdisplay (win_width_contours, win_height_contours, 100, 1500,
-                                             winTitle.c_str(), rhoInit*0.7, thetaInit, phiInit,
-                                             (windowId==0?0:displays[0].win)));
-        displays.back().resetDisplay (fix, eye, rot);
-        displays.back().redrawDisplay();
-        a_contours_id = windowId++;
-    }
-
-    if (plot_guide) {
-        winTitle = worldName + ": Guidance molecules"; // 0
-        displays.push_back (morph::Gdisplay (win_width * (M_GUID>0?M_GUID:1), win_height, 100, 300,
-                                             winTitle.c_str(), rhoInit, thetaInit, phiInit,
-                                             (windowId==0?0:displays[0].win)));
-        displays.back().resetDisplay (fix, eye, rot);
-        displays.back().redrawDisplay();
-        guide_id = windowId++;
-    }
-
-    if (plot_a) {
-        winTitle = worldName + ": a[0] to a[N]"; // 1
-        displays.push_back (morph::Gdisplay (win_width*N_TC, win_height, 100, 900, winTitle.c_str(),
-                                             rhoInit, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
-        displays.back().resetDisplay (fix, eye, rot);
-        displays.back().redrawDisplay();
-        a_id = windowId++;
-    }
-
-    if (plot_c) {
-        winTitle = worldName + ": c[0] to c[N]"; // 2
-        displays.push_back (morph::Gdisplay (win_width*N_TC, win_height, 100, 1200, winTitle.c_str(),
-                                             rhoInit, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
-        displays.back().resetDisplay (fix, eye, rot);
-        displays.back().redrawDisplay();
-        c_id = windowId++;
-    }
-
-    if (plot_n) {
-        winTitle = worldName + ": n"; //4
-        displays.push_back (morph::Gdisplay (win_width, win_height, 100, 1800, winTitle.c_str(),
-                                             rhoInit, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
-        displays.back().resetDisplay (fix, eye, rot);
-        displays.back().redrawDisplay();
-        n_id = windowId++;
-    }
-
-    if (plot_dr && do_dirichlet_analysis) {
-        winTitle = worldName + ": dr"; //4
-        displays.push_back (morph::Gdisplay (win_width_contours, win_height_contours, 100, 1800, winTitle.c_str(),
-                                             rhoInit*1.2, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
-        displays.back().resetDisplay (fix, eye, rot);
-        displays.back().redrawDisplay();
-        dr_id = windowId++;
-    } else if (plot_dr && !do_dirichlet_analysis) {
-        DBG ("Note: To plot the dirichlet regions (dr), do_dirichlet_analysis must be set.");
-    }
-
-    if (plot_guidegrad) {
-        winTitle = worldName + ": Guidance gradient (x)";//5
-        displays.push_back (morph::Gdisplay (win_width*N_TC, win_height, 100, 1800, winTitle.c_str(),
-                                             rhoInit, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
-        displays.back().resetDisplay (fix, eye, rot);
-        displays.back().redrawDisplay();
-        guidegrad_x_id = windowId++;
-
-        winTitle = worldName + ": Guidance gradient (y)";//6
-        displays.push_back (morph::Gdisplay (win_width*N_TC, win_height, 100, 1800, winTitle.c_str(),
-                                             rhoInit, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
-        displays.back().resetDisplay (fix, eye, rot);
-        displays.back().redrawDisplay();
-        guidegrad_x_id = windowId++;
-    }
-
-    if (plot_divg) {
-        winTitle = worldName + ": div(g)/3d";//7
-        displays.push_back (morph::Gdisplay (win_width*N_TC, win_height, 100, 1800, winTitle.c_str(),
-                                             rhoInit, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
-        displays.back().resetDisplay (fix, eye, rot);
-        displays.back().redrawDisplay();
-        divg_id = windowId++;
-    }
-
-    if (plot_divJ) {
-        winTitle = worldName + ": div(J)";//8 or 5
-        displays.push_back (morph::Gdisplay (win_width*N_TC, win_height, 100, 1800, winTitle.c_str(),
-                                             rhoInit, thetaInit, phiInit, (windowId==0?0:displays[0].win)));
-        displays.back().resetDisplay (fix, eye, rot);
-        displays.back().redrawDisplay();
-        divJ_id = windowId++;
-    }
+    // Set up the morph::Visual object
+    Visual plt (win_width, win_height, "James-Wilson barrel simulation");
+    plt.zNear = 0.001;
+    plt.zFar = 15;
+    plt.fov = 45;
 #endif
 
     /*
@@ -552,6 +438,40 @@ int main (int argc, char **argv)
 
 #ifdef COMPILE_PLOTTING
 
+    // Data scaling parameters
+    float _m = 0.2;
+    float _c = 0.0;
+    const array<float, 4> scaling = { _m/10, _c/10, _m, _c };
+
+    // HERE, add HexGridVisuals...
+    // The a variable
+    vector<unsigned int> agrids;
+    array<float, 3> offset;
+    if (plot_a) {
+        offset = { -0.5*RD.hg->width(), 0.0, 0.0 };
+        for (unsigned int i = 0; i<RD.N; ++i) {
+            unsigned int idx = plt.addHexGridVisual (RD.hg, offset, RD.a[i], scaling);
+            agrids.push_back (idx);
+            offset[2] += 0.5;
+        }
+    }
+
+    // The c variable
+    vector<unsigned int> cgrids;
+    if (plot_c) {
+        offset = { +0.5*RD.hg->width(), 0.0, 0.0 };
+        for (unsigned int i = 0; i<RD.N; ++i) {
+            unsigned int idx = plt.addHexGridVisual (RD.hg, offset, RD.c[i], scaling);
+            cgrids.push_back (idx);
+            offset[2] += 0.5;
+        }
+    }
+
+    // n
+    offset = { +1.5*RD.hg->width(), 0.0, 0.0 };
+    unsigned int ngrid = plt.addHexGridVisual (RD.hg, offset, RD.n, scaling);
+
+#if 0
     vector<vector<FLT> > gx = plt.separateVectorField (RD.g[0], 0);
     vector<vector<FLT> > gy = plt.separateVectorField (RD.g[0], 1);
     FLT ming = 1e7;
@@ -624,10 +544,12 @@ int main (int argc, char **argv)
         }
         plt.savePngs (logpath, "axonbranch", 0, displays[a_id]);
     }
+#endif // 0
 
 #endif // COMPILE_PLOTTING
 
     // Start the loop
+    steady_clock::time_point lastrender = steady_clock::now();
     bool finished = false;
     while (finished == false) {
         // Step the model
@@ -646,69 +568,37 @@ int main (int argc, char **argv)
 
             vector<list<Hex> > a_ctrs;
             if (plot_contours) {
-                plt.plot_contour (displays[contours_id], RD.hg, ctrs);
+                // FIXME: WRite code to convert ctrs into a single data vector for HexGridVisual
+                // plt.plot_contour (displays[contours_id], RD.hg, ctrs);
+                // updateHexGridVisual
             }
             if (plot_a_contours) {
                 a_ctrs = ShapeAnalysis<FLT>::get_contours (RD.hg, RD.a, RD.contour_threshold);
-                plt.plot_contour (displays[a_contours_id], RD.hg, a_ctrs);
+                // FIXME:
+                // plt.plot_contour (displays[a_contours_id], RD.hg, a_ctrs);
+                // updateHexGridVisual
             }
             if (plot_a) {
-                if (scale_a) {
-                    plt.scalarfields (displays[a_id], RD.hg, RD.a); // scale between min and max
-                } else {
-                    plt.scalarfields (displays[a_id], RD.hg, RD.a, 0.0); // scale between 0 and max
-                }
+                //plt.scalarfields (displays[a_id], RD.hg, RD.a); // scale between min and max
+                // updateHexGridVisual
             }
             if (plot_c) {
-                if (scale_c) {
-                    plt.scalarfields (displays[c_id], RD.hg, RD.c);
-                } else {
-                    plt.scalarfields (displays[c_id], RD.hg, RD.c, 0.0, 1.0);
-                }
+                // updateHexGridVisual
             }
             if (plot_n) {
-                if (scale_n) {
-                    plt.scalarfields (displays[n_id], RD.hg, RD.n);
-                } else {
-                    plt.scalarfields (displays[n_id], RD.hg, RD.n, 0.0, 1.0);
-                }
+                // updateHexGridVisual
             }
             if (plot_dr && do_dirichlet_analysis) {
-                plt.scalarFieldsSingleColour = false;
-                if (plot_contours) {
-                    if (plot_dr_with_guide) {
-                        vector<bool> on;
-                        for (auto t_on : RD.guidance_time_onset) {
-                            if (RD.stepCount >= t_on) {
-                                on.push_back (true);
-                            } else {
-                                on.push_back (false);
-                            }
-                        }
-                        plt.plot_contour_and_scalar_and_guide (displays[dr_id], RD.hg, ctrs, RD.regions, RD.rho, on,
-                                                               hshift, vshift, g_hshift, g_vshift);
-                    } else {
-                        plt.plot_contour_and_scalar (displays[dr_id], RD.hg, ctrs, RD.regions, hshift, g_hshift);
-                    }
-                } else {
-                    plt.scalarfields (displays[dr_id], RD.hg, RD.regions);
-                }
-                plt.scalarFieldsSingleColour = true;
+                // updateHexGridVisual
             }
             // Then add:
             //plt.plot_dirichlet_boundaries (displays[n_id], RD.hg, vv);
 
-            if (plot_guidegrad) {
-                displays[guidegrad_x_id].redrawDisplay();
-                displays[guidegrad_y_id].redrawDisplay();
-            }
-            if (plot_divg) {
-                displays[divg_id].redrawDisplay();
-            }
             if (plot_divJ) {
-                plt.scalarfields (displays[divJ_id], RD.hg, RD.divJ);
+                //plt.scalarfields (displays[divJ_id], RD.hg, RD.divJ);
+                // updateHexGridVisual
             }
-
+#if 0
             if (vidframes) {
                 if (plot_c) {
                     plt.savePngs (logpath, "connections", framecount, displays[c_id]);
@@ -743,6 +633,15 @@ int main (int argc, char **argv)
                     plt.savePngs (logpath, "maxval", RD.stepCount, displays[dr_id]);
                 }
             }
+#endif
+        }
+
+        // rendering the graphics.
+        steady_clock::duration sincerender = steady_clock::now() - lastrender;
+        if (duration_cast<milliseconds>(sincerender).count() > 17) { // 17 is about 60 Hz
+            glfwPollEvents();
+            plt.render();
+            lastrender = steady_clock::now();
         }
 #endif // COMPILE_PLOTTING
 
@@ -841,11 +740,9 @@ int main (int argc, char **argv)
     }
 
 #ifdef COMPILE_PLOTTING
-    // Ask for a keypress before exiting so that the final images can be studied
-    int a;
-    cout << "Press any key[return] to exit.\n";
-    cin >> a;
-#endif // COMPILE_PLOTTING
+    cout << "Ctrl-c or press x in graphics window to exit.\n";
+    plt.keepOpen();
+#endif
 
     return 0;
 };
