@@ -45,6 +45,13 @@ else()
   endif()
 endif()
 
+# Additional GL compiler flags.
+#
+# Following `cmake --help-policy CMP0072`
+set(OpenGL_GL_PREFERENCE "GLVND")
+# maybe -DGL_GLEXT_PROTOTYPES
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGL3_PROTOTYPES -DGL_GLEXT_PROTOTYPES")
+
 # Lib finding - we have to do this, so that the correct include paths
 # are present for OpenGL, OpenCV, etc; they're all included by
 # morphologica header files.
@@ -94,9 +101,6 @@ if(0)
   endif()
 endif()
 
-# OpenGL code needs the local include directory, too
-include_directories ("${PROJECT_SOURCE_DIR}/include")
-
 include_directories(${OpenCV_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${GLUT_INCLUDE_DIR} ${X11_INC_SEARCH_PATH} ${HDF5_INCLUDE_DIR})
 
 # Find libmorphologica using pkgconfig
@@ -113,6 +117,8 @@ if(PKG_CONFIG_FOUND)
   if (MORPH_FOUND)
     message(STATUS "pkg_config found libmorphologica")
     include_directories(${MORPH_INCLUDEDIR})
+    include_directories(${MORPH_INCLUDEDIR}/morph)
+    message(STATUS "Included morph includedir:  ${MORPH_INCLUDEDIR} and ${MORPH_INCLUDEDIR}/morph")
   else()
     message(FATAL_ERROR "You need libmorphologica from github.com/ABRG_Models/morphologica")
   endif(MORPH_FOUND)
