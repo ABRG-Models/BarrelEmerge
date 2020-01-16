@@ -1264,6 +1264,51 @@ of diffusion of $a_i$), which I should be able to turn on and off with
 a parameter.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{PNAS Reviewer 1 suggestions}
+\label{sec:comp15}
+
+This mechanism was suggested by PNAS reviewer 1 who asked if we'd tried
+anything similar to this as a way around requiring divisive
+normalization.
+
+This is similar to the ideas tried in Sections ~\ref{sec:comp2}
+and \ref{sec:comp6}. The PNAS brief report submission Eq. 2 was:
+%
+\begin{equation}
+\label{eq:comp15_eq0}
+\frac{\partial a_i}{\partial t} = \nabla\vcdot\mb{J}_i - \frac{\partial
+c_i}{\partial t} + \chi
+\end{equation}
+%
+Reviewer 1 suggested (where we might assume the equals sign in red was missed by typo):
+%
+\begin{equation}
+\label{eq:comp15_eq1}
+\chi \color{red}=\color{black} a_i \nabla \frac{1}{N-1} \sum_{j \ne i}^{N} a_j
+\end{equation}
+%
+This isn't really sensible, because the gradient, which has direction, will be
+positive on one side of a `hill of $a_{j\ne i}$' and negative on the other
+side. Thus, $a$ would accumulate on one side and de-accumulate on the other,
+rather than reducing all the way around the hill. However, if you took
+the \emph{magnitude} of the gradient (along with a little rearranging, and the
+incorporation of our parameter $\epsilon$) you get:
+%
+\begin{equation}
+\label{eq:comp15_eq2}
+\chi = - \frac{\epsilon_i  a_i}{N-1} \left\| \nabla  \sum_{j \ne i}^{N} a_j \right\|
+\end{equation}
+%
+which may work, although it is unclear how this resolves the need for the
+normalization that the reviewer (and we too) would like to avoid.
+
+Although the reviewer prepended $\chi$ to this equation, they probably meant
+adding to the flux term, which was the terminology they used. In that case, we
+would have exactly Eq.~\ref{eq:J_NM_with_comp} and so yes, it was something we
+tried, and I will try it again (Jan 2020) to refresh my memory of how it
+worked.
+
 \section{Unimplemented ideas}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
