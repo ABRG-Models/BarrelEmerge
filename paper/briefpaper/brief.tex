@@ -10,6 +10,9 @@
 \documentclass[9pt,twocolumn,twoside,lineno]{pnas-new}
 \templatetype{pnasresearcharticle}
 
+\usepackage{amsmath,esint}
+\newcommand*\dif{\mathop{}\!\mathrm{d}}
+
 \title{Modelling the emergence of whisker barrels}
 % While writing, don't stop for errors
 %\nonstopmode
@@ -137,7 +140,7 @@ on a 2D cortical sheet, we use $a_i(\mb{x},t)$ and $c_i(\mb{x},t)$, and model
 synaptogenesis as
 %
 \begin{equation} \label{eq:dc}
-\frac{\partial c_i}{\partial t} =-\alpha c_i +\beta  \left(1 - \sum_{j=1}^{N} c_{j}\right)[a_i]^k.
+\frac{\partial c_i}{\partial t} =-\alpha c_i +\beta  \left(1 - \sum_{j=1}^{N} c_{j}\right)[a_i]^k
 \end{equation}
 %
 Accordingly, where the total density of synaptic connections sums to one,
@@ -146,7 +149,7 @@ non-linearly ($k>1$) with the density of axon branching. Axon branching is
 modelled as
 %
 \begin{equation} \label{eq:da}
-\frac{\partial a_i}{\partial t} = \nabla\vcdot\left(D \nabla a_i-a_i\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x})\right) - \frac{\partial c_i}{\partial t} + \chi_i.
+\frac{\partial a_i}{\partial t} = \nabla\vcdot\left(D \nabla a_i-a_i\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x})\right) - \frac{\partial c_i}{\partial t} + \chi_i
 \end{equation}
 %
 The first term on the right describes the divergence (indicated by
@@ -204,7 +207,7 @@ form. Here $\chi_i=0$ is a placeholder.
 
 First we verified that all results established by \cite{karbowski_model_2004}
 for a 1D axis could be reproduced in our 2D implementation. Using an
-elliptical boundary with $M=3$ offset guidance gradients aligned to the longer
+elliptical domain, $S$, with $M=3$ offset guidance gradients aligned to the longer
 axis, $N=5$ projections gave rise to five distinct cortical fields at
 locations that preserved the topographic ordering defined by the original
 $\gamma$ values. However, we found that specifying $N$ ordered areas required
@@ -217,7 +220,7 @@ projections for limited cortical connections. To introduce axon branching
 competition we redefined
 %
 \begin{equation} \label{eq:comp}
-\chi_i(\mb{x}, t) = - \frac{\epsilon  a_i}{N-1} \sum_{j \ne i}^{N} a_{j},
+\chi_i(\mb{x}, t) = - \frac{\epsilon  a_i}{N-1} \sum_{j \ne i}^{N} a_{j}
 \end{equation}
 %
 which reduces branching for each projection where the branches of other
@@ -225,8 +228,8 @@ projections are dense. Divisive normalization keeps the axon branch density
 bounded on each iteration to the initial density at $t=0$;
 %
 \begin{equation} \label{eq:norm}
-  a_i(\mathbf{x}, t) = \int_\Omega  a_i(\mathbf{x}, 0) d\sigma \; \frac {a'_i(\mathbf{x}, t)} {\int_\Omega
-  a'_i(\mathbf{x}, t) d\sigma},
+  a_i(\mathbf{x}, t) = \oiint_{S}  a_i(\mathbf{x}, 0) \dif S \; \frac {a'_i(\mathbf{x}, t)} {\oiint_{S}
+  a'_i(\mathbf{x}, t) \dif S}
 \end{equation}
 %
 where prime symbols indicate the use of intermediate values computed from Eqs.~\ref{eq:dc}--\ref{eq:comp} at time $t-{\delta}t$.
@@ -242,7 +245,7 @@ which 41 pairs of $\gamma$ values were sampled, at the coordinates of 41
 barreloid centers recreated from \cite{haidarliu_size_2001} (Fig.\,1B).
 %
 A cortical boundary enclosing 41 corresponding barrels was traced from a
-cytochrome oxidase stain from \cite{zheng_signal_2001}, and
+cytochrome oxidase stain from \cite{zheng_signal_2001} to define $S$, and
 Eqs.~\ref{eq:dc}--\ref{eq:norm} were solved for $N=41$ projections on the
 resulting domain, using $M=2$ linear signalling gradients aligned with the
 anterior-posterior and medial-lateral axes. From random initial conditions for
