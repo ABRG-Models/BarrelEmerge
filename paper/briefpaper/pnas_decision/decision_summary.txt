@@ -1,0 +1,153 @@
+Date:         2020-01-15 17:11:12
+Last Sent:    2020-01-15 17:11:12
+Triggered By: Redacted
+BCC:          Redacted
+Subject:      PNAS MS# 2019-22489 Decision Notification
+Message:      January 15, 2020
+
+Title: "Modelling the emergence of whisker barrels"
+Tracking #: 2019-22489
+Authors: James et al.
+
+Dear Dr. James,
+
+After an initial evaluation of its general suitability for PNAS, your
+Brief Report was assigned to an editor with expertise in the subject
+area of your work, who then examined the Brief Report and obtained
+reviews from 2 authorities in the field. These reviews, which appear
+below, were then considered by the editor, who determined the comments
+were of sufficient significance to recommend rejection.
+
+Because we receive many more manuscripts for consideration than we can
+accept for publication, critical comments from expert reviewers that
+cannot be easily and rapidly addressed in a revision are sufficient
+cause for rejection; our goal to publish important research rapidly
+prevents us from undertaking multiple rounds of revision and
+re-review.
+
+Although we expect that this outcome is disappointing, we hope that
+the rationale for our decision process is clear and that you will find
+the comments of the reviewers helpful when revising your work for
+submission elsewhere. We thank you for choosing PNAS as a potential
+venue for publishing your work and we hope that you'll continue to
+consider PNAS for future submissions.
+
+Sincerely yours,
+May R. Berenbaum
+Editor-in-Chief
+
+*********************
+
+Editor's Remarks to Author:
+
+This paper belongs in a more specialized journal.
+
+
+Reviewer Comments:
+Reviewer #1:
+
+Suitable Quality?: Yes
+Sufficient General Interest?: Yes
+Conclusions Justified?: Yes
+Procedures Described?: Yes
+
+Comments:
+
+This is an interesting paper that with a few assumptions shows that an
+old model for areal formation in cortex is sufficient to
+quantitatively reproduce the patterns of barrels observed in mouse
+S1. It would appear from the model that the key is the parameters
+gamma_ij that are presumably hypothesized to be assigned at the level
+of the thalamus. I have a few questions about the paper, but
+otherwise, found it enjoyable and interesting to read.
+
+1. Does the same model work with respect to projections from the brain
+stem (barrelettes) to the thalamus (barreloids)? This would be a good
+way to check the ideas. Related to this, is it true that the
+barrelettes (barreloids) precede the development of the barreloids
+(barrels)? It would seem to be necessary? Or perhaps, starting with a
+double gradient in the thalamus and cortex and a prepattern in the
+barelettes, would the correct patterns emerge simultaneously?
+
+
+2. There seems to be a strong prediction in this concerning the
+development of the patterns over time. Panel C indicates that early on
+there are large distortions in the shape of the barrels particularly
+in D,E rows. is this known to occur?
+
+Minor points:
+
+In the integrals in line 106, it should be dx, not dsigma. It seems to
+me that without the chi, then possibly connections plus axons are
+conserved? There seems to be a flaw in the model if they have to
+renormalize at each point. If axons make connections should they not
+be lost from the pool forever, this is the -dci/dt the model. For
+example, since the gradient has noflux in the original K&E model,
+there is conservation of the total number of connections and axons of
+a given type (int ai+ci dx = constant). This principle seems to make
+sense to me. However, the competition term chi_i seems to disrupt
+this. Is there a way to introduce the axonal competition in a way the
+prevents the unrealistic, or biologically implausible, at least,
+renormalization at each step? I'd be more comfortable with the model
+if there were a more physiological way to renormalize.
+
+For example, I don't know if the authors considered something like an
+additional flux of the form:
+
+\chi a_i \nabla \frac{1}{N-1} \sum_{j\ne i} a_j
+
+This makes the axons of type i move away from type j while at the same
+time enforcing conservation without recourse to some sort of
+post-normalization.
+
+
+Reviewer #2:
+
+Suitable Quality?: No
+Sufficient General Interest?: No
+Conclusions Justified?: Yes
+Procedures Described?: No
+
+Comments:
+
+This study models the development of somatotopically organized
+afferent projections to rodent cortical whisker barrels. The basic
+question addressed is whether "barrel maps can emerge in a system with
+reaction-diffusion dynamics, under the guidance of signalling
+gradients, and in the absence of pre-defined centers". The simulation
+approach is an extension to a 2D sheet of the 1D model published by
+Karbowski and Ermentrout in 2004. The model is a relatively simple
+mathematical formulation based on parameters such as densities of
+axonal branches and synapses (connections), 'flux' of axonal
+branching, which interact with multiple "molecular signaling
+fields". I have a few specific concerns.
+
+1) Various assumptions are made, such as the "assumption that axon
+branching decreases when synaptogenesis increases, and vice versa,
+i.e., that axon branches are required for synaptic connections to
+form. On multiple readings of this sentence I still don't see how the
+first clause implies the second.
+
+2) "We speculate that a projection interacts with a given ephrin field
+in the cortical subplate with a strength determined by the
+concentration of a similar molecule at its thalamic origin, i.e., the
+putative barreloid center. As such, two orthogonal linear thalamic
+gradients were defined, from which 41 pairs of gamma values were sampled,
+at the coordinates of 41 barreloid centers." This seems to be a
+statement of what's needed for a classical chemospecificity dual
+gradient. If that's the assumption, why is it notable that an orderly
+map is achieved?
+
+3) "We emphasize that the formulation of the model is entirely local;
+the simulation permits information to be communicated from a given
+cortical grid cell only to those immediately adjacent (via
+diffusion)." It is unclear how this constraint of immediate adjacency
+stems from the equations. But neither does this seem like a
+biologically natural or desirable constraint.
+
+4) The conclusion that "the present results confirm that somatotopic
+map formation does not require the pre-specification of centerpoints
+by as yet undetermined additional developmental mechanisms" strikes
+this reviewer as neither fully convincing on the one hand, nor
+terribly surprising either. Altogether, this study seems better suited
+to a more specialized journal.
