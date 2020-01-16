@@ -23,6 +23,7 @@
 #include <vector>
 #include <list>
 #include <string>
+#include <sstream>
 #include <limits>
 #include <cmath>
 #include <chrono>
@@ -49,6 +50,16 @@ using morph::ShapeAnalysis;
 using morph::Visual;
 # include <morph/MathAlgo.h>
 using morph::MathAlgo;
+
+//! Helper function to save PNG images
+void savePngs (const std::string& logpath, const std::string& name,
+               unsigned int frameN, Visual& v) {
+    std::stringstream ff1;
+    ff1 << logpath << "/" << name<< "_";
+    ff1 << std::setw(5) << std::setfill('0') << frameN;
+    ff1 << ".png";
+    v.saveImage (ff1.str());
+}
 #endif
 
 //! Included for directory manipulation code
@@ -530,7 +541,7 @@ int main (int argc, char **argv)
         displays[divJ_id].redrawDisplay();
     }
     // Save images in log folder
-    if (RD.M > 0 && plot_guide) { plt.savePngs (logpath, "guidance", 0, displays[guide_id]); }
+    if (RD.M > 0 && plot_guide) { savePngs (logpath, "guidance", 0, displays[guide_id]); }
 
 
     // At step 0, there's no connection/contour information to show,
@@ -541,7 +552,7 @@ int main (int argc, char **argv)
         } else {
             plt.scalarfields (displays[a_id], RD.hg, RD.a, 0.0); // scale between 0 and max
         }
-        plt.savePngs (logpath, "axonbranch", 0, displays[a_id]);
+        savePngs (logpath, "axonbranch", 0, displays[a_id]);
     }
 #endif // 0
 
@@ -600,42 +611,15 @@ int main (int argc, char **argv)
                 //plt.scalarfields (displays[divJ_id], RD.hg, RD.divJ);
                 // updateHexGridVisual
             }
-#if 0
+
+            // With the new all-in-one-window OpenGL format, there's only one savePngs
+            // call at a time.
             if (vidframes) {
-                if (plot_c) {
-                    plt.savePngs (logpath, "connections", framecount, displays[c_id]);
-                }
-                if (plot_a) {
-                    plt.savePngs (logpath, "axonbranch", framecount, displays[a_id]);
-                }
-                if (plot_contours) {
-                    plt.savePngs (logpath, "contours", framecount, displays[contours_id]);
-                }
-                if (plot_a_contours) {
-                    plt.savePngs (logpath, "a_contours", framecount, displays[a_contours_id]);
-                }
-                if (plot_dr && do_dirichlet_analysis) {
-                    plt.savePngs (logpath, "maxval", framecount, displays[dr_id]);
-                }
+                savePngs (logpath, "sim", framecount, plt);
                 ++framecount;
             } else {
-                if (plot_c) {
-                    plt.savePngs (logpath, "connections", RD.stepCount, displays[c_id]);
-                }
-                if (plot_a) {
-                    plt.savePngs (logpath, "axonbranch", RD.stepCount, displays[a_id]);
-                }
-                if (plot_contours) {
-                    plt.savePngs (logpath, "contours", RD.stepCount, displays[contours_id]);
-                }
-                if (plot_a_contours) {
-                    plt.savePngs (logpath, "a_contours", RD.stepCount, displays[a_contours_id]);
-                }
-                if (plot_dr && do_dirichlet_analysis) {
-                    plt.savePngs (logpath, "maxval", RD.stepCount, displays[dr_id]);
-                }
+                savePngs (logpath, "sim", RD.stepCount, plt);
             }
-#endif
         }
 
         // rendering the graphics.
