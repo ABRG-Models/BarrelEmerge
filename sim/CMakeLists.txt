@@ -15,6 +15,11 @@ target_link_libraries(james0c ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})
 #target_compile_definitions(james0cd PUBLIC FLT=double)
 #target_link_libraries(james0cd ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})
 
+# Comp 2. Supp. Sect. 7.2.
+add_executable(james_comp2 james1.cpp)
+target_compile_definitions(james_comp2 PUBLIC FLT=float COMPILE_PLOTTING)
+target_link_libraries(james_comp2 ${MORPH_LDFLAGS} ${HDF5LIBLINK} ${JSONLIBLINK})
+
 # Divisive normalization of a_i
 add_executable(james_divnorm james1.cpp)
 target_compile_definitions(james_divnorm PUBLIC FLT=float COMPILE_PLOTTING DIVNORM)

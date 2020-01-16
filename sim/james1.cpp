@@ -37,6 +37,8 @@
 #include "rd_james_dncomp2.h"
 #elif defined DNCOMP
 #include "rd_james_dncomp.h"
+#elif defined COMP2
+#include "rd_james_comp2.h"
 #else
 #include "rd_james.h" // 2D Karbowski, no additional competition/features
 #endif
@@ -197,6 +199,10 @@ int main (int argc, char **argv)
     const FLT m = conf.getDouble ("m", 1e-8);
     const double E = conf.getDouble ("E", 0.0);
     DBG2 ("E is set to " << E);
+#endif
+
+#if defined COMP2
+    // Anything?
 #endif
 
     bool do_fgf_duplication = conf.getBool ("do_fgf_duplication", false);
@@ -390,6 +396,8 @@ int main (int argc, char **argv)
     RD_James_dncomp2<FLT> RD;
 #elif defined DNCOMP
     RD_James_dncomp<FLT> RD;
+#elif defined COMP2
+    RD_James_comp2<FLT> RD;
 #else
     RD_James<FLT> RD;
 #endif
@@ -433,6 +441,10 @@ int main (int argc, char **argv)
     RD.E = E;
 #endif
 
+#ifdef COMP2
+    // anything?
+#endif
+
     RD.contour_threshold = contour_threshold;
     RD.k = k;
     RD.doFgfDuplication = do_fgf_duplication;
@@ -458,6 +470,10 @@ int main (int argc, char **argv)
 #if defined DNCOMP2
         RD.xi[i] = v.get("xi", 0.0).asDouble();
         DBG2 ("Set RD.xi["<<i<<"] to " << RD.xi[i]);
+#endif
+
+#if defined COMP2
+        // Anything?
 #endif
     }
 
