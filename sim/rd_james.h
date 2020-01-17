@@ -22,8 +22,8 @@ enum class FieldShape {
 };
 
 /*!
- * A small collection of parameters to define width and location of a symmetric (i.e. circular) 2D
- * Gaussian.
+ * A small collection of parameters to define width and location of a symmetric
+ * (i.e. circular) 2D Gaussian.
  */
 template <class Flt>
 struct GaussParams {
@@ -34,14 +34,14 @@ struct GaussParams {
 };
 
 /*!
- * Reaction diffusion system. Based on Karbowski 2004, but with a removal of the Fgf8, Pax6, Emx2
- * system, and instead an option to define several guidance molecules and thalamocortical types
- * (i.e. configurable N and M).
+ * Reaction diffusion system. Based on Karbowski 2004, but with a removal of the Fgf8,
+ * Pax6, Emx2 system, and instead an option to define several guidance molecules and
+ * thalamocortical types (i.e. configurable N and M).
  *
  * This class also has a mechanism for providing normalization of the a variable.
  *
- * This is a template class using 'Flt' for the float type, this can either be single precision
- * (float) or double precision (double).
+ * This is a template class using 'Flt' for the float type, this can either be single
+ * precision (float) or double precision (double).
  */
 template <class Flt>
 class RD_James : public morph::RD_Base<Flt>
@@ -49,8 +49,8 @@ class RD_James : public morph::RD_Base<Flt>
 public:
 
     /*!
-     * how many thalamo-cortical axon types are there? Denoted by N in the paper, and so we use N
-     * here too.
+     * how many thalamo-cortical axon types are there? Denoted by N in the paper, and
+     * so we use N here too.
      */
     alignas(Flt) unsigned int N = 5;
 
@@ -60,7 +60,8 @@ public:
     alignas(Flt) unsigned int M = 3;
 
     /*!
-     * These are the c_i(x,t) variables from the Karb2004 paper. x is a vector in two-space.
+     * These are the c_i(x,t) variables from the Karb2004 paper. x is a vector in
+     * two-space.
      */
     alignas(alignof(vector<vector<Flt> >))
     vector<vector<Flt> > c;
@@ -72,16 +73,17 @@ public:
     vector<vector<Flt> > dc;
 
     /*!
-     * These are the a_i(x,t) variables from the Karb2004 paper. x is a vector in two-space. The
-     * first vector is over the different TC axon types, enumerated by i, the second vector are the
-     * a_i values, indexed by the vi in the Hexes in HexGrid.
+     * These are the a_i(x,t) variables from the Karb2004 paper. x is a vector in
+     * two-space. The first vector is over the different TC axon types, enumerated by
+     * i, the second vector are the a_i values, indexed by the vi in the Hexes in
+     * HexGrid.
      */
     alignas(alignof(vector<vector<Flt> >))
     vector<vector<Flt> > a;
 
     /*!
-     * For each TC axon type, this holds the two components of the gradient field of the scalar
-     * value a(x,t) (where this x is a vector in two-space)
+     * For each TC axon type, this holds the two components of the gradient field of
+     * the scalar value a(x,t) (where this x is a vector in two-space)
      */
     alignas(alignof(vector<array<vector<Flt>, 2> >))
     vector<array<vector<Flt>, 2> > grad_a;
@@ -93,7 +95,8 @@ public:
     vector<vector<array<vector<Flt>, 2> > > g;
 
     /*!
-     * To hold div(g) / 3d, a static scalar field. There are M vectors of N of these vectors of Flts
+     * To hold div(g) / 3d, a static scalar field. There are M vectors of N of these
+     * vectors of Flts
      */
     alignas(alignof(vector<vector<vector<Flt> > >))
     vector<vector<vector<Flt> > > divg_over3d;
@@ -105,7 +108,8 @@ public:
     vector<Flt> n;
 
     /*!
-     * J_i(x,t) variables - the "flux current of axonal branches of type i". This is a vector field.
+     * J_i(x,t) variables - the "flux current of axonal branches of type i". This is a
+     * vector field.
      */
     alignas(alignof(vector<array<vector<Flt>, 2> >))
     vector<array<vector<Flt>, 2> > J;
@@ -150,9 +154,9 @@ public:
     vector<GaussParams<Flt> > initmasks;
 
     /*!
-     * The string identifiers for each TC type. This is of size N. Can be populated from the config
-     * file. This allows me to look up the name, as given in the config file, from the floating
-     * point index, obtained from (integer index / N)
+     * The string identifiers for each TC type. This is of size N. Can be populated
+     * from the config file. This allows me to look up the name, as given in the
+     * config file, from the floating point index, obtained from (integer index / N)
      */
     alignas(alignof(map<Flt, string>)) map<Flt, string> tcnames;
 
@@ -174,8 +178,8 @@ protected: // We have a setter for gamma.
 
 public:
     /*!
-     * A vector of parameters for the direction of the guidance molecules. This is an angle in
-     * Radians.
+     * A vector of parameters for the direction of the guidance molecules. This is an
+     * angle in Radians.
      */
     alignas(alignof(vector<Flt>))
     vector<Flt> guidance_phi;
@@ -205,16 +209,16 @@ public:
     vector<Flt> guidance_gain;
 
     /*!
-     * Guidance molecule parameters to be the time (i.e. step) at which each guidance gradient is
-     * switched on.
+     * Guidance molecule parameters to be the time (i.e. step) at which each guidance
+     * gradient is switched on.
      */
     alignas(alignof(vector<unsigned int>))
     vector<unsigned int> guidance_time_onset;
 
     /*!
-     * Rho variables in Eq 4 - the concentrations of axon guidance molecules A, B, C, etc. In
-     * Karbowski 2004, these are time independent and we will treat them as such, populating them at
-     * initialisation.
+     * Rho variables in Eq 4 - the concentrations of axon guidance molecules A, B, C,
+     * etc. In Karbowski 2004, these are time independent and we will treat them as
+     * such, populating them at initialisation.
      *
      * There are M vector<Flts> in rho.
      */
@@ -224,8 +228,8 @@ public:
     //@}
 
     /*!
-     * Into grad_rho put the two components of the gradient of rho computed across the HexGrid
-     * surface.
+     * Into grad_rho put the two components of the gradient of rho computed across the
+     * HexGrid surface.
      *
      * There are M gradient fields stored in this variable.
      */
@@ -247,8 +251,8 @@ public:
     vector<vector<Flt> > alpha_c;
 
     /*!
-     * The contour threshold. For contour plotting [see plot_contour()], the field is normalised,
-     * then the contour is plotted where the field crosses this threshold.
+     * The contour threshold. For contour plotting [see plot_contour()], the field is
+     * normalised, then the contour is plotted where the field crosses this threshold.
      */
     alignas(Flt) Flt contour_threshold = 0.5;
 
@@ -276,13 +280,13 @@ public:
     vector<FieldShape> rhoMethod;
 
     /*!
-     * Modify initial conditions as if FGF had been mis-expressed posteriorly as well as anteriorly
-     * and assume that this has the effect of causing axonal ingrowth in a mirrored fashion. Bunch
-     * up the locations of the Gaussians used to set inital conditions (along the x axis) and then
-     * duplicate.
+     * Modify initial conditions as if FGF had been mis-expressed posteriorly as well
+     * as anteriorly and assume that this has the effect of causing axonal ingrowth in
+     * a mirrored fashion. Bunch up the locations of the Gaussians used to set inital
+     * conditions (along the x axis) and then duplicate.
      *
-     * Note that this is the original approach to Fgf8 mis-expression. See jamesdual.cpp and
-     * rd_james_dncomp_dual.h (Seb, Nov 2019).
+     * Note that this is the original approach to Fgf8 mis-expression. See
+     * jamesdual.cpp and rd_james_dncomp_dual.h (Seb, Nov 2019).
      */
     bool doFgfDuplication = false;
 
@@ -293,8 +297,8 @@ public:
     //! Dirichlet regions
     vector<Flt> regions;
 
-    //! The centroids of the regions. key is the "ID" of the region - a Flt between 0 and 1, with
-    //! values separated by 1/N.
+    //! The centroids of the regions. key is the "ID" of the region - a Flt between 0
+    //! and 1, with values separated by 1/N.
     map<Flt, pair<Flt, Flt> > reg_centroids;
 
     //! The area of each region, by Flt ID (area in number of hexes).
@@ -311,9 +315,9 @@ public:
     map<string, pair<float, float>> expt_centroids;
 
     /*!
-     * From the contour information in the SVG, determine experimental barrel identity for each Hex,
-     * This is a float between 0 and 1, with -1 meaning that there is no barrel in that hex on the
-     * experimental map (it might be inter-barrel tissue).
+     * From the contour information in the SVG, determine experimental barrel identity
+     * for each Hex, This is a float between 0 and 1, with -1 meaning that there is no
+     * barrel in that hex on the experimental map (it might be inter-barrel tissue).
      */
     vector<Flt> expt_barrel_id;
 
@@ -322,7 +326,8 @@ public:
      */
     map<Flt, int> expt_areas;
 
-    //! The overall Honda 1983 Dirichlet approximation. 0.003 is a good fit. 0.05 not so good.
+    //! The overall Honda 1983 Dirichlet approximation. 0.003 is a good fit. 0.05 not
+    //! so good.
     Flt honda = 0.0;
 
     //! Honda Dirichlet approx for the experimentally supplied barrels
@@ -330,20 +335,21 @@ public:
     //@}
 
     /*!
-     * A metric to determine the difference between the current pattern and the experimentally
-     * observed pattern. Based on a sum of centroid distances between expt and sim barrels.
+     * A metric to determine the difference between the current pattern and the
+     * experimentally observed pattern. Based on a sum of centroid distances between
+     * expt and sim barrels.
      */
     Flt sos_distances = 0.0;
 
     /*!
-     * The sum of the square of the absolute differences in area (in num hexes) between the
-     * experimental and simulated barrel fields.
+     * The sum of the square of the absolute differences in area (in num hexes)
+     * between the experimental and simulated barrel fields.
      */
     Flt area_diff = 0.0;
 
     /*!
-     * Another metric to determine the difference between the current pattern and the experimentally
-     * observed pattern, this one is based on traced barrel boundaries.
+     * Another metric to determine the difference between the current pattern and the
+     * experimentally observed pattern, this one is based on traced barrel boundaries.
      */
     Flt mapdiff = 0.0;
 
@@ -355,17 +361,18 @@ public:
     }
 
     /*!
-     * Initialise this vector of vectors with noise. This is a model-specific function.
+     * Initialise this vector of vectors with noise. This is a model-specific
+     * function.
      *
-     * I apply a sigmoid to the boundary hexes, so that the noise drops away towards the edge of the
-     * domain.
+     * I apply a sigmoid to the boundary hexes, so that the noise drops away towards
+     * the edge of the domain.
      */
     virtual void noiseify_vector_vector (vector<vector<Flt> >& vv, vector<GaussParams<Flt> >& gp) {
         for (unsigned int i = 0; i<this->N; ++i) {
             for (auto h : this->hg->hexen) {
-                // boundarySigmoid. Jumps sharply (100, larger is sharper) over length scale 0.05 to
-                // 1. So if distance from boundary > 0.05, noise has normal value. Close to
-                // boundary, noise is less.
+                // boundarySigmoid. Jumps sharply (100, larger is sharper) over length
+                // scale 0.05 to 1. So if distance from boundary > 0.05, noise has
+                // normal value. Close to boundary, noise is less.
                 vv[i][h.vi] = morph::Tools::randF<Flt>() * this->aNoiseGain + this->aInitialOffset;
                 if (h.distToBoundary > -0.5) { // It's possible that distToBoundary is set to -1.0
                     Flt bSig = 1.0 / ( 1.0 + exp (-100.0*(h.distToBoundary-this->boundaryFalloffDist)) );
@@ -377,9 +384,9 @@ public:
     }
 
     /*!
-     * Apply a mask to the noise in a vector of vectors. This masks with a 2D Gaussian for each a
-     * (there are N TC type, so for each i in N, apply a different Gaussian mask, probably with the
-     * same width, but different centre).
+     * Apply a mask to the noise in a vector of vectors. This masks with a 2D Gaussian
+     * for each a (there are N TC type, so for each i in N, apply a different Gaussian
+     * mask, probably with the same width, but different centre).
      *
      * This allows me to initialise the system in a more biologically realistic manner.
      */
@@ -423,7 +430,8 @@ public:
                 // In this case, narrow sigma:
                 gp[i].sigma /= 2.0;
 
-                // Also copy vv[i] so that we can do the mirrored contribution to the initial state
+                // Also copy vv[i] so that we can do the mirrored contribution to the
+                // initial state
                 vv_cpy.assign(vv[i].begin(), vv[i].end());
                 DBG ("Copied. vv_cpy[0] = " << vv_cpy[0] << " vv[i][0] = " << vv[i][0]);
             }
@@ -436,8 +444,8 @@ public:
                 Flt rx = gp[i].x - h.x;
                 Flt ry = gp[i].y - h.y;
                 Flt r = sqrt (rx*rx + ry*ry);
-                // Note that the gain of the gauss (gp[i].gain) has already been applied in
-                // noiseify_vector_vector()
+                // Note that the gain of the gauss (gp[i].gain) has already been
+                // applied in noiseify_vector_vector()
                 Flt gauss = (one_over_sigma_root_2_pi
                              * exp ( static_cast<Flt>(-(r*r))
                                      / two_sigma_sq ));
@@ -471,8 +479,8 @@ public:
 #ifdef USE_USER_SUPPLIED_CIRCLES
         // Copy the list of circles from the ReadCurves object
         this->expt_centroids = this->r.circles;
-        // Invert the y axis of these coordinates, just as the y axis is inverted in void
-        // morph::HexGrid::setBoundary (const BezCurvePath& p)
+        // Invert the y axis of these coordinates, just as the y axis is inverted in
+        // void morph::HexGrid::setBoundary (const BezCurvePath& p)
         for (auto& c : this->expt_centroids) {
             c.second.second = -c.second.second;
         }
@@ -518,9 +526,9 @@ public:
     }
 
     /*!
-     * Initialise variables and parameters. Carry out one-time computations required of the
-     * model. This should be able to re-initialise a finished simulation as well as initialise the
-     * first time.
+     * Initialise variables and parameters. Carry out one-time computations required
+     * of the model. This should be able to re-initialise a finished simulation as
+     * well as initialise the first time.
      */
     virtual void init (void) {
 
@@ -641,8 +649,9 @@ public:
             this->spacegrad2D (this->rho[m], this->grad_rho[m]);
         }
 
-        // Having computed gradients, build this->g; has to be done once only. Note that a sigmoid
-        // is applied so that g(x) drops to zero around the boundary of the domain.
+        // Having computed gradients, build this->g; has to be done once only. Note
+        // that a sigmoid is applied so that g(x) drops to zero around the boundary of
+        // the domain.
         for (unsigned int i=0; i<this->N; ++i) {
             for (auto h : this->hg->hexen) {
                 // Sigmoid/logistic fn params: 100 sharpness, 0.02 dist offset from boundary
@@ -659,8 +668,8 @@ public:
 
 protected:
     /*!
-     * Given a TC id string @idstr, look it up in tcnames and find the Flt ID that it corresponds
-     * to. Client code should have set up tcnames.
+     * Given a TC id string @idstr, look it up in tcnames and find the Flt ID that it
+     * corresponds to. Client code should have set up tcnames.
      */
     Flt tc_name_to_id (const string& idstr) {
         Flt theid = -1.0;
@@ -689,7 +698,8 @@ protected:
 
 public:
     /*!
-     * Public accessors for D, as it requires another attribute to be updated at the same time.
+     * Public accessors for D, as it requires another attribute to be updated at the
+     * same time.
      */
     //@{
     void set_D (Flt D_) {
@@ -715,8 +725,8 @@ public:
      */
     //@{
     /*!
-     * setGamma for the guidance molecule index m_idx and the TC index n_idx to @value. If
-     * group_m==m_idx, then set this->group[n_idx]=@value
+     * setGamma for the guidance molecule index m_idx and the TC index n_idx to
+     * @value. If group_m==m_idx, then set this->group[n_idx]=@value
      */
     int setGamma (unsigned int m_idx, unsigned int n_idx, Flt value, unsigned int group_m = 0) {
         if (gamma.size() > m_idx) {
@@ -811,7 +821,8 @@ public:
         vector<Flt> keys;
         vector<Flt> x_;
         vector<Flt> y_;
-        // Hopefully, this ensures that we always save N centroids, even if some default to 0,0.
+        // Hopefully, this ensures that we always save N centroids, even if some
+        // default to 0,0.
         for (unsigned int i = 0; i<this->N; ++i) {
             Flt k = (Flt)i/this->N;
             keys.push_back (k);
@@ -840,7 +851,8 @@ public:
     /*!
      * Save the guidance molecules to a file (guidance.h5)
      *
-     * Also save the experimental ID map in this file, as this is something that needs saving once only.
+     * Also save the experimental ID map in this file, as this is something that needs
+     * saving once only.
      */
     void saveGuidance (void) {
         stringstream fname;
@@ -918,14 +930,13 @@ public:
     }
 
     /*!
-     * A possibly normalization-function specific task to carry out
-     * once after the sum of a has been computed.
+     * A possibly normalization-function specific task to carry out once after the sum
+     * of a has been computed.
      */
     virtual void sum_a_computation (const unsigned int _i) {}
 
     /*!
-     * The normalization/transfer function with a default no-op
-     * implementation.
+     * The normalization/transfer function with a default no-op implementation.
      */
     virtual inline Flt transfer_a (const Flt& _a, const unsigned int _i) {
         Flt a_rtn = _a;
@@ -937,7 +948,8 @@ public:
      */
     virtual void integrate_a (void) {
 
-        // 2. Do integration of a (RK in the 1D model). Involves computing axon branching flux.
+        // 2. Do integration of a (RK in the 1D model). Involves computing axon
+        // branching flux.
 
         // Pre-compute:
         // 1) The intermediate val alpha_c.
@@ -948,8 +960,8 @@ public:
             }
         }
 
-        // Runge-Kutta:
-        // No OMP here - there are only N(<10) loops, which isn't enough to load the threads up.
+        // Runge-Kutta: No OMP here - there are only N(<10) loops, which isn't enough
+        // to load the threads up.
         for (unsigned int i=0; i<this->N; ++i) {
 
             // Runge-Kutta integration for A
@@ -1058,8 +1070,8 @@ public:
     }
 
     /*!
-     * Examine the value in each Hex of the hexgrid of the scalar field f. If abs(f[h]) exceeds the
-     * size of dangerThresh, then output debugging information.
+     * Examine the value in each Hex of the hexgrid of the scalar field f. If
+     * abs(f[h]) exceeds the size of dangerThresh, then output debugging information.
      */
     void debug_values (vector<Flt>& f, Flt dangerThresh) {
         for (auto h : this->hg->hexen) {
@@ -1074,7 +1086,8 @@ public:
     }
 
     /*!
-     * Does: f = (alpha * f) + betaterm. c.f. Karb2004, Eq 1. f is c[i] or q from the RK algorithm.
+     * Does: f = (alpha * f) + betaterm. c.f. Karb2004, Eq 1. f is c[i] or q from the
+     * RK algorithm.
      */
     vector<Flt> compute_dci_dt (vector<Flt>& f, unsigned int i) {
         vector<Flt> dci_dt (this->nhex, 0.0);
@@ -1086,7 +1099,8 @@ public:
     }
 
     /*!
-     * Compute the divergence of g and divide by 3d. Used in computation of term2 in compute_divJ().
+     * Compute the divergence of g and divide by 3d. Used in computation of term2 in
+     * compute_divJ().
      *
      * This computation is based on Gauss's theorem.
      */
@@ -1153,8 +1167,8 @@ public:
     /*!
      * Computes the "flux of axonal branches" term, J_i(x) (Eq 4)
      *
-     * Inputs: this->g, fa (which is this->a[i] or a q in the RK algorithm), this->D, @a i, the TC
-     * type.  Helper functions: spacegrad2D().  Output: this->divJ
+     * Inputs: this->g, fa (which is this->a[i] or a q in the RK algorithm), this->D,
+     * @a i, the TC type.  Helper functions: spacegrad2D().  Output: this->divJ
      *
      * Stable with dt = 0.0001;
      */
@@ -1184,7 +1198,8 @@ public:
             // 2. The (a div(g)) term.
             Flt term2 = 0.0;
 
-            // 3. Third term is this->g . grad a_i. Should not contribute to J, as g(x) decays towards boundary.
+            // 3. Third term is this->g . grad a_i. Should not contribute to J, as
+            // g(x) decays towards boundary.
             Flt term3 = 0.0;
 
             for (unsigned int m =0 ; m < this->M; ++m) {
@@ -1224,7 +1239,8 @@ public:
      */
     void gaussian2D_guidance (unsigned int m) {
 
-        // Centre of the Gaussian is offset from 0 by guidance_offset, then rotated by guidance_phi
+        // Centre of the Gaussian is offset from 0 by guidance_offset, then rotated by
+        // guidance_phi
         Flt x_ = (Flt)this->guidance_offset[m];
         Flt y_ = (Flt)0.0;
 
@@ -1336,30 +1352,40 @@ public:
         this->vertices.clear();
         // Find regions. Based on an 'ID field'.
         this->regions = morph::ShapeAnalysis<Flt>::dirichlet_regions (this->hg, this->c);
-        // Compute the centroids of the regions; used to determine aligned-ness of the barrels
+        // Compute centroids of regions; used to determine aligned-ness of the barrels
         this->reg_centroids = morph::ShapeAnalysis<Flt>::region_centroids (this->hg, this->regions);
 
-        // based on the reg_centroids, find the sum of squared distances between each simulated
-        // barrel and it's experimentally determined location.
+        // based on the reg_centroids, find the sum of squared distances between each
+        // simulated barrel and it's experimentally determined location.
         this->sos_distances = 0.0;
         for (unsigned int i = 0; i < this->N; ++i) {
             Flt idx = (Flt)i/(Flt)this->N;
-            Flt dx = this->reg_centroids[idx].first - (this->expt_centroids[tcnames[idx]].first - this->hg->originalBoundaryCentroid.first);
-            Flt dy = this->reg_centroids[idx].second - (this->expt_centroids[tcnames[idx]].second - this->hg->originalBoundaryCentroid.second);
+            Flt dx = this->reg_centroids[idx].first
+                - (this->expt_centroids[tcnames[idx]].first
+                   - this->hg->originalBoundaryCentroid.first);
+            Flt dy = this->reg_centroids[idx].second
+                - (this->expt_centroids[tcnames[idx]].second
+                   - this->hg->originalBoundaryCentroid.second);
             Flt dsq = dx*dx + dy*dy;
 #if 0
             DBG2 ("For barrel ID " << tcnames[idx] << ", the sim has centroid locn ("
-                  << this->reg_centroids[idx].first << "," << this->reg_centroids[idx].second << ") "
+                  << this->reg_centroids[idx].first << ","
+                  << this->reg_centroids[idx].second << ") "
                   << "to compare with expt ("
-                  << this->identified_coords[tcnames[idx]].first << "-" <<  this->hg->originalBoundaryCentroid.first << ","
-                  << this->identified_coords[tcnames[idx]].second << "-" <<  this->hg->originalBoundaryCentroid.second
+                  << this->identified_coords[tcnames[idx]].first << "-"
+                  <<  this->hg->originalBoundaryCentroid.first << ","
+                  << this->identified_coords[tcnames[idx]].second << "-"
+                  <<  this->hg->originalBoundaryCentroid.second
                   <<  ") which adds to sos_distances: " << dsq);
 #endif
 #if 0
             cout << tcnames[idx] << ","
-                 << this->reg_centroids[idx].first << "," << this->reg_centroids[idx].second << ","
-                 << this->expt_centroids[tcnames[idx]].first << "," << this->expt_centroids[tcnames[idx]].second << ","
-                 << this->hg->originalBoundaryCentroid.first <<  "," << this->hg->originalBoundaryCentroid.second << endl;
+                 << this->reg_centroids[idx].first << ","
+                 << this->reg_centroids[idx].second << ","
+                 << this->expt_centroids[tcnames[idx]].first << ","
+                 << this->expt_centroids[tcnames[idx]].second << ","
+                 << this->hg->originalBoundaryCentroid.first <<  ","
+                 << this->hg->originalBoundaryCentroid.second << endl;
 #endif
             this->sos_distances += dsq;
         }
@@ -1378,8 +1404,8 @@ public:
         }
         DBG ("overall area_diff = " << this->area_diff);
 
-        // Compute differences based on barrel ID map. Where hexes are differen between the maps,
-        // add 1.0 to the metric; if expt barrel is unset, add 0.5.
+        // Compute differences based on barrel ID map. Where hexes are differen
+        // between the maps, add 1.0 to the metric; if expt barrel is unset, add 0.5.
         this->mapdiff = 0.0;
         for (unsigned int h = 0; h < this->nhex; ++h) {
             if (this->expt_barrel_id[h] == (Flt)-1.0) {
