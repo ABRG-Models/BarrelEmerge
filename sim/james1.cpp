@@ -202,7 +202,7 @@ int main (int argc, char **argv)
 #endif
 
 #if defined COMP2
-    // Anything?
+    const double F = conf.getDouble ("F", 0.0);
 #endif
 
     bool do_fgf_duplication = conf.getBool ("do_fgf_duplication", false);
@@ -441,8 +441,8 @@ int main (int argc, char **argv)
     RD.E = E;
 #endif
 
-#ifdef COMP2
-    // anything?
+#if defined COMP2
+    RD.F = F;
 #endif
 
     RD.contour_threshold = contour_threshold;
@@ -470,10 +470,6 @@ int main (int argc, char **argv)
 #if defined DNCOMP2
         RD.xi[i] = v.get("xi", 0.0).asDouble();
         DBG2 ("Set RD.xi["<<i<<"] to " << RD.xi[i]);
-#endif
-
-#if defined COMP2
-        // Anything?
 #endif
     }
 

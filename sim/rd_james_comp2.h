@@ -81,176 +81,10 @@ public:
      */
     //@{
 
-    /*!
-     * Do a single step through the model.
-     */
-    void step (void) {
-
-        this->stepCount++;
-
-        // 1. Compute Karb2004 Eq 3. (coupling between connections made by each TC type)
-        Flt nsum = 0.0;
-        Flt csum = 0.0;
-#pragma omp parallel for reduction(+:nsum,csum)
-        for (unsigned int hi=0; hi<this->nhex; ++hi) {
-            this->n[hi] = 0;
-            for (unsigned int i=0; i<this->N; ++i) {
-                this->n[hi] += this->c[i][hi];
-            }
-            // Prevent sum of c being too large:
-            this->n[hi] = (this->n[hi] > 1.0) ? 1.0 : this->n[hi];
-            csum += this->c[0][hi];
-            this->n[hi] = 1. - this->n[hi];
-            nsum += this->n[hi];
-        }
-
-#ifdef DEBUG__
-        if (this->stepCount % 100 == 0) {
-            DBG ("System computed " << this->stepCount << " times so far...");
-            DBG ("sum of n+c is " << nsum+csum);
-        }
-#endif
-
-        // 2. Do integration of a (RK in the 1D model). Involves computing axon branching flux.
-
-        // Pre-compute intermediate val:
-        for (unsigned int i=0; i<this->N; ++i) {
-#pragma omp parallel for
-            for (unsigned int h=0; h<this->nhex; ++h) {
-                this->alpha_c[i][h] = this->alpha[i] * this->c[i][h];
-            }
-        }
-
-        // Runge-Kutta:
-        // No OMP here - there are only N(<10) loops, which isn't
-        // enough to load the threads up.
-        for (unsigned int i=0; i<this->N; ++i) {
-
-            // Compute "the sum of all a_j for which j!=i"
-            this->zero_vector_variable (this->ahat);
-            for (unsigned int j=0; j<this->N; ++j) {
-                if (j==i) { continue; }
-#pragma omp parallel for
-                for (unsigned int h=0; h<this->nhex; ++h) {
-                    this->ahat[h] += this->a[j][h];
-                }
-            }
-
-            // 1.1 Compute divergence and gradient of ahat
-            this->compute_divahat();
-            this->spacegrad2D (this->ahat, this->grad_ahat);
-
-            // Runge-Kutta integration for A
-            vector<Flt> q(this->nhex, 0.0);
-            this->compute_divJ (this->a[i], i); // populates divJ[i]
-
-            vector<Flt> k1(this->nhex, 0.0);
-#pragma omp parallel for
-            for (unsigned int h=0; h<this->nhex; ++h) {
-                k1[h] = this->divJ[i][h] + this->alpha_c[i][h] - this->beta[i] * this->n[h] * static_cast<Flt>(pow (this->a[i][h], this->k));
-                q[h] = this->a[i][h] + k1[h] * this->halfdt;
-            }
-
-            vector<Flt> k2(this->nhex, 0.0);
-            this->compute_divJ (q, i);
-#pragma omp parallel for
-            for (unsigned int h=0; h<this->nhex; ++h) {
-                k2[h] = this->divJ[i][h] + this->alpha_c[i][h] - this->beta[i] * this->n[h] * static_cast<Flt>(pow (q[h], this->k));
-                q[h] = this->a[i][h] + k2[h] * this->halfdt;
-            }
-
-            vector<Flt> k3(this->nhex, 0.0);
-            this->compute_divJ (q, i);
-#pragma omp parallel for
-            for (unsigned int h=0; h<this->nhex; ++h) {
-                k3[h] = this->divJ[i][h] + this->alpha_c[i][h] - this->beta[i] * this->n[h] * static_cast<Flt>(pow (q[h], this->k));
-                q[h] = this->a[i][h] + k3[h] * this->dt;
-            }
-
-            vector<Flt> k4(this->nhex, 0.0);
-            this->compute_divJ (q, i);
-#pragma omp parallel for
-            for (unsigned int h=0; h<this->nhex; ++h) {
-                k4[h] = this->divJ[i][h] + this->alpha_c[i][h] - this->beta[i] * this->n[h] * static_cast<Flt>(pow (q[h], this->k));
-                this->a[i][h] += (k1[h] + 2.0 * (k2[h] + k3[h]) + k4[h]) * this->sixthdt;
-                // Prevent a from becoming negative:
-                this->a[i][h] = (this->a[i][h] < 0.0) ? 0.0 : this->a[i][h];
-            }
-            //cout << "a[" << i << "][0] = " << this->a[i][0] << endl;
-            if (isnan(this->a[i][0])) {
-                cerr << "Exiting on a[i][0] == NaN" << endl;
-                exit (1);
-            }
-        }
-
-        // 3. Do integration of c
-        for (unsigned int i=0; i<this->N; ++i) {
-
-#pragma omp parallel for
-            for (unsigned int h=0; h<this->nhex; h++) {
-                // Note: betaterm used in compute_dci_dt()
-                this->betaterm[i][h] = this->beta[i] * this->n[h] * static_cast<Flt>(pow (this->a[i][h], this->k));
-            }
-
-            // Runge-Kutta integration for C (or ci)
-            vector<Flt> q(this->nhex,0.);
-            vector<Flt> k1 = this->compute_dci_dt (this->c[i], i);
-#pragma omp parallel for
-            for (unsigned int h=0; h<this->nhex; h++) {
-                q[h] = this->c[i][h] + k1[h] * this->halfdt;
-            }
-
-            vector<Flt> k2 = this->compute_dci_dt (q, i);
-#pragma omp parallel for
-            for (unsigned int h=0; h<this->nhex; h++) {
-                q[h] = this->c[i][h] + k2[h] * this->halfdt;
-            }
-
-            vector<Flt> k3 = this->compute_dci_dt (q, i);
-#pragma omp parallel for
-            for (unsigned int h=0; h<this->nhex; h++) {
-                q[h] = this->c[i][h] + k3[h] * this->dt;
-            }
-
-            vector<Flt> k4 = this->compute_dci_dt (q, i);
-#pragma omp parallel for
-            for (unsigned int h=0; h<this->nhex; h++) {
-                this->c[i][h] += (k1[h]+2. * (k2[h] + k3[h]) + k4[h]) * this->sixthdt;
-                // Avoid over-saturating c_i:
-                this->c[i][h] = (this->c[i][h] > 1.0) ? 1.0 : this->c[i][h];
-            }
-#if 0
-            cout << "c[" << i << "][0] = " << this->c[i][0] << endl;
-            if (isnan(this->c[i][0])) {
-                cerr << "Exiting on c[i][0] == NaN" << endl;
-                exit (2);
-            }
-#endif
-        }
-    }
 
     /*!
-     * Compute divergence of \hat{a}_i
-     */
-    void compute_divahat (void) {
-#pragma omp parallel for
-        for (unsigned int hi=0; hi<this->nhex; ++hi) {
-            Flt thesum = -6 * this->ahat[hi];
-            thesum += this->ahat[(HAS_NE(hi)  ? NE(hi)  : hi)];
-            thesum += this->ahat[(HAS_NNE(hi) ? NNE(hi) : hi)];
-            thesum += this->ahat[(HAS_NNW(hi) ? NNW(hi) : hi)];
-            thesum += this->ahat[(HAS_NW(hi)  ? NW(hi)  : hi)];
-            thesum += this->ahat[(HAS_NSW(hi) ? NSW(hi) : hi)];
-            thesum += this->ahat[(HAS_NSE(hi) ? NSE(hi) : hi)];
-            this->div_ahat[hi] = this->twoover3dd * thesum;
-            if (isnan(this->div_ahat[hi])) {
-                cerr << "div ahat isnan" << endl;
-                exit (3);
-            }
-        }
-    }
-
-    /*!
+     * This is updated wrt rd_james.h as it has the additional terms
+     *
      * Computes the "flux of axonal branches" term, J_i(x) (Eq 4)
      *
      * Inputs: this->g, fa (which is this->a[i] or a q in the RK
@@ -337,6 +171,111 @@ public:
             }
 
             this->divJ[i][hi] = term1 - term1_1 - term1_2 - term2 - term3;
+        }
+    }
+
+    /*!
+     * Compute divergence of \hat{a}_i
+     */
+    void compute_divahat (void) {
+#pragma omp parallel for
+        for (unsigned int hi=0; hi<this->nhex; ++hi) {
+            Flt thesum = -6 * this->ahat[hi];
+            thesum += this->ahat[(HAS_NE(hi)  ? NE(hi)  : hi)];
+            thesum += this->ahat[(HAS_NNE(hi) ? NNE(hi) : hi)];
+            thesum += this->ahat[(HAS_NNW(hi) ? NNW(hi) : hi)];
+            thesum += this->ahat[(HAS_NW(hi)  ? NW(hi)  : hi)];
+            thesum += this->ahat[(HAS_NSW(hi) ? NSW(hi) : hi)];
+            thesum += this->ahat[(HAS_NSE(hi) ? NSE(hi) : hi)];
+            this->div_ahat[hi] = this->twoover3dd * thesum;
+            if (isnan(this->div_ahat[hi])) {
+                cerr << "div ahat isnan" << endl;
+                exit (3);
+            }
+        }
+    }
+
+    /*!
+     * integrate_a has some additional code in.
+     *
+     * Compute the values of a, the branching density
+     */
+    virtual void integrate_a (void) {
+
+        // 2. Do integration of a (RK in the 1D model). Involves computing axon
+        // branching flux.
+
+        // Pre-compute:
+        // 1) The intermediate val alpha_c.
+        for (unsigned int i=0; i<this->N; ++i) {
+#pragma omp parallel for
+            for (unsigned int h=0; h<this->nhex; ++h) {
+                this->alpha_c[i][h] = this->alpha[i] * this->c[i][h];
+            }
+        }
+
+        // Runge-Kutta: No OMP here - there are only N(<10) loops, which isn't enough
+        // to load the threads up.
+        for (unsigned int i=0; i<this->N; ++i) {
+
+            // --- START specific to comp2 method ---
+            // Compute "the sum of all a_j for which j!=i"
+            this->zero_vector_variable (this->ahat);
+            for (unsigned int j=0; j<this->N; ++j) {
+                if (j==i) { continue; }
+#pragma omp parallel for
+                for (unsigned int h=0; h<this->nhex; ++h) {
+                    this->ahat[h] += this->a[j][h];
+                }
+            }
+            // 1.1 Compute divergence and gradient of ahat
+            this->compute_divahat();
+            this->spacegrad2D (this->ahat, this->grad_ahat);
+            // --- END specific to comp2 method ---
+
+            // Runge-Kutta integration for A
+            vector<Flt> qq(this->nhex, 0.0);
+            this->compute_divJ (this->a[i], i); // populates divJ[i]
+
+            vector<Flt> k1(this->nhex, 0.0);
+#pragma omp parallel for
+            for (unsigned int h=0; h<this->nhex; ++h) {
+                k1[h] = this->divJ[i][h] - this->dc[i][h];
+                qq[h] = this->a[i][h] + k1[h] * this->halfdt;
+            }
+
+            vector<Flt> k2(this->nhex, 0.0);
+            this->compute_divJ (qq, i);
+#pragma omp parallel for
+            for (unsigned int h=0; h<this->nhex; ++h) {
+                k2[h] = this->divJ[i][h] - this->dc[i][h];
+                qq[h] = this->a[i][h] + k2[h] * this->halfdt;
+            }
+
+            vector<Flt> k3(this->nhex, 0.0);
+            this->compute_divJ (qq, i);
+#pragma omp parallel for
+            for (unsigned int h=0; h<this->nhex; ++h) {
+                k3[h] = this->divJ[i][h] - this->dc[i][h];
+                qq[h] = this->a[i][h] + k3[h] * this->dt;
+            }
+
+            vector<Flt> k4(this->nhex, 0.0);
+            this->compute_divJ (qq, i);
+#pragma omp parallel for
+            for (unsigned int h=0; h<this->nhex; ++h) {
+                k4[h] = this->divJ[i][h] - this->dc[i][h];
+                this->a[i][h] += (k1[h] + 2.0 * (k2[h] + k3[h]) + k4[h]) * this->sixthdt;
+            }
+
+            // Do any necessary computation which involves summing a here
+            this->sum_a_computation (i);
+
+            // Now apply the transfer function
+#pragma omp parallel for
+            for (unsigned int h=0; h<this->nhex; ++h) {
+                this->a[i][h] = this->transfer_a (this->a[i][h], i);
+            }
         }
     }
 
