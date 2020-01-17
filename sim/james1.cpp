@@ -30,7 +30,7 @@
 using namespace std::chrono;
 using std::chrono::steady_clock;
 
-//! Include the reaction diffusion class
+//! Include the relevant reaction diffusion class
 #if defined DIVNORM
 #include "rd_james_divnorm.h"
 #elif defined DNCOMP2
@@ -61,6 +61,17 @@ void savePngs (const std::string& logpath, const std::string& name,
     ff1 << std::setw(5) << std::setfill('0') << frameN;
     ff1 << ".png";
     v.saveImage (ff1.str());
+}
+
+//! Take the first element of the array and create a vector<vector<FLT>> to plot
+vector<vector<FLT> > separateVectorField (vector<array<vector<FLT>, 2> >& f,
+                                          unsigned int arrayIdx) {
+    vector<vector<FLT> > vf;
+    for (array<vector<FLT>, 2> fia : f) {
+        vector<FLT> tmpv = fia[arrayIdx];
+        vf.push_back (tmpv);
+    }
+    return vf;
 }
 #endif
 
@@ -191,12 +202,6 @@ int main (int argc, char **argv)
 
     const FLT contour_threshold = conf.getDouble ("contour_threshold", 0.6);
 
-    // For the maxval/contour/guidance window, used for movies
-    const FLT hshift = conf.getDouble ("hshift", 0.6);
-    const FLT vshift = conf.getDouble ("vshift", 0.4);
-    const FLT g_hshift = conf.getDouble ("g_hshift", -0.2);
-    const FLT g_vshift = conf.getDouble ("g_vshift", -0.4);
-
     const double D = conf.getDouble ("D", 0.1);
     const FLT k = conf.getDouble ("k", 3.0);
 
@@ -248,23 +253,8 @@ int main (int argc, char **argv)
     const bool scale_c = conf.getBool ("scale_c", true);
     const bool plot_n = conf.getBool ("plot_n", true);
     const bool plot_dr = conf.getBool ("plot_dr", true);
-    // Should the guidance be plotted in same window as the dr stuff?
-    const bool plot_dr_with_guide = conf.getBool ("plot_dr_with_guide", false);
     const bool scale_n = conf.getBool ("scale_n", true);
-    // Window IDs
-    unsigned int guide_id = 0xffff, contours_id = 0xffff, a_id = 0xffff, c_id = 0xffff, n_id = 0xffff, dr_id = 0xffff, a_contours_id = 0xffff;
-
     const bool plot_guidegrad = conf.getBool ("plot_guidegrad", false);
-    const bool plot_divg = conf.getBool ("plot_divg", false);
-    const bool plot_divJ = conf.getBool ("plot_divJ", false);
-    unsigned int guidegrad_x_id = 0xffff;
-    unsigned int guidegrad_y_id = 0xffff;
-    unsigned int divg_id = 0xffff;
-    unsigned int divJ_id = 0xffff;
-
-    string worldName("j");
-    unsigned int windowId = 0;
-    string winTitle = "";
 
     const unsigned int win_width = conf.getUInt ("win_width", 1025UL);
     unsigned int win_height = static_cast<unsigned int>(0.8824f * (float)win_width);
@@ -274,7 +264,7 @@ int main (int argc, char **argv)
     plt.zNear = 0.001;
     plt.zFar = 50;
     plt.fov = 45;
-    plt.setZDefault (20.0);
+    plt.setZDefault (10.0);
 #endif
 
     /*
@@ -460,66 +450,124 @@ int main (int argc, char **argv)
     const array<float, 4> scaling = { _m/10, _c/10, _m, _c };
 
     // HERE, add HexGridVisuals...
+    unsigned int c_ctr_grid = 0; // one only
+    unsigned int a_ctr_grid = 0;
+    vector<unsigned int> guide_grids;
+    vector<unsigned int> guidegrad_grids;
+
+    // Spatial offset
+    array<float, 3> spatOff;
+    float xzero = 0.0f;
+
     // The a variable
     vector<unsigned int> agrids;
-    array<float, 3> offset;
     unsigned int side = static_cast<unsigned int>(floor (sqrt (RD.N)));
     if (plot_a) {
-        float a_offs = +RD.hg->width() * side;
-        // -0.5*RD.hg->width()
-        offset = {0.0, 0.0, 0.0 };
+        spatOff = {xzero, 0.0, 0.0 };
         for (unsigned int i = 0; i<RD.N; ++i) {
-            offset[0] = a_offs + RD.hg->width() * (i/side);
-            offset[1] = RD.hg->width() * (i%side);
-            unsigned int idx = plt.addHexGridVisual (RD.hg, offset, RD.a[i], scaling);
+            spatOff[0] = xzero + RD.hg->width() * (i/side);
+            spatOff[1] = RD.hg->width() * (i%side);
+            unsigned int idx = plt.addHexGridVisual (RD.hg, spatOff, RD.a[i], scaling);
             agrids.push_back (idx);
         }
+        xzero = spatOff[0] + RD.hg->width();
     }
 
     // The c variable
     vector<unsigned int> cgrids;
     if (plot_c) {
-        float c_offs = -2.0*RD.hg->width();
-        offset = {0.0, 0.0, 0.0 };
+        spatOff = {xzero, 0.0, 0.0 };
         for (unsigned int i = 0; i<RD.N; ++i) {
-            offset[0] = c_offs + RD.hg->width() * (i/side);
-            offset[1] = RD.hg->width() * (i%side);
-            unsigned int idx = plt.addHexGridVisual (RD.hg, offset, RD.c[i], scaling);
+            spatOff[0] = xzero + RD.hg->width() * (i/side);
+            spatOff[1] = RD.hg->width() * (i%side);
+            unsigned int idx = plt.addHexGridVisual (RD.hg, spatOff, RD.c[i], scaling);
             cgrids.push_back (idx);
         }
+        xzero = spatOff[0] + RD.hg->width();
     }
 
     // n
-    offset = { 0.0, -1.0*RD.hg->depth(), 0.0 };
-    unsigned int ngrid = plt.addHexGridVisual (RD.hg, offset, RD.n, scaling);
+    unsigned int ngrid = 0;
+    if (plot_n) {
+        spatOff = { xzero, 0.0, 0.0 };
+        ngrid = plt.addHexGridVisual (RD.hg, spatOff, RD.n, scaling);
+        xzero += RD.hg->width();
+    }
+
+    // Contours
+    const array<float, 4> ctr_scaling = { 0.0f, 0.0f, 1.0f, 0.0f };
+    vector<FLT> zeromap (RD.nhex, static_cast<FLT>(0.0));
+    if (plot_contours) {
+        spatOff = { xzero, 0.0, 0.0 };
+        // special scaling for contours. flat in Z, but still colourful
+        c_ctr_grid = plt.addHexGridVisual (RD.hg, spatOff, zeromap, ctr_scaling);
+        xzero += RD.hg->width();
+    }
+
+    if (plot_a_contours) {
+        spatOff = { xzero, 0.0, 0.0 };
+        a_ctr_grid = plt.addHexGridVisual (RD.hg, spatOff, zeromap, ctr_scaling);
+        xzero += RD.hg->width();
+    }
+
+    // guidance expression
+    if (plot_guide) {
+        spatOff = { xzero, 0.0, 0.0 };
+        float _m = 0.8; float _c = 0.0;
+        const array<float, 4> guide_scaling = { 0.0f, 0.0f, _m, _c };
+        // Plot gradients of the guidance effect g.
+        for (unsigned int j = 0; j<RD.M; ++j) {
+            plt.addHexGridVisual (RD.hg, spatOff, RD.rho[j], guide_scaling);
+            spatOff[1] += RD.hg->depth();
+        }
+        xzero += RD.hg->width();
+    }
+
+
+    // Now plot fields and redraw display
+    if (plot_guidegrad) {
+        spatOff = { xzero, 0.0, 0.0 };
+        for (unsigned int j = 0; j<RD.M; ++j) {
+
+            // gradient of guidance expression
+            vector<vector<FLT> > gx = separateVectorField (RD.g[j], 0);
+            vector<vector<FLT> > gy = separateVectorField (RD.g[j], 1);
+            FLT ming = 1e7;
+            FLT maxg = -1e7;
+            if (plot_guidegrad) {
+                // Determine scale of gx and gy so that a common scale can be
+                // applied to both gradient_x and gradient_y.
+                for (unsigned int hi=0; hi<RD.nhex; ++hi) {
+                    Hex* h = RD.hg->vhexen[hi];
+                    if (h->onBoundary() == false) {
+                        for (unsigned int i = 0; i<RD.N; ++i) {
+                            if (gx[i][h->vi]>maxg) { maxg = gx[i][h->vi]; }
+                            if (gx[i][h->vi]<ming) { ming = gx[i][h->vi]; }
+                            if (gy[i][h->vi]>maxg) { maxg = gy[i][h->vi]; }
+                            if (gy[i][h->vi]<ming) { ming = gy[i][h->vi]; }
+                        }
+                    }
+                }
+                DBG2 ("min g = " << ming << " and max g = " << maxg);
+            }
+
+            // Convert to a scaling object
+            float gg_m, gg_c;
+            gg_m = 1.0f/(float)(maxg-ming);
+            gg_c = -(gg_m * ming);
+            const array<float, 4> guidegrad_scaling = { 0.0f, 0.0f, gg_m, gg_c };
+
+            // Create the grids
+            plt.addHexGridVisual (RD.hg, spatOff, gx[j], guidegrad_scaling);
+            spatOff[0] += RD.hg->width();
+            plt.addHexGridVisual (RD.hg, spatOff, gy[j], guidegrad_scaling);
+            spatOff[0] -= RD.hg->width();
+            spatOff[1] += RD.hg->depth();
+        }
+        xzero += RD.hg->width() + 2.0f;
+    }
 
 #if 0
-    vector<vector<FLT> > gx = plt.separateVectorField (RD.g[0], 0);
-    vector<vector<FLT> > gy = plt.separateVectorField (RD.g[0], 1);
-    FLT ming = 1e7;
-    FLT maxg = -1e7;
-    if (plot_guide) {
-        // Plot gradients of the guidance effect g.
-        plt.scalarfields (displays[guide_id], RD.hg, RD.rho);
-        displays[guide_id].redrawDisplay();
-    }
-    if (plot_guidegrad) {
-        // Determine scale of gx and gy so that a common scale can be
-        // applied to both gradient_x and gradient_y.
-        for (unsigned int hi=0; hi<RD.nhex; ++hi) {
-            Hex* h = RD.hg->vhexen[hi];
-            if (h->onBoundary() == false) {
-                for (unsigned int i = 0; i<RD.N; ++i) {
-                    if (gx[i][h->vi]>maxg) { maxg = gx[i][h->vi]; }
-                    if (gx[i][h->vi]<ming) { ming = gx[i][h->vi]; }
-                    if (gy[i][h->vi]>maxg) { maxg = gy[i][h->vi]; }
-                    if (gy[i][h->vi]<ming) { ming = gy[i][h->vi]; }
-                }
-            }
-        }
-        DBG2 ("min g = " << ming << " and max g = " << maxg);
-    }
-
     FLT mindivg = 1e7;
     FLT maxdivg = -1e7;
     if (plot_divg) {
@@ -535,71 +583,52 @@ int main (int argc, char **argv)
         }
         DBG2 ("min div(g) = " << mindivg << " and max div(g) = " << maxdivg);
     }
-
-    // Now plot fields and redraw display
-    if (plot_guidegrad) {
-        plt.scalarfields (displays[guidegrad_x_id], RD.hg, gx, ming, maxg);
-        displays[guidegrad_x_id].redrawDisplay();
-        plt.scalarfields (displays[guidegrad_y_id], RD.hg, gy, ming, maxg);
-        displays[guidegrad_y_id].redrawDisplay();
-    }
     if (plot_divg) {
         // FIXME
-        plt.scalarfields (displays[divg_id], RD.hg, RD.divg_over3d[0], mindivg, maxdivg);
-        displays[divg_id].redrawDisplay();
+        // addHexGridVisual
     }
     if (plot_divJ) {
-        plt.scalarfields (displays[divJ_id], RD.hg, RD.divJ);
-        displays[divJ_id].redrawDisplay();
+        // addHexGridVisual
     }
-    // Save images in log folder
-    if (RD.M > 0 && plot_guide) { savePngs (logpath, "guidance", 0, displays[guide_id]); }
+#endif
 
-
-    // At step 0, there's no connection/contour information to show,
-    // but we can save the initial branching.
-    if (plot_a) {
-        if (scale_a) {
-            plt.scalarfields (displays[a_id], RD.hg, RD.a); // scale between min and max
-        } else {
-            plt.scalarfields (displays[a_id], RD.hg, RD.a, 0.0); // scale between 0 and max
-        }
-        savePngs (logpath, "axonbranch", 0, displays[a_id]);
+    // Saving of t=0 images in log folder
+    if (RD.M > 0 && plot_guide || plot_a) {
+        savePngs (logpath, "sim", 0, plt);
     }
-#endif // 0
+
+    // if using plotting, then set up the render clock
+    steady_clock::time_point lastrender = steady_clock::now();
 
 #endif // COMPILE_PLOTTING
 
     // Start the loop
-    steady_clock::time_point lastrender = steady_clock::now();
     bool finished = false;
     while (finished == false) {
         // Step the model
         RD.step();
 
 #ifdef COMPILE_PLOTTING
+
         if ((RD.stepCount % plotevery) == 0) {
             DBG2("Plot at step " << RD.stepCount);
             // Do a plot of the ctrs as found.
-            vector<list<Hex> > ctrs = ShapeAnalysis<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
+            vector<FLT> ctrmap = ShapeAnalysis<FLT>::get_contour_map (RD.hg, RD.c, RD.contour_threshold);
 
             if (do_dirichlet_analysis == true) {
                 RD.dirichlet();
                 DBG2 ("dirich_value = " << RD.honda);
             }
 
-            vector<list<Hex> > a_ctrs;
             if (plot_contours) {
-                // FIXME: WRite code to convert ctrs into a single data vector for HexGridVisual
-                // plt.plot_contour (displays[contours_id], RD.hg, ctrs);
-                // updateHexGridVisual
+                plt.updateHexGridVisual (c_ctr_grid, ctrmap, ctr_scaling);
             }
+
             if (plot_a_contours) {
-                a_ctrs = ShapeAnalysis<FLT>::get_contours (RD.hg, RD.a, RD.contour_threshold);
-                // FIXME:
-                // plt.plot_contour (displays[a_contours_id], RD.hg, a_ctrs);
-                // updateHexGridVisual
+                vector<FLT> actrmap = ShapeAnalysis<FLT>::get_contour_map (RD.hg, RD.a, RD.contour_threshold);
+                plt.updateHexGridVisual (a_ctr_grid, actrmap, ctr_scaling);
             }
+
             if (plot_a) {
                 for (unsigned int i = 0; i<RD.N; ++i) {
                     plt.updateHexGridVisual (agrids[i], RD.a[i], scaling);
@@ -619,10 +648,10 @@ int main (int argc, char **argv)
             // Then add:
             //plt.plot_dirichlet_boundaries (displays[n_id], RD.hg, vv);
 
+#if 0 // This was useful during testing
             if (plot_divJ) {
-                //plt.scalarfields (displays[divJ_id], RD.hg, RD.divJ);
-                // updateHexGridVisual
             }
+#endif
 
             // With the new all-in-one-window OpenGL format, there's only one savePngs
             // call at a time.
