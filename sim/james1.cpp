@@ -248,12 +248,12 @@ int main (int argc, char **argv)
     const bool plot_contours = conf.getBool ("plot_contours", true);
     const bool plot_a_contours = conf.getBool ("plot_a_contours", true);
     const bool plot_a = conf.getBool ("plot_a", true);
-    const bool scale_a = conf.getBool ("scale_a", true);
+    //const bool scale_a = conf.getBool ("scale_a", true);
     const bool plot_c = conf.getBool ("plot_c", true);
-    const bool scale_c = conf.getBool ("scale_c", true);
+    //const bool scale_c = conf.getBool ("scale_c", true);
     const bool plot_n = conf.getBool ("plot_n", true);
     const bool plot_dr = conf.getBool ("plot_dr", true);
-    const bool scale_n = conf.getBool ("scale_n", true);
+    //const bool scale_n = conf.getBool ("scale_n", true);
     const bool plot_guidegrad = conf.getBool ("plot_guidegrad", false);
 
     const unsigned int win_width = conf.getUInt ("win_width", 1025UL);
@@ -452,6 +452,7 @@ int main (int argc, char **argv)
     // HERE, add HexGridVisuals...
     unsigned int c_ctr_grid = 0; // one only
     unsigned int a_ctr_grid = 0;
+    unsigned int dr_grid = 0;
     vector<unsigned int> guide_grids;
     vector<unsigned int> guidegrad_grids;
 
@@ -507,6 +508,12 @@ int main (int argc, char **argv)
     if (plot_a_contours) {
         spatOff = { xzero, 0.0, 0.0 };
         a_ctr_grid = plt.addHexGridVisual (RD.hg, spatOff, zeromap, ctr_scaling);
+        xzero += RD.hg->width();
+    }
+
+    if (plot_dr && do_dirichlet_analysis == true) {
+        spatOff = { xzero, 0.0, 0.0 };
+        dr_grid = plt.addHexGridVisual (RD.hg, spatOff, zeromap, ctr_scaling);
         xzero += RD.hg->width();
     }
 
@@ -593,7 +600,7 @@ int main (int argc, char **argv)
 #endif
 
     // Saving of t=0 images in log folder
-    if (RD.M > 0 && plot_guide || plot_a) {
+    if ((RD.M > 0 && plot_guide) || plot_a) {
         savePngs (logpath, "sim", 0, plt);
     }
 
@@ -644,14 +651,10 @@ int main (int argc, char **argv)
             }
             if (plot_dr && do_dirichlet_analysis) {
                 // updateHexGridVisual
+                plt.updateHexGridVisual (dr_grid, RD.regions, ctr_scaling);
             }
             // Then add:
             //plt.plot_dirichlet_boundaries (displays[n_id], RD.hg, vv);
-
-#if 0 // This was useful during testing
-            if (plot_divJ) {
-            }
-#endif
 
             // With the new all-in-one-window OpenGL format, there's only one savePngs
             // call at a time.
