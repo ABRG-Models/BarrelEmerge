@@ -5,6 +5,10 @@
 
 #include "rd_james.h"
 
+//! Use the normalization method in which we account for those branches which have
+//! made connections (see supp.tex. 2020/01/24)
+#define SUBTRACT_C_FROM_A 1
+
 template <class Flt>
 class RD_James_divnorm : public RD_James<Flt>
 {
@@ -20,6 +24,13 @@ public:
      */
     alignas(vector<Flt>) vector<Flt> sum_a_init;
 
+#ifdef SUBTRACT_C_FROM_A
+    /*!
+     * An N element vector holding the sum of c_i for each TC type.
+     */
+    alignas(vector<Flt>) vector<Flt> sum_c;
+#endif
+
     /*!
      * Simple constructor; no arguments. Just calls base constructor.
      */
@@ -31,6 +42,9 @@ public:
         RD_James<Flt>::allocate();
         this->resize_vector_param (this->sum_a, this->N);
         this->resize_vector_param (this->sum_a_init, this->N);
+#ifdef SUBTRACT_C_FROM_A
+        this->resize_vector_param (this->sum_c, this->N);
+#endif
     }
 
     virtual void init (void) {
@@ -66,15 +80,28 @@ public:
             sum_tmp += this->a[_i][h];
         }
         this->sum_a[_i] = sum_tmp;
+
+#ifdef SUBTRACT_C_FROM_A
+        // Compute the sum of c[i] across the sheet.
+        this->sum_c[_i] = 0.0;
+        sum_tmp = 0.0;
+#pragma omp parallel for reduction(+:sum_tmp)
+        for (unsigned int h=0; h<this->nhex; ++h) {
+            sum_tmp += this->c[_i][h];
+        }
+        this->sum_c[_i] = sum_tmp;
+#endif
     }
 
     /*!
      * The normalization/transfer function.
      */
     virtual inline Flt transfer_a (const Flt& _a, const unsigned int _i) {
-#ifdef NORMALIZE_TO_ONE
+#if defined NORMALIZE_TO_ONE
         // Divisive normalization to one
         Flt a_rtn = this->nhex * _a / this->sum_a[_i];
+#elif defined SUBTRACT_C_FROM_A
+        Flt a_rtn = (this->sum_a_init[_i] - this->sum_c[_i]) * _a / this->sum_a[_i];
 #else
         // Divisive norm with initial sum multiplier
         Flt a_rtn = this->sum_a_init[_i] * _a / this->sum_a[_i];
