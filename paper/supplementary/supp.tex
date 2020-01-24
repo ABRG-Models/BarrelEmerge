@@ -1165,11 +1165,17 @@ which is not participating in connections'.
 The continuous equivalent, if the surface is called $S$, would be:
 %
 \begin{equation} \label{eq:norm_comp8plus3}
-  a_i(\mathbf{x}, t) = \oiint_{S} \big[  a_i(\mathbf{x}, 0) - c_i(\mathbf{x},
+\begin{split}
+  a_i(\mathbf{x}, t) & = \oiint_{S} \big[  a_i(\mathbf{x}, 0) - c_i(\mathbf{x},
   t) \big]  dS \; \frac {a'_i(\mathbf{x}, t)} {\oiint_{S}
+  a'_i(\mathbf{x}, t) dS} \\
+  & = \bigg[ \oiint_{S} a_i(\mathbf{x}, 0) dS - \oiint_{S} c_i(\mathbf{x}, t)
+  dS  \bigg] \; \frac {a'_i(\mathbf{x}, t)} {\oiint_{S}
   a'_i(\mathbf{x}, t) dS}
+\end{split}
 \end{equation}
-
+which is a little more expensive as $\oiint_{S} c_i(\mathbf{x}, t) dS$ has to
+be computed on each iteration.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Divisive normalization of $a_i$ and $\hat{a}_i$ inhibits $\dot{a}_i$}
