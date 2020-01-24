@@ -5,12 +5,13 @@
  *
  * Guidance gradients are in line with the Anterior-Posterior (AP)
  * axis and perpendicular to the AP axis (which is approximately the
- * Medial-Lateral (ML) axis). The AP axis is perhaps 6? degrees off horizontal for
- * wb_110405.svg, according to my estimate from the image.
+ * Medial-Lateral (ML) axis). The AP axis is perhaps 6? degrees off
+ * horizontal for wb_110405.svg, according to my estimate from the
+ * image.
  */
 {
     // Global simulation parameters
-    "steps" : 55000,                // Number of steps to simulate for
+    "steps" : 25000,                // Number of steps to simulate for
     "logevery": 500,
     "overwrite_logs": true,
     "logbase" : "./log/",
@@ -22,7 +23,7 @@
     // gamma gain
     "G" : 1.0,
     // Gradient based competition:
-    "F" : 100,
+    "F" : 5.0,
     // Exponent on a
     "k" : 3,
     // Timestep. Defaults to 0.00001 if omitted here
@@ -37,8 +38,8 @@
     "plot_guide" : true,
     "plot_contours" : true,
     "plot_a_contours" : true,
-    "plot_a" : false,
-    "plot_c" : false,
+    "plot_a" : true,
+    "plot_c" : true,
     "plot_n" : false,
     "scale_a" : false,
     "scale_c" : false,
