@@ -26,6 +26,7 @@
 
 % Nice mathematics
 \usepackage{amsmath}
+\usepackage{esint}
 
 % Left right harpoons for kinetic equations
 \usepackage{mathtools}
@@ -1082,25 +1083,26 @@ too (see \code{rd\_james\_comp7.h}).
 \label{sec:comp8}
 
 Taking inspiration from the divisive normalization idea in neural
-networks~\cite{carandini_normalization_2011}, where the overall
-activity of a group of neurons modulates the output response of an
-individual member of the group, we will use the overall branching
-level of all of the axons in a layer to modulate the response, $a_i'$,
-of the branching level in each element.
+networks~\cite{carandini_normalization_2011}, where the overall activity of a
+group of neurons modulates the output response of an individual member of the
+group, we will use the overall branching level of all of the axons in a layer
+to modulate the response, $a_i[j]'$, of the branching level in each element
+$j$ (using this notation ($a_i[j]$) makes explicit that we're talking about a
+system containing $n_e$ discrete elements indexed by $j$).
 
 The response can be written out with the normalization
 equation~\cite{carandini_normalization_2011}:
 %
 \begin{equation}\label{eq:norm}
-a_i' = h \; \frac {a_i^q} {\xi^q + \textstyle \sum_j^h a_{i,j}^q }
+a_i[j]' = h \; \frac {(a_i[j])^q} {\xi^q + \textstyle \sum_j^h (a_{i}[j])^q }
 \end{equation}
 %
 in which $\xi$ and $q$ are free parameters and $n_e$ is the number of
 hex elements in the domain of computation (although $n_e$ could also be
 chosen as a free parameter if required). Here, I'll let $\xi=0$ and $q=1$.
 
-$a_i'$, the `branching response', then has to be used to drive
-connections, in practice, it is written back into $a_i$ on every
+$a_i[j]'$, the `branching response' at element $j$, then has to be used to
+drive connections, in practice, it is written back into $a_i[j]$ on every
 timestep.
 
 That gives the following set of equations to express in the code:
@@ -1118,7 +1120,7 @@ That gives the following set of equations to express in the code:
 \end{equation}
 %
 \begin{equation}\label{eq:norm_comp8}
-a_i' = n_e \; \frac {a_i} {\textstyle \sum_j^{n_e} a_{i,j} }
+a_i[j]' = n_e \; \frac {a_i[j]} {\textstyle \sum_j^{n_e} a_i[j] }
 \end{equation}
 %
 ($a_i'$ becomes $a_i$ in the next computational step.)
@@ -1140,10 +1142,34 @@ another will not result is very different simulations.
 An idea to get around this is to introduce an additional multiplier to
 the normalization, which is the mean initial branching density per
 element, $d_i/n_e$, so that Eq.~\ref{eq:norm_comp8} becomes
-
+%
 \begin{equation}\label{eq:norm_comp8plus}
-a_i' = d_i \; \frac {a_i} {\textstyle \sum_j^{n_e} a_{i,j} }
+a_i[j]' = d_i \; \frac {a_i[j]} {\textstyle \sum_j^{n_e} a_i[j] }
 \end{equation}
+%
+which is (making time explicit now):
+%
+\begin{equation}\label{eq:norm_comp8plus1}
+        a_i[j](t)' = \sum_j^{n_e} a_i[j](0) \; \frac {a_i[j](t)} {\textstyle \sum_j^{n_e} a_i[j](t) }
+\end{equation}
+
+One further extension is to note that in the K\&E simulation, the quantity of
+axon branching in the system is bounded and the number of connections and
+branching quantity is related. So we could normalize the `proportion of $a_i$
+which is not participating in connections'.
+%
+\begin{equation}\label{eq:norm_comp8plus2}
+        a_i[j](t)' = \sum_j^{n_e} \big[ a_i[j](0) - c_i[j](t) \big] \; \frac {a_i[j](t)} {\textstyle \sum_j^{n_e} a_i[j](t) }
+\end{equation}
+%
+The continuous equivalent, if the surface is called $S$, would be:
+%
+\begin{equation} \label{eq:norm_comp8plus3}
+  a_i(\mathbf{x}, t) = \oiint_{S} \big[  a_i(\mathbf{x}, 0) - c_i(\mathbf{x},
+  t) \big]  dS \; \frac {a'_i(\mathbf{x}, t)} {\oiint_{S}
+  a'_i(\mathbf{x}, t) dS}
+\end{equation}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Divisive normalization of $a_i$ and $\hat{a}_i$ inhibits $\dot{a}_i$}
