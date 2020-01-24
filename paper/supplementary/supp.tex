@@ -672,7 +672,7 @@ Let $\hat{a}_i$ be the sum of the branching densities of all axon
 types except $i$.
 %
 \begin{equation}
-\hat{a}_i(\mb{x},t) = \sum_{p\ne i}^N a_p(\mb{x},t)
+\hat{a}_i(\mb{x},t) = \sum_{j\ne i}^N a_j(\mb{x},t)
 \end{equation}
 %
 Define the static vector field $\mb{g}$ as:
@@ -697,7 +697,7 @@ change based on the proximity of branching of other TC axon types:
 \begin{equation} \label{eq:da_compo_1}
 \frac{\partial a_i(\mb{x},t)}{\partial t}
 = \nabla\vcdot\mb{J}_i(\mb{x},t) - \frac{\partial
-c_i(\mb{x},t)}{\partial t} - \frac{\epsilon_i  a_i}{N-1} \sum_{p \ne i}^{N} a_p(\mb{x}, t)^l
+c_i(\mb{x},t)}{\partial t} - \frac{\epsilon_i  a_i}{N-1} \sum_{j \ne i}^{N} a_j(\mb{x}, t)^l
 \end{equation}
 %
 \begin{equation}
@@ -928,7 +928,7 @@ branching into neighbouring regions.
 \begin{equation} \label{eq:da_comp4}
 \frac{\partial a_i}{\partial t}
 = \nabla\vcdot\mb{J}_i + \alpha_i c_i - \beta_i n
-[a_i]^k - \frac{\epsilon_i}{N-1} a_i \sum_{p \ne i}^{N} a_p^l
+[a_i]^k - \frac{\epsilon_i}{N-1} a_i \sum_{j \ne i}^{N} (a_j)^l
 \end{equation}
 %
 \begin{equation} \label{eq:conserve_NM_comp4}

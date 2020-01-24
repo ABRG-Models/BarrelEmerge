@@ -93,8 +93,10 @@ public:
      *
      * Stable with dt = 0.0001;
      */
-    void compute_divJ (vector<Flt>& fa, unsigned int i) {
+#define SIGMOID_ROLLOFF_FOR_A 1
+    virtual void compute_divJ (vector<Flt>& fa, unsigned int i) {
 
+#ifdef SIGMOID_ROLLOFF_FOR_A
         // Compute \bar{a}_i and its spatial gradient
         Flt h = 2.0; // height parameter for sigmoid
         Flt o = 5.0; // offset
@@ -104,6 +106,7 @@ public:
             this->abar[hi] = h / (1 - exp (o - s * fa[hi]));
         }
         this->spacegrad2D (this->abar, this->grad_abar);
+#endif
 
         // Compute gradient of a_i(x), for use computing the third term, below.
         this->spacegrad2D (fa, this->grad_a[i]);
@@ -138,39 +141,60 @@ public:
                 exit (21);
             }
 
+            //if (hi==5055) {
+            //    cout << "term1[5055]="  << term1 << endl;
+            //}
+
+#ifdef SIGMOID_ROLLOFF_FOR_A
             // Term 1.1 is F/N-1 abar div(ahat)
             Flt term1_1 = this->FOverNm1 * abar[hi] * this->div_ahat[hi];
+#else
+            // Term 1.1 is F/N-1 a div(ahat)
+            Flt term1_1 = this->FOverNm1 * fa[hi] * this->div_ahat[hi];
+#endif
             if (isnan(term1_1)) {
                 cerr << "term1_1 isnan" << endl;
                 cerr << "fa[hi="<<hi<<"] = " << fa[hi] << ", this->div_ahat[hi] = " << this->div_ahat[hi] << endl;
                 exit (21);
             }
 
+#ifdef SIGMOID_ROLLOFF_FOR_A
             // Term 1.2 is F/N-1 grad(ahat) . grad(abar)
             Flt term1_2 = this->FOverNm1 * (this->grad_ahat[0][hi] * this->grad_abar[0][hi]
                                             + this->grad_ahat[1][hi] * this->grad_abar[1][hi]);
+#else
+            // Term 1.2 is F/N-1 grad(ahat) . grad(a)
+            Flt term1_2 = this->FOverNm1 * (this->grad_ahat[0][hi] * this->grad_a[i][0][hi]
+                                            + this->grad_ahat[1][hi] * this->grad_a[i][1][hi]);
+#endif
+
+            //if (hi==1000) {
+            //    cout << "term1_1="  << term1_1 << ", term1_2=" << term1_2 << endl;
+            //}
+
             if (isnan(term1_2)) {
                 cerr << "term1_2 isnan" << endl;
                 exit (21);
             }
 
             // 2. The (a div(g)) term.
-            Flt term2 = fa[hi] * this->divg_over3d[i][hi];
+            Flt term2 = 0.0;
 
-            if (isnan(term2)) {
-                cerr << "term2 isnan" << endl;
-                exit (21);
+            // 3. Third term is this->g . grad a_i. Should not contribute to J, as
+            // g(x) decays towards boundary.
+            Flt term3 = 0.0;
+
+            for (unsigned int m =0 ; m < this->M; ++m) {
+                if (this->stepCount >= this->guidance_time_onset[m]) {
+                    // g contributes to term2
+                    term2 += fa[hi] * this->divg_over3d[m][i][hi];
+                    // and to term3
+                    term3 += this->g[m][i][0][hi] * this->grad_a[i][0][hi] + (this->g[m][i][1][hi] * this->grad_a[i][1][hi]);
+                }
             }
 
-            // 3. Third term is this->g . grad a_i. Should not contribute to J, as g(x) decays towards boundary.
-            Flt term3 = this->g[i][0][hi] * this->grad_a[i][0][hi] + (this->g[i][1][hi] * this->grad_a[i][1][hi]);
-
-            if (isnan(term3)) {
-                cerr << "term3 isnan" << endl;
-                exit (30);
-            }
-
-            this->divJ[i][hi] = term1 - term1_1 - term1_2 - term2 - term3;
+            // - term1_1/2 or + term1_1/2? It's + in the supp.tex
+            this->divJ[i][hi] = term1 + term1_1 + term1_2 - term2 - term3;
         }
     }
 
