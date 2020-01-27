@@ -60,7 +60,7 @@ The map of initial values [a_1(x,t=0)] can be plotted with
 
 ```bash
 cd BarrelEmerge/analysis
-# writeme
+python plot_a.py ${LOGBASE}/41N2M_thalguide_eps150 1
 ```
 
 The guidance maps can be plotted with
@@ -123,15 +123,11 @@ cd BarrelEmerge
 ./build/sim/james_dncomp configs/rate/41N2M_thalguide_eps150_movie.json
 ```
 
-Now create all the pngs:
+Now create all the pngs and stitch them together into a movie:
 
 ```bash
 cd BarrelEmerge/analysis
 python plot_cid_all.py ${LOGBASE}/41N2M_thalguide_eps150
-```
-
-Finally stitch the pngs together:
-
-```bash
-WRITEME. which movie script did I use from misc?
+cd plots/cid_all
+./movie.sh
 ```
