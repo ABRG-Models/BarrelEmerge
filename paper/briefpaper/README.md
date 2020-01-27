@@ -10,10 +10,10 @@ To reproduce the figures in this paper, you can run the
 simulations, then plot the results.
 
 Before running the simulations, you will need to modify each config
-and replace the value of field
-"logbase". "/home/seb/gdrive_usfd/data/BarrelEmerge" should be some
-directory on your computer. In the following instructions I'll call
-that ${LOGBASE} or LOGBASE. You could set LOGBASE on your command
+and replace the value of field "logbase". The value
+"/home/seb/gdrive_usfd/data/BarrelEmerge" should instead be changed to
+some directory on your computer. In the following instructions I'll
+call that ${LOGBASE} or LOGBASE. You could set LOGBASE on your command
 line to run the following scripts:
 
 ```bash
