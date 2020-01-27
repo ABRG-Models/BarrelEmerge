@@ -50,6 +50,8 @@ reproduce functional maps in subsequent brain structures.
 \makeatletter
 \newcommand*\vcdot{\mathpalette\vcdot@{.35}}
 \newcommand*\vcdot@[2]{\mathbin{\vcenter{\hbox{\scalebox{#2}{$\m@th#1\bullet$}}}}}
+\newcommand{\code}[1]{\textsf{#1}}
+
 
 \section{Introduction}
 
@@ -311,14 +313,150 @@ additional developmental mechanisms.
 
 \section{Materials \& Methods}
 
-\cmnt{It's still a short report if I add a condensed version of supp.tex
-  here.}
+\cmnt{I've left this section in black, although it is all new, cf the PNAS
+  draft.}
+% Be sure to include/mention:
+%
+% The no-flux boundary conditions applied in the \cite{karbowski_model_2004}
+% model are retained.
+%
+% Arbitrary boundary shapes were applied
+%
+% computing the flux using a finite difference method,
+%
+% numerical integration by the fourth-order Runge-Kutta method,
 
-\cmnt{Software for modelling the cortical sheet as a hexagonal lattice with
-  no-flux boundary conditions and an arbitrary boundary shape, for computing
-  the flux using a finite difference method, for numerical integration by the
-  fourth-order Runge-Kutta method, and for reproducing these results is
-  available at \url{https://github.com/ABRG-Models/BarrelEmerge}}
+In these simulations, the cortex was modelled as a two dimensional lattice in
+which each element represented a small area of the cortical sheet. We chose to
+use hexagonal elements to simplify the computation of the 2D Laplacian, a
+spatial operator used in reaction diffusion systems. Within a boundary traced
+from rat primary barrel cortex (Fig.\,1A) we set the hex-to-hex distance
+$d=0.03$\,mm, which resulted in a lattice containing 6515 hexes for the
+simulations shown in Figs.\,1A,C \& D and 12739 hexes for the Fgf8
+misexpression study shown in Fig.\,1E. Each hex contained 82 time-dependent
+variables: 41 branching densities ($a_i$) and 41 connection densities
+($c_i$). Each hex also contained 82 time-independent variables; the $x$ and
+$y$ components of the sum of the product of the interaction paramters with the
+two molecular signalling gradients.
+
+The rates of change of each of the time-dependent variables (Eqs.\,\ref{eq:dc}
+\& \ref{eq:da}) was computed using a fourth-order Runge-Kutta method. The most
+involved part of this computation was finding the divergence of the flux of
+axonal branching, $\mb{J}_i(\mb{x},t)$---the term in parentheses in
+Eq.\,\ref{eq:da}:
+%
+\begin{equation}
+  \label{eq:divJ}
+  \nabla\vcdot\mb{J}_i(\mb{x},t) \equiv \nabla\vcdot\left(D \nabla a_i-a_i\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x})\right)
+\end{equation}
+%
+We can define the time-independent sum of the guidance gradients
+$\mb{g}_i(\mb{x}) \equiv \sum_{j=1}^{M} \gamma_{i,j} \nabla \rho_j(\mb{x})$
+and then apply vector calculus identities to compute this term. Because
+the divergence operator is distributive, Eq.~\ref{eq:divJ} can be expanded
+(dropping all explicit references to space or time dependence):
+%
+\begin{equation}
+\nabla\vcdot\mb{J}_i = \nabla\vcdot\big(D \nabla a_i\big) - \nabla\vcdot\big(a_i \mb{g}_i\big)
+\end{equation}
+%
+Because $D$ is a constant and by applying the vector calculus product rule
+identity to $\nabla\vcdot\big(a_i \mb{g}_i\big)$ we obtain:
+%
+%%\begin{equation}
+%%\nabla\vcdot\mb{J}_i = D \dvrg a_i
+%%-
+%%\big(
+%%a_i\nabla\vcdot\mb{g}_i
+%%+
+%%\mb{g}_i\vcdot\nabla a_i
+%%\big)
+%%\end{equation}
+%
+%%(to prove $\nabla\vcdot D\nabla a = D \dvrg a$, apply the
+%%product rule and note that $\nabla D = 0$). Expanding
+%%the brackets we have:
+%
+\begin{equation} \label{eq:divJExpanded}
+%
+\nabla\vcdot\mb{J}_i =
+%
+D \dvrg a_i % term1
+-
+a_i\nabla\vcdot\mb{g}_i % term2
+-
+\mb{g}_i\vcdot\nabla a_i % term3
+%
+\end{equation}
+%
+which has three elements to compute: i)~$D \dvrg a_i$ (the Laplacian of
+$a_i(\mb{x},t)$); ii)~a time-independent modulator of $a_i(\mb{x},t)$ (because
+$\nabla\vcdot\mb{g}_i(\mb{x})$ is a time-independent static field); and iii)~the
+scalar product of the static vector field $\mb{g}_i$ and the gradient of
+$a_i$.
+
+Each of the divergences can be simplified by means of Gauss's Theorem
+following \cite{lee_hexagonal_2014}. The computation of the mean value of the
+Laplacian across the area of one hexagon of area $\Omega$ located at position
+$\mb{p}_0$, with neighbours at positions $\mb{p}_1$--$\mb{p}_6$ is:
+%
+%%\begin{equation} \label{eq:computeDivJTerm1}
+%%\boxed{
+%%D \dvrg a_i(\mb{p}_0,t) = D\frac{2}{3d^2} \sum_{j=1}^{6}\big(a_i(\mb{p}_j) - a_i(\mb{p}_0)\big)
+%%}
+%%\end{equation}
+
+\begin{equation}
+\begin{split}
+\langle D \dvrg a_i(\mb{p}_0,t) \rangle  = \frac{1}{\Omega} \iint_A \dvrg a_i(\mb{x}, t) dxdy & = \frac{1}{\Omega} \oint_c \frac{\partial a_i}{\partial \hat{\mb{n}}} d\gamma \\
+& \approx \frac{1}{\Omega} \sum_{j=1}^6 \frac{\partial a_i(\mb{p}_j)}{\partial \hat{\mb{n}}} \bigg\rvert_{mid} v \\
+& = \frac{2}{\sqrt{3} d^2} \sum_{j=1}^6 \frac{a_i(\mb{p}_j) - a_i(\mb{p}_0)}{d} \frac{d}{\sqrt{3}} \\
+& = \frac{2}{3 d^2} \sum_{j=1}^6 \big(a_i(\mb{p}_j) - a_i(\mb{p}_0)\big)
+\end{split}
+\end{equation}
+
+where $d$ is the centre-to-centre distance between hexes in the grid, $v =
+d/\sqrt{3}$ is the length of each of the 6 edges of the hexagon's perimeter
+and $d\gamma$ is an infinitessimally small distance along the perimeter of the
+hexagon. The area, $\Omega$, of each hexagon in the lattice is
+$\frac{\sqrt{3}}{2}d^2$.
+
+The computation of the second term in Eq.\,\ref{eq:divJExpanded},
+$\langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}(\mb{p}_0)\rangle$, can be written out similarly:
+
+\begin{equation} \label{eq:divg}
+\begin{split}
+%
+\frac{1}{\Omega} \iint_A a_i\nabla\vcdot\mb{g}\;dxdy & = \frac{a_i(\mb{p}_0)}{\Omega}  \oint_c \mb{g}\vcdot d\hat{\mathbf{n}} \\
+%
+& \approx \frac{a_i(\mb{p}_0,t)}{\Omega} \sum_{j=1}^{6} \frac{\mb{g}_j + \mb{g}_0}{2}\vcdot \hat{\mb{n}}\;v \\
+%
+& = \frac{2 a_i(\mb{p}_0,t)v}{\sqrt{3}d^2} \bigg( \sum_{j=1}^{6} \frac{\mb{g}_j^x + \mb{g}_0^x}{2} \vcdot  \hat{\mb{n}} + \sum_{j=1}^{6} \frac{\mb{g}_j^y + \mb{g}_0^y}{2} \vcdot  \hat{\mb{n}} \bigg) \\
+%
+%%& = \frac{2 a_i(\mb{p}_0,t)d}{\sqrt{3}d^2\sqrt{3}} \bigg( \sum_{j=1}^{6} \frac{\mb{g}_j^x + \mb{g}_0^x}{2} \vcdot  \hat{\mb{n}} + \sum_{j=1}^{6} \frac{\mb{g}_j^y + \mb{g}_0^y}{2} \vcdot  \hat{\mb{n}} \bigg) \\
+%
+\Rightarrow \langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}(\mb{p}_0)\rangle & = \frac{a_i(\mb{p}_0,t)}{3d} \bigg( \sum_{j=1}^{6} \big(\mb{g}_j^x + \mb{g}_0^x\big) \cos (60\times(j-1)) + \sum_{j=1}^{6} \big({\mb{g}_j^y + \mb{g}_0^y}\big) \sin (60\times(j-1)) \bigg) \\
+%
+\end{split}
+\end{equation}
+
+The final expression is suitable for a numerical computation and can
+be found in \code{compute\_divJ()} as \code{term2}.
+
+The final term in Eq.~\ref{eq:divJExpanded} is the scalar product of two
+vector fields which is straighforward to compute from their Cartesian
+components.
+
+The advantage of separating this computation out is that we can ensure that,
+at the boundary, $\mb{J}$ resulting from the first term remains 0, by the
+ghost cell method, then $\mb{g}_i(\mb{x})$ can be tailored so that it, and its
+normal derivative approach 0 at the boundary, ensuring that the second and
+third terms of Eq.~\ref{eq:divJExpanded} also contribute nothing to
+$\mb{J}$. This is achieved by applying a fairly sharp logistic function based
+on distance to the boundary to $\mb{g}(\mb{x})$.
+
+All code required to reproduce these results is available at
+\url{https://github.com/ABRG-Models/BarrelEmerge}
 
 \section{Movie S1 caption}
 
