@@ -86,12 +86,9 @@ The barrel boundaries form a Voronoi tessellation across the cortical sheet
 preserved in the projection of thalamocortical axons into the cortex, and that
 a barrel forms by lateral axon branching from an initial center-point that
 ceases upon contact with axons branching from adjacent centers.  The
-assumption of pre-arranged center-points \cmnt{(an assumption shared with
-  chemoaffinity theories following \citealp{sperry_chemoaffinity_1963})} is
-difficult to resolve with the observation that axons arrive in the cortical
-plate as an undifferentiated bundle, \emph{prior} to barreloid formation
-\citep{agmon_organized_1993}.  \cmnt{But it's not that hard to resolve, if, as
-  in the paper, we assume orthogonal gradients in the barreloid field.}
+assumption of pre-arranged center-points is difficult to resolve with the
+observation that axons arrive in the cortical plate as an undifferentiated
+bundle, \emph{prior} to barreloid formation \citep{agmon_organized_1993}.
 
 % Note: The key difference between this theory and the chemospecificity theory
 % is that of group membership.
@@ -152,13 +149,8 @@ sheet, at rate $D$, and the influence of $M$ molecular signalling fields,
 $\rho(\mb{x})$. The influence of a given field (indexed by $j$) on a given
 thalamic projection (indexed by $i$), is determined by $\gamma_{i,j}$, which
 may be positive or negative in order that axons may branch in the direction of
-either higher or lower concentrations. The second term on the right represents
-an assumption that axon branching decreases when synaptogenesis increases, and
-vice versa, i.e., \cmnt{when a connection is made, the axon branching
-  decreases by one branch and when a connection is lost, one branch is added
-  to the branching density}
-%that axon branches are required for synaptic connections to form.
-Here $\chi_i=0$ is a placeholder.
+either higher or lower concentrations. \cmnt{The second term on the right
+  quantifies the coupling between axon branching and synaptogenesis}. Here $\chi_i=0$ is a placeholder.
 
 Software for modelling the cortical sheet as a hexagonal lattice with no-flux
 boundary conditions and an arbitrary boundary shape, for computing the flux
@@ -221,8 +213,8 @@ redefined
 %
 which reduces branching for each projection where the branches of other
 projections are dense. Divisive normalization keeps the axon branch density
-bounded on each iteration to the initial density at $t=0$ \cmnt{(less the
-  number of connections that have been made).};
+bounded on each iteration to the initial density \cmnt{of unconnected
+  branches} at $t=0$:
 %
 \begin{equation} \label{eq:norm}
   a_i(\mathbf{x}, t) = \oiint_{S} \big[ a_i(\mathbf{x}, 0) - c_i(\mathbf{x}, t) \big] \dif S \; \frac {a'_i(\mathbf{x}, t)} {\oiint_{S}
@@ -230,10 +222,8 @@ bounded on each iteration to the initial density at $t=0$ \cmnt{(less the
 \end{equation}
 %
 where prime symbols indicate the use of intermediate values computed from
-Eqs.~\ref{eq:dc}--\ref{eq:comp} at time $t-{\delta}t$. \cmnt{Normalization
-  corresponds to the biological constraint that the branching and growth of
-  thalamocortical axons is backed by a finite resource provided by their
-  parent cell bodies.}
+Eqs.~\ref{eq:dc}--\ref{eq:comp} at time $t-{\delta}t$. \cmnt{Note that this
+  operation is local to individual afferent projections.}
 
 The only differences between thalamic projections are their strengths of
 interaction with the guidance fields, $\gamma$, hence any reliable differences
@@ -282,22 +272,15 @@ given projection is reduced by the density of other projections
 conserved over time (Eq.~\ref{eq:norm}).
 
 The emergence of barrels in simulation required competition between thalamic
-projections in terms of synaptic connectivity \cmnt{(and an associated
-  in-group/out-group axonal identification mechanism)}, and also in terms of
-cortical space (as represented by $\chi$). This requirement may account for
-the absence of barrels in rodents with larger brains, such as capybara, for
-which competition for space is presumably weaker
-\citep{woolsey_comparative_1975}. Hence, irrespective of whether barrels are
-necessary for adaptive whisker function, the emergence of somatotopically
-ordered modular structures may be an inevitable consequence of local
-competition for cortical territory driven by input from an array of discrete
-sensory organs \citep{purves_iterated_1992}.
-
-\cmnt{The emergence of elongated pre-barrel regions at earlier stages of the
-  simulation could be taken as a prediction of the model although where there
-  is an absence of the white contours seen in Fig.\,1C/25,000 steps the
-  barrels have not yet become well localized and would not be expected to form
-  distinct structures.}
+projections in terms of synaptic connectivity \cmnt{and an implicit self/other
+  identifier amoungst projections}, and also in terms of cortical space (as
+represented by $\chi$). This requirement may account for the absence of
+barrels in rodents with larger brains, such as capybara, for which competition
+for space is presumably weaker \citep{woolsey_comparative_1975}. Hence,
+irrespective of whether barrels are necessary for adaptive whisker function,
+the emergence of somatotopically ordered modular structures may be an
+inevitable consequence of local competition for cortical territory driven by
+input from an array of discrete sensory organs \citep{purves_iterated_1992}.
 
 It is important to emphasize that the formulation of the model is entirely
 local, insofar as simulation requires no information to be communicated from a
@@ -313,69 +296,44 @@ additional developmental mechanisms.
 
 \section{Materials \& Methods}
 
-\cmnt{I've left this section in black, although it is all new, cf the PNAS
-  draft.}
 % Be sure to include/mention:
 %
 % The no-flux boundary conditions applied in the \cite{karbowski_model_2004}
 % model are retained.
 %
 % Arbitrary boundary shapes were applied
-%
-% computing the flux using a finite difference method,
-%
-% numerical integration by the fourth-order Runge-Kutta method,
 
-In these simulations, the cortex was modelled as a two dimensional lattice in
-which each element represented a small area of the cortical sheet. We chose to
-use hexagonal elements to simplify the computation of the 2D Laplacian, a
-spatial operator used in reaction diffusion systems. Within a boundary traced
-from rat primary barrel cortex (Fig.\,1A) we set the hex-to-hex distance
+The cortex was modelled as a two dimensional hexagonal lattice which
+simplifies the computation of the 2D Laplacian. Within a boundary traced from
+rat primary barrel cortex (Fig.\,1A) we set the hex-to-hex distance
 $d=0.03$\,mm, which resulted in a lattice containing 6515 hexes for the
 simulations shown in Figs.\,1A,C \& D and 12739 hexes for the Fgf8
 misexpression study shown in Fig.\,1E. Each hex contained 82 time-dependent
-variables: 41 branching densities ($a_i$) and 41 connection densities
-($c_i$). Each hex also contained 82 time-independent variables; the $x$ and
-$y$ components of the sum of the product of the interaction paramters with the
-two molecular signalling gradients.
+variables: 41 branching densities ($a_i$) and 41 connection densities ($c_i$).
+The rate of change of each of the time-dependent variables (Eqs.\,\ref{eq:dc}
+\& \ref{eq:da}) was computed using a fourth-order Runge-Kutta method.
 
-The rates of change of each of the time-dependent variables (Eqs.\,\ref{eq:dc}
-\& \ref{eq:da}) was computed using a fourth-order Runge-Kutta method. The most
-involved part of this computation was finding the divergence of the flux of
-axonal branching, $\mb{J}_i(\mb{x},t)$---the term in parentheses in
+The most involved part of this computation is to find the divergence of the
+flux of axonal branching, $\mb{J}_i(\mb{x},t)$, the term in parentheses in
 Eq.\,\ref{eq:da}:
 %
 \begin{equation}
   \label{eq:divJ}
-  \nabla\vcdot\mb{J}_i(\mb{x},t) \equiv \nabla\vcdot\left(D \nabla a_i-a_i\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x})\right)
+  \nabla\vcdot\mb{J}_i(\mb{x},t) \equiv \nabla\vcdot\left(D \nabla a_i-a_i\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x})\right).
 \end{equation}
 %
 We can define the time-independent sum of the guidance gradients
 $\mb{g}_i(\mb{x}) \equiv \sum_{j=1}^{M} \gamma_{i,j} \nabla \rho_j(\mb{x})$
-and then apply vector calculus identities to compute this term. Because
-the divergence operator is distributive, Eq.~\ref{eq:divJ} can be expanded
-(dropping all explicit references to space or time dependence):
+and then apply vector calculus identities to compute
+$\nabla\vcdot\mb{J}_i$. Because the divergence operator is distributive,
+Eq.~\ref{eq:divJ} can be expanded (dropping references to $\mb{x}$ and $t$ for
+clarity):
 %
 \begin{equation}
-\nabla\vcdot\mb{J}_i = \nabla\vcdot\big(D \nabla a_i\big) - \nabla\vcdot\big(a_i \mb{g}_i\big)
+\nabla\vcdot\mb{J}_i = \nabla\vcdot\big(D \nabla a_i\big) - \nabla\vcdot\big(a_i \mb{g}_i\big).
 \end{equation}
 %
-Because $D$ is a constant and by applying the vector calculus product rule
-identity to $\nabla\vcdot\big(a_i \mb{g}_i\big)$ we obtain:
-%
-%%\begin{equation}
-%%\nabla\vcdot\mb{J}_i = D \dvrg a_i
-%%-
-%%\big(
-%%a_i\nabla\vcdot\mb{g}_i
-%%+
-%%\mb{g}_i\vcdot\nabla a_i
-%%\big)
-%%\end{equation}
-%
-%%(to prove $\nabla\vcdot D\nabla a = D \dvrg a$, apply the
-%%product rule and note that $\nabla D = 0$). Expanding
-%%the brackets we have:
+Applying the vector calculus product rule identity yields
 %
 \begin{equation} \label{eq:divJExpanded}
 %
@@ -386,27 +344,21 @@ D \dvrg a_i % term1
 a_i\nabla\vcdot\mb{g}_i % term2
 -
 \mb{g}_i\vcdot\nabla a_i % term3
-%
+,
 \end{equation}
 %
 which has three elements to compute: i)~$D \dvrg a_i$ (the Laplacian of
 $a_i(\mb{x},t)$); ii)~a time-independent modulator of $a_i(\mb{x},t)$ (because
 $\nabla\vcdot\mb{g}_i(\mb{x})$ is a time-independent static field); and iii)~the
 scalar product of the static vector field $\mb{g}_i$ and the gradient of
-$a_i$.
+$a_i$. Each of the divergences can be simplified by means of Gauss's Theorem
+following \cite{lee_hexagonal_2014}.
 
-Each of the divergences can be simplified by means of Gauss's Theorem
-following \cite{lee_hexagonal_2014}. The computation of the mean value of the
-Laplacian across the area of one hexagon of area $\Omega$ located at position
-$\mb{p}_0$, with neighbours at positions $\mb{p}_1$--$\mb{p}_6$ is:
+(i) The computation of the mean value of the Laplacian across the area of one
+hexagon of area $\Omega$ located at position $\mb{p}_0$, with neighbours at
+positions $\mb{p}_1$--$\mb{p}_6$ is
 %
-%%\begin{equation} \label{eq:computeDivJTerm1}
-%%\boxed{
-%%D \dvrg a_i(\mb{p}_0,t) = D\frac{2}{3d^2} \sum_{j=1}^{6}\big(a_i(\mb{p}_j) - a_i(\mb{p}_0)\big)
-%%}
-%%\end{equation}
-
-\begin{equation}
+\begin{equation} \label{eq:lapl}
 \begin{split}
 \langle D \dvrg a_i(\mb{p}_0,t) \rangle  = \frac{1}{\Omega} \iint_A \dvrg a_i(\mb{x}, t) dxdy & = \frac{1}{\Omega} \oint_c \frac{\partial a_i}{\partial \hat{\mb{n}}} d\gamma \\
 & \approx \frac{1}{\Omega} \sum_{j=1}^6 \frac{\partial a_i(\mb{p}_j)}{\partial \hat{\mb{n}}} \bigg\rvert_{mid} v \\
@@ -414,14 +366,14 @@ $\mb{p}_0$, with neighbours at positions $\mb{p}_1$--$\mb{p}_6$ is:
 & = \frac{2}{3 d^2} \sum_{j=1}^6 \big(a_i(\mb{p}_j) - a_i(\mb{p}_0)\big)
 \end{split}
 \end{equation}
-
+%
 where $d$ is the centre-to-centre distance between hexes in the grid, $v =
 d/\sqrt{3}$ is the length of each of the 6 edges of the hexagon's perimeter
 and $d\gamma$ is an infinitessimally small distance along the perimeter of the
 hexagon. The area, $\Omega$, of each hexagon in the lattice is
 $\frac{\sqrt{3}}{2}d^2$.
 
-The computation of the second term in Eq.\,\ref{eq:divJExpanded},
+ii) The computation of the second term in Eq.\,\ref{eq:divJExpanded},
 $\langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}(\mb{p}_0)\rangle$, can be written out similarly:
 
 \begin{equation} \label{eq:divg}
@@ -435,28 +387,34 @@ $\langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}(\mb{p}_0)\rangle$, can be written out
 %
 %%& = \frac{2 a_i(\mb{p}_0,t)d}{\sqrt{3}d^2\sqrt{3}} \bigg( \sum_{j=1}^{6} \frac{\mb{g}_j^x + \mb{g}_0^x}{2} \vcdot  \hat{\mb{n}} + \sum_{j=1}^{6} \frac{\mb{g}_j^y + \mb{g}_0^y}{2} \vcdot  \hat{\mb{n}} \bigg) \\
 %
-\Rightarrow \langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}(\mb{p}_0)\rangle & = \frac{a_i(\mb{p}_0,t)}{3d} \bigg( \sum_{j=1}^{6} \big(\mb{g}_j^x + \mb{g}_0^x\big) \cos (60\times(j-1)) + \sum_{j=1}^{6} \big({\mb{g}_j^y + \mb{g}_0^y}\big) \sin (60\times(j-1)) \bigg) \\
+\Rightarrow \langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}(\mb{p}_0)\rangle & \approx \frac{a_i(\mb{p}_0,t)}{3d} \bigg( \sum_{j=1}^{6} \big(\mb{g}_j^x + \mb{g}_0^x\big) \cos \big(\frac{\pi}{3}(j-1)\big) + \sum_{j=1}^{6} \big({\mb{g}_j^y + \mb{g}_0^y}\big) \sin \big(\frac{\pi}{3}(j-1)\big) \bigg). \\
 %
 \end{split}
 \end{equation}
+%
+Both this last expression, and the final expression of Eq.\,\ref{eq:lapl} are
+easily computed, comprising short sums of nearest-neighbour relationships.
 
-The final expression is suitable for a numerical computation and can
-be found in \code{compute\_divJ()} as \code{term2}.
-
-The final term in Eq.~\ref{eq:divJExpanded} is the scalar product of two
-vector fields which is straighforward to compute from their Cartesian
+iii) The final term in Eq.~\ref{eq:divJExpanded} is the scalar product of two
+vector fields which is straightforward to compute from their Cartesian
 components.
 
-The advantage of separating this computation out is that we can ensure that,
-at the boundary, $\mb{J}$ resulting from the first term remains 0, by the
-ghost cell method, then $\mb{g}_i(\mb{x})$ can be tailored so that it, and its
+The advantage of separating the computation of Eq.~\ref{eq:divJ} in (i), (ii)
+\& (iii) is that we can ensure that the no-flux boundary condition is
+fulfilled. On the boundary, the contribution to $\mb{J}$ resulting from the
+first term of Eq.~\ref{eq:divJExpanded} can be held at 0 by the ghost cell
+method (in which a hex outside the boundary containing the same value as the
+hex inside the boundary is imagined such that the flux of $J$ across the
+boundary is 0). Then, $\mb{g}_i(\mb{x})$ can be tailored so that it, and its
 normal derivative approach 0 at the boundary, ensuring that the second and
 third terms of Eq.~\ref{eq:divJExpanded} also contribute nothing to
-$\mb{J}$. This is achieved by applying a fairly sharp logistic function based
-on distance to the boundary to $\mb{g}(\mb{x})$.
+$\mb{J}$. This is achieved by applying to $\mb{g}(\mb{x})$ a sharp logistic
+function of the distance from $\mb{x}$ to the boundary.
 
 All code required to reproduce these results is available at
-\url{https://github.com/ABRG-Models/BarrelEmerge}
+\url{https://github.com/ABRG-Models/BarrelEmerge}. The computations described
+in (i), (ii) and (iii) may be found in the code \code{compute\_divJ()} as
+\code{term1}, \code{term2} and \code{term3}, respectively.
 
 \section{Movie S1 caption}
 
