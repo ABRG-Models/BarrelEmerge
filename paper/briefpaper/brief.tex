@@ -85,7 +85,7 @@ The barrel boundaries form a Voronoi tessellation across the cortical sheet
 \citep{senft_mouse_1991} (Fig.\,1A), suggesting that barreloid topology is
 preserved in the projection of thalamocortical axons into the cortex, and that
 a barrel forms by lateral axon branching from an initial center-point that
-ceases upon contact with axons branching from adjacent centers.  The
+ceases upon contact with axons branching from adjacent centers.  However, the
 assumption of pre-arranged center-points is difficult to resolve with the
 observation that axons arrive in the cortical plate as an undifferentiated
 bundle, \emph{prior} to barreloid formation \citep{agmon_organized_1993}.
@@ -149,14 +149,17 @@ sheet, at rate $D$, and the influence of $M$ molecular signalling fields,
 $\rho(\mb{x})$. The influence of a given field (indexed by $j$) on a given
 thalamic projection (indexed by $i$), is determined by $\gamma_{i,j}$, which
 may be positive or negative in order that axons may branch in the direction of
-either higher or lower concentrations. \cmnt{The second term on the right
-  quantifies the coupling between axon branching and synaptogenesis}. Here $\chi_i=0$ is a placeholder.
+either higher or lower concentrations. Note that computing the divergence in
+simulation requires cells on the cortical sheet to communicate with immedately
+adjacent cells only (see \emph{Materials \& Methods}) The second term on the
+right quantifies the coupling between axon branching and synaptogenesis. Here
+  $\chi_i=0$ is a placeholder.
 
 \section{Results}
 
 \begin{figure}
 \begin{fullwidth}
-\includegraphics[width=\linewidth]{./MainFig_superlowres.png}
+\includegraphics[width=\linewidth]{./MainFig.png}
 \caption{\textbf{A} Left shows a cytochrome oxidase stain obtained from rat S1
   by \cite{zheng_signal_2001}, with black lines to delineate barrels and to
   measure departure (Honda-$\delta$; see \citealp{senft_mouse_1991}) from a
@@ -192,9 +195,15 @@ sheet. Using an elliptical domain, $S$, with $M=3$ offset guidance gradients
 aligned to the longer axis, $N=5$ thalamocortical projections gave rise to
 five distinct cortical fields at locations that preserved the topographic
 ordering defined by the original $\gamma$ values. However, we found that
-specifying $N$ ordered areas required $M\approx (N+1)/2$ signalling fields. As
-the number of distinct guidance fields is unlikely to approach the number of
-barrels, further extensions were required.
+specifying $N$ ordered areas required $M\approx (N+1)/2$ signalling
+fields. This is because localization of axon densities occurs only when
+projections are influenced by interactions with two or more signalling
+gradients that encourage migration in opposing directions. Note that these
+dynamics are quite unline classic chemospecificity models
+\citep{sperry_chemoaffinity_1963}, which essentially assume center-points
+i.e., conditions in the target tissue that instruct pre-identified afferents
+to stop growing. As the number of distinct guidance fields is unlikely to
+approach the number of barrels, further extensions were required.
 
 The term in parentheses in Eq.\,\ref{eq:dc} represents competition between
 thalamocortical projections for a limited availability of cortical
@@ -207,8 +216,8 @@ redefined
 %
 which reduces branching for each projection where the branches of other
 projections are dense. Divisive normalization keeps the axon branch density
-bounded on each iteration to the initial density \cmnt{of unconnected
-  branches} at $t=0$
+bounded on each iteration to the initial (random) density of unconnected
+  branches at $t=0$
 %
 \begin{equation} \label{eq:norm}
   a_i(\mathbf{x}, t) = \oiint_{S} \big[ a_i(\mathbf{x}, 0) - c_i(\mathbf{x}, t) \big] \dif S \; \frac {a'_i(\mathbf{x}, t)} {\oiint_{S}
@@ -216,18 +225,19 @@ bounded on each iteration to the initial density \cmnt{of unconnected
 \end{equation}
 %
 where prime symbols indicate the use of intermediate values computed from
-Eqs.~\ref{eq:dc}--\ref{eq:comp} at time $t-{\delta}t$. \cmnt{Note that this
-  operation is local to individual afferent projections.}
+Eqs.~\ref{eq:dc}--\ref{eq:comp} at time $t-{\delta}t$. Note that this
+  operation is local to individual afferent projections.
 
 The only differences between thalamic projections are their strengths of
 interaction with the guidance fields, $\gamma$, hence any reliable differences
 between emergent cortical fields must be due to differences in these values
-only. We speculate that a projection interacts with a given ephrin field in
-the cortical subplate with a strength determined by the concentration of a
-similar molecule at its thalamic origin, i.e., the putative barreloid
-center. As such, two orthogonal linear thalamic gradients were defined, from
-which 41 pairs of $\gamma$ values were sampled, at the coordinates of 41
-barreloid centers recreated from \citealp{haidarliu_size_2001} (Fig.\,1B).
+only. We speculate that the contribution of a given ephrin field, to the
+velocity at which a projection migrates across the cortical subplate, is
+determined by the concentration of a similar molecule at its thalamic origin,
+i.e., the putative barreloid center. As such, two orthogonal linear thalamic
+gradients were defined, from which 41 pairs of $\gamma$ values were sampled,
+at the coordinates of 41 barreloid centers recreated from
+\citealp{haidarliu_size_2001} (Fig.\,1B).
 
 A cortical boundary enclosing 41 corresponding barrels was traced from a
 cytochrome oxidase stain from \cite{zheng_signal_2001}, and
@@ -260,15 +270,22 @@ fields.
 The present results suggest that the key requirements for the emergence of
 realistic barrel patterning are i) at each cortical location thalamocortical
 projections compete for a limited number of available synaptic connections
-(Eqs.~\ref{eq:dc}--\ref{eq:da}), ii) at each location the branching rate of a
+(Eqs.~\ref{eq:dc}--\ref{eq:da}), ii) at each We speculate that a projection interacts with a given ephrin field in
+the cortical subplate with a strength determined by the concentration of a
+similar molecule at its thalamic origin, i.e., the putative barreloid
+centerlocation the branching rate of a
 given projection is reduced by the density of other projections
 (Eq.\,\ref{eq:comp}), and iii) the branch density of each projection is
 conserved over time (Eq.\,\ref{eq:norm}).
 
-The emergence of barrels in simulation required competition between thalamic
-projections in terms of synaptic connectivity \cmnt{and an implicit self/other
-  identifier amoungst projections}, and also in terms of cortical space (as
-represented by $\chi$). This requirement may account for the absence of
+The emergence of barrels in simulation required cWe speculate that a projection interacts with a given ephrin field in
+the cortical subplate with a strength determined by the concentration of a
+similar molecule at its thalamic origin, i.e., the putative barreloid
+centerompetition between thalamic
+projections in terms of synaptic connectivity and an implicit self/other
+identifier amoungst projections, and also competition in terms of cortical
+space (as represented by $\chi$). This latter requirement may account for the
+absence of
 barrels in rodents with larger brains, such as capybara, for which competition
 for space is presumably weaker \citep{woolsey_comparative_1975}. Hence,
 irrespective of whether barrels are necessary for adaptive whisker function,
@@ -297,9 +314,10 @@ additional developmental mechanisms.
 %
 % Arbitrary boundary shapes were applied
 
-The cortex was modelled as a two dimensional hexagonal lattice which
-simplifies the computation of the 2D Laplacian. Within a boundary traced from
-rat primary barrel cortex (Fig.\,1A) we set the hex-to-hex distance
+The cortical sheet was modelled as a two dimensional hexagonal lattice, which
+simplifies the computation of the 2D Laplacian. Within a boundary traced
+around the edge of a
+rat barrel field (Fig.\,1A) we set the hex-to-hex distance
 $d$ to 0.03\,mm, which resulted in a lattice containing 6515 hexes for the
 simulations shown in Figs.\,1A,C \& D and 12739 hexes for the Fgf8
 misexpression study shown in Fig.\,1E. Each hex contained 82 time-dependent
@@ -353,17 +371,15 @@ neighbours at positions $\mb{p}_1$--$\mb{p}_6$ is
 %
 \begin{equation} \label{eq:lapl}
 \begin{split}
-\langle D \dvrg a_i(\mb{p}_0,t) \rangle  = \frac{1}{\Omega} \iint_\Omega \dvrg a_i(\mb{x}, t) dxdy & = \frac{1}{\Omega} \oint_c \frac{\partial a_i}{\partial \hat{\mb{n}}} d\gamma \\
+\langle D \dvrg a_i(\mb{p}_0,t) \rangle  = \frac{1}{\Omega} \oiint_\Omega \dvrg a_i(\mb{x}, t) \dif\Omega & = \frac{1}{\Omega} \oint \frac{\partial a_i}{\partial \hat{\mb{n}}} d\gamma \\
 & \approx \frac{1}{\Omega} \sum_{j=1}^6 \frac{\partial a_i(\mb{p}_j)}{\partial \hat{\mb{n}}} \bigg\rvert_{mid} v \\
 & = \frac{2}{\sqrt{3} d^2} \sum_{j=1}^6 \frac{a_i(\mb{p}_j) - a_i(\mb{p}_0)}{d} \frac{d}{\sqrt{3}} \\
 & = \frac{2}{3 d^2} \sum_{j=1}^6 \big(a_i(\mb{p}_j) - a_i(\mb{p}_0)\big),
 \end{split}
 \end{equation}
 %
-where $d$ is the centre-to-centre distance between hexes in the grid, $v =
-d/\sqrt{3}$ is the length of each of the 6 edges of the hexagon's perimeter
-and $d\gamma$ is an infinitessimally small distance along the perimeter of the
-hexagon.
+where $v = d/\sqrt{3}$ is the length of each edge of the hexagon and $d\gamma$
+is an infinitesimally small distance along its perimeter.
 
 ii) The computation of the second term in Eq.\,\ref{eq:divJExpanded},
 $\langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}(\mb{p}_0)\rangle$, can be written out similarly:
@@ -371,7 +387,7 @@ $\langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}(\mb{p}_0)\rangle$, can be written out
 \begin{equation} \label{eq:divg}
 \begin{split}
 %
-\frac{1}{\Omega} \iint_\Omega a_i\nabla\vcdot\mb{g}\;dxdy & = \frac{a_i(\mb{p}_0,t)}{\Omega}  \oint_c \mb{g}\vcdot d\hat{\mathbf{n}} \\
+\frac{1}{\Omega} \oiint_\Omega a_i\nabla\vcdot\mb{g}\;\dif\Omega & = \frac{a_i(\mb{p}_0,t)}{\Omega}  \oint \mb{g}\vcdot d\hat{\mathbf{n}} \\
 %
 & \approx \frac{a_i(\mb{p}_0,t)}{\Omega} \sum_{j=1}^{6} \frac{\mb{g}_j + \mb{g}_0}{2}\vcdot \hat{\mb{n}}\;v \\
 %
@@ -384,8 +400,8 @@ $\langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}(\mb{p}_0)\rangle$, can be written out
 \end{split}
 \end{equation}
 %
-Both this last expression, and the final expression of Eq.\,\ref{eq:lapl} are
-easily computed, comprising short sums of nearest-neighbour relationships.
+Both this last expression, and the final expression of Eq.\,\ref{eq:lapl} can
+be computed locally, by summing over values of the nearest neighbours.
 
 iii) The final term in Eq.\,\ref{eq:divJExpanded} is the scalar product of two
 vector fields which is straightforward to compute from their Cartesian
@@ -408,8 +424,8 @@ the boundary.
 All code required to reproduce these results is available at
 \url{https://github.com/ABRG-Models/BarrelEmerge/tree/eLife_submission1}. The
 computations described in (i), (ii) and (iii) may be found in the class method
-\code{RD\_James::compute\_divJ()} as \code{term1}, \code{term2} and \code{term3},
-respectively.
+\code{RD\_James::compute\_divJ()} which calculates \code{term1}, \code{term2}
+and \code{term3}, respectively.
 
 \section{Movie S1 caption}
 
