@@ -208,11 +208,11 @@ redefined
 which reduces branching for each projection where the branches of other
 projections are dense. Divisive normalization keeps the axon branch density
 bounded on each iteration to the initial density \cmnt{of unconnected
-  branches} at $t=0$:
+  branches} at $t=0$
 %
 \begin{equation} \label{eq:norm}
   a_i(\mathbf{x}, t) = \oiint_{S} \big[ a_i(\mathbf{x}, 0) - c_i(\mathbf{x}, t) \big] \dif S \; \frac {a'_i(\mathbf{x}, t)} {\oiint_{S}
-  a'_i(\mathbf{x}, t) \dif S}
+  a'_i(\mathbf{x}, t) \dif S}\,,
 \end{equation}
 %
 where prime symbols indicate the use of intermediate values computed from
@@ -316,12 +316,11 @@ Eq.\,\ref{eq:da}:
   \nabla\vcdot\mb{J}_i(\mb{x},t) = \nabla\vcdot\left(D \nabla a_i-a_i\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x})\right).
 \end{equation}
 %
-We can note that the sum of the guidance gradients is time-independent and
-define $\mb{g}_i(\mb{x}) \equiv \sum_{j=1}^{M} \gamma_{i,j} \nabla
-\rho_j(\mb{x})$ and then apply vector calculus identities to compute
-$\nabla\vcdot\mb{J}_i$. Because the divergence operator is distributive,
-Eq.\,\ref{eq:divJ} can be expanded (dropping references to $\mb{x}$ and $t$
-for clarity):
+Note that the sum of the guidance gradients is time-independent and define
+$\mb{g}_i(\mb{x}) \equiv \sum_{j=1}^{M} \gamma_{i,j} \nabla\rho_j(\mb{x})$.
+Because the divergence operator is distributive, Eq.\,\ref{eq:divJ} can be
+expanded using vector calculus identities (dropping references to $\mb{x}$ and
+$t$ for clarity):
 %
 \begin{equation}
 \nabla\vcdot\mb{J}_i = \nabla\vcdot\big(D \nabla a_i\big) - \nabla\vcdot\big(a_i \mb{g}_i\big).
@@ -357,7 +356,7 @@ neighbours at positions $\mb{p}_1$--$\mb{p}_6$ is
 \langle D \dvrg a_i(\mb{p}_0,t) \rangle  = \frac{1}{\Omega} \iint_\Omega \dvrg a_i(\mb{x}, t) dxdy & = \frac{1}{\Omega} \oint_c \frac{\partial a_i}{\partial \hat{\mb{n}}} d\gamma \\
 & \approx \frac{1}{\Omega} \sum_{j=1}^6 \frac{\partial a_i(\mb{p}_j)}{\partial \hat{\mb{n}}} \bigg\rvert_{mid} v \\
 & = \frac{2}{\sqrt{3} d^2} \sum_{j=1}^6 \frac{a_i(\mb{p}_j) - a_i(\mb{p}_0)}{d} \frac{d}{\sqrt{3}} \\
-& = \frac{2}{3 d^2} \sum_{j=1}^6 \big(a_i(\mb{p}_j) - a_i(\mb{p}_0)\big)
+& = \frac{2}{3 d^2} \sum_{j=1}^6 \big(a_i(\mb{p}_j) - a_i(\mb{p}_0)\big),
 \end{split}
 \end{equation}
 %
@@ -393,9 +392,9 @@ vector fields which is straightforward to compute from their Cartesian
 components.
 
 By separating the computation of Eq.\,\ref{eq:divJ} into parts (i), (ii) \&
-(iii), we can ensure that the no-flux boundary condition,
-$\mb{J}_i(\mb{x},t)\big\rvert_{boundary} = 0$, is fulfilled. On the boundary,
-the contribution to $\mb{J}$ resulting from the first term of
+(iii), the no-flux boundary condition,
+$\mb{J}_i(\mb{x},t)\big\rvert_{\mathrm{boundary}} = 0$, can be fulfilled. On
+the boundary, the contribution to $\mb{J}$ resulting from the first term of
 Eq.\,\ref{eq:divJExpanded} can be fixed to 0 by the `ghost cell method' in
 which, during the evaluation of (i), a hex outside the boundary containing the
 same value as the hex inside the boundary is imagined to exist such that the
