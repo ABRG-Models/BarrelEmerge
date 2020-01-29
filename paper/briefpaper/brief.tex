@@ -371,36 +371,43 @@ neighbours at positions $\mb{p}_1$--$\mb{p}_6$ is
 %
 \begin{equation} \label{eq:lapl}
 \begin{split}
-\langle D \dvrg a_i(\mb{p}_0,t) \rangle  = \frac{1}{\Omega} \oiint_\Omega \dvrg a_i(\mb{x}, t) \dif\Omega & = \frac{1}{\Omega} \oint \frac{\partial a_i}{\partial \hat{\mb{n}}} d\gamma \\
-& \approx \frac{1}{\Omega} \sum_{j=1}^6 \frac{\partial a_i(\mb{p}_j)}{\partial \hat{\mb{n}}} \bigg\rvert_{mid} v \\
+\langle D \dvrg a_i(\mb{p}_0,t) \rangle  = \frac{1}{\Omega} \oiint_\Omega \dvrg a_i(\mb{x}, t) \dif\Omega & = \frac{1}{\Omega} \oint \frac{\partial a_i}{\partial \hat{\mb{n}}} \dif\gamma \\
+& \approx \frac{1}{\Omega} \sum_{j=1}^6 \frac{\partial a_i(\mb{p}_j)}{\partial \hat{\mb{n}}} \bigg\rvert_{\mathrm{mid}} v \\
 & = \frac{2}{\sqrt{3} d^2} \sum_{j=1}^6 \frac{a_i(\mb{p}_j) - a_i(\mb{p}_0)}{d} \frac{d}{\sqrt{3}} \\
 & = \frac{2}{3 d^2} \sum_{j=1}^6 \big(a_i(\mb{p}_j) - a_i(\mb{p}_0)\big),
 \end{split}
 \end{equation}
 %
-where $v = d/\sqrt{3}$ is the length of each edge of the hexagon and $d\gamma$
+where $v = d/\sqrt{3}$ is the length of each edge of the hexagon and $\dif\gamma$
 is an infinitesimally small distance along its perimeter.
 
 ii) The computation of the second term in Eq.\,\ref{eq:divJExpanded},
-$\langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}(\mb{p}_0)\rangle$, can be written out similarly:
+$\langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}_i(\mb{p}_0)\rangle$, can be written out similarly:
 
 \begin{equation} \label{eq:divg}
 \begin{split}
 %
-\frac{1}{\Omega} \oiint_\Omega a_i\nabla\vcdot\mb{g}\;\dif\Omega & = \frac{a_i(\mb{p}_0,t)}{\Omega}  \oint \mb{g}\vcdot d\hat{\mathbf{n}} \\
+\frac{1}{\Omega} \oiint_\Omega a_i\nabla\vcdot\mb{g}_i\;\dif\Omega & = \frac{a_i(\mb{p}_0,t)}{\Omega}  \oint \mb{g}_i\vcdot \dif\hat{\mathbf{n}} \\
 %
-& \approx \frac{a_i(\mb{p}_0,t)}{\Omega} \sum_{j=1}^{6} \frac{\mb{g}_j + \mb{g}_0}{2}\vcdot \hat{\mb{n}}\;v \\
+& \approx \frac{a_i(\mb{p}_0,t)}{\Omega} \sum_{j=1}^{6} \frac{\mb{g}_i(\mb{p}_j) + \mb{g}_i(\mb{p}_0)}{2}\vcdot \hat{\mb{n}}\;v \\
 %
-& = \frac{2 a_i(\mb{p}_0,t)v}{\sqrt{3}d^2} \bigg( \sum_{j=1}^{6} \frac{\mb{g}_j^x + \mb{g}_0^x}{2} \vcdot  \hat{\mb{n}} + \sum_{j=1}^{6} \frac{\mb{g}_j^y + \mb{g}_0^y}{2} \vcdot  \hat{\mb{n}} \bigg) \\
+& = \frac{2 a_i(\mb{p}_0,t)v}{\sqrt{3}d^2} \sum_{j=1}^{6} \bigg[ \frac{g_i^x(\mb{p}_j) + g_i^x(\mb{p}_0)}{2} \vcdot  \hat{\mb{n}} + \frac{g_i^y(\mb{p}_j) + g_i^y(\mb{p}_0)}{2} \vcdot  \hat{\mb{n}} \bigg] \\
 %
 %%& = \frac{2 a_i(\mb{p}_0,t)d}{\sqrt{3}d^2\sqrt{3}} \bigg( \sum_{j=1}^{6} \frac{\mb{g}_j^x + \mb{g}_0^x}{2} \vcdot  \hat{\mb{n}} + \sum_{j=1}^{6} \frac{\mb{g}_j^y + \mb{g}_0^y}{2} \vcdot  \hat{\mb{n}} \bigg) \\
 %
-\Rightarrow \langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}(\mb{p}_0)\rangle & \approx \frac{a_i(\mb{p}_0,t)}{3d} \bigg( \sum_{j=1}^{6} \big(\mb{g}_j^x + \mb{g}_0^x\big) \cos \big(\frac{\pi}{3}(j-1)\big) + \sum_{j=1}^{6} \big({\mb{g}_j^y + \mb{g}_0^y}\big) \sin \big(\frac{\pi}{3}(j-1)\big) \bigg). \\
+%\Rightarrow \langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}(\mb{p}_0)\rangle &
+%\approx \frac{a_i(\mb{p}_0,t)}{3d} \bigg( \sum_{j=1}^{6} \big(g_i^x(\mb{p}_j)
+%+ g_i^x(\mb{p}_0)\big) \cos \big(\frac{\pi}{3}(j-1)\big) + \sum_{j=1}^{6}
+%\big({g_i^y(\mb{p}_j) + g_i^y(\mb{p}_0)}\big) \sin
+%\big(\frac{\pi}{3}(j-1)\big) \bigg), \\
+%% Condensing into a single sum:
+\Rightarrow \langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}(\mb{p}_0)\rangle & \approx \frac{a_i(\mb{p}_0,t)}{3d} \sum_{j=1}^{6} \bigg[ \big(g_i^x(\mb{p}_j) + g_i^x(\mb{p}_0)\big) \cos \big(\frac{\pi}{3}(j-1)\big) + \big({g_i^y(\mb{p}_j) + g_i^y(\mb{p}_0)}\big) \sin \big(\frac{\pi}{3}(j-1)\big) \bigg], \\
 %
 \end{split}
 \end{equation}
 %
-Both this last expression, and the final expression of Eq.\,\ref{eq:lapl} can
+where $g_i^x$ and $g_i^y$ are the Cartesian components of $\mb{g}_i$. Both this
+last expression, and the final expression of Eq.\,\ref{eq:lapl} can
 be computed locally, by summing over values of the nearest neighbours.
 
 iii) The final term in Eq.\,\ref{eq:divJExpanded} is the scalar product of two
