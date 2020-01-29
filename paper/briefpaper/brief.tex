@@ -30,7 +30,7 @@
 
 \begin{abstract}
 Brain development relies on an interplay between genetic specification and
-self-organisation. Striking examples of this relationship can be found in the
+self-organization. Striking examples of this relationship can be found in the
 somatosensory brainstem, thalamus, and cortex of rats and mice, where the
 arrangement of the facial whiskers is preserved in the arrangement of cell
 aggregates to form precise somatotopic maps. We show in simulation how
@@ -105,13 +105,13 @@ irregular sizes and specific arrangement of the barrels in rows and arcs, or
 the influence of gene expression gradients.
 
 The center-point and reaction-diffusion models are not mutually
-exclusive. Pre-organised centers could bias reaction-diffusion processes to
+exclusive. Pre-organized centers could bias reaction-diffusion processes to
 generate specific arrangements more reliably, and mechanisms of lateral axon
 branching may constitute the tension between cooperation and competition
 required for self-organization. However, proof that barrel patterning can
 emerge from an undifferentiated bundle of axons, based only on local
 interactions, would show that a separate stage and/or extrinsic mechanism for
-pre-organising thalamocortical connections need not be assumed. To this end,
+pre-organizing thalamocortical connections need not be assumed. To this end,
 we ask whether barrel maps can emerge in a system with reaction-diffusion
 dynamics, under the guidance of signalling gradients, and in the absence of
 pre-defined centers.
@@ -199,7 +199,7 @@ specifying $N$ ordered areas required $M\approx (N+1)/2$ signalling
 fields. This is because localization of axon densities occurs only when
 projections are influenced by interactions with two or more signalling
 gradients that encourage migration in opposing directions. Note that these
-dynamics are quite unline classic chemospecificity models
+dynamics are quite unlike classic chemospecificity models
 \citep{sperry_chemoaffinity_1963}, which essentially assume center-points
 i.e., conditions in the target tissue that instruct pre-identified afferents
 to stop growing. As the number of distinct guidance fields is unlikely to
@@ -225,7 +225,8 @@ bounded on each iteration to the initial (random) density of unconnected
 \end{equation}
 %
 where prime symbols indicate the use of intermediate values computed from
-Eqs.~\ref{eq:dc}--\ref{eq:comp} at time $t-{\delta}t$. Note that this
+Eqs.~\ref{eq:dc}--\ref{eq:comp} at time $t-{\delta}t$ (${\delta}t$ is the time
+represented by one simulation step). Note that this
   operation is local to individual afferent projections.
 
 The only differences between thalamic projections are their strengths of
@@ -237,17 +238,17 @@ determined by the concentration of a similar molecule at its thalamic origin,
 i.e., the putative barreloid center. As such, two orthogonal linear thalamic
 gradients were defined, from which 41 pairs of $\gamma$ values were sampled,
 at the coordinates of 41 barreloid centers recreated from
-\citealp{haidarliu_size_2001} (Fig.\,1B).
+\cite{haidarliu_size_2001} (Fig.\,1B).
 
 A cortical boundary enclosing 41 corresponding barrels was traced from a
 cytochrome oxidase stain from \cite{zheng_signal_2001}, and
 Eqs.~\ref{eq:dc}--\ref{eq:norm} were solved for $N=41$ projections on the
 resulting domain, using $M=2$ linear signalling gradients aligned with the
 anterior-posterior and medial-lateral axes. From random initial conditions for
-$a({\bf x},0)$ and $c({\bf x},0)$, a clear Voronoi-like tesselation emerged
+$a(\mb{x},0)$ and $c(\mb{x},0)$, a clear Voronoi-like tesselation emerged
 (Fig.\,1C; see Movie S1). A reduction in the Honda delta metric (see
 \citealp{senft_mouse_1991}) confirmed that a `good' Voronoi pattern emerged
-within $\approx 3000$ iterations (see Fig.\,1D). A measure of the difference
+within $\approx 3000$ iterations (Fig.\,1D). A measure of the difference
 in shape between real and simulated barrels revealed a strong correspondence
 (see Fig.\,1D).
 
@@ -276,21 +277,21 @@ given projection is reduced by the density of other projections
 conserved over time (Eq.\,\ref{eq:norm}).
 
 The emergence of barrels in simulation required competition between thalamic
-projections in terms of synaptic connectivity and an implicit self/other
-identifier amoungst projections, and also competition in terms of cortical
-space (as represented by $\chi$). This latter requirement may account for the
-absence of
-barrels in rodents with larger brains, such as capybara, for which competition
-for space is presumably weaker \citep{woolsey_comparative_1975}. Hence,
-irrespective of whether barrels are necessary for adaptive whisker function,
-the emergence of somatotopically ordered modular structures may be an
-inevitable consequence of local competition for cortical territory driven by
-input from an array of discrete sensory organs \citep{purves_iterated_1992}.
+projections in terms of synaptic connectivity and also competition in terms of
+cortical space, as represented by $\chi$, with an implicit requirement for a
+self/other identifier amoungst projections. This latter form of competition may
+account for the absence of barrels in rodents with larger brains, such as
+capybara, for which competition for space is presumably weaker
+\citep{woolsey_comparative_1975}. Hence, irrespective of whether barrels are
+necessary for adaptive whisker function, the emergence of somatotopically
+ordered modular structures may be an inevitable consequence of local
+competition for cortical territory driven by input from an array of discrete
+sensory organs \citep{purves_iterated_1992}.
 
 It is important to emphasize that the formulation of the model is entirely
 local, insofar as simulation requires no information to be communicated from a
 given cortical grid cell to any but those immediately adjacent (via
-diffusion). Hence the simulations demonstrate how a self-organising system,
+diffusion). Hence the simulations demonstrate how a self-organizing system,
 constrained by genetically specified guidance cues and by the shape of the
 cortical field boundary, can faithfully reproduce an arrangement of cell
 aggregates in one neural structure as a topographic map in another.
