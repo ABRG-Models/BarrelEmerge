@@ -127,7 +127,7 @@ Now create all the pngs and stitch them together into a movie:
 
 ```bash
 cd BarrelEmerge/analysis
-python plot_cid_all.py ${LOGBASE}/41N2M_thalguide_eps150
+python plot_cid_all.py ${LOGBASE}/41N2M_thalguide_eps150_movie
 cd plots/cid_all
 ./movie.sh
 ```
