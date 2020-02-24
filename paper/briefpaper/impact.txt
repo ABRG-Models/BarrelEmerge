@@ -1,0 +1,4 @@
+Whisker barrels provide clues about neocortical development - computer
+modelling shows that barrels can self-organise, based on competition
+between adjacent thalamocortical axons, which suggests that genetic
+instruction plays a secondary role.
