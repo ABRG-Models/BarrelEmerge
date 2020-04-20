@@ -72,7 +72,7 @@ int main (int argc, char **argv)
     }
 
     // Set up the barrel regions
-    list<BezCurvePath> ers = r.getEnclosedRegions();
+    list<BezCurvePath<FLT>> ers = r.getEnclosedRegions();
     float theid = 0.0;
     for (auto& er : ers) {
         pair<float, float> regCentroid; // Don't use it for now...

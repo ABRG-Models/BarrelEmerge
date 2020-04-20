@@ -48,8 +48,20 @@ using morph::ShapeAnalysis;
 
 #ifdef COMPILE_PLOTTING
 # include <GLFW/glfw3.h>
+# include "morph/Scale.h"
+using morph::Scale;
+# include "morph/ColourMap.h"
+using morph::ColourMapType;
 # include "morph/Visual.h"
 using morph::Visual;
+# include "morph/VisualDataModel.h"
+using morph::VisualDataModel;
+# include "morph/HexGridVisual.h"
+using morph::HexGridVisual;
+
+// Alias VisualDataModel<FLT>* as VdmPtr, to neaten code
+typedef VisualDataModel<FLT>* VdmPtr;
+
 # include <morph/MathAlgo.h>
 using morph::MathAlgo;
 
@@ -447,7 +459,10 @@ int main (int argc, char **argv)
     // Data scaling parameters
     float _m = 0.2;
     float _c = 0.0;
-    const array<float, 4> scaling = { _m/10, _c/10, _m, _c };
+    // Z position scaling - how hilly/bumpy the visual will be.
+    Scale<FLT> zscale; zscale.setParams (_m/10.0f, _c/10.0f);
+    // The second is the colour scaling.
+    Scale<FLT> cscale; cscale.setParams (_m, _c);
 
     // HERE, add HexGridVisuals...
     unsigned int c_ctr_grid = 0; // one only
@@ -468,7 +483,14 @@ int main (int argc, char **argv)
         for (unsigned int i = 0; i<RD.N; ++i) {
             spatOff[0] = xzero + RD.hg->width() * (i/side);
             spatOff[1] = RD.hg->width() * (i%side);
-            unsigned int idx = plt.addHexGridVisual (RD.hg, spatOff, RD.a[i], scaling);
+            unsigned int idx = plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
+                                                                           RD.hg,
+                                                                           spatOff,
+                                                                           &RD.a[i],
+                                                                           zscale,
+                                                                           cscale,
+                                                                           ColourMapType::Plasma));
+
             agrids.push_back (idx);
         }
         xzero = spatOff[0] + RD.hg->width();
@@ -481,7 +503,13 @@ int main (int argc, char **argv)
         for (unsigned int i = 0; i<RD.N; ++i) {
             spatOff[0] = xzero + RD.hg->width() * (i/side);
             spatOff[1] = RD.hg->width() * (i%side);
-            unsigned int idx = plt.addHexGridVisual (RD.hg, spatOff, RD.c[i], scaling);
+            unsigned int idx = plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
+                                                                           RD.hg,
+                                                                           spatOff,
+                                                                           &RD.c[i],
+                                                                           zscale,
+                                                                           cscale,
+                                                                           ColourMapType::Plasma));
             cgrids.push_back (idx);
         }
         xzero = spatOff[0] + RD.hg->width();
@@ -491,29 +519,56 @@ int main (int argc, char **argv)
     unsigned int ngrid = 0;
     if (plot_n) {
         spatOff = { xzero, 0.0, 0.0 };
-        ngrid = plt.addHexGridVisual (RD.hg, spatOff, RD.n, scaling);
+        ngrid = plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
+                                                            RD.hg,
+                                                            spatOff,
+                                                            &RD.n,
+                                                            zscale,
+                                                            cscale,
+                                                            ColourMapType::Plasma));
         xzero += RD.hg->width();
     }
 
     // Contours
-    const array<float, 4> ctr_scaling = { 0.0f, 0.0f, 1.0f, 0.0f };
+    // Z position scaling - how hilly/bumpy the visual will be. This is totally unhilly!
+    Scale<FLT> null_zscale; null_zscale.setParams (0.0f, 0.0f);
+    // The second is the colour scaling.
+    Scale<FLT> ctr_cscale; ctr_cscale.setParams (1.0f, 0.0f);
     vector<FLT> zeromap (RD.nhex, static_cast<FLT>(0.0));
     if (plot_contours) {
         spatOff = { xzero, 0.0, 0.0 };
         // special scaling for contours. flat in Z, but still colourful
-        c_ctr_grid = plt.addHexGridVisual (RD.hg, spatOff, zeromap, ctr_scaling);
+        c_ctr_grid = plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
+                                                                 RD.hg,
+                                                                 spatOff,
+                                                                 &zeromap,
+                                                                 null_zscale,
+                                                                 ctr_cscale,
+                                                                 ColourMapType::Rainbow));
         xzero += RD.hg->width();
     }
 
     if (plot_a_contours) {
         spatOff = { xzero, 0.0, 0.0 };
-        a_ctr_grid = plt.addHexGridVisual (RD.hg, spatOff, zeromap, ctr_scaling);
+        a_ctr_grid = plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
+                                                                 RD.hg,
+                                                                 spatOff,
+                                                                 &zeromap,
+                                                                 null_zscale,
+                                                                 ctr_cscale,
+                                                                 ColourMapType::Rainbow));
         xzero += RD.hg->width();
     }
 
     if (plot_dr && do_dirichlet_analysis == true) {
         spatOff = { xzero, 0.0, 0.0 };
-        dr_grid = plt.addHexGridVisual (RD.hg, spatOff, zeromap, ctr_scaling);
+        dr_grid = plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
+                                                              RD.hg,
+                                                              spatOff,
+                                                              &zeromap,
+                                                              null_zscale,
+                                                              ctr_cscale,
+                                                              ColourMapType::Rainbow));
         xzero += RD.hg->width();
     }
 
@@ -521,10 +576,17 @@ int main (int argc, char **argv)
     if (plot_guide) {
         spatOff = { xzero, 0.0, 0.0 };
         float _m = 0.8; float _c = 0.0;
-        const array<float, 4> guide_scaling = { 0.0f, 0.0f, _m, _c };
+        // The second is the colour scaling.
+        Scale<FLT> gd_cscale; gd_cscale.setParams (_m, _c);
         // Plot gradients of the guidance effect g.
         for (unsigned int j = 0; j<RD.M; ++j) {
-            plt.addHexGridVisual (RD.hg, spatOff, RD.rho[j], guide_scaling);
+            plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
+                                                        RD.hg,
+                                                        spatOff,
+                                                        &RD.rho[j],
+                                                        null_zscale,
+                                                        gd_cscale,
+                                                        ColourMapType::Viridis));
             spatOff[1] += RD.hg->depth();
         }
         xzero += RD.hg->width();
@@ -562,12 +624,25 @@ int main (int argc, char **argv)
             float gg_m, gg_c;
             gg_m = 1.0f/(float)(maxg-ming);
             gg_c = -(gg_m * ming);
-            const array<float, 4> guidegrad_scaling = { 0.0f, 0.0f, gg_m, gg_c };
+            // The second is the colour scaling.
+            Scale<FLT> ggd_cscale; ggd_cscale.setParams (gg_m, gg_c);
 
             // Create the grids
-            plt.addHexGridVisual (RD.hg, spatOff, gx[j], guidegrad_scaling);
+            plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
+                                                        RD.hg,
+                                                        spatOff,
+                                                        &gx[j],
+                                                        null_zscale,
+                                                        ggd_cscale,
+                                                        ColourMapType::Viridis));
             spatOff[0] += RD.hg->width();
-            plt.addHexGridVisual (RD.hg, spatOff, gy[j], guidegrad_scaling);
+            plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
+                                                        RD.hg,
+                                                        spatOff,
+                                                        &gy[j],
+                                                        null_zscale,
+                                                        ggd_cscale,
+                                                        ColourMapType::Viridis));
             spatOff[0] -= RD.hg->width();
             spatOff[1] += RD.hg->depth();
         }
@@ -592,10 +667,10 @@ int main (int argc, char **argv)
     }
     if (plot_divg) {
         // FIXME
-        // addHexGridVisual
+        // addVisualModel
     }
     if (plot_divJ) {
-        // addHexGridVisual
+        // addVisualModel
     }
 #endif
 
@@ -606,6 +681,9 @@ int main (int argc, char **argv)
 
     // if using plotting, then set up the render clock
     steady_clock::time_point lastrender = steady_clock::now();
+
+    // A pointer to access the data layer of HexGridVisual objects.
+    VisualDataModel<FLT>* mdlptr = (VdmPtr)0;
 
 #endif // COMPILE_PLOTTING
 
@@ -628,30 +706,36 @@ int main (int argc, char **argv)
             }
 
             if (plot_contours) {
-                plt.updateHexGridVisual (c_ctr_grid, ctrmap, ctr_scaling);
+                mdlptr = (VdmPtr)plt.getVisualModel (c_ctr_grid);
+                mdlptr->updateData (&ctrmap);
             }
 
             if (plot_a_contours) {
                 vector<FLT> actrmap = ShapeAnalysis<FLT>::get_contour_map (RD.hg, RD.a, RD.contour_threshold);
-                plt.updateHexGridVisual (a_ctr_grid, actrmap, ctr_scaling);
+                mdlptr = (VdmPtr)plt.getVisualModel (a_ctr_grid);
+                mdlptr->updateData (&actrmap);
             }
 
             if (plot_a) {
                 for (unsigned int i = 0; i<RD.N; ++i) {
-                    plt.updateHexGridVisual (agrids[i], RD.a[i], scaling);
+                    mdlptr = (VdmPtr)plt.getVisualModel (agrids[i]);
+                    mdlptr->updateData (&RD.a[i]);
                 }
             }
             if (plot_c) {
                 for (unsigned int i = 0; i<RD.N; ++i) {
-                    plt.updateHexGridVisual (cgrids[i], RD.c[i], scaling);
+                    mdlptr = (VdmPtr)plt.getVisualModel (cgrids[i]);
+                    mdlptr->updateData (&RD.c[i]);
+
                 }
             }
             if (plot_n) {
-                plt.updateHexGridVisual (ngrid, RD.n, scaling);
+                mdlptr = (VdmPtr)plt.getVisualModel (ngrid);
+                mdlptr->updateData (&RD.n);
             }
             if (plot_dr && do_dirichlet_analysis) {
-                // updateHexGridVisual
-                plt.updateHexGridVisual (dr_grid, RD.regions, ctr_scaling);
+                mdlptr = (VdmPtr)plt.getVisualModel (dr_grid);
+                mdlptr->updateData (&RD.regions);
             }
             // Then add:
             //plt.plot_dirichlet_boundaries (displays[n_id], RD.hg, vv);

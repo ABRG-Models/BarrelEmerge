@@ -480,7 +480,7 @@ public:
         // Copy the list of circles from the ReadCurves object
         this->expt_centroids = this->r.circles;
         // Invert the y axis of these coordinates, just as the y axis is inverted in
-        // void morph::HexGrid::setBoundary (const BezCurvePath& p)
+        // void morph::HexGrid::setBoundary (const BezCurvePath<Flt>& p)
         for (auto& c : this->expt_centroids) {
             c.second.second = -c.second.second;
         }
@@ -624,7 +624,7 @@ public:
         }
 
         // Set up the barrel regions
-        list<BezCurvePath> ers = this->r.getEnclosedRegions();
+        list<BezCurvePath<Flt>> ers = this->r.getEnclosedRegions();
         for (auto er : ers) {
             pair<float, float> regCentroid; // Don't use it for now...
             vector<list<Hex>::iterator> regHexes = this->hg->getRegion (er, regCentroid);
