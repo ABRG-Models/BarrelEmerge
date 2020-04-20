@@ -276,7 +276,21 @@ int main (int argc, char **argv)
     plt.zNear = 0.001;
     plt.zFar = 50;
     plt.fov = 45;
-    plt.setZDefault (10.0);
+    plt.setZDefault (-10.0f);
+    // Set a dark blue background (black is the default). This value has the order
+    // 'RGBA', though the A(alpha) makes no difference.
+    plt.bgcolour = {0.0f, 0.0f, 0.2f, 1.0f};
+    // You can lock movement of the scene
+    plt.sceneLocked = conf.getBool ("sceneLocked", false);
+    // You can set the default scene x/y/z offsets
+    plt.setZDefault (conf.getFloat ("z_default", -10.0f));
+    plt.setSceneTransXY (conf.getFloat ("x_default", 0.0f),
+                        conf.getFloat ("y_default", 0.0f));
+    // Make this larger to "scroll in and out of the image" faster
+    plt.scenetrans_stepsize = 0.5;
+
+
+    cout << "Set up morph::Visual object." << endl;
 #endif
 
     /*
