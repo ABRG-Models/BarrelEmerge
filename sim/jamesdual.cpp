@@ -209,8 +209,6 @@ int main (int argc, char **argv)
     const double E = root.get ("E", 0.1).asDouble();
     cout << "E is set to " << E << endl;
 
-    bool do_fgf_duplication = root.get ("do_fgf_duplication", false).asBool();
-
     cout << "steps to simulate: " << steps << endl;
 
     // Thalamocortical populations array of parameters:
