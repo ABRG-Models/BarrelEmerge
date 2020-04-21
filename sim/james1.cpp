@@ -558,7 +558,7 @@ int main (int argc, char **argv)
                                                                  &zeromap,
                                                                  null_zscale,
                                                                  ctr_cscale,
-                                                                 ColourMapType::Rainbow));
+                                                                 ColourMapType::RainbowZeroBlack));
         xzero += RD.hg->width();
     }
 
@@ -570,7 +570,7 @@ int main (int argc, char **argv)
                                                                  &zeromap,
                                                                  null_zscale,
                                                                  ctr_cscale,
-                                                                 ColourMapType::Rainbow));
+                                                                 ColourMapType::RainbowZeroBlack));
         xzero += RD.hg->width();
     }
 
