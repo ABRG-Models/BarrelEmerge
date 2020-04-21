@@ -30,6 +30,9 @@
 
     // Visualization parameters (ignored by computation-only binaries)
     "win_width_contours": 800,
+    "x_default": -3.38512,
+    "y_default": -0.491072,
+    "z_default": -11.5,
     "plotevery": 500,
     "vidframes": false,    // If true, number video frame saves consecutively, rather than by simulation step number
     "rhoInit": 4, // Larger to zoom out
@@ -52,10 +55,6 @@
     "do_dirichlet_analysis": true,
 
     "plot_dr_with_guide" : false,
-    "hshift" : 0.6, // spacing - sort of
-    "vshift" : 0.4,
-    "g_hshift" : 1.2, // overall right-shift - sort of
-    "g_vshift" : -0.4,
 
     "aNoiseGain" : 0.2,
     "aInitialOffset" : 0.2,
