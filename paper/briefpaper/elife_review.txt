@@ -152,7 +152,7 @@ if there were a more physiological way to renormalize. For example, I
 dont know if the authos considered something like an additional flux
 of the form:
 
-\chi a_i \nabla \frac{1}{N-1} \sum_{j\ne i} a_j
+\chi (=) a_i \nabla \frac{1}{N-1} \sum_{j\ne i} a_j
 
 This makes the axons of type i move away from type j while at the same
 time enforcing conservation without recourse to some sort of
