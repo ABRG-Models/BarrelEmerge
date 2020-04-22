@@ -338,12 +338,12 @@ int main (int argc, char **argv)
     DBG2 ("Setting RD.l to " << l);
     RD.l = l;
     RD.m = m;
-#ifndef E_A_DIVN
+# ifndef E_A_DIVN
     if (E > 0.0) {
         cerr << "ERROR: You have E>0.0, but you are using a binary without the code to compute E div n" << endl;
         exit (1);
     }
-#endif
+# endif
     RD.E = E;
 #endif
 
@@ -589,9 +589,10 @@ int main (int argc, char **argv)
     // guidance expression
     if (plot_guide) {
         spatOff = { xzero, 0.0, 0.0 };
-        float _m = 0.8; float _c = 0.0;
         // The second is the colour scaling.
-        Scale<FLT> gd_cscale; gd_cscale.setParams (_m, _c);
+        Scale<FLT> gd_cscale;
+        //gd_cscale.setParams (_m, _c);
+        gd_cscale.do_autoscale = true;
         // Plot gradients of the guidance effect g.
         for (unsigned int j = 0; j<RD.M; ++j) {
             plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
@@ -600,7 +601,8 @@ int main (int argc, char **argv)
                                                         &RD.rho[j],
                                                         null_zscale,
                                                         gd_cscale,
-                                                        ColourMapType::Viridis));
+                                                        ColourMapType::Monochrome,
+                                                        (FLT)(j+1)/(FLT)RD.M));
             spatOff[1] += RD.hg->depth();
         }
         xzero += RD.hg->width();
@@ -809,7 +811,6 @@ int main (int argc, char **argv)
     conf.set ("k", RD.k);
     conf.set ("dt", RD.get_dt());
     // Call our function to place git information into root.
-    //morph::Tools::insertGitInfo (conf.root, "sim/");
     conf.insertGitInfo ("sim/");
     // Store the binary name and command argument into root, too.
     if (argc > 0) { conf.set("argv0", argv[0]); }
@@ -822,6 +823,7 @@ int main (int argc, char **argv)
         cerr << "Warning: Something went wrong writing a copy of the params.json: " << conf.emsg << endl;
     }
 
+#if 0 // Extracting contours is unnecessary and, at present, buggy (see morphologica Issue#20)
     // Extract contours
     vector<list<Hex> > ctrs = ShapeAnalysis<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
     {
@@ -866,6 +868,7 @@ int main (int argc, char **argv)
         ctrdata.add_contained_vals ("/xb", vx);
         ctrdata.add_contained_vals ("/yb", vy);
     }
+#endif
 
 #ifdef COMPILE_PLOTTING
     cout << "Ctrl-c or press x in graphics window to exit.\n";
