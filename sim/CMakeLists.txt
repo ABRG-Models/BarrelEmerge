@@ -22,6 +22,11 @@ add_executable(james_comp2 james1.cpp)
 target_compile_definitions(james_comp2 PUBLIC FLT=float COMPILE_PLOTTING COMP2)
 target_link_libraries(james_comp2 ${MORPH_LDFLAGS} ${OPENGL_LIBRARIES})
 
+# Comp 2. Supp. Sect. 7.2. No plotting.
+add_executable(james_comp2c james1.cpp)
+target_compile_definitions(james_comp2c PUBLIC FLT=float COMP2)
+target_link_libraries(james_comp2c ${MORPH_LDFLAGS})
+
 # Divisive normalization of a_i
 add_executable(james_divnorm james1.cpp)
 target_compile_definitions(james_divnorm PUBLIC FLT=float COMPILE_PLOTTING DIVNORM)
