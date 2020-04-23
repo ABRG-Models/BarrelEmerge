@@ -5,9 +5,19 @@
 #include "morph/DirichVtx.h"
 #include "morph/DirichDom.h"
 #include "morph/ShapeAnalysis.h"
+#include "morph/BezCurvePath.h"
+#include "morph/Hex.h"
+#include "morph/HdfData.h"
 
+#include <vector>
+#include <array>
 #include <list>
 #include <map>
+#include <set>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iostream>
 
 /*!
  * Enumerates the way that the guidance molecules are set up
@@ -63,14 +73,14 @@ public:
      * These are the c_i(x,t) variables from the Karb2004 paper. x is a vector in
      * two-space.
      */
-    alignas(alignof(vector<vector<Flt> >))
-    vector<vector<Flt> > c;
+    alignas(alignof(std::vector<std::vector<Flt> >))
+    std::vector<std::vector<Flt> > c;
 
     /*!
      * To record dci/dt, as this is used in the computation of a.
      */
-    alignas(alignof(vector<vector<Flt> >))
-    vector<vector<Flt> > dc;
+    alignas(alignof(std::vector<std::vector<Flt> >))
+    std::vector<std::vector<Flt> > dc;
 
     /*!
      * These are the a_i(x,t) variables from the Karb2004 paper. x is a vector in
@@ -78,47 +88,47 @@ public:
      * i, the second vector are the a_i values, indexed by the vi in the Hexes in
      * HexGrid.
      */
-    alignas(alignof(vector<vector<Flt> >))
-    vector<vector<Flt> > a;
+    alignas(alignof(std::vector<std::vector<Flt> >))
+    std::vector<std::vector<Flt> > a;
 
     /*!
      * For each TC axon type, this holds the two components of the gradient field of
      * the scalar value a(x,t) (where this x is a vector in two-space)
      */
-    alignas(alignof(vector<array<vector<Flt>, 2> >))
-    vector<array<vector<Flt>, 2> > grad_a;
+    alignas(alignof(std::vector<std::array<std::vector<Flt>, 2> >))
+    std::vector<std::array<std::vector<Flt>, 2> > grad_a;
 
     /*!
      * Contains the chemo-attractant modifiers which are applied to a_i(x,t) in Eq 4.
      */
-    alignas(alignof(vector<vector<array<vector<Flt>, 2> > >))
-    vector<vector<array<vector<Flt>, 2> > > g;
+    alignas(alignof(std::vector<std::vector<std::array<std::vector<Flt>, 2> > >))
+    std::vector<std::vector<std::array<std::vector<Flt>, 2> > > g;
 
     /*!
      * To hold div(g) / 3d, a static scalar field. There are M vectors of N of these
      * vectors of Flts
      */
-    alignas(alignof(vector<vector<vector<Flt> > >))
-    vector<vector<vector<Flt> > > divg_over3d;
+    alignas(alignof(std::vector<std::vector<std::vector<Flt> > >))
+    std::vector<std::vector<std::vector<Flt> > > divg_over3d;
 
     /*!
      * n(x,t) variable from the Karb2004 paper.
      */
-    alignas(alignof(vector<Flt>))
-    vector<Flt> n;
+    alignas(alignof(std::vector<Flt>))
+    std::vector<Flt> n;
 
     /*!
      * J_i(x,t) variables - the "flux current of axonal branches of type i". This is a
      * vector field.
      */
-    alignas(alignof(vector<array<vector<Flt>, 2> >))
-    vector<array<vector<Flt>, 2> > J;
+    alignas(alignof(std::vector<std::array<std::vector<Flt>, 2> >))
+    std::vector<std::array<std::vector<Flt>, 2> > J;
 
     /*!
      * Holds the divergence of the J_i(x)s
      */
-    alignas(alignof(vector<vector<Flt> >))
-    vector<vector<Flt> > divJ;
+    alignas(alignof(std::vector<std::vector<Flt> >))
+    std::vector<std::vector<Flt> > divJ;
 
     /*!
      * The power to which a_i(x,t) is raised in Eqs 1 and 2 in the paper.
@@ -138,42 +148,42 @@ public:
     /*!
      * alpha_i parameters
      */
-    alignas(alignof(vector<Flt>))
-    vector<Flt> alpha;
+    alignas(alignof(std::vector<Flt>))
+    std::vector<Flt> alpha;
 
     /*!
      * beta_i parameters
      */
-    alignas(alignof(vector<Flt>))
-    vector<Flt> beta;
+    alignas(alignof(std::vector<Flt>))
+    std::vector<Flt> beta;
 
     /*!
      * Parameters for initial 2D Gaussian masks over the initial branching levels.
      */
-    alignas(alignof(vector<GaussParams<Flt> >))
-    vector<GaussParams<Flt> > initmasks;
+    alignas(alignof(std::vector<GaussParams<Flt> >))
+    std::vector<GaussParams<Flt> > initmasks;
 
     /*!
      * The string identifiers for each TC type. This is of size N. Can be populated
      * from the config file. This allows me to look up the name, as given in the
      * config file, from the floating point index, obtained from (integer index / N)
      */
-    alignas(alignof(map<Flt, string>)) map<Flt, string> tcnames;
+    alignas(alignof(std::map<Flt, std::string>)) std::map<Flt, std::string> tcnames;
 
 protected: // We have a setter for gamma.
     /*!
      * gamma_A/B/C_i (etc) parameters from Eq 4. There are M vectors of Flts in here.
      */
     //@{
-    alignas(alignof(vector<vector<Flt> >))
-    vector<vector<Flt> > gamma;
+    alignas(alignof(std::vector<std::vector<Flt> >))
+    std::vector<std::vector<Flt> > gamma;
 
     /*!
      * Used for group-based competition. One of the sets of gammas is used as a group
      * identifier.
      */
-    alignas(alignof(vector<Flt>)) vector<Flt> group;
-    alignas(alignof(set<Flt>)) set<Flt> groupset;
+    alignas(alignof(std::vector<Flt>)) std::vector<Flt> group;
+    alignas(alignof(std::set<Flt>)) std::set<Flt> groupset;
     //@}
 
 public:
@@ -181,39 +191,39 @@ public:
      * A vector of parameters for the direction of the guidance molecules. This is an
      * angle in Radians.
      */
-    alignas(alignof(vector<Flt>))
-    vector<Flt> guidance_phi;
+    alignas(alignof(std::vector<Flt>))
+    std::vector<Flt> guidance_phi;
 
     /*!
      * Guidance molecule parameters for the width of the function
      */
-    alignas(alignof(vector<Flt>))
-    vector<Flt> guidance_width;
+    alignas(alignof(std::vector<Flt>))
+    std::vector<Flt> guidance_width;
 
     /*!
      * Width in orthogonal direction, for 2D fields.
      */
-    alignas(alignof(vector<Flt>))
-    vector<Flt> guidance_width_ortho;
+    alignas(alignof(std::vector<Flt>))
+    std::vector<Flt> guidance_width_ortho;
 
     /*!
      * Guidance molecule parameters for the offset of the function
      */
-    alignas(alignof(vector<Flt>))
-    vector<Flt> guidance_offset;
+    alignas(alignof(std::vector<Flt>))
+    std::vector<Flt> guidance_offset;
 
     /*!
      * Guidance molecule parameters to be the gains of the functions
      */
-    alignas(alignof(vector<Flt>))
-    vector<Flt> guidance_gain;
+    alignas(alignof(std::vector<Flt>))
+    std::vector<Flt> guidance_gain;
 
     /*!
      * Guidance molecule parameters to be the time (i.e. step) at which each guidance
      * gradient is switched on.
      */
-    alignas(alignof(vector<unsigned int>))
-    vector<unsigned int> guidance_time_onset;
+    alignas(alignof(std::vector<unsigned int>))
+    std::vector<unsigned int> guidance_time_onset;
 
     /*!
      * Rho variables in Eq 4 - the concentrations of axon guidance molecules A, B, C,
@@ -223,8 +233,8 @@ public:
      * There are M vector<Flts> in rho.
      */
     //@{
-    alignas(alignof(vector<vector<Flt> >))
-    vector<vector<Flt> > rho;
+    alignas(alignof(std::vector<std::vector<Flt> >))
+    std::vector<std::vector<Flt> > rho;
     //@}
 
     /*!
@@ -234,21 +244,21 @@ public:
      * There are M gradient fields stored in this variable.
      */
     //@{
-    alignas(alignof(vector<array<vector<Flt>, 2> >))
-    vector<array<vector<Flt>, 2> > grad_rho;
+    alignas(alignof(std::vector<std::array<std::vector<Flt>, 2> >))
+    std::vector<std::array<std::vector<Flt>, 2> > grad_rho;
     //@}
 
     /*!
      * Memory to hold an intermediate result
      */
-    alignas(alignof(vector<vector<Flt> >))
-    vector<vector<Flt> > betaterm;
+    alignas(alignof(std::vector<std::vector<Flt> >))
+    std::vector<std::vector<Flt> > betaterm;
 
     /*!
      * Holds an intermediate value for the computation of Eqs 1 and 2.
      */
-    alignas(alignof(vector<vector<Flt> >))
-    vector<vector<Flt> > alpha_c;
+    alignas(alignof(std::vector<std::vector<Flt> >))
+    std::vector<std::vector<Flt> > alpha_c;
 
     /*!
      * The contour threshold. For contour plotting [see plot_contour()], the field is
@@ -263,9 +273,9 @@ public:
      * Data containers for summed n, c and a.
      */
     //@{
-    alignas(vector<Flt>) vector<Flt> v_nsum;
-    alignas(vector<Flt>) vector<Flt> v_csum;
-    alignas(vector<Flt>) vector<Flt> v_asum;
+    alignas(std::vector<Flt>) std::vector<Flt> v_nsum;
+    alignas(std::vector<Flt>) std::vector<Flt> v_csum;
+    alignas(std::vector<Flt>) std::vector<Flt> v_asum;
     //@}
 
     /*!
@@ -277,7 +287,7 @@ public:
     /*!
      * Sets the function of the guidance molecule method
      */
-    vector<FieldShape> rhoMethod;
+    std::vector<FieldShape> rhoMethod;
 
     /*!
      * Modify initial conditions as if FGF had been mis-expressed posteriorly as well
@@ -295,36 +305,36 @@ public:
      */
     //@{
     //! Dirichlet regions
-    vector<Flt> regions;
+    std::vector<Flt> regions;
 
     //! The centroids of the regions. key is the "ID" of the region - a Flt between 0
     //! and 1, with values separated by 1/N.
-    map<Flt, pair<Flt, Flt> > reg_centroids;
+    std::map<Flt, std::pair<Flt, Flt> > reg_centroids;
 
     //! The area of each region, by Flt ID (area in number of hexes).
-    map<Flt, int> region_areas;
+    std::map<Flt, int> region_areas;
 
     //! Dirichlet vertices
-    list<DirichVtx<Flt>> vertices;
-    list<DirichDom<Flt>> domains;
+    std::list<morph::DirichVtx<Flt>> vertices;
+    std::list<morph::DirichDom<Flt>> domains;
 
     //! Set to true after calling dirichet() and to false after running step().
     bool dirichletComputed = false;
 
     //! Key-mapped coordinates of experimental barrels
-    map<string, pair<float, float>> expt_centroids;
+    std::map<std::string, std::pair<float, float>> expt_centroids;
 
     /*!
      * From the contour information in the SVG, determine experimental barrel identity
      * for each Hex, This is a float between 0 and 1, with -1 meaning that there is no
      * barrel in that hex on the experimental map (it might be inter-barrel tissue).
      */
-    vector<Flt> expt_barrel_id;
+    std::vector<Flt> expt_barrel_id;
 
     /*!
      * The areas (in number of hexes) of each of the barrels, by Flt id.
      */
-    map<Flt, int> expt_areas;
+    std::map<Flt, int> expt_areas;
 
     //! The overall Honda 1983 Dirichlet approximation. 0.003 is a good fit. 0.05 not
     //! so good.
@@ -367,7 +377,7 @@ public:
      * I apply a sigmoid to the boundary hexes, so that the noise drops away towards
      * the edge of the domain.
      */
-    virtual void noiseify_vector_vector (vector<vector<Flt> >& vv, vector<GaussParams<Flt> >& gp) {
+    virtual void noiseify_vector_vector (std::vector<std::vector<Flt> >& vv, std::vector<GaussParams<Flt> >& gp) {
         for (unsigned int i = 0; i<this->N; ++i) {
             for (auto h : this->hg->hexen) {
                 // boundarySigmoid. Jumps sharply (100, larger is sharper) over length
@@ -375,7 +385,7 @@ public:
                 // normal value. Close to boundary, noise is less.
                 vv[i][h.vi] = morph::Tools::randF<Flt>() * this->aNoiseGain + this->aInitialOffset;
                 if (h.distToBoundary > -0.5) { // It's possible that distToBoundary is set to -1.0
-                    Flt bSig = 1.0 / ( 1.0 + exp (-100.0*(h.distToBoundary-this->boundaryFalloffDist)) );
+                    Flt bSig = 1.0 / ( 1.0 + std::exp (-100.0*(h.distToBoundary-this->boundaryFalloffDist)) );
                     vv[i][h.vi] = vv[i][h.vi] * bSig * gp[i].gain; // New: apply gain here (and not
                                                                    // in the Gaussian mask).
                 }
@@ -390,7 +400,7 @@ public:
      *
      * This allows me to initialise the system in a more biologically realistic manner.
      */
-    void mask_a (vector<vector<Flt> >& vv, vector<GaussParams<Flt> >& gp) {
+    void mask_a (std::vector<std::vector<Flt> >& vv, std::vector<GaussParams<Flt> >& gp) {
 
         // Once-only parts of the calculation of the Gaussian.
         Flt root_2_pi = 2.506628275;
@@ -422,7 +432,7 @@ public:
             if (!(gp[i].sigma > 0.0)) {
                 continue;
             }
-            vector<Flt> vv_cpy(vv[i].size());
+            std::vector<Flt> vv_cpy(vv[i].size());
             if (this->doFgfDuplication == true) {
                 // Note: this duplicates the initial branching density
                 // distribution. For the guidance gradients, see code elsewhere.
@@ -443,12 +453,12 @@ public:
 
                 Flt rx = gp[i].x - h.x;
                 Flt ry = gp[i].y - h.y;
-                Flt r = sqrt (rx*rx + ry*ry);
+                Flt r = std::sqrt (rx*rx + ry*ry);
                 // Note that the gain of the gauss (gp[i].gain) has already been
                 // applied in noiseify_vector_vector()
                 Flt gauss = (one_over_sigma_root_2_pi
-                             * exp ( static_cast<Flt>(-(r*r))
-                                     / two_sigma_sq ));
+                             * std::exp ( static_cast<Flt>(-(r*r))
+                                          / two_sigma_sq ));
                 vv[i][h.vi] *= gauss;
             }
 
@@ -458,10 +468,10 @@ public:
                 for (auto h : this->hg->hexen) {
                     Flt rx = (-1 * gp[i].x) - h.x;
                     Flt ry = gp[i].y - h.y;
-                    Flt r = sqrt (rx*rx + ry*ry);
+                    Flt r = std::sqrt (rx*rx + ry*ry);
                     Flt gauss = gp[i].gain * (one_over_sigma_root_2_pi
-                                              * exp ( static_cast<Flt>(-(r*r))
-                                                      / two_sigma_sq ));
+                                              * std::exp ( static_cast<Flt>(-(r*r))
+                                                           / two_sigma_sq ));
 
                     vv[i][h.vi] += vv_cpy[h.vi] * gauss;
 
@@ -624,11 +634,11 @@ public:
         }
 
         // Set up the barrel regions
-        list<BezCurvePath<Flt>> ers = this->r.getEnclosedRegions();
+        std::list<morph::BezCurvePath<Flt>> ers = this->r.getEnclosedRegions();
         for (auto er : ers) {
-            pair<float, float> regCentroid; // Don't use it for now...
-            vector<list<Hex>::iterator> regHexes = this->hg->getRegion (er, regCentroid);
-            string idstr("unknown");
+            std::pair<float, float> regCentroid; // Don't use it for now...
+            std::vector<std::list<morph::Hex>::iterator> regHexes = this->hg->getRegion (er, regCentroid);
+            std::string idstr("unknown");
             if (er.name.substr(0,3) == "ol_") { // "ol_" for "outline"
                 idstr = er.name.substr(3);
             }
@@ -655,7 +665,7 @@ public:
         for (unsigned int i=0; i<this->N; ++i) {
             for (auto h : this->hg->hexen) {
                 // Sigmoid/logistic fn params: 100 sharpness, 0.02 dist offset from boundary
-                Flt bSig = 1.0 / ( 1.0 + exp (-100.0*(h.distToBoundary-this->boundaryFalloffDist)) );
+                Flt bSig = 1.0 / ( 1.0 + std::exp (-100.0*(h.distToBoundary-this->boundaryFalloffDist)) );
                 for (unsigned int m = 0; m<this->M; ++m) {
                     this->g[m][i][0][h.vi] += (this->gamma[m][i] * this->grad_rho[m][0][h.vi]) * bSig;
                     this->g[m][i][1][h.vi] += (this->gamma[m][i] * this->grad_rho[m][1][h.vi]) * bSig;
@@ -671,9 +681,9 @@ protected:
      * Given a TC id string @idstr, look it up in tcnames and find the Flt ID that it
      * corresponds to. Client code should have set up tcnames.
      */
-    Flt tc_name_to_id (const string& idstr) {
+    Flt tc_name_to_id (const std::string& idstr) {
         Flt theid = -1.0;
-        typename std::map<Flt, string>::iterator tcn = this->tcnames.begin();
+        typename std::map<Flt, std::string>::iterator tcn = this->tcnames.begin();
         while (tcn != this->tcnames.end()) {
             DBG2 ("Compare " << tcn->second << " and " << idstr << "...");
             if (tcn->second == idstr) {
@@ -738,11 +748,11 @@ public:
                     this->groupset.insert (value);
                 }
             } else {
-                cerr << "WARNING: DID NOT SET GAMMA (too few TC axon types for n_idx=" << n_idx << ")" << endl;
+                std::cerr << "WARNING: DID NOT SET GAMMA (too few TC axon types for n_idx=" << n_idx << ")" << std::endl;
                 return 1;
             }
         } else {
-            cerr << "WARNING: DID NOT SET GAMMA (too few guidance molecules for m_idx=" << m_idx << ")" << endl;
+            std::cerr << "WARNING: DID NOT SET GAMMA (too few guidance molecules for m_idx=" << m_idx << ")" << std::endl;
             return 2;
         }
         return 0;
@@ -758,14 +768,14 @@ public:
      * Save the c, a and n variables.
      */
     virtual void save (void) {
-        stringstream fname;
+        std::stringstream fname;
         fname << this->logpath << "/c_";
         fname.width(5);
         fname.fill('0');
         fname << this->stepCount << ".h5";
-        HdfData data(fname.str());
+        morph::HdfData data(fname.str());
         for (unsigned int i = 0; i<this->N; ++i) {
-            stringstream path;
+            std::stringstream path;
             // The c variables
             path << "/c" << i;
             data.add_contained_vals (path.str().c_str(), this->c[i]);
@@ -787,22 +797,22 @@ public:
     }
 
     void saveHG (void) {
-        stringstream hgname;
+        std::stringstream hgname;
         hgname << this->logpath << "/hexgrid.h5";
         this->hg->save(hgname.str().c_str());
     }
 
     // Save out the dirichlet domains, their paths, and various statistical measures.
     void saveDirichletDomains (void) {
-        stringstream fname;
+        std::stringstream fname;
         fname << this->logpath << "/dirich_";
         fname.width(5);
         fname.fill('0');
         fname << this->stepCount << ".h5";
-        HdfData data(fname.str());
+        morph::HdfData data(fname.str());
         unsigned int domcount = 0;
         for (auto dom : this->domains) {
-            stringstream dname;
+            std::stringstream dname;
             dname << "/dom";
             dname.width(3);
             dname.fill('0');
@@ -818,9 +828,9 @@ public:
         // The difference between the experimental barrel map and the simulated map
         data.add_val ("/mapdiff", this->mapdiff);
         // Save the region centroids
-        vector<Flt> keys;
-        vector<Flt> x_;
-        vector<Flt> y_;
+        std::vector<Flt> keys;
+        std::vector<Flt> x_;
+        std::vector<Flt> y_;
         // Hopefully, this ensures that we always save N centroids, even if some
         // default to 0,0.
         for (unsigned int i = 0; i<this->N; ++i) {
@@ -840,9 +850,9 @@ public:
      * Save asum, nsum and csum. Call once at end of simulation.
      */
     void savesums (void) {
-        stringstream fname;
+        std::stringstream fname;
         fname << this->logpath << "/sums.h5";
-        HdfData data(fname.str());
+        morph::HdfData data(fname.str());
         data.add_contained_vals ("/csum", this->v_csum);
         data.add_contained_vals ("/asum", this->v_asum);
         data.add_contained_vals ("/nsum", this->v_nsum);
@@ -855,22 +865,22 @@ public:
      * saving once only.
      */
     void saveGuidance (void) {
-        stringstream fname;
+        std::stringstream fname;
         fname << this->logpath << "/guidance.h5";
-        HdfData data(fname.str());
+        morph::HdfData data(fname.str());
         for (unsigned int m = 0; m<this->M; ++m) {
-            stringstream path;
+            std::stringstream path;
             path << "/rh" << m;
-            string pth(path.str());
+            std::string pth(path.str());
             data.add_contained_vals (pth.c_str(), this->rho[m]);
             pth[1] = 'g'; pth[2] = 'x';
             data.add_contained_vals (pth.c_str(), this->grad_rho[m][0]);
             pth[2] = 'y';
             data.add_contained_vals (pth.c_str(), this->grad_rho[m][1]);
             for (unsigned int i = 0; i<this->N; ++i) {
-                stringstream path;
+                std::stringstream path;
                 path << "/divg_" << m << "_" << i;
-                string pth(path.str());
+                std::string pth(path.str());
                 data.add_contained_vals (pth.c_str(), this->divg_over3d[m][i]);
             }
         }
@@ -898,26 +908,26 @@ public:
             }
 
             // Runge-Kutta integration for C (or ci)
-            vector<Flt> qq(this->nhex,0.);
-            vector<Flt> k1 = this->compute_dci_dt (this->c[i], i);
+            std::vector<Flt> qq(this->nhex,0.);
+            std::vector<Flt> k1 = this->compute_dci_dt (this->c[i], i);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; h++) {
                 qq[h] = this->c[i][h] + k1[h] * this->halfdt;
             }
 
-            vector<Flt> k2 = this->compute_dci_dt (qq, i);
+            std::vector<Flt> k2 = this->compute_dci_dt (qq, i);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; h++) {
                 qq[h] = this->c[i][h] + k2[h] * this->halfdt;
             }
 
-            vector<Flt> k3 = this->compute_dci_dt (qq, i);
+            std::vector<Flt> k3 = this->compute_dci_dt (qq, i);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; h++) {
                 qq[h] = this->c[i][h] + k3[h] * this->dt;
             }
 
-            vector<Flt> k4 = this->compute_dci_dt (qq, i);
+            std::vector<Flt> k4 = this->compute_dci_dt (qq, i);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; h++) {
                 this->dc[i][h] = (k1[h]+2. * (k2[h] + k3[h]) + k4[h]) * this->sixthdt;
@@ -965,17 +975,17 @@ public:
         for (unsigned int i=0; i<this->N; ++i) {
 
             // Runge-Kutta integration for A
-            vector<Flt> qq(this->nhex, 0.0);
+            std::vector<Flt> qq(this->nhex, 0.0);
             this->compute_divJ (this->a[i], i); // populates divJ[i]
 
-            vector<Flt> k1(this->nhex, 0.0);
+            std::vector<Flt> k1(this->nhex, 0.0);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
                 k1[h] = this->divJ[i][h] - this->dc[i][h];
                 qq[h] = this->a[i][h] + k1[h] * this->halfdt;
             }
 
-            vector<Flt> k2(this->nhex, 0.0);
+            std::vector<Flt> k2(this->nhex, 0.0);
             this->compute_divJ (qq, i);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
@@ -983,7 +993,7 @@ public:
                 qq[h] = this->a[i][h] + k2[h] * this->halfdt;
             }
 
-            vector<Flt> k3(this->nhex, 0.0);
+            std::vector<Flt> k3(this->nhex, 0.0);
             this->compute_divJ (qq, i);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
@@ -991,7 +1001,7 @@ public:
                 qq[h] = this->a[i][h] + k3[h] * this->dt;
             }
 
-            vector<Flt> k4(this->nhex, 0.0);
+            std::vector<Flt> k4(this->nhex, 0.0);
             this->compute_divJ (qq, i);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
@@ -1017,7 +1027,7 @@ public:
 #endif
             }
 #ifdef DEBUG_SUM_A_TRANSFERRED
-            cout << "After transfer_a(), sum_a is " << sum_a_transferred << endl;
+            std::cout << "After transfer_a(), sum_a is " << sum_a_transferred << std::endl;
 #endif
         }
     }
@@ -1073,9 +1083,9 @@ public:
      * Examine the value in each Hex of the hexgrid of the scalar field f. If
      * abs(f[h]) exceeds the size of dangerThresh, then output debugging information.
      */
-    void debug_values (vector<Flt>& f, Flt dangerThresh) {
+    void debug_values (std::vector<Flt>& f, Flt dangerThresh) {
         for (auto h : this->hg->hexen) {
-            if (abs(f[h.vi]) > dangerThresh) {
+            if (std::abs(f[h.vi]) > dangerThresh) {
                 DBG ("Blow-up threshold exceeded at Hex.vi=" << h.vi << " ("<< h.ri <<","<< h.gi <<")" <<  ": " << f[h.vi]);
                 unsigned int wait = 0;
                 while (wait++ < 120) {
@@ -1089,8 +1099,8 @@ public:
      * Does: f = (alpha * f) + betaterm. c.f. Karb2004, Eq 1. f is c[i] or q from the
      * RK algorithm.
      */
-    vector<Flt> compute_dci_dt (vector<Flt>& f, unsigned int i) {
-        vector<Flt> dci_dt (this->nhex, 0.0);
+    std::vector<Flt> compute_dci_dt (std::vector<Flt>& f, unsigned int i) {
+        std::vector<Flt> dci_dt (this->nhex, 0.0);
 #pragma omp parallel for
         for (unsigned int h=0; h<this->nhex; h++) {
             dci_dt[h] = (this->betaterm[i][h] - this->alpha[i] * f[h]);
@@ -1113,7 +1123,7 @@ public:
 #pragma omp parallel for schedule(static)
             for (unsigned int hi=0; hi<this->nhex; ++hi) {
 
-                vector<Flt> divg(this->M, 0.0);
+                std::vector<Flt> divg(this->M, 0.0);
                 // Sum up over each gradient.
                 for (unsigned int m = 0; m<this->M; ++m) {
                     // First sum
@@ -1172,7 +1182,7 @@ public:
      *
      * Stable with dt = 0.0001;
      */
-    virtual void compute_divJ (vector<Flt>& fa, unsigned int i) {
+    virtual void compute_divJ (std::vector<Flt>& fa, unsigned int i) {
 
         // Compute gradient of a_i(x), for use computing the third term, below.
         this->spacegrad2D (fa, this->grad_a[i]);
@@ -1224,11 +1234,11 @@ public:
      */
     void gaussian1D_guidance (unsigned int m) {
         for (auto h : this->hg->hexen) {
-            Flt cosphi = (Flt) cos (this->TWOPI_OVER_360 * this->guidance_phi[m]);
-            Flt sinphi = (Flt) sin (this->TWOPI_OVER_360 * this->guidance_phi[m]);
+            Flt cosphi = (Flt) std::cos (this->TWOPI_OVER_360 * this->guidance_phi[m]);
+            Flt sinphi = (Flt) std::sin (this->TWOPI_OVER_360 * this->guidance_phi[m]);
             DBG2 ("phi: " << guidance_phi[m] << " degrees");
             Flt x_ = (h.x * cosphi) + (h.y * sinphi);
-            this->rho[m][h.vi] = guidance_gain[m] * exp(-((x_-guidance_offset[m])*(x_-guidance_offset[m])) / guidance_width[m]);
+            this->rho[m][h.vi] = guidance_gain[m] * std::exp(-((x_-guidance_offset[m])*(x_-guidance_offset[m])) / guidance_width[m]);
         }
     }
 
@@ -1245,8 +1255,8 @@ public:
         Flt y_ = (Flt)0.0;
 
         // Rotate the initial location of the 2D Gaussian
-        Flt cosphi = (Flt) cos (this->TWOPI_OVER_360 * this->guidance_phi[m]);
-        Flt sinphi = (Flt) sin (this->TWOPI_OVER_360 * this->guidance_phi[m]);
+        Flt cosphi = (Flt) std::cos (this->TWOPI_OVER_360 * this->guidance_phi[m]);
+        Flt sinphi = (Flt) std::sin (this->TWOPI_OVER_360 * this->guidance_phi[m]);
         Flt x_gCentre = (x_ * cosphi) + (y_ * sinphi);
         Flt y_gCentre = - (x_ * sinphi) + (y_ * cosphi);
 
@@ -1254,8 +1264,8 @@ public:
 
             Flt rx = x_gCentre - h.x;
             Flt ry = y_gCentre - h.y;
-            Flt r = sqrt (rx*rx + ry*ry);
-            this->rho[m][h.vi] = guidance_gain[m] * exp (static_cast<Flt>( -(r*r) / (2.0 * guidance_width[m])) );
+            Flt r = std::sqrt (rx*rx + ry*ry);
+            this->rho[m][h.vi] = guidance_gain[m] * std::exp (static_cast<Flt>( -(r*r) / (2.0 * guidance_width[m])) );
         }
     }
 
@@ -1266,10 +1276,10 @@ public:
      */
     void exponential_guidance (unsigned int m) {
         for (auto h : this->hg->hexen) {
-            Flt cosphi = (Flt) cos (this->TWOPI_OVER_360 * this->guidance_phi[m]);
-            Flt sinphi = (Flt) sin (this->TWOPI_OVER_360 * this->guidance_phi[m]);
+            Flt cosphi = (Flt) std::cos (this->TWOPI_OVER_360 * this->guidance_phi[m]);
+            Flt sinphi = (Flt) std::sin (this->TWOPI_OVER_360 * this->guidance_phi[m]);
             Flt x_ = (h.x * cosphi) + (h.y * sinphi);
-            this->rho[m][h.vi] = exp (this->guidance_gain[m] * (x_-guidance_offset[m]));
+            this->rho[m][h.vi] = std::exp (this->guidance_gain[m] * (x_-guidance_offset[m]));
         }
     }
 
@@ -1296,7 +1306,7 @@ public:
             Flt sinphi = (Flt) sin (this->TWOPI_OVER_360 * this->guidance_phi[m]);
             Flt x_ = 0.0;
             if (this->doFgfDuplication == true) {
-                x_ = (abs(h.x) * cosphi) + (h.y * sinphi);
+                x_ = (std::abs(h.x) * cosphi) + (h.y * sinphi);
             } else {
                 x_ = (h.x * cosphi) + (h.y * sinphi);
             }
@@ -1317,7 +1327,7 @@ public:
 
             Flt x_ = (h.x - x_centre);
             Flt y_ = (h.y - y_centre);
-            Flt r_ = sqrt(x_*x_ + y_*y_);
+            Flt r_ = std::sqrt(x_*x_ + y_*y_);
             this->rho[m][h.vi] = (this->guidance_gain[m] - r_) * this->guidance_gain[m];
         }
     }
@@ -1331,7 +1341,7 @@ public:
         // Find the vertices and construct domains
         this->domains = morph::ShapeAnalysis<Flt>::dirichlet_vertices (this->hg, this->expt_barrel_id, this->vertices);
         // Carry out the analysis.
-        vector<pair<float, float>> d_centres;
+        std::vector<std::pair<float, float>> d_centres;
         this->expt_honda = morph::ShapeAnalysis<float>::dirichlet_analyse (this->domains, d_centres);
         DBG ("Real barrels have Honda: " << this->expt_honda);
     }
@@ -1379,13 +1389,13 @@ public:
                   <<  ") which adds to sos_distances: " << dsq);
 #endif
 #if 0
-            cout << tcnames[idx] << ","
-                 << this->reg_centroids[idx].first << ","
-                 << this->reg_centroids[idx].second << ","
-                 << this->expt_centroids[tcnames[idx]].first << ","
-                 << this->expt_centroids[tcnames[idx]].second << ","
-                 << this->hg->originalBoundaryCentroid.first <<  ","
-                 << this->hg->originalBoundaryCentroid.second << endl;
+            std::cout << tcnames[idx] << ","
+                      << this->reg_centroids[idx].first << ","
+                      << this->reg_centroids[idx].second << ","
+                      << this->expt_centroids[tcnames[idx]].first << ","
+                      << this->expt_centroids[tcnames[idx]].second << ","
+                      << this->hg->originalBoundaryCentroid.first <<  ","
+                      << this->hg->originalBoundaryCentroid.second << std::endl;
 #endif
             this->sos_distances += dsq;
         }
@@ -1400,7 +1410,7 @@ public:
                 acount += this->regions[h] == idx ? 1 : 0;
             }
             this->region_areas[idx] = acount;
-            this->area_diff += abs(static_cast<Flt>(this->region_areas[idx] - this->expt_areas[idx]));
+            this->area_diff += std::abs(static_cast<Flt>(this->region_areas[idx] - this->expt_areas[idx]));
         }
         DBG ("overall area_diff = " << this->area_diff);
 
@@ -1421,7 +1431,7 @@ public:
         // Find the vertices and construct domains
         this->domains = morph::ShapeAnalysis<Flt>::dirichlet_vertices (this->hg, this->regions, this->vertices);
         // Carry out the analysis.
-        vector<pair<float, float>> d_centres;
+        std::vector<std::pair<float, float>> d_centres;
         this->honda = morph::ShapeAnalysis<float>::dirichlet_analyse (this->domains, d_centres);
 
         this->dirichletComputed = true;

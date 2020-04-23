@@ -27,8 +27,6 @@
 #include <limits>
 #include <cmath>
 #include <chrono>
-using namespace std::chrono;
-using std::chrono::steady_clock;
 
 //! Include the relevant reaction diffusion class
 #if defined DIVNORM
@@ -45,6 +43,12 @@ using std::chrono::steady_clock;
 
 #include "morph/ShapeAnalysis.h"
 using morph::ShapeAnalysis;
+#include "morph/Hex.h"
+using morph::Hex;
+#include "morph/HexGrid.h"
+using morph::HexGrid;
+#include "morph/HdfData.h"
+using morph::HdfData;
 
 #ifdef COMPILE_PLOTTING
 # include <GLFW/glfw3.h>
@@ -60,10 +64,14 @@ using morph::VisualDataModel;
 using morph::HexGridVisual;
 
 // Alias VisualDataModel<FLT>* as VdmPtr, to neaten code
-typedef VisualDataModel<FLT>* VdmPtr;
+typedef morph::VisualDataModel<FLT>* VdmPtr;
 
 # include <morph/MathAlgo.h>
 using morph::MathAlgo;
+
+using namespace std;
+using namespace std::chrono;
+using std::chrono::steady_clock;
 
 //! Helper function to save PNG images
 void savePngs (const std::string& logpath, const std::string& name,

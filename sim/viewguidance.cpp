@@ -33,9 +33,12 @@
 /*!
  * Include display and plotting code
  */
-# include "morph/display.h"
-# include "morph/RD_Plot.h"
+#include "morph/display.h"
+#include "morph/RD_Plot.h"
 using morph::RD_Plot;
+
+#include "morph/Hex.h"
+using morph::Hex;
 
 /*!
  * Included for directory manipulation code

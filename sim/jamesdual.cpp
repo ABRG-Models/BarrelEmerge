@@ -31,8 +31,17 @@
  */
 #include "rd_james_dncomp_dual.h"
 
+/*!
+ * And some other classes from the morph namespace
+ */
 #include "morph/ShapeAnalysis.h"
 using morph::ShapeAnalysis;
+#include "morph/Hex.h"
+using morph::Hex;
+#include "morph/HexGrid.h"
+using morph::HexGrid;
+#include "morph/HdfData.h"
+using morph::HdfData;
 
 #ifdef COMPILE_PLOTTING
 /*!

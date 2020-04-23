@@ -4,6 +4,10 @@
 
 #include "rd_james_divnorm.h"
 
+#include <vector>
+#include <array>
+#include <iostream>
+
 #ifdef PROFILE_CODE
 #include <chrono>
 using namespace std::chrono;
@@ -28,21 +32,21 @@ public:
     milliseconds a_for6 = std::chrono::milliseconds::zero();
 
     void output (void) const {
-        cout << "Compute... n: " << compute_n_time.count()
-             << ", divn: " << compute_divn_time.count()
-             << ", gradn: " << compute_spacegrad_n_time.count()
-             << ", a: " << integrate_a_time.count()
-             << ", c: " << integrate_c_time.count()
-             << endl;
-        cout << "Compute... a_pre: " << a_precompute.count()
-             << ", a_eps_all: " << a_eps_all.count()
-             << ", for1, : " << a_for1.count()
-             << ", for2, : " << a_for2.count()
-             << ", for3, : " << a_for3.count()
-             << ", for4, : " << a_for4.count()
-             << ", for5, : " << a_for5.count()
-             << ", for6, : " << a_for6.count()
-             << endl;
+        std::cout << "Compute... n: " << compute_n_time.count()
+                  << ", divn: " << compute_divn_time.count()
+                  << ", gradn: " << compute_spacegrad_n_time.count()
+                  << ", a: " << integrate_a_time.count()
+                  << ", c: " << integrate_c_time.count()
+                  << std::endl;
+        std::cout << "Compute... a_pre: " << a_precompute.count()
+                  << ", a_eps_all: " << a_eps_all.count()
+                  << ", for1, : " << a_for1.count()
+                  << ", for2, : " << a_for2.count()
+                  << ", for3, : " << a_for3.count()
+                  << ", for4, : " << a_for4.count()
+                  << ", for5, : " << a_for5.count()
+                  << ", for6, : " << a_for6.count()
+                  << std::endl;
     }
 };
 #endif
@@ -59,8 +63,8 @@ public:
     //! The steepness of the logistic function
     alignas(Flt) Flt m = 1e-8;
     //! epsilon_i parameters. axon competition parameter
-    alignas(alignof(vector<Flt>))
-    vector<Flt> epsilon;
+    alignas(alignof(std::vector<Flt>))
+    std::vector<Flt> epsilon;
     //@}
 
     //! comp3 params
@@ -68,21 +72,21 @@ public:
     //! The strength of gradient of n(x,t) contribution
     alignas(Flt) Flt E = 0.0;
     //! This holds the two components of the gradient field of the scalar value n(x,t)
-    alignas(alignof(array<vector<Flt>, 2>))
-    array<vector<Flt>, 2> grad_n;
+    alignas(alignof(std::array<std::vector<Flt>, 2>))
+    std::array<std::vector<Flt>, 2> grad_n;
     //! divergence of n.
-    alignas(alignof(vector<Flt>))
-    vector<Flt> div_n;
+    alignas(alignof(std::vector<Flt>))
+    std::vector<Flt> div_n;
     //@}
 
     //! comp7 params
     //@{
     //! \hat{a}_i.
-    alignas(alignof(vector<Flt>)) vector<Flt> ahat;
+    alignas(alignof(std::vector<Flt>)) std::vector<Flt> ahat;
     //! \lambda(\hat{a}_i)
-    alignas(alignof(vector<Flt>)) vector<Flt> lambda;
+    alignas(alignof(std::vector<Flt>)) std::vector<Flt> lambda;
     //! gradient \lambda(\hat{a}_i)
-    alignas(alignof(array<vector<Flt>, 2>)) array<vector<Flt>, 2> grad_lambda;
+    alignas(alignof(std::array<std::vector<Flt>, 2>)) std::array<std::vector<Flt>, 2> grad_lambda;
     //! Sigmoid offset
     alignas(Flt) Flt o = 5.0;
     //! Sigmoid sharpness
@@ -142,7 +146,7 @@ public:
     }
 
     //! Compute the divergence of J
-    void compute_divJ (vector<Flt>& fa, unsigned int i) {
+    void compute_divJ (std::vector<Flt>& fa, unsigned int i) {
 
         // Compute gradient of a_i(x), for use computing the third term, below.
         this->spacegrad2D (fa, this->grad_a[i]);
@@ -170,7 +174,7 @@ public:
             // Term 1.1 is E a div(n)
             Flt term1_1 = this->E * fa[hi] * this->div_n[hi];
             if (isnan(term1_1)) {
-                cerr << "term1_1 isnan" << endl;
+                cerr << "term1_1 isnan" << std::endl;
                 exit (21);
             }
 
@@ -178,7 +182,7 @@ public:
             Flt term1_2 = this->E * (this->grad_n[0][hi] * this->grad_a[i][0][hi]
                                      + this->grad_n[1][hi] * this->grad_a[i][1][hi]);
             if (isnan(term1_2)) {
-                cerr << "term1_2 isnan" << endl;
+                cerr << "term1_2 isnan" << std::endl;
                 exit (21);
             }
 #endif
@@ -214,9 +218,9 @@ public:
     }
 
     //! Used as a temporary variable.
-    vector<Flt> eps_all; // sum of all a^l
-    vector<Flt> eps_i; // sum of a^l for TC index i
-    vector<Flt> eps; // eps_all - eps_i
+    std::vector<Flt> eps_all; // sum of all a^l
+    std::vector<Flt> eps_i; // sum of a^l for TC index i
+    std::vector<Flt> eps; // eps_all - eps_i
 
     virtual void integrate_a (void) {
 
@@ -312,27 +316,27 @@ public:
                 eps[h] = (eps_all[h]-eps_i[h]) * eps_over_N;
             }
 
-            //cout << "eps[3000] = " << eps[3000]<< endl;
+            //std::cout << "eps[3000] = " << eps[3000]<< std::endl;
 #ifdef PROFILE_CODE
             milliseconds msf3 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             this->codetimes.back().a_for2 += (msf3-msf2);
 #endif
             // Runge-Kutta integration for A
-            vector<Flt> qq(this->nhex, 0.0);
+            std::vector<Flt> qq(this->nhex, 0.0);
             this->compute_divJ (this->a[i], i); // populates divJ[i]
 
 #ifdef PROFILE_CODE
             milliseconds msf4 = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             this->codetimes.back().a_for3 += (msf4-msf3);
 #endif
-            vector<Flt> k1(this->nhex, 0.0);
+            std::vector<Flt> k1(this->nhex, 0.0);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
                 k1[h] = this->divJ[i][h] - this->dc[i][h] - this->a[i][h] * eps[h];
                 qq[h] = this->a[i][h] + k1[h] * this->halfdt;
             }
 
-            vector<Flt> k2(this->nhex, 0.0);
+            std::vector<Flt> k2(this->nhex, 0.0);
             this->compute_divJ (qq, i);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
@@ -340,7 +344,7 @@ public:
                 qq[h] = this->a[i][h] + k2[h] * this->halfdt;
             }
 
-            vector<Flt> k3(this->nhex, 0.0);
+            std::vector<Flt> k3(this->nhex, 0.0);
             this->compute_divJ (qq, i);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
@@ -348,7 +352,7 @@ public:
                 qq[h] = this->a[i][h] + k3[h] * this->dt;
             }
 
-            vector<Flt> k4(this->nhex, 0.0);
+            std::vector<Flt> k4(this->nhex, 0.0);
             this->compute_divJ (qq, i);
 
 #pragma omp parallel for
@@ -379,7 +383,7 @@ public:
 
 #ifdef PROFILE_CODE
     //! Counters for timing.
-    vector<Codetime> codetimes;
+    std::vector<Codetime> codetimes;
 #endif
 
     //! Override step() as have to compute div_n and grad_n

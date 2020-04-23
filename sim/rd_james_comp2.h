@@ -5,6 +5,10 @@
 
 #include "rd_james.h"
 
+#include <vector>
+#include <array>
+#include <iostream>
+
 template <class Flt>
 class RD_James_comp2 : public RD_James<Flt>
 {
@@ -20,31 +24,31 @@ public:
      * \hat{a}_i. Recomputed for each new i, so doesn't need to be a
      * vector of vectors.
      */
-    alignas(alignof(vector<Flt>))
-    vector<Flt> ahat;
+    alignas(alignof(std::vector<Flt>))
+    std::vector<Flt> ahat;
 
     /*!
      * This holds the two components of the gradient field of the
      * scalar value \hat{a}_i(x,t), which is the sum of the branching
      * densities of all axon types except i.
      */
-    alignas(alignof(array<vector<Flt>, 2>))
-    array<vector<Flt>, 2> grad_ahat;
+    alignas(alignof(std::array<std::vector<Flt>, 2>))
+    std::array<std::vector<Flt>, 2> grad_ahat;
 
     /*!
      * divergence of \hat{a}_i(x,t).
      */
-    alignas(alignof(vector<Flt>))
-    vector<Flt> div_ahat;
+    alignas(alignof(std::vector<Flt>))
+    std::vector<Flt> div_ahat;
 
     /*!
      * \bar{a}_i - result of processing a_i through a sigmoid.
      */
     //@{
-    alignas(alignof(vector<Flt>))
-    vector<Flt> abar;
-    alignas(alignof(array<vector<Flt>, 2>))
-    array<vector<Flt>, 2> grad_abar;
+    alignas(alignof(std::vector<Flt>))
+    std::vector<Flt> abar;
+    alignas(alignof(std::array<std::vector<Flt>, 2>))
+    std::array<std::vector<Flt>, 2> grad_abar;
     //@}
 
     /*!
@@ -94,7 +98,7 @@ public:
      * Stable with dt = 0.0001;
      */
 #define SIGMOID_ROLLOFF_FOR_A 1
-    virtual void compute_divJ (vector<Flt>& fa, unsigned int i) {
+    virtual void compute_divJ (std::vector<Flt>& fa, unsigned int i) {
 
 #ifdef SIGMOID_ROLLOFF_FOR_A
         // Compute \bar{a}_i and its spatial gradient
@@ -136,13 +140,13 @@ public:
             // Multiply sum by 2D/3d^2 to give term1
             Flt term1 = this->twoDover3dd * thesum;
             if (isnan(term1)) {
-                cerr << "term1 isnan" << endl;
-                cerr << "thesum is " << thesum << " fa[hi=" << hi << "] = " << fa[hi] << endl;
+                std::cerr << "term1 isnan" << std::endl;
+                std::cerr << "thesum is " << thesum << " fa[hi=" << hi << "] = " << fa[hi] << std::endl;
                 exit (21);
             }
 
             //if (hi==5055) {
-            //    cout << "term1[5055]="  << term1 << endl;
+            //    cout << "term1[5055]="  << term1 << std::endl;
             //}
 
 #ifdef SIGMOID_ROLLOFF_FOR_A
@@ -153,8 +157,8 @@ public:
             Flt term1_1 = this->FOverNm1 * fa[hi] * this->div_ahat[hi];
 #endif
             if (isnan(term1_1)) {
-                cerr << "term1_1 isnan" << endl;
-                cerr << "fa[hi="<<hi<<"] = " << fa[hi] << ", this->div_ahat[hi] = " << this->div_ahat[hi] << endl;
+                std::cerr << "term1_1 isnan" << std::endl;
+                std::cerr << "fa[hi="<<hi<<"] = " << fa[hi] << ", this->div_ahat[hi] = " << this->div_ahat[hi] << std::endl;
                 exit (21);
             }
 
@@ -169,11 +173,11 @@ public:
 #endif
 
             //if (hi==1000) {
-            //    cout << "term1_1="  << term1_1 << ", term1_2=" << term1_2 << endl;
+            //    cout << "term1_1="  << term1_1 << ", term1_2=" << term1_2 << std::endl;
             //}
 
             if (isnan(term1_2)) {
-                cerr << "term1_2 isnan" << endl;
+                std::cerr << "term1_2 isnan" << std::endl;
                 exit (21);
             }
 
@@ -213,7 +217,7 @@ public:
             thesum += this->ahat[(HAS_NSE(hi) ? NSE(hi) : hi)];
             this->div_ahat[hi] = this->twoover3dd * thesum;
             if (isnan(this->div_ahat[hi])) {
-                cerr << "div ahat isnan" << endl;
+                std::cerr << "div ahat isnan" << std::endl;
                 exit (3);
             }
         }
@@ -258,17 +262,17 @@ public:
             // --- END specific to comp2 method ---
 
             // Runge-Kutta integration for A
-            vector<Flt> qq(this->nhex, 0.0);
+            std::vector<Flt> qq(this->nhex, 0.0);
             this->compute_divJ (this->a[i], i); // populates divJ[i]
 
-            vector<Flt> k1(this->nhex, 0.0);
+            std::vector<Flt> k1(this->nhex, 0.0);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
                 k1[h] = this->divJ[i][h] - this->dc[i][h];
                 qq[h] = this->a[i][h] + k1[h] * this->halfdt;
             }
 
-            vector<Flt> k2(this->nhex, 0.0);
+            std::vector<Flt> k2(this->nhex, 0.0);
             this->compute_divJ (qq, i);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
@@ -276,7 +280,7 @@ public:
                 qq[h] = this->a[i][h] + k2[h] * this->halfdt;
             }
 
-            vector<Flt> k3(this->nhex, 0.0);
+            std::vector<Flt> k3(this->nhex, 0.0);
             this->compute_divJ (qq, i);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
@@ -284,7 +288,7 @@ public:
                 qq[h] = this->a[i][h] + k3[h] * this->dt;
             }
 
-            vector<Flt> k4(this->nhex, 0.0);
+            std::vector<Flt> k4(this->nhex, 0.0);
             this->compute_divJ (qq, i);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {

@@ -13,13 +13,13 @@ public:
     //! Inter-TC-type competition
     //@{
     //! xi_i parameters. axon competition parameter 2
-    alignas(alignof(vector<Flt>)) vector<Flt> xi;
+    alignas(alignof(std::vector<Flt>)) std::vector<Flt> xi;
     //! Used as a temporary variables
     //@{
     //! sum of a^l for the group to which i belongs
-    alignas(alignof(vector<Flt>)) vector<Flt> xi_group_i;
+    alignas(alignof(std::vector<Flt>)) std::vector<Flt> xi_group_i;
     //! eps_all - xi_group_i
-    alignas(alignof(vector<Flt>)) vector<Flt> xi_final;
+    alignas(alignof(std::vector<Flt>)) std::vector<Flt> xi_final;
     //@}
     //@}
 
@@ -116,7 +116,7 @@ public:
             this->codetimes.back().a_for2 += (msf3-msf2);
 #endif
             // Runge-Kutta integration for A
-            vector<Flt> qq(this->nhex, 0.0);
+            std::vector<Flt> qq(this->nhex, 0.0);
             this->compute_divJ (this->a[i], i); // populates divJ[i]
 
 #ifdef PROFILE_CODE
@@ -124,14 +124,14 @@ public:
             this->codetimes.back().a_for3 += (msf4-msf3);
 #endif
 
-            vector<Flt> k1(this->nhex, 0.0);
+            std::vector<Flt> k1(this->nhex, 0.0);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
                 k1[h] = this->divJ[i][h] - this->dc[i][h] - this->a[i][h] * this->eps[h];
                 qq[h] = this->a[i][h] + k1[h] * this->halfdt;
             }
 
-            vector<Flt> k2(this->nhex, 0.0);
+            std::vector<Flt> k2(this->nhex, 0.0);
             this->compute_divJ (qq, i);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
@@ -139,7 +139,7 @@ public:
                 qq[h] = this->a[i][h] + k2[h] * this->halfdt;
             }
 
-            vector<Flt> k3(this->nhex, 0.0);
+            std::vector<Flt> k3(this->nhex, 0.0);
             this->compute_divJ (qq, i);
 #pragma omp parallel for
             for (unsigned int h=0; h<this->nhex; ++h) {
@@ -147,7 +147,7 @@ public:
                 qq[h] = this->a[i][h] + k3[h] * this->dt;
             }
 
-            vector<Flt> k4(this->nhex, 0.0);
+            std::vector<Flt> k4(this->nhex, 0.0);
             this->compute_divJ (qq, i);
 
 #pragma omp parallel for

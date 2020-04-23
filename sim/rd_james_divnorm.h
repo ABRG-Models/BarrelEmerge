@@ -17,18 +17,18 @@ public:
     /*!
      * An N element vector holding the sum of a_i for each TC type.
      */
-    alignas(vector<Flt>) vector<Flt> sum_a;
+    alignas(std::vector<Flt>) std::vector<Flt> sum_a;
 
     /*!
      * An N element vector holding the initial sum of a_i for each TC type.
      */
-    alignas(vector<Flt>) vector<Flt> sum_a_init;
+    alignas(std::vector<Flt>) std::vector<Flt> sum_a_init;
 
 #ifdef SUBTRACT_C_FROM_A
     /*!
      * An N element vector holding the sum of c_i for each TC type.
      */
-    alignas(vector<Flt>) vector<Flt> sum_c;
+    alignas(std::vector<Flt>) std::vector<Flt> sum_c;
 #endif
 
     /*!

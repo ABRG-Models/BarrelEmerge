@@ -25,6 +25,7 @@ using std::string;
 using std::pair;
 #include <iostream>
 using std::cout;
+using std::cerr;
 using std::endl;
 
 #define DEBUG 1
@@ -41,6 +42,10 @@ using morph::DirichDom;
 using morph::ReadCurves;
 #include "morph/HexGrid.h"
 using morph::HexGrid;
+#include "morph/Hex.h"
+using morph::Hex;
+#include "morph/BezCurvePath.h"
+using morph::BezCurvePath;
 
 int main (int argc, char **argv)
 {
