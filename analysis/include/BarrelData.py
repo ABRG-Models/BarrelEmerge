@@ -178,11 +178,19 @@ class BarrelData:
             jd = json.load(f)
             self.dt = jd["dt"]
             self.hextohex_d = jd["hextohex_d"]
+            self.D = jd["D"]
+            self.k = jd["k"]
             tc = jd["tc"]
             print ('tc length: {0}'.format(len(jd["tc"])))
             self.N = len(jd["tc"])
+            sumalpha = 0
+            sumbeta = 0
+            sumepsilon = 0
             for i in tc:
                 # Do a key-value thing
+                sumalpha = sumalpha + i["alpha"]
+                sumbeta = sumbeta + i["beta"]
+                sumepsilon = sumepsilon + i["epsilon"]
                 theid = count/np.float32(self.N)
                 self.id_byname[i["name"]] = theid
                 self.gamma_byname[i["name"]] = i["gamma"]
@@ -194,6 +202,9 @@ class BarrelData:
                     self.gammaColour_byid[theid] = (0, 0.5+i["gamma"][0]/4.0, 0.5+i["gamma"][1]/4.0)
                 #print ('Setting gammaColour_byid[{0}] to {1}'.format (theid, self.gammaColour_byid[theid]))
                 count = count + np.float32(1.0)
+            self.meanalpha = sumalpha/count
+            self.meanbeta = sumbeta/count
+            self.meanepsilon = sumepsilon/count
     #
     # Load in data
     #
