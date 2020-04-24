@@ -18,14 +18,16 @@ PROGTAG=dncomp # or comp2
 # Hold ALPHA, BETA set? ALPHABETA: 0.01, 0.0631, 0.3981, 2.51189, 15.849, 100
 # 180 sims total.
 
-# ALPHABETA is ALPHA/BETA. Result in paper has ALPHABETA=0.15
+# ALPHABETA. Result in paper has ALPHABETA=0.15.
+# Alpha = 20 * ALPHABETA, thus ALPHABETA = Alpha/20
+# Beta = 3/ALPHABETA        => ALPHABETA = 3/Beta
 # Vary: EPSILON, ALPHABETA, D
 
 # Choose k (1.abit or 3)
 k=3
 
 #for D in 0.01 0.0251 0.0631 0.1585 0.3981 1.0; do
-for D in 0.1585; do # 30 at a time; circa 2hrs on alienmonster
+for D in 0.01; do # 30 at a time; circa 2hrs on alienmonster
     for EPSILON in 50 100 150 200 300; do
         for ALPHABETA in 0.01 0.0631 0.3981 2.51189 15.849 100; do
 
