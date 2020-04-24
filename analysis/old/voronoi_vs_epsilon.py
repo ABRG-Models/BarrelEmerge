@@ -1,6 +1,6 @@
 # To access argv and also include the include dir
 import sys
-sys.path.insert (0, './include')
+sys.path.insert (0, '../include')
 
 import numpy as np
 # Import data loading code
