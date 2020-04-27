@@ -9,6 +9,7 @@ matplotlib.use ('TKAgg', warn=False, force=True)
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 from matplotlib.patches import RegularPolygon
+from matplotlib.patches import Rectangle
 
 class Surface:
 
@@ -63,6 +64,9 @@ class Surface:
         self.hexrad = 0.1
         # Should the hex edges be visible?
         self.showHexEdges = False
+        # Set True to draw a box or something around the map in an ID colour
+        self.drawid = False
+        self.idcolour = 0
 
         # The data to plot
         self.x = np.array([])
@@ -110,6 +114,11 @@ class Surface:
         matplotlib.rc ('font', **fnt)
         self.F1 = plt.figure (figsize=(self.width,self.height))
         self.f1 = self.F1.add_subplot (1,1,1)
+        self.ready = True
+
+    def setFig (self, F, pw, ph, pnum):
+        self.F1 = F
+        self.f1 = self.F1.add_subplot (pw, ph, pnum)
         self.ready = True
 
     def resetFig (self):
@@ -278,7 +287,15 @@ class Surface:
                 count = count + 1
 
         # Finally, set the axes up.
-        self.f1.axis (np.array ([min(self.x)-2.0*self.hextohex_d, max(self.x)+2.0*self.hextohex_d, min(self.y)-2.0*self.hextohex_d, max(self.y)+2.0*self.hextohex_d]))
+        self.f1.axis (np.array ([min(self.x)-4.0*self.hextohex_d, max(self.x)+4.0*self.hextohex_d, min(self.y)-4.0*self.hextohex_d, max(self.y)+4.0*self.hextohex_d]))
+        if self.drawid:
+            # Do something
+            mapwidth = abs(max(self.x) - min(self.x)) + (4*self.hextohex_d)
+            mapheight = abs(max(self.y) - min(self.y)) + (4*self.hextohex_d)
+            print ('mapwidth: {0} mapheight: {1}'.format (mapwidth, mapheight))
+            idrect = Rectangle ((min(self.x)-2*self.hextohex_d, min(self.y)-2*self.hextohex_d), mapwidth, mapheight, linewidth=2, edgecolor=self.idcolour, facecolor='none')
+            self.f1.add_patch (idrect)
+
         self.f1.set_aspect ('equal')
         self.F1.tight_layout()
 

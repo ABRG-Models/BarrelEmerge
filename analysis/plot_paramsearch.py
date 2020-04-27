@@ -12,9 +12,9 @@ import matplotlib.pyplot as plt
 import paramplot as pp
 
 # Set plotting defaults
-#matplotlib.use('TkAgg') # cleaner likely to work
+matplotlib.use('TkAgg') # cleaner likely to work
 #matplotlib.use('Qt5Agg') # Ugly, sometimes default
-matplotlib.use('TkCairo') # Install pycairo to be able to use this
+#matplotlib.use('TkCairo') # Install pycairo to be able to use this
 fs = 12
 fnt = {'family' : 'DejaVu Sans',
        'weight' : 'regular',
@@ -34,12 +34,12 @@ sdata = np.genfromtxt ('postproc/paramsearch_k3_dncomp.csv', delimiter=",", name
 #
 
 F1 = plt.figure (figsize=(20,12))
-#F2 = plt.figure (figsize=(20,12))
+F2 = plt.figure (figsize=(20,12))
 #F3 = plt.figure (figsize=(20,12))
 
 timepoint = 25000
 #                        col          x            y            t
-pp.paramplot (sdata, F1, 'epsilon',   'D',         'alphabeta', timepoint);
+pp.paramplot_withmaps (sdata, F1, 'epsilon',   'D',         'alphabeta', timepoint, F2, [(1,2,3),(2,3,4)]);
 
 #timepoint = 15000
 #pp.paramplot (sdata, F2, 'D',         'alphabeta', 'epsilon', timepoint);
