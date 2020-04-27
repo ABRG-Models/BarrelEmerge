@@ -81,7 +81,7 @@ if do_scalebar:
         pl.sblw = 5
         pl.sbfs = 48
 if bdo.loadAnalysisData == False or bdo.loadDivisions == False:
-    f1 = pl.surface_withnames (bdo.id_c[:,mi], bdo.x, bdo.y, 0, idstring, bdo.idnames, bdo.domcentres[mi,:,:])
+    f1 = pl.surface_withnames (bdo.id_c[:,mi], bdo.x, bdo.y, 0, idstring, bdo.id_byname, bdo.domcentres[mi,:,:])
 else:
     f1 = pl.surface_withnames_andboundaries (bdo.id_c[:,mi], bdo.x, bdo.y, 0, idstring, bdo.id_byname, bdo.domcentres[mi,:,:], bdo.domdivision[mi])
 
