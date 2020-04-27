@@ -83,7 +83,7 @@ if do_scalebar:
 if bdo.loadAnalysisData == False or bdo.loadDivisions == False:
     f1 = pl.surface_withnames (bdo.id_c[:,mi], bdo.x, bdo.y, 0, idstring, bdo.idnames, bdo.domcentres[mi,:,:])
 else:
-    f1 = pl.surface_withnames_andboundaries (bdo.id_c[:,mi], bdo.x, bdo.y, 0, idstring, bdo.idnames, bdo.domcentres[mi,:,:], bdo.domdivision[mi])
+    f1 = pl.surface_withnames_andboundaries (bdo.id_c[:,mi], bdo.x, bdo.y, 0, idstring, bdo.id_byname, bdo.domcentres[mi,:,:], bdo.domdivision[mi])
 
 mapname = 'plots/{0}_{1}_sim.png'.format(os.path.basename(logdirname), ti)
 plt.savefig (mapname, dpi=300, transparent=True)
@@ -96,7 +96,7 @@ if bdo.loadGuidance == True:
     x = bdo.x[mask_combined].T
     y = bdo.y[mask_combined].T
 
-    f2 = pl.surface_withnames (exptmatrix.compressed(), x, y, 0, idstring, bdo.idnames, bdo.domcentres[mi,:,:])
+    f2 = pl.surface_withnames (exptmatrix.compressed(), x, y, 0, idstring, bdo.id_byname, bdo.domcentres[mi,:,:])
 
     mapname = 'plots/{0}_{1}_expt.png'.format(os.path.basename(logdirname), ti)
     plt.savefig (mapname, dpi=300, transparent=True)
