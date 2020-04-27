@@ -9,7 +9,7 @@ sys.path.insert (0, './include')
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-import paramplot
+import paramplot as pp
 
 # Set plotting defaults
 #matplotlib.use('TkAgg') # cleaner likely to work
@@ -34,12 +34,17 @@ sdata = np.genfromtxt ('postproc/paramsearch_k3_dncomp.csv', delimiter=",", name
 #
 
 F1 = plt.figure (figsize=(20,12))
-##F2 = plt.figure (figsize=(20,12))
-##F3 = plt.figure (figsize=(20,12))
-#                               col          x            y
-paramplot.paramplot (sdata, F1, 'epsilon',   'D',         'alphabeta');
-##paramplot.paramplot (sdata, F2, 'D',         'alphabeta', 'epsilon');
-##paramplot.paramplot (sdata, F3, 'alphabeta', 'epsilon',   'D');
+#F2 = plt.figure (figsize=(20,12))
+#F3 = plt.figure (figsize=(20,12))
+
+timepoint = 25000
+#                        col          x            y            t
+pp.paramplot (sdata, F1, 'epsilon',   'D',         'alphabeta', timepoint);
+
+#timepoint = 15000
+#pp.paramplot (sdata, F2, 'D',         'alphabeta', 'epsilon', timepoint);
+#timepoint = 5000
+#pp.paramplot (sdata, F3, 'alphabeta', 'epsilon',   'D', timepoint);
 
 plt.show()
 exit (0)

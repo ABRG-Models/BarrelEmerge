@@ -2,7 +2,13 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 
-def paramplot (sdata, F1, column_tag, x_tag, y_tag):
+# Plot heatmaps. The parameter 'column_tag' is varied along
+# columns of heat maps. 3 rows show 3 differnt metrics for the
+# heat maps. x_tag and y_tag define which paramters are displayed
+# on x and y axes. ttarg is the timepint for which to
+# display. Data is presented in the numpy structured array
+# sdata. Plotting is carried out on the pyplot figure F1.
+def paramplot (sdata, F1, column_tag, x_tag, y_tag, ttarg):
 
     show_xy = 0 # for debug
     if show_xy:
@@ -18,9 +24,6 @@ def paramplot (sdata, F1, column_tag, x_tag, y_tag):
     # Extent of the data range for plotting
     plot_extent = [-0.5, 5.5, -0.5, 5.5]
 
-    ttarg = 25000
-    # Plot heatmaps where we extract rows where epsilon = 100, t = 25000
-    # Can cycle through epsilon and t.
     i = 1
 
     colall = np.sort(np.unique(sdata[:][column_tag]))
@@ -116,3 +119,5 @@ def paramplot (sdata, F1, column_tag, x_tag, y_tag):
 
     cb_ax2 = F1.add_axes([cb_xpos, 0.148, cb_wid, cb_height])
     cbar2 = F1.colorbar (im2, cax=cb_ax2)
+
+    F1.suptitle ('time: {0}'.format(ttarg))
