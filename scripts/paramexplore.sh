@@ -158,8 +158,7 @@ EOF
             ./build/sim/james_${PROGTAG}c configs/rat/paramexplore/${JSON}
             RTN=$?
             if [ $RTN -ne "0" ]; then
-                echo "Exiting"
-                exit 1
+                echo "configs/rat/paramexplore/${JSON} failed. Moving on..."
             fi
         done
     done
