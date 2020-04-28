@@ -11,10 +11,10 @@ if [ ! $CURDIR = "BarrelEmerge" ]; then
     exit 1
 fi
 
-PROGTAG=dncomp # NOT comp2 because in comp2 we need to vary F, not epsilon
+PROGTAG=comp2 # NOT dccomp because in comp2 we need to vary F, not epsilon
 
 # D with values:                   0.01, 0.0251, 0.0631, 0.1585, 0.3981, 1.0
-# Epsilon values:                  50,100,150,200,300
+# F values:                        0.01,1,10,100
 # Hold ALPHA, BETA set? ALPHABETA: 0.01, 0.0631, 0.3981, 2.51189, 15.849, 100
 # 180 sims total.
 
@@ -26,17 +26,19 @@ PROGTAG=dncomp # NOT comp2 because in comp2 we need to vary F, not epsilon
 # Choose k (1.abit or 3)
 k=3
 
-#for D in 0.01 0.0251 0.0631 0.1585 0.3981 1.0; do
-for D in 0.01; do # 30 at a time; circa 2hrs on alienmonster
-    for EPSILON in 50 100 150 200 300; do
+EPSILON=150 # Doesn't do anything
+
+for D in 0.01 0.0251 0.0631 0.1585 0.3981 1.0; do
+#for D in 0.3981; do # 30 at a time; circa 2hrs on alienmonster
+    for F in 0.01 0.1 1 10 100; do
         for ALPHABETA in 0.01 0.0631 0.3981 2.51189 15.849 100; do
 
             ((BETA=3/ALPHABETA))
             ((ALPHA=20*ALPHABETA))
 
-            JSON="pe_${PROGTAG}_D${D}_ep${EPSILON}_ab${ALPHABETA}_k${k}.json"
+            JSON="pe_${PROGTAG}_D${D}_F${F}_ab${ALPHABETA}_k${k}.json"
 
-            echo "D = ${D}, epsilon = ${EPSILON}, alphabeta = ${ALPHABETA} (alpha=${ALPHA} beta=${BETA})"
+            echo "D = ${D}, F = ${F}, alphabeta = ${ALPHABETA} (alpha=${ALPHA} beta=${BETA})"
 
             cat > configs/rat/paramexplore/${JSON} <<EOF
 {
@@ -57,6 +59,7 @@ for D in 0.01; do # 30 at a time; circa 2hrs on alienmonster
 
     // Parameters that will vary
     "D" : ${D},
+    "F" : ${F},
     "k" : ${k},    // Exponent on a
     // Also: alpha, beta, epsilon; see gamma list below
 
@@ -158,8 +161,7 @@ EOF
             ./build/sim/james_${PROGTAG}c configs/rat/paramexplore/${JSON}
             RTN=$?
             if [ $RTN -ne "0" ]; then
-                echo "Exiting"
-                exit 1
+                echo "Config: configs/rat/paramexplore/${JSON} FAILED. Moving on to next."
             fi
         done
     done
