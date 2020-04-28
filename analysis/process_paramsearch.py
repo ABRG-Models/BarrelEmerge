@@ -1,6 +1,7 @@
 #
 # A script to extract results from the parameter search HDF5 files and
-# write a csv table as output.
+# write a csv table as output. The csv table is then used in
+# plot_paramsearch.py
 #
 
 # To access argv and also include the include dir
