@@ -136,7 +136,7 @@ def paramplot_withmaps (sdata, F1, column_tag, x_tag, y_tag, ttarg, F2, param_tu
     #
     # For debug:
     #                 ep  ab     D         ep  ab     D
-    param_tuples = [ (150,0.0631,0.01), (150,0.0631,0.0631) ]
+    #param_tuples = [ (150,0.0631,0.01), (150,0.0631,0.0631) ]
 
     # We'll use a colidx, xidx and yidx into each tuple:
     if column_tag == 'epsilon':

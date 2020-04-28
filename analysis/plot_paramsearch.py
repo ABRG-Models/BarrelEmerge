@@ -37,14 +37,22 @@ F1 = plt.figure (figsize=(20,12))
 F2 = plt.figure (figsize=(20,12))
 #F3 = plt.figure (figsize=(20,12))
 
+# D and ab values:
+# D:   0.01 0.0251 0.0631 0.1585 0.3981 1
+# ab:  0.01 0.0631 0.3981 2.51189 15.849 100
+
 timepoint = 25000
+# eps, ab, D
+param_tuples = [ (150, 0.0631, 0.0251),  (150, 0.0631, 0.0631),  (150, 0.0631, 0.1585),
+                 (150, 0.3981, 0.0251),  (150, 0.3981, 0.0631),  (150, 0.3981, 0.1585),
+                 (150, 2.51189, 0.0251),  (150, 2.51189, 0.0631),  (150, 2.51189, 0.1585) ]
 #                        col          x            y            t
-pp.paramplot_withmaps (sdata, F1, 'epsilon',   'D',         'alphabeta', timepoint, F2, [(1,2,3),(2,3,4)]);
+pp.paramplot_withmaps (sdata, F1, 'epsilon',   'D',         'alphabeta', timepoint, F2, param_tuples);
 
 #timepoint = 15000
 #pp.paramplot (sdata, F2, 'D',         'alphabeta', 'epsilon', timepoint);
 #timepoint = 5000
-#pp.paramplot (sdata, F3, 'alphabeta', 'epsilon',   'D', timepoint);
+#pp.paramplot (sdata, F3, 'epsilon', 'D', 'alphabeta', timepoint);
 
 plt.show()
 exit (0)
