@@ -39,12 +39,17 @@ matplotlib.rc('font', **fnt)
 # Timepoints are 1, 5000, 10000, 15000, 20000, 25000
 #
 # Filename format is like: pe_dncomp_D0.0631_ep300_ab0.01_k3
-basedir = '/home/seb/paramexplore/'
+basedir = '/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore/'
 table = []
 for logdirname in os.listdir(basedir):
 
     logdirname = basedir + logdirname
     print ('Log dir: {0}'.format(logdirname))
+    if 'comp2' in logdirname:
+        print ('dncomp, omit')
+        continue
+
+    print ('dncomp file; PROCESS')
 
     # Load the dirichlet data, domcentres, etc
     bdo = bd.BarrelData()
