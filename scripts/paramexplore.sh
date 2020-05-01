@@ -31,6 +31,8 @@ for D in 0.01; do # 30 at a time; circa 2hrs on alienmonster
     for EPSILON in 50 100 150 200 300; do
         for ALPHABETA in 0.01 0.0631 0.3981 2.51189 15.849 100; do
 
+            # ALPHA = 60/BETA
+            # ALPHABETA = 3/BETA = ALPHA/20
             ((BETA=3/ALPHABETA))
             ((ALPHA=20*ALPHABETA))
 
