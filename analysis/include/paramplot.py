@@ -18,20 +18,30 @@ import sebcolour as sc
 # format (epsilon, alphabeta, D), then boxes are drawn around the heat
 # map blocks corresponding to those parameters. Use this in
 # combination with the mapplot() function.
-def paramplot (sdata, F, column_tag, x_tag, y_tag, ttarg, param_tuples = []):
+def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = []):
+
+    print ('initial sdata shape: {0}'.format(np.shape (sdata)))
+
+    # Analyse one k at a time
+    sdata = sdata[sdata[:]['k'] == ktarg]
+    print ('resulting sdata shape: {0}'.format(np.shape (sdata)))
 
     # param_tuples defines which parameters to plot maps for (with
     # mapplot). param_tuples should be 9 tuples max. Deal with <9, too.
-    # tuple order is (epsilon,ab,D) regardless of what column_tag,
+    # tuple order is (epsilon/F,ab,D) regardless of what column_tag,
     # x_tag and y_tag are.
-    #
-    # For debug:
-    #                 ep  ab     D         ep  ab     D
-    #param_tuples = [ (150,0.0631,0.01), (150,0.0631,0.0631) ]
+
+    # The competition parameter may be called F and it may be called epsilon
+    if (column_tag == 'F' or x_tag == 'F' or y_tag == 'F'):
+        comp_tag = 'F'
+        comp_idx = int(10) # F col is at end
+    else:
+        comp_tag = 'epsilon'
+        comp_idx = int(0)
 
     # We'll use a colidx, xidx and yidx into each tuple:
-    if column_tag == 'epsilon':
-        colidx = int(0)
+    if column_tag == comp_tag:
+        colidx = comp_idx
         if x_tag == 'D':
             xidx = int(2)
             yidx = int(1)
@@ -42,17 +52,17 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ttarg, param_tuples = []):
         colidx = int(1)
         if x_tag == 'D':
             xidx = int(2)
-            yidx = int(0)
+            yidx = comp_idx
         else:
-            xidx = int(0)
+            xidx = comp_idx
             yidx = int(2)
     elif column_tag == 'D':
         colidx = int(2)
         if x_tag == 'alphabeta':
             xidx = int(1)
-            yidx = int(0)
+            yidx = comp_idx
         else:
-            xidx = int(0)
+            xidx = comp_idx
             yidx = int(1)
 
     # Get max/min for data ranges
@@ -69,6 +79,7 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ttarg, param_tuples = []):
     i = 1
 
     colall = np.sort(np.unique(sdata[:][column_tag]))
+    print ('sorting x_all on x_tag: {0}'.format(x_tag))
     x_all = np.sort(np.unique(sdata[:][x_tag]))
     y_all = np.sort(np.unique(sdata[:][y_tag]))
     print ('column params: {0}'.format(colall))
@@ -107,16 +118,21 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ttarg, param_tuples = []):
 
         # Check if coltarg == any of param_tuples[:][0]
         param_indices = []
-        if coltarg in param_tuples[:][colidx]:
-            print ('Draw box/boxes for graph in the column {0}={1}'.format(column_tag, coltarg))
-            for pt in param_tuples:
-                if pt[colidx] == coltarg:
-                    print ('Draw box at x={0}, y={1}'.format(pt[xidx],pt[yidx]))
-                    # Find index of the param
-                    xparam_idx = np.where (np.abs(x_all - pt[xidx]) < 0.000001)
-                    yparam_idx = np.where (np.abs(y_all - pt[yidx]) < 0.000001)
-                    # print ('list indices for x={0}, y={1} are {2} and {3}'.format(pt[xidx],pt[yidx], xparam_idx[0][0], yparam_idx[0][0]));
-                    param_indices.append ((xparam_idx[0][0]-0.5, yparam_idx[0][0]-0.5))
+        print ('param_tuples: {0}'.format (param_tuples))
+        if param_tuples:
+            if colidx == 10:
+                colidx = 0
+            print ('colidx = {0}'.format (colidx))
+            if coltarg in param_tuples[:][colidx]:
+                print ('Draw box/boxes for graph in the column {0}={1}'.format(column_tag, coltarg))
+                for pt in param_tuples:
+                    if pt[colidx] == coltarg:
+                        print ('Draw box at x={0}, y={1}'.format(pt[xidx],pt[yidx]))
+                        # Find index of the param
+                        xparam_idx = np.where (np.abs(x_all - pt[xidx]) < 0.000001)
+                        yparam_idx = np.where (np.abs(y_all - pt[yidx]) < 0.000001)
+                        # print ('list indices for x={0}, y={1} are {2} and {3}'.format(pt[xidx],pt[yidx], xparam_idx[0][0], yparam_idx[0][0]));
+                        param_indices.append ((xparam_idx[0][0]-0.5, yparam_idx[0][0]-0.5))
 
 
         im = ax.imshow (hond6x6, cmap='magma_r', vmin=honda_min, vmax=honda_max,
@@ -192,7 +208,7 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ttarg, param_tuples = []):
 #
 # Draw simulation barrel maps for the given parameters and time point
 #
-def mapplot (F, ttarg, param_tuples):
+def mapplot (F, ttarg, param_tuples, comp2=False):
 
     #
     # Having drawn the heat maps (and identifier boxes) can now draw
@@ -207,7 +223,7 @@ def mapplot (F, ttarg, param_tuples):
         ep__ = _pt[0]
         ab__ = _pt[1]
         D__ = _pt[2]
-        print ('epsilon: {0} alphabeta: {1} D: {2}'.format(ep__,ab__,D__))
+        print ('F/epsilon: {0} alphabeta: {1} D: {2}'.format(ep__,ab__,D__))
 
         # Annoyingly, have to do a lookup here for the text strings,
         # to exactly match the format in which they were saved by the
@@ -242,7 +258,24 @@ def mapplot (F, ttarg, param_tuples):
         else:
             ab_str = 'unknown'
 
-        logdirname = '/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore/pe_dncomp_D{0}_ep{1:d}_ab{2}_k3'.format (D_str, ep__, ab_str)
+        F_str = 'unknown'
+        if comp2 == True:
+            if abs(ep__ - 0.01) < 0.000001:
+                F_str = '0.01'
+            elif abs(ep__ - 0.1) < 0.000001:
+                F_str = '0.1'
+            elif abs(ep__ - 1) < 0.000001:
+                F_str = '1'
+            elif abs(ep__ - 10) < 0.000001:
+                F_str = '10'
+            elif abs(ep__ - 100) < 0.000001:
+                F_str = '100'
+
+        if comp2 == True:
+            logdirname = '/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore/pe_comp2_D{0}_F{1}_ab{2}_k3'.format (D_str, F_str, ab_str)
+        else:
+            logdirname = '/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore/pe_dncomp_D{0}_ep{1:d}_ab{2}_k3'.format (D_str, ep__, ab_str)
+
         bdo = bd.BarrelData()
         # Set True for inter-lines:
         bdo.loadAnalysisData = True
@@ -298,11 +331,22 @@ def mapplot (F, ttarg, param_tuples):
         sf.showBoundaries = True
         if sf.showBoundaries == True:
             sf.domdivision = bdo.domdivision
-        sf.setFig (F, 3, 3, plotiter)
+        # plotiter goes the wrong way to get the maps on the grid
+        # looking the same as the boxes on the plot, so fix
+        if plotiter < 4:
+            plotit = plotiter + 6
+        elif plotiter < 7:
+            plotit = plotiter
+        elif plotiter < 10:
+            plotit = plotiter - 6
+        else:
+            plotit = 1000 # That'll be an error then
+
+        sf.setFig (F, 3, 3, plotit)
         sf.plotPoly()
 
         # Optional single contour for each field
-        if 0:
+        if 1:
             for ii in range(0,bdo.N):
                 c = bdo.c[ii,:,0]
                 sf.addContour (c, 0.5, 'white', 1.0, ii, False);

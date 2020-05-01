@@ -21,12 +21,7 @@ import paramplot as pp
 
 # Set plotting defaults
 matplotlib.use('TkAgg') # cleaner likely to work
-#matplotlib.use('Qt5Agg') # Ugly, sometimes default
-#matplotlib.use('TkCairo') # Install pycairo to be able to use this
-fs = 12
-fnt = {'family' : 'DejaVu Sans',
-       'weight' : 'regular',
-       'size'   : fs}
+fnt = {'family' : 'DejaVu Sans', 'weight' : 'regular', 'size' : 12 }
 matplotlib.rc('font', **fnt)
 
 #
@@ -34,7 +29,7 @@ matplotlib.rc('font', **fnt)
 #
 
 # Cols in sdata are: k,D,alphabeta,alpha,beta,epsilon,t,hondadelta,sos_dist,area_diff
-sdata = np.genfromtxt ('postproc/paramsearch_k3_dncomp.csv', delimiter=",", names=True)
+sdata = np.genfromtxt ('postproc/paramsearch_k3_comp2.csv', delimiter=",", names=True)
 # sdata is a numpy 'structured array' with named fields.
 
 #
@@ -56,9 +51,9 @@ if compute_param_tuples:
     # Lets have a little function to set up param_tuples automatically.
 
     # Set the centre box parameters
-    eps = 150    # doesn't change
-    _ab = 2.51189# 0.3981   # centre ab - vary with row
-    _D = 0.0631  # centre D - vary with col
+    eps = 1.0    # doesn't change
+    _ab = 0.3981 # then 0.3981 #2.51189# 0.3981   # centre ab - vary with row
+    _D = 0.3981  # centre D - vary with col
 
     ab_idx = ab_vals.index(_ab)
     D_idx = D_vals.index(_D)
@@ -86,26 +81,28 @@ else:
     #param_tuples = [ (150, 0.0631, 0.0251), (150, 0.0631, 0.0631),  (150, 0.0631, 0.1585),
     #                 (150, 0.3981, 0.0251), (150, 0.3981, 0.0631),  (150, 0.3981, 0.1585),
     #                 (150, 2.51189,0.0251), (150, 2.51189, 0.0631), (150, 2.51189,0.1585) ]
-    param_tuples = [ (150, 0.0631, 0.0251) ]
-
+    #param_tuples = [ (150, 0.0631, 0.0251) ]
+    #param_tuples = [ (1, 0.3981, 0.3981) ]
+    param_tuples = [ (10, 15.849, 1) ]
 
 # Set the timepoint for which we'll plot
 timepoint = 25000
 
 # Make a filename
 if param_tuples:
-    fileend = 't{0}_ep{1}_ab{2}_D{3}'.format(timepoint,param_tuples[0][0],param_tuples[0][1],param_tuples[0][2])
+    fileend = 't{0}_F{1}_ab{2}_D{3}'.format(timepoint,param_tuples[0][0],param_tuples[0][1],param_tuples[0][2])
 else:
     fileend = 't{0}'.format(timepoint)
 
 F1 = plt.figure (figsize=(20,12))
-#                        col        x    y            t
-pp.paramplot (sdata, F1, 'epsilon', 'D', 'alphabeta', 3, timepoint, param_tuples);
-plt.savefig('plots/pe_{0}_heatmaps.png'.format(fileend))
+#                        col        x    y            k  t
+pp.paramplot (sdata, F1, 'F', 'D', 'alphabeta', 3, timepoint, param_tuples);
+plt.savefig('plots/comp2_{0}_heatmaps.png'.format(fileend))
 
+# Later:
 F2 = plt.figure (figsize=(20,12))
-pp.mapplot (F2, timepoint, param_tuples)
-plt.savefig('plots/pe_{0}_patterns.png'.format(fileend))
+pp.mapplot (F2, timepoint, param_tuples, True)
+plt.savefig('plots/comp2_{0}_patterns.png'.format(fileend))
 
 plt.show()
 exit (0)

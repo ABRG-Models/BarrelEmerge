@@ -151,6 +151,15 @@ class BarrelData:
 
         self.gammaColourScheme = 'greenblue'
 
+        # Some more self attributes to set to defaults - these should
+        # be modified in loadParams()
+        self.hextohex_d = 0
+        self.F = 0
+        self.k = 0
+        self.meanalpha=0
+        self.meanbeta=0
+        self.meanepsilon=0
+
     #
     # Create self.t and self.t_steps, first checking to see if they've
     # already been created.
@@ -179,6 +188,10 @@ class BarrelData:
             self.dt = jd["dt"]
             self.hextohex_d = jd["hextohex_d"]
             self.D = jd["D"]
+            try:
+                self.F = jd["F"]
+            except:
+                self.F = 0
             self.k = jd["k"]
             tc = jd["tc"]
             print ('tc length: {0}'.format(len(jd["tc"])))

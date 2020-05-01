@@ -46,7 +46,7 @@ for logdirname in os.listdir(basedir):
     logdirname = basedir + logdirname
     print ('Log dir: {0}'.format(logdirname))
     if 'comp2' in logdirname:
-        print ('dncomp, omit')
+        print ('comp2, omit')
         continue
 
     print ('dncomp file; PROCESS')
@@ -112,6 +112,6 @@ for logdirname in os.listdir(basedir):
 import csv
 with open(('paramsearch_k{0}.csv'.format(bdo.k)), 'w', newline='\n') as csvfile:
     cw = csv.writer (csvfile, delimiter=',')
-    cw.writerow (['k','D','alphabeta','alpha','beta','epsilon','t(steps)','hondadelta','sos_dist','area_diff'])
+    cw.writerow (['k','D','alphabeta','alpha','beta','epsilon','t','hondadelta','sos_dist','area_diff'])
     for tableline in table:
         cw.writerow (tableline)

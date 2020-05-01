@@ -102,6 +102,11 @@ class Surface:
         # FIXME: These are different for different sims and may have variable shape
         #self.domcentres = BarrelDataObject.domcentres
         #self.domdivision = BarrelDataObject.domdivision
+        self.D = BarrelDataObject.D
+        self.F = BarrelDataObject.F
+        self.k = BarrelDataObject.k
+        self.alpha = BarrelDataObject.meanalpha
+        self.beta = BarrelDataObject.meanbeta
 
     #
     # Initialisation code for the figure onto which the surface will be drawn
@@ -289,12 +294,20 @@ class Surface:
         # Finally, set the axes up.
         self.f1.axis (np.array ([min(self.x)-4.0*self.hextohex_d, max(self.x)+4.0*self.hextohex_d, min(self.y)-4.0*self.hextohex_d, max(self.y)+4.0*self.hextohex_d]))
         if self.drawid:
-            # Do something
+            # Draw colours to indicate the identity of the map
             mapwidth = abs(max(self.x) - min(self.x)) + (4*self.hextohex_d)
             mapheight = abs(max(self.y) - min(self.y)) + (4*self.hextohex_d)
             print ('mapwidth: {0} mapheight: {1}'.format (mapwidth, mapheight))
-            idrect = Rectangle ((min(self.x)-2*self.hextohex_d, min(self.y)-2*self.hextohex_d), mapwidth, mapheight, linewidth=2, edgecolor=self.idcolour, facecolor='none')
+            idrect = Rectangle ((min(self.x)-2*self.hextohex_d, min(self.y)-2*self.hextohex_d), mapwidth, mapheight, linewidth=4, edgecolor=self.idcolour, facecolor='none', zorder=10000)
             self.f1.add_patch (idrect)
+            # Also draw some text
+            em = 5*self.hextohex_d
+            self.f1.text (min(self.x)+em, min(self.y)+5*em, 'D={0:.1f}'.format(self.D), fontsize=10, horizontalalignment='left', color='k');
+            self.f1.text (min(self.x)+em, min(self.y)+4*em, 'F={0:.1f}'.format(self.F), fontsize=10, horizontalalignment='left', color='k');
+            self.f1.text (min(self.x)+em, min(self.y)+3*em, 'k={0:.1f}'.format(self.k), fontsize=10, horizontalalignment='left', color='k');
+            self.f1.text (min(self.x)+em, min(self.y)+2*em, r'$\alpha$={0:.1f}'.format(self.alpha), fontsize=10, horizontalalignment='left', color='k');
+            self.f1.text (min(self.x)+em, min(self.y)+1*em, r'$\beta$={0:.1f}'.format(self.beta), fontsize=10, horizontalalignment='left', color='k');
+            #self.f1.text (min(self.x)+2*em, min(self.y)+10*em, 'D={0:.1f} F={1:.1f}, k={2:.1f} alpha={3:.1f}, beta={4:.1f}'.format(self.D, self.F, self.k, self.alpha, self.beta), fontsize=8, verticalalignment='center', horizontalalignment='left', color='k');
 
         self.f1.set_aspect ('equal')
         self.F1.tight_layout()
