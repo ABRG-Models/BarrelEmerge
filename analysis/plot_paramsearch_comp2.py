@@ -40,20 +40,15 @@ sdata = np.genfromtxt ('postproc/paramsearch_k3_comp2.csv', delimiter=",", names
 D_vals = [ 0.01, 0.0251, 0.0631, 0.1585, 0.3981, 1.0 ]
 ab_vals = [ 0.01, 0.0631, 0.3981, 2.51189, 15.849, 100.0 ]
 
-# eps, ab, D
-#param_tuples = [ (150, 0.0631, 0.0251), (150, 0.0631, 0.0631),  (150, 0.0631, 0.1585),
-#                 (150, 0.3981, 0.0251), (150, 0.3981, 0.0631),  (150, 0.3981, 0.1585),
-#                 (150, 2.51189,0.0251), (150, 2.51189, 0.0631), (150, 2.51189,0.1585) ]
-
 compute_param_tuples = 1
 if compute_param_tuples:
 
     # Lets have a little function to set up param_tuples automatically.
 
     # Set the centre box parameters
-    eps = 1.0    # doesn't change
+    F = 0.01    # doesn't change
     _ab = 0.3981 # then 0.3981 #2.51189# 0.3981   # centre ab - vary with row
-    _D = 0.3981  # centre D - vary with col
+    _D = 0.0631  # centre D - vary with col
 
     ab_idx = ab_vals.index(_ab)
     D_idx = D_vals.index(_D)
@@ -72,16 +67,12 @@ if compute_param_tuples:
             D_idx_ = (D_idx + c - 1) if ((D_idx + c - 1) >= 0) else len(D_vals)-1
             print('D_idx_: {0}'.format(D_idx_ ))
             _D = D_vals[D_idx_]
-            param_tuples[r*3+c] = (eps, _ab, _D)
+            param_tuples[r*3+c] = (F, _ab, _D)
 
     print ('param_tuples: {0}'.format (param_tuples))
 else:
     # Manually set the list
-    # eps, ab, D
-    #param_tuples = [ (150, 0.0631, 0.0251), (150, 0.0631, 0.0631),  (150, 0.0631, 0.1585),
-    #                 (150, 0.3981, 0.0251), (150, 0.3981, 0.0631),  (150, 0.3981, 0.1585),
-    #                 (150, 2.51189,0.0251), (150, 2.51189, 0.0631), (150, 2.51189,0.1585) ]
-    #param_tuples = [ (150, 0.0631, 0.0251) ]
+    # F, ab, D
     #param_tuples = [ (1, 0.3981, 0.3981) ]
     param_tuples = [ (10, 15.849, 1) ]
 

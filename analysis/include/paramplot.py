@@ -285,73 +285,77 @@ def mapplot (F, ttarg, param_tuples, comp2=False):
         bdo.loadSimData = True
         bdo.loadTimeStep = ttarg
         bdo.loadHexFlags = True
-        bdo.load (logdirname)
+        try:
+            bdo.load (logdirname)
 
-        # Compute max of c
-        maxc = np.max (bdo.c, axis=0)
+            # Compute max of c
+            maxc = np.max (bdo.c, axis=0)
 
-        # Either use the precomputed ID map:
-        c_id = bdo.id_c[:,0]
-        # or compute it here:
-        # c_id_int = np.argmax (bdo.c, axis=0)
-        # c_id = c_id_int[:,0].astype(np.float32) / np.float32(bdo.N)
+            # Either use the precomputed ID map:
+            c_id = bdo.id_c[:,0]
+            # or compute it here:
+            # c_id_int = np.argmax (bdo.c, axis=0)
+            # c_id = c_id_int[:,0].astype(np.float32) / np.float32(bdo.N)
 
-        # Compute the colour map
-        colmap = np.zeros([bdo.nhex,3], dtype=float)
-        ii = 0
-        for oneid in c_id:
-            colmap[ii] = bdo.gammaColour_byid[oneid]
-            ii = ii + 1
+            # Compute the colour map
+            colmap = np.zeros([bdo.nhex,3], dtype=float)
+            ii = 0
+            for oneid in c_id:
+                colmap[ii] = bdo.gammaColour_byid[oneid]
+                ii = ii + 1
 
-        # Plot a surface
-        import Surface as surf
-        sf = surf.Surface (12, 11)
-        sf.associate(bdo)
+            # Plot a surface
+            import Surface as surf
+            sf = surf.Surface (12, 11)
+            sf.associate(bdo)
 
-        sf.c = colmap # assign the colour map computed above
-        sf.showScalebar = False
-        sf.showAxes = False
-        sf.fs = 12
-        sf.fs2 = 14
-        sf.sb1 = [-1.3, -0.9]
-        sf.sb2 = [-0.3, -0.9]
-        sf.sbtext = ''
-        sf.sbtpos = [-1.1, -1.1]
-        sf.sblw = 5
-        sf.sbfs = 48
-        sf.drawid = True # To draw a box or something around the map in an ID colour
-        boxcmap = matplotlib.cm.get_cmap('Set1') # Set1 has 9 colours
-        sf.idcolour = boxcmap(plotiter/9.0);
-        sf.showNames = True
-        sf.domcentres = bdo.domcentres[0]
-        col = sc.Colour()
-        sf.boundarylw = 1.0
-        sf.boundaryColour = col.black
-        sf.boundaryOuterHexColour = col.gray50
-        sf.showBoundaries = True
-        if sf.showBoundaries == True:
-            sf.domdivision = bdo.domdivision
-        # plotiter goes the wrong way to get the maps on the grid
-        # looking the same as the boxes on the plot, so fix
-        if plotiter < 4:
-            plotit = plotiter + 6
-        elif plotiter < 7:
-            plotit = plotiter
-        elif plotiter < 10:
-            plotit = plotiter - 6
-        else:
-            plotit = 1000 # That'll be an error then
+            sf.c = colmap # assign the colour map computed above
+            sf.showScalebar = False
+            sf.showAxes = False
+            sf.fs = 12
+            sf.fs2 = 14
+            sf.sb1 = [-1.3, -0.9]
+            sf.sb2 = [-0.3, -0.9]
+            sf.sbtext = ''
+            sf.sbtpos = [-1.1, -1.1]
+            sf.sblw = 5
+            sf.sbfs = 48
+            sf.drawid = True # To draw a box or something around the map in an ID colour
+            boxcmap = matplotlib.cm.get_cmap('Set1') # Set1 has 9 colours
+            sf.idcolour = boxcmap(plotiter/9.0);
+            sf.showNames = True
+            sf.domcentres = bdo.domcentres[0]
+            col = sc.Colour()
+            sf.boundarylw = 1.0
+            sf.boundaryColour = col.black
+            sf.boundaryOuterHexColour = col.gray50
+            sf.showBoundaries = True
+            if sf.showBoundaries == True:
+                sf.domdivision = bdo.domdivision
+            # plotiter goes the wrong way to get the maps on the grid
+            # looking the same as the boxes on the plot, so fix
+            if plotiter < 4:
+                plotit = plotiter + 6
+            elif plotiter < 7:
+                plotit = plotiter
+            elif plotiter < 10:
+                plotit = plotiter - 6
+            else:
+                plotit = 1000 # That'll be an error then
 
-        sf.setFig (F, 3, 3, plotit)
-        sf.plotPoly()
+            sf.setFig (F, 3, 3, plotit)
+            sf.plotPoly()
 
-        # Optional single contour for each field
-        if 1:
-            for ii in range(0,bdo.N):
-                c = bdo.c[ii,:,0]
-                sf.addContour (c, 0.5, 'white', 1.0, ii, False);
+            # Optional single contour for each field
+            if 1:
+                for ii in range(0,bdo.N):
+                    c = bdo.c[ii,:,0]
+                    sf.addContour (c, 0.5, 'white', 1.0, ii, False);
 
-        sf.addOuterBoundary()
+            sf.addOuterBoundary()
+
+        except:
+            print ("Failed to load the data; moving on to next...");
 
         plotiter += 1
 
