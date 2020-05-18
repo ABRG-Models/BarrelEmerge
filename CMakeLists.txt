@@ -37,7 +37,7 @@ if (APPLE)
 else()
   # To use Intel compiler, call cmake as: cmake -DCMAKE_CXX_COMPILER=icpc ..
   if (CMAKE_CXX_COMPILER_ID MATCHES Intel)
-    set(CMAKE_CXX_FLAGS "${MORPH_HOST_DEFINITION} -Wall -g -xHOST -O3 -qopenmp -D__ICC__")
+    set(CMAKE_CXX_FLAGS "${MORPH_HOST_DEFINITION} -Wall -g -std=c++17 -xHOST -O3 -qopenmp -D__ICC__")
   else() # GCC or Clang
     set(CMAKE_CXX_FLAGS "${MORPH_HOST_DEFINITION} -Wall -Wfatal-errors -g -Wno-unused-result -Wno-unknown-pragmas -march=native -O3 -fopenmp")
   endif()
