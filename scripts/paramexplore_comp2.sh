@@ -13,9 +13,10 @@ fi
 
 PROGTAG=comp2 # NOT dccomp because in comp2 we need to vary F, not epsilon
 
+# First sweep:
 # D with values:                   0.01, 0.0251, 0.0631, 0.1585, 0.3981, 1.0
-# F values:                        0.01,1,10,100
-# Hold ALPHA, BETA set? ALPHABETA: 0.01, 0.0631, 0.3981, 2.51189, 15.849, 100
+# F values:                        0.01, 0.1, 1, 10, 100
+# Hold ALPHA, BETA set? ALPHABETA: 0.0631, 0.3981, 2.51189, 15.849, 100
 # 180 sims total.
 
 # ALPHABETA. Result in paper has ALPHABETA=0.15.
@@ -23,15 +24,29 @@ PROGTAG=comp2 # NOT dccomp because in comp2 we need to vary F, not epsilon
 # Beta = 3/ALPHABETA        => ALPHABETA = 3/Beta
 # Vary: EPSILON, ALPHABETA, D
 
+# Second sweep, slightly narrowed down computed as (in octave):
+#
+# D = exp(linspace(log(0.03), log(1), 6))
+# F = exp(linspace(log(0.03), log(3), 6))
+# ab = exp(linspace(log(0.06), log(15), 6))
+#
+# D with values: 0.030000   0.060492   0.121976   0.245951   0.495934   1.000000
+# Rounded to: 0.03 0.06 0.12 0.25 0.5 1.0
+# F values: 0.030000   0.075357   0.189287   0.475468   1.194322   3.000000
+# Rounded to 0.03 0.08 0.19 0.48 1.2 3.0
+# ALPHABETA values: 0.060000    0.181025    0.546169    1.647841    4.971681   15.000000
+# Rounded to 0.06 0.18 0.55 1.6 5.0 15
 # Choose k (1.abit or 3)
 k=3
 
-EPSILON=150 # Doesn't do anything
+EPSILON=150 # Doesn't do anything, but is incorporated into the JSON anyway
 
-for D in 0.01 0.0251 0.0631 0.1585 0.3981 1.0; do
-#for D in 0.3981; do # 30 at a time; circa 2hrs on alienmonster
-    for F in 0.01 0.1 1 10 100; do
-        for ALPHABETA in 0.01 0.0631 0.3981 2.51189 15.849 100; do
+DT=0.0001
+HEXHEXD=0.03
+
+for D in 0.03 0.06 0.12 0.25 0.5 1.0; do
+    for F in 0.03 0.08 0.19 0.48 1.2 3.0; do
+        for ALPHABETA in 0.06 0.18 0.55 1.6 5.0 15.0; do
 
             ((BETA=3/ALPHABETA))
             ((ALPHA=20*ALPHABETA))
@@ -45,13 +60,13 @@ for D in 0.01 0.0251 0.0631 0.1585 0.3981 1.0; do
     "steps" : 25000,
     "logevery": 5000,
     "overwrite_logs": true,
-    //"logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore/",
-    "logbase" : "/home/seb/paramexplore/",
-    "hextohex_d" : 0.03, // Hex to hex distance, determines num hexes
+    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore/",
+    //"logbase" : "/home/seb/paramexplore/",
+    "hextohex_d" : ${HEXHEXD}, // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/rat_barrels/wb_110405_Dirichlet.svg",
     "boundaryFalloffDist" : 0.03,
     "G" : 1.0,     // gamma gain
-    "dt" : 0.0001, // Timestep. Defaults to 0.00001 if omitted here
+    "dt" : ${DT}, // Timestep. Defaults to 0.00001 if omitted here
 
     // Initial conditions parameters
     "aNoiseGain" : 0.2,
