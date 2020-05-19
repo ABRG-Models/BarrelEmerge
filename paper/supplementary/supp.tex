@@ -1453,15 +1453,14 @@ Implementing Eq.~\ref{eq:chibard} gives:
 \frac{\partial a_i}{\partial t} = \nabla\vcdot\left(D \nabla a_i-a_i\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x})\right) - \frac{\partial c_i}{\partial t} + \frac{a_i}{N-1} \nabla\hat{a_i}.
 \end{equation}
 
-in the style of the preprint.
+in the style of the preprint. There's a problem here. The problem is that the
+gradient of $\hat{a}_i$ is a \emph{vector} quantity. So in fact, Bard's
+suggestion doesn't make good sense, and Eq.~\ref{eq:J_NM_with_comp} is more
+sensible.
 
-Although I have re-implemented rd\_james\_comp2, which expresses
-Eq.~\ref{eq:J_NM_with_comp},and found that it does provide competition enough
-to generate a barrel field like ordering, I've not yet implemented Bard's
-suggestion precisely, so I think that's up next. However, I imagine that this
-may be unstable without the sigmoiding of $a_i$ in the expression for
-$\chi_i$.
-
+I have re-implemented rd\_james\_comp2, which expresses
+Eq.~\ref{eq:J_NM_with_comp}, and found that it does provide competition enough
+to generate a barrel-field-like ordering.
 
 %
 % BIBLIOGRAPHY
