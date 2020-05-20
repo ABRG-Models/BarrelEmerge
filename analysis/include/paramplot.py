@@ -8,8 +8,8 @@ import matplotlib.patches as patches
 import sebcolour as sc
 
 # Plot heatmaps. The parameter 'column_tag' is varied along
-# columns of heat maps. 3 rows show 3 differnt metrics for the
-# heat maps. x_tag and y_tag define which paramters are displayed
+# columns of heat maps. 3 rows show 3 different metrics for the
+# heat maps. x_tag and y_tag define which parameters are displayed
 # on x and y axes. ttarg is the timepoint for which to
 # display. Data is presented in the numpy structured array
 # sdata. Plotting is carried out on the pyplot figure F1.
