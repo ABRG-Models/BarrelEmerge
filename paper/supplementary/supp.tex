@@ -991,7 +991,7 @@ a_i(\mb{x}, t) \, \mb{g}(\mb{x})
 %
 where $\bar{a}_i$ is a sigmoid of height $h$, offset $o$ and
 sharpness, $s$:
-\begin{equation}
+\begin{equation}\label{eq:abar}
 \bar{a}_i = \frac{h}{1 + e^{(o - s \, a_i)}}
 \end{equation}
 %
@@ -1422,45 +1422,66 @@ See \code{configs/whiskers/5N\_boundedorder.json}
 \section {Post eLife Review work}
 
 One of the reviewers, Bard Ermentrout, suggested an alternative formulation of
-the branching competition, to avoid the need to divisively normalize the
-branching density at each simulation step.
+the branching competition, to avoid the undesirable need to divisively
+normalize the branching density at each simulation step.
 
-The suggestion was to let the $\chi$ term from equation 3 from the reviewed
-paper be given by:
+The suggestion was to let the $\chi$ term from Eq.~3 of the preprint be given
+by:
 
 \begin{equation}\label{eq:chibard}
-\chi_i = \frac{a_i}{N-1} \nabla\hat{a_i}
+\chi_i = \frac{a_i}{N-1} \nabla\hat{a}_i,
 \end{equation}
 
 where $\hat{a}_i$, the sum of branching over all other TC types, is given by
-Eq.~\ref{eq:ahat}.
-
-Compare this with Eq.~\ref{eq:J_NM_with_comp} from Section \ref{sec:comp2},
-which was one of the competition types I tried fairly early on. In fact, I
-think it was about my first idea for competition. It's similar, but not
-identical. I passed it over at that stage, because the competition it produced
-seemed weak, and I was relying on the development of contours and `well
-localized regions' to indicate success. In Eq.~\ref{eq:J_NM_with_comp}, the
-additional term is in the expression for $\mb{J}_i$, so the \emph{flux of
-branching density for TC type $i$ is a function of the gradient of the
-branching of other TC types, $j\ne i$}. Eq.~\ref{eq:chibard} says something
-subtly different: \emph{the rate of change of branching density is modulated
-by the gradient of branching of other TC types}.
-
-Implementing Eq.~\ref{eq:chibard} gives:
+Eq.~\ref{eq:ahat}. Implementing Eq.~\ref{eq:chibard} gives:
 
 \begin{equation} \label{eq:dabard}
-\frac{\partial a_i}{\partial t} = \nabla\vcdot\left(D \nabla a_i-a_i\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x})\right) - \frac{\partial c_i}{\partial t} + \frac{a_i}{N-1} \nabla\hat{a_i}.
+\frac{\partial a_i}{\partial t} =
+\nabla\vcdot\left(D \nabla a_i-a_i\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x})\right)
++ \frac{a_i}{N-1} \nabla\hat{a}_i
+- \frac{\partial c_i}{\partial t}.
 \end{equation}
 
-in the style of the preprint. There's a problem here. The problem is that the
-gradient of $\hat{a}_i$ is a \emph{vector} quantity. So in fact, Bard's
-suggestion doesn't make good sense, and Eq.~\ref{eq:J_NM_with_comp} is more
-sensible.
+There's a problem here. The problem is that the gradient of $\hat{a}_i$ is
+a \emph{vector} quantity whereas $\dot{a}_i$ is scalar. So in fact, Bard's
+suggestion doesn't make good sense as written.
 
-I have re-implemented rd\_james\_comp2, which expresses
-Eq.~\ref{eq:J_NM_with_comp}, and found that it does provide competition enough
-to generate a barrel-field-like ordering.
+Compare this with Eq.~\ref{eq:J_NM_with_comp} from Section \ref{sec:comp2},
+which was one of the competition types I tried fairly early on. In fact, it
+was my second idea for competition. It's similar, but not identical. Written
+out in the same style as Eq.~\ref{eq:dabard} it is:
+
+\begin{equation} \label{eq:da_comp2_elife}
+\frac{\partial a_i}{\partial t}
+= \nabla\vcdot  \left(D \nabla a_i
+- a_i\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x})
++ \frac{\bar{a}_i F}{N-1} \nabla \hat{a}_i \right)
+- \frac{\partial c_i}{\partial t}.
+\end{equation}
+
+This modifies the axon branching with a similar term to Eq.~\ref{eq:chibard},
+depending on the gradient of $\hat{a}_i = \sum_{j\ne i}{a_j}$. However, here,
+the term is included in the \emph{flux of axonal branching}
+(i.e.~\emph{inside} the brackets) and so its divergence is taken and this
+contributes a scalar quantity to the change of $a_i$. Two other points to note
+about Eq.~\ref{eq:da_comp2_elife}: I included a scalar parameter $F$ to modify
+the relative contribution of this term; and $\bar{a}_i$ is the result of
+passing $a_i$ through a sigmoidal transfer function (see Eq.~\ref{eq:abar})
+which I found necessary to prevent the term from becoming numerically
+unstable.
+
+I passed Eq.~\ref{eq:da_comp2_elife} over for the preprint, because the
+competition it produced seemed weak, and I was relying on the development of
+contours and `well localized regions' to indicate success.
+
+After re-examining the effect of \code{rd\_james\_comp2}, which expresses
+Eq.~\ref{eq:da_comp2_elife}, I found that it does provide competition enough
+to generate a barrel-field-like ordering, when the argmaxes of the $N$ $c_i$
+values are plotted, as in the preprint.
+
+\begin{equation}\label{eq:chibard_mag}
+\chi_i = \frac{a_i}{N-1} \| \nabla\hat{a}_i\|.
+\end{equation}
 
 %
 % BIBLIOGRAPHY
