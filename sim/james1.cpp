@@ -797,6 +797,11 @@ int main (int argc, char **argv)
             }
         }
 
+#ifdef COMPILE_PLOTTING
+        if (RD.stepCount % 1000 == 0) {
+            cout << RD.stepCount << " steps computed...\n";
+        }
+#endif
         if (RD.stepCount > steps) {
             finished = true;
         }
