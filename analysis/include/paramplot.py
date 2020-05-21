@@ -100,12 +100,17 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = 
         mapdat = sdata[np.logical_and(sdata[:][column_tag] == coltarg,
                                       sdata[:]['t'] == ttarg)]
 
+        print ('mapdat: {0}'.format(mapdat))
+        print ('{0} is {1}'.format (column_tag, coltarg))
+        print ('hond6x6 will be: {0}'.format(mapdat[:]['hondadelta']))
+
         # Now sort mapdat on cols of interest
         mapdat = np.sort (mapdat, order=(y_tag, x_tag))
-        # Need to reshape hond from 36x1 into 6x6
-        hond6x6 = mapdat[:]['hondadelta'].reshape((len(y_all), len(x_all)))
-        sos6x6 = mapdat[:]['sos_dist'].reshape((len(y_all), len(x_all)))
-        area6x6 = mapdat[:]['area_diff'].reshape((len(y_all), len(x_all)))
+        # Need to reshape hond from 36x1 into 6x6 (these maps are upside down
+        # when reshaped, so must be flipped)
+        hond6x6 = np.flip(mapdat[:]['hondadelta'].reshape((len(y_all), len(x_all))), axis=0)
+        sos6x6 = np.flip(mapdat[:]['sos_dist'].reshape((len(y_all), len(x_all))), axis=0)
+        area6x6 = np.flip(mapdat[:]['area_diff'].reshape((len(y_all), len(x_all))), axis=0)
         # Can heat map these to prove the ordering is sensible:
         x6x6 =  mapdat[:][x_tag].reshape((len(y_all), len(x_all)))
         y6x6 =  mapdat[:][y_tag].reshape((len(y_all), len(x_all)))
@@ -240,6 +245,18 @@ def mapplot (F, ttarg, param_tuples, comp2=False):
             D_str = '0.3981'
         elif abs(D__ - 1) < 0.000001:
             D_str = '1.0'
+        elif abs(D__ - 0.03) < 0.000001:
+            D_str = '0.03'
+        elif abs(D__ - 0.06) < 0.000001:
+            D_str = '0.06'
+        elif abs(D__ - .12) < 0.000001:
+            D_str = '0.12'
+        elif abs(D__ - .25) < 0.000001:
+            D_str = '0.25'
+        elif abs(D__ - 0.5) < 0.000001:
+            D_str = '0.5'
+        elif abs(D__ - 1.0) < 0.000001:
+            D_str = '1.0'
         else:
             D_str = 'unknown'
 
@@ -255,6 +272,19 @@ def mapplot (F, ttarg, param_tuples, comp2=False):
             ab_str = '15.849'
         elif abs(ab__ - 100) < 0.000001:
             ab_str = '100'
+#ab_vals = [ 0.06, 0.18, 0.55, 1.6, 5.0, 15 ]
+        elif abs(ab__ - 0.06) < 0.000001:
+            ab_str = '0.06'
+        elif abs(ab__ - 0.18) < 0.000001:
+            ab_str = '0.18'
+        elif abs(ab__ - .55) < 0.000001:
+            ab_str = '0.55'
+        elif abs(ab__ - 1.6) < 0.000001:
+            ab_str = '1.6'
+        elif abs(ab__ - 5.0) < 0.000001:
+            ab_str = '5.0'
+        elif abs(ab__ - 15) < 0.000001:
+            ab_str = '15.0'
         else:
             ab_str = 'unknown'
 
@@ -270,6 +300,19 @@ def mapplot (F, ttarg, param_tuples, comp2=False):
                 F_str = '10'
             elif abs(ep__ - 100) < 0.000001:
                 F_str = '100'
+#F_vals = [ 0.03, 0.08, 0.19, 0.48, 1.2, 3.0 ]
+            elif abs(ep__ - 0.03) < 0.000001:
+                F_str = '0.03'
+            elif abs(ep__ - 0.08) < 0.000001:
+                F_str = '0.08'
+            elif abs(ep__ - 0.19) < 0.000001:
+                F_str = '0.19'
+            elif abs(ep__ - 0.48) < 0.000001:
+                F_str = '0.48'
+            elif abs(ep__ - 1.2) < 0.000001:
+                F_str = '1.2'
+            elif abs(ep__ - 3.0) < 0.000001:
+                F_str = '3.0'
 
         if comp2 == True:
             logdirname = '/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore/pe_comp2_D{0}_F{1}_ab{2}_k3'.format (D_str, F_str, ab_str)

@@ -31,6 +31,11 @@ fnt = {'family' : 'DejaVu Sans',
        'size'   : fs}
 matplotlib.rc('font', **fnt)
 
+# Process files with these param combinations only:
+D_vals = [ 0.03, 0.06, 0.12, 0.25, 0.5, 1.0 ]
+ab_vals = [ 0.06, 0.18, 0.55, 1.6, 5.0, 15 ]
+F_vals = [ 0.03, 0.08, 0.19, 0.48, 1.2, 3.0 ]
+
 # Get target x/y hex to show trace for and the time step to show the
 # map for from the arguments:
 #
@@ -92,6 +97,13 @@ for logdirname in os.listdir(basedir):
             ff_k = float(pt.rsplit ('k', 1)[-1])
 
     print ('FF: D{0} ep{1} ab{2} F{3} k{4}'.format (ff_D, ff_ep, ff_ab, ff_F, ff_k))
+
+    if (ff_D in D_vals and ff_F in F_vals and ff_ab in ab_vals):
+        print ("That's a valid set")
+    else:
+        print ("D={0}, F={1}, ab={2} is NOT part of this process sweep".format(ff_D, ff_F, ff_ab))
+        continue
+
 
     #if ff_k == 1.0:
     #    print ('Ignoring k=1 for now')

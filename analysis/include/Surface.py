@@ -202,7 +202,7 @@ class Surface:
         if self.showBoundaries == True:
             for i in range(self.nhex):
                 if (self.hex_flags[i] & 0x1) == 0x1:
-                    if not all(self.c[i] == self.c[int(self.d_ne[i])]):
+                    if self.c.size > 0 and not all(self.c[i] == self.c[int(self.d_ne[i])]):
                         # Has NE but it's a different ID, so draw line:
                         xr = self.x[i]+self.hextohex_d/2.0
                         linex = [xr, xr]
@@ -210,21 +210,21 @@ class Surface:
                         self.f1.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
 
                 if (self.hex_flags[i] & 0x2) == 0x2:
-                    if not all(self.c[i] == self.c[int(self.d_nne[i])]):
+                    if self.c.size > 0 and not all(self.c[i] == self.c[int(self.d_nne[i])]):
                         # Has NNE but it's a different ID, so draw line:
                         linex = [self.x[i], self.x[i]+self.hextohex_d/2.0]
                         liney = [self.y[i] + self.hexrad, self.y[i] + self.hexrad/2.0]
                         self.f1.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
 
                 if (self.hex_flags[i] & 0x4) == 0x4:
-                    if not all(self.c[i] == self.c[int(self.d_nnw[i])]):
+                    if self.c.size > 0 and not all(self.c[i] == self.c[int(self.d_nnw[i])]):
                         # Has NNW but it's a different ID, so draw line:
                         linex = [self.x[i], self.x[i]-self.hextohex_d/2.0]
                         liney = [self.y[i] + self.hexrad, self.y[i] + self.hexrad/2.0]
                         self.f1.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
 
                 if (self.hex_flags[i] & 0x8) == 0x8:
-                    if not all(self.c[i] == self.c[int(self.d_nw[i])]):
+                    if self.c.size > 0 and not all(self.c[i] == self.c[int(self.d_nw[i])]):
                         # Has NW but it's a different ID, so draw line:
                         xr = self.x[i]-self.hextohex_d/2.0
                         linex = [xr, xr]
@@ -232,14 +232,14 @@ class Surface:
                         self.f1.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
 
                 if (self.hex_flags[i] & 0x10) == 0x10:
-                    if not all(self.c[i] == self.c[int(self.d_nsw[i])]):
+                    if self.c.size > 0 and not all(self.c[i] == self.c[int(self.d_nsw[i])]):
                         # Has NSW but it's a different ID, so draw line:
                         linex = [self.x[i], self.x[i]-self.hextohex_d/2.0]
                         liney = [self.y[i] - self.hexrad, self.y[i] - self.hexrad/2.0]
                         self.f1.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
 
                 if (self.hex_flags[i] & 0x20) == 0x20:
-                    if not all(self.c[i] == self.c[int(self.d_nse[i])]):
+                    if self.c.size > 0 and not all(self.c[i] == self.c[int(self.d_nse[i])]):
                         # Has NSE but it's a different ID, so draw line:
                         linex = [self.x[i], self.x[i]+self.hextohex_d/2.0]
                         liney = [self.y[i] - self.hexrad, self.y[i] - self.hexrad/2.0]
