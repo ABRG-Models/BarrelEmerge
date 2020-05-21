@@ -634,7 +634,7 @@ public:
         }
 
         // Set up the barrel regions
-        std::list<morph::BezCurvePath<Flt>> ers = this->r.getEnclosedRegions();
+        std::list<morph::BezCurvePath<float>> ers = this->r.getEnclosedRegions();
         for (auto er : ers) {
             std::pair<float, float> regCentroid; // Don't use it for now...
             std::vector<std::list<morph::Hex>::iterator> regHexes = this->hg->getRegion (er, regCentroid);
@@ -1431,8 +1431,8 @@ public:
         // Find the vertices and construct domains
         this->domains = morph::ShapeAnalysis<Flt>::dirichlet_vertices (this->hg, this->regions, this->vertices);
         // Carry out the analysis.
-        std::vector<std::pair<float, float>> d_centres;
-        this->honda = morph::ShapeAnalysis<float>::dirichlet_analyse (this->domains, d_centres);
+        std::vector<std::pair<Flt, Flt>> d_centres;
+        this->honda = morph::ShapeAnalysis<Flt>::dirichlet_analyse (this->domains, d_centres);
 
         this->dirichletComputed = true;
     }

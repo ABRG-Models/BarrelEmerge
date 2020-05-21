@@ -22,6 +22,11 @@ add_executable(james_comp2 james1.cpp)
 target_compile_definitions(james_comp2 PUBLIC FLT=float COMPILE_PLOTTING COMP2)
 target_link_libraries(james_comp2 ${MORPH_LDFLAGS} ${OPENGL_LIBRARIES})
 
+# Compile with doubles:
+#add_executable(james_comp2d james1.cpp)
+#target_compile_definitions(james_comp2d PUBLIC FLT=double COMPILE_PLOTTING COMP2)
+#target_link_libraries(james_comp2d ${MORPH_LDFLAGS} ${OPENGL_LIBRARIES})
+
 # Comp 2. Supp. Sect. 7.2. No plotting.
 add_executable(james_comp2c james1.cpp)
 target_compile_definitions(james_comp2c PUBLIC FLT=float COMP2)
