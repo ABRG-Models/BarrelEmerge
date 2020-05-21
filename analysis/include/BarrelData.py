@@ -96,6 +96,10 @@ class BarrelData:
         self.c = np.array([])
         self.n = np.array([])
 
+        # The localization measure
+        self.locn = np.array([])
+        self.locn_vs_t = np.array([])
+
         # Guidance molecules
         self.g = np.array([])
 
@@ -257,6 +261,38 @@ class BarrelData:
         self.d_nw = np.array(pf['d_nw'], dtype=int)
         self.d_nsw = np.array(pf['d_nsw'], dtype=int)
         self.d_nse = np.array(pf['d_nse'], dtype=int)
+
+    #
+    # New analysis. For each hex, compute a localization variable which is
+    # N*c[i_max] - sum(c[i!=i_max])
+    #
+    # Call this function after loading data (being sure to set loadSimData
+    # True)
+    #
+    def computeLocalization (self):
+        numtimes = np.shape(self.c)[2]
+        self.locn = np.zeros([self.nhex, numtimes], dtype=float)
+        self.locn_vs_t = np.zeros((numtimes), dtype=float)
+        for tidx in range(0, numtimes): # Loop over all times available
+            # This loop runs for each TIME
+            cs = self.c[:,:,tidx]
+            csum = 0.0
+            allhexes_csum = 0.0 # A sum of the "localization measure" over all hexes
+            hnum = int(0);
+            for cc in cs.T:
+                # This loop runs for each HEX
+                imax = int(np.argmax(cc))
+                csum = cc[imax] * self.N # do 41 * c_max - sum(c_others)
+                for i in range(0, self.N): # np.shape(self.c)[0] should be 41
+                    if i == imax:
+                        continue
+                    csum -= cc[i]
+                self.locn[hnum, tidx] = csum
+                hnum += 1
+                # Add csum to tcsum
+                allhexes_csum += csum
+            # Now have tcsum for this particular t value; append it to the object:
+            self.locn_vs_t[tidx] = allhexes_csum/float(self.nhex)
 
     #
     # Read analysis data from the dirich_*.h5 files.
