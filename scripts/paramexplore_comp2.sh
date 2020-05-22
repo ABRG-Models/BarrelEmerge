@@ -45,7 +45,7 @@ DT=0.0001
 HEXHEXD=0.03
 
 #for D in 0.03 0.06 0.12 0.25 0.5 1.0; do
-for D in 0.03 0.06; do
+for D in 0.06; do # finish 0.03 on alienmonster, too
 #for D in 0.12 0.25; do
 #for D in 0.5 1.0; do
     for F in 0.03 0.08 0.19 0.48 1.2 3.0; do
@@ -63,8 +63,8 @@ for D in 0.03 0.06; do
     "steps" : 25000,
     "logevery": 5000,
     "overwrite_logs": true,
-    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore/",
-    //"logbase" : "/home/seb/paramexplore/",
+    //"logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore/",
+    "logbase" : "/home/seb/paramexplore_nosig/",
     "hextohex_d" : ${HEXHEXD}, // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/rat_barrels/wb_110405_Dirichlet.svg",
     "boundaryFalloffDist" : 0.03,
@@ -151,7 +151,7 @@ for D in 0.03 0.06; do
     "x_default": -3.38512,
     "y_default": -0.491072,
     "z_default": -11.5,
-    "plotevery": 25000,
+    "plotevery": 500,
     "vidframes": false,    // If true, number video frame saves consecutively, rather than by simulation step number
     "rhoInit": 4, // Larger to zoom out
     //

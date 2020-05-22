@@ -85,6 +85,16 @@ public:
      */
     //@{
 
+    //! Set either sigmoid_rolloff to be true...
+    //static const bool sigmoid_rolloff = false;
+#ifdef SIGMOID_ROLLOFF_FOR_A
+# undef SIGMOID_ROLLOFF_FOR_A
+#endif
+    //! ...OR linear_max to be true, to put a bound on a in the competition term in J_i
+    //static const bool linear_max = false;
+#ifdef LINEAR_MAX
+# undef LINEAR_MAX
+#endif
 
     /*!
      * This is updated wrt rd_james.h as it has the additional terms
@@ -97,9 +107,9 @@ public:
      *
      * Stable with dt = 0.0001;
      */
-#define SIGMOID_ROLLOFF_FOR_A 1
     virtual void compute_divJ (std::vector<Flt>& fa, unsigned int i) {
 
+        // Now prefer if constexpr, but icc doesn't like pragma omp inside an if constexpr.
 #ifdef SIGMOID_ROLLOFF_FOR_A
         // Compute \bar{a}_i and its spatial gradient
         Flt h = 2.0; // height parameter for sigmoid
@@ -108,6 +118,13 @@ public:
 #pragma omp parallel for
         for (unsigned int hi=0; hi<this->nhex; ++hi) {
             this->abar[hi] = h / (1 - exp (o - s * fa[hi]));
+        }
+        this->spacegrad2D (this->abar, this->grad_abar);
+#elif defined LINEAR_MAX
+        Flt h = 2000.0; // Max value for a
+#pragma omp parallel for
+        for (unsigned int hi=0; hi<this->nhex; ++hi) {
+            this->abar[hi] = fa[hi] > h ? h : fa[hi];
         }
         this->spacegrad2D (this->abar, this->grad_abar);
 #endif
@@ -145,39 +162,53 @@ public:
                 exit (21);
             }
 
-            //if (hi==5055) {
-            //    cout << "term1[5055]="  << term1 << std::endl;
-            //}
-
-#ifdef SIGMOID_ROLLOFF_FOR_A
+            Flt term1_1 = Flt{0};
+#if defined SIGMOID_ROLLOFF_FOR_A || defined LINEAR_MAX
             // Term 1.1 is F/N-1 abar div(ahat)
-            Flt term1_1 = this->FOverNm1 * abar[hi] * this->div_ahat[hi];
+            term1_1 = this->FOverNm1 * abar[hi] * this->div_ahat[hi];
 #else
             // Term 1.1 is F/N-1 a div(ahat)
-            Flt term1_1 = this->FOverNm1 * fa[hi] * this->div_ahat[hi];
+            term1_1 = this->FOverNm1 * fa[hi] * this->div_ahat[hi];
 #endif
+
             if (isnan(term1_1)) {
                 std::cerr << "term1_1 isnan" << std::endl;
                 std::cerr << "fa[hi="<<hi<<"] = " << fa[hi] << ", this->div_ahat[hi] = " << this->div_ahat[hi] << std::endl;
                 exit (21);
             }
 
-#ifdef SIGMOID_ROLLOFF_FOR_A
+            Flt term1_2 = Flt{0};
+#if defined SIGMOID_ROLLOFF_FOR_A || defined LINEAR_MAX
             // Term 1.2 is F/N-1 grad(ahat) . grad(abar)
-            Flt term1_2 = this->FOverNm1 * (this->grad_ahat[0][hi] * this->grad_abar[0][hi]
-                                            + this->grad_ahat[1][hi] * this->grad_abar[1][hi]);
+            term1_2 = this->FOverNm1 * (this->grad_ahat[0][hi] * this->grad_abar[0][hi]
+                                        + this->grad_ahat[1][hi] * this->grad_abar[1][hi]);
 #else
             // Term 1.2 is F/N-1 grad(ahat) . grad(a)
-            Flt term1_2 = this->FOverNm1 * (this->grad_ahat[0][hi] * this->grad_a[i][0][hi]
-                                            + this->grad_ahat[1][hi] * this->grad_a[i][1][hi]);
+            term1_2 = this->FOverNm1 * (this->grad_ahat[0][hi] * this->grad_a[i][0][hi]
+                                        + this->grad_ahat[1][hi] * this->grad_a[i][1][hi]);
 #endif
 
-            //if (hi==1000) {
-            //    cout << "term1_1="  << term1_1 << ", term1_2=" << term1_2 << std::endl;
-            //}
-
             if (isnan(term1_2)) {
-                std::cerr << "term1_2 isnan" << std::endl;
+                std::cerr << "term1_2 isnan at hi=" << hi << std::endl;
+                if (isnan(this->grad_ahat[0][hi])) {
+                    std::cerr << "grad_ahat[0][hi] isnan\n";
+                }
+                if (isnan(this->grad_ahat[1][hi])) {
+                    std::cerr << "grad_ahat[1][hi] isnan\n";
+                }
+                if (isnan(this->grad_abar[0][hi])) {
+                    std::cerr << "grad_abar[0][hi] isnan; abar is " << this->abar[hi] << ", neighbouring abars: "
+                              << "NE: " << (HAS_NE(hi) ? this->abar[NE(hi)] : -1)
+                              << ", NNE: " << (HAS_NNE(hi) ? this->abar[NNE(hi)] : -1)
+                              << ", NNW: " << (HAS_NNW(hi) ? this->abar[NNW(hi)] : -1)
+                              << ", NW: " << (HAS_NW(hi) ? this->abar[NW(hi)] : -1)
+                              << ", NSW: " << (HAS_NSW(hi) ? this->abar[NSW(hi)] : -1)
+                              << ", NSE: " << (HAS_NSE(hi) ? this->abar[NSE(hi)] : -1)
+                              << "\n";
+                }
+                if (isnan(this->grad_abar[1][hi])) {
+                    std::cerr << "grad_abar[1][hi] isnan; abar is " << this->abar[hi] << "\n";
+                }
                 exit (21);
             }
 
@@ -295,7 +326,12 @@ public:
                 k4[h] = this->divJ[i][h] - this->dc[i][h];
                 this->a[i][h] += (k1[h] + 2.0 * (k2[h] + k3[h]) + k4[h]) * this->sixthdt;
             }
+#if 0
+            // Find max and min of this->a[i] and report when the max of maxes gets maxer...
+            pair<Flt, Flt> mm = morph::MathAlgo::maxmin (this->a[i]);
+#endif
 
+#if 0
             // Do any necessary computation which involves summing a here
             this->sum_a_computation (i);
 
@@ -304,6 +340,7 @@ public:
             for (unsigned int h=0; h<this->nhex; ++h) {
                 this->a[i][h] = this->transfer_a (this->a[i][h], i);
             }
+#endif
         }
     }
 
