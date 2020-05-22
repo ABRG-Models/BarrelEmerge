@@ -22,6 +22,7 @@ import h5py
 #import domcentres as dc
 import sebcolour
 col = sebcolour.Colour
+import math
 
 # Set plotting defaults
 fs = 32
@@ -29,6 +30,12 @@ fnt = {'family' : 'DejaVu Sans',
        'weight' : 'regular',
        'size'   : fs}
 matplotlib.rc('font', **fnt)
+
+# Process files with these param combinations only:
+D_vals = [ 0.01, 0.0251, 0.0631, 0.1585, 0.3981, 1.0 ]
+ab_vals = [ 0.01, 0.0631, 0.3981, 2.51189, 15.849, 100 ]
+ep_vals = [ 50, 100, 150, 200, 300 ]
+k_vals = [ 3.0 ]
 
 # Get target x/y hex to show trace for and the time step to show the
 # map for from the arguments:
@@ -43,7 +50,6 @@ basedir = '/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore/'
 table = []
 for logdirname in os.listdir(basedir):
 
-    logdirname = basedir + logdirname
     print ('Log dir: {0}'.format(logdirname))
     if 'comp2' in logdirname:
         print ('comp2, omit')
@@ -51,14 +57,76 @@ for logdirname in os.listdir(basedir):
 
     print ('dncomp file; PROCESS')
 
+    # Process logdir name to get params, in case that run failed (this
+    # then allows me to insert a line in the table with NANs for those
+    # parameters)
+    # pe_comp2_D0.0251_F1_ab15.849_k3
+    spts = logdirname.split('_')
+    ff_D = 0 # ff for 'From Filename'
+    ff_ep = 0
+    ff_ab = 0
+    ff_a = 0
+    ff_b = 0
+    ff_F = 0
+    ff_k = 0
+    for pt in spts:
+        #print ('part of string: {0}'.format(pt))
+        if 'pe' in pt:
+            continue
+        if 'dncomp' in pt:
+            continue
+        if 'D' in pt:
+            # D0.01
+            ff_D = float(pt.rsplit ('D', 1)[-1])
+        if 'ep' in pt:
+            # epblah
+            ff_ep = float(pt.rsplit ('ep', 1)[-1])
+        if 'ab' in pt:
+            # alphabeta
+            ff_ab = float(pt.rsplit ('ab', 1)[-1])
+            ff_a = ff_ab * 20
+            ff_b = 3.0 / ff_ab
+        if 'F' in pt:
+            # F
+            ff_F = float(pt.rsplit ('F', 1)[-1])
+        if 'k' in pt:
+            # k
+            ff_k = float(pt.rsplit ('k', 1)[-1])
+
+    print ('FF: D{0} ep{1} ab{2} F{3} k{4}'.format (ff_D, ff_ep, ff_ab, ff_F, ff_k))
+
+    if (ff_D in D_vals and ff_ep in ep_vals and ff_ab in ab_vals and ff_k in k_vals):
+        print ("That's a valid set")
+    else:
+        print ("D={0}, eps={1}, ab={2} is NOT part of this process sweep".format(ff_D, ff_ep, ff_ab))
+        continue
+
+    logdirname = basedir + logdirname
     # Load the dirichlet data, domcentres, etc
     bdo = bd.BarrelData()
     bdo.loadAnalaysisData = True
     bdo.loadPositions = False # required for totalarea
     bdo.loadGuidance = False
-    bdo.loadSimData = False
+    bdo.loadSimData = True # for compute localization
     bdo.loadDivisions = False
-    bdo.load (logdirname)
+    try:
+        bdo.load (logdirname)
+    except:
+        print ('Failed to load BarrelData object; continue to next')
+        # Or maybe add a table line(s) with NANs to aid producing heatmaps and show where the thing failed?
+        for tt in [1, 5000, 10000, 15000, 20000, 25000]:
+            tableline = [ff_k, ff_D, ff_ab, ff_a, ff_b, ff_ep, tt, math.nan, math.nan, math.nan, ff_F, math.nan]
+            table.append (tableline)
+        continue
+
+    # Check bdo params match with file name params.
+    if bdo.D - ff_D > 0.0001 or bdo.meanalpha - ff_a > 0.0001 or bdo.meanbeta - ff_b > 0.0001:
+        # error
+        print ('BarrelDataobject params do not match filename params!')
+        print ('bdo.D: {0} ff_D: {1}'.format (bdo.D, ff_D))
+        print ('bdo.meanalpha: {0} ff_a: {1}'.format (bdo.meanalpha, ff_a))
+        print ('bdo.meanbeta: {0} ff_b: {1}'.format (bdo.meanbeta, ff_b))
+        exit (1)
 
     # The ID colour maps
     do_maps = 0
@@ -104,14 +172,24 @@ for logdirname in os.listdir(basedir):
     # Whatabout k, D, alpha, beta, alpha/beta and epsilon?
     print ('k={0}, D={1}, alpha={2}, beta={3}, alphabeta={4}, epsilon={5}'.format(bdo.k, bdo.D, bdo.meanalpha, bdo.meanbeta, (bdo.meanalpha/20.0), bdo.meanepsilon))
 
+    # New analysis. For each hex, compute a localization variable which is c[i_max] - sum(c[i!=i_max])
+    bdo.computeLocalization()
+    print ("Localization vs. t: {0}".format (bdo.locn_vs_t))
+
     # So, for each line in hondadeta/t/sos_dist, we can output a line of the table.
+    times = [1, 5000, 10000, 15000, 20000, 25000]
     for hd in range (0, len(hondadelta)):
-        tableline = [bdo.k, bdo.D, (bdo.meanalpha/20.0), bdo.meanalpha, bdo.meanbeta, bdo.meanepsilon, t1[hd], hondadelta[hd], sos_dist[hd], area_diff[hd,0]]
+        tableline = [bdo.k, bdo.D, (bdo.meanalpha/20.0), bdo.meanalpha, bdo.meanbeta, bdo.meanepsilon, t1[hd], hondadelta[hd], sos_dist[hd], area_diff[hd,0], ff_F, bdo.locn_vs_t[hd]]
+        times.remove (t1[hd])
+        table.append (tableline)
+    for tt in times:
+        # Add nans for missing times
+        tableline = [ff_k, ff_D, ff_ab, ff_a, ff_b, ff_ep, tt, math.nan, math.nan, math.nan, ff_F, math.nan]
         table.append (tableline)
 
 import csv
 with open(('paramsearch_k{0}.csv'.format(bdo.k)), 'w', newline='\n') as csvfile:
     cw = csv.writer (csvfile, delimiter=',')
-    cw.writerow (['k','D','alphabeta','alpha','beta','epsilon','t','hondadelta','sos_dist','area_diff'])
+    cw.writerow (['k','D','alphabeta','alpha','beta','epsilon','t','hondadelta','sos_dist','area_diff','F','localization'])
     for tableline in table:
         cw.writerow (tableline)

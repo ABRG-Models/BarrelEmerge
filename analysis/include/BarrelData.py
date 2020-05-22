@@ -270,6 +270,9 @@ class BarrelData:
     # True)
     #
     def computeLocalization (self):
+        if self.loadSimData == False:
+            print ('Error: You have to ensure that you load simulation data by setting loadSimData True before calling load()')
+            return
         numtimes = np.shape(self.c)[2]
         self.locn = np.zeros([self.nhex, numtimes], dtype=float)
         self.locn_vs_t = np.zeros((numtimes), dtype=float)

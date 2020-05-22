@@ -18,7 +18,7 @@ import sebcolour as sc
 # format (epsilon, alphabeta, D), then boxes are drawn around the heat
 # map blocks corresponding to those parameters. Use this in
 # combination with the mapplot() function.
-def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = []):
+def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = [], col_trim_front = 0, col_trim_back = 0):
 
     print ('initial sdata shape: {0}'.format(np.shape (sdata)))
 
@@ -34,36 +34,39 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = 
     # The competition parameter may be called F and it may be called epsilon
     if (column_tag == 'F' or x_tag == 'F' or y_tag == 'F'):
         comp_tag = 'F'
-        comp_idx = int(10) # F col is at end
+        #comp_idx = int(10) # F col is at end
+        tup_idx = int(0)
     else:
         comp_tag = 'epsilon'
-        comp_idx = int(0)
+        #comp_idx = int(0)
+        tup_idx = int(0)
 
     # We'll use a colidx, xidx and yidx into each tuple:
     if column_tag == comp_tag:
-        colidx = comp_idx
+        colidx = tup_idx
         if x_tag == 'D':
-            xidx = int(2)
-            yidx = int(1)
+            xidx = int(2)  # D
+            yidx = int(1)  # ab
         else:
-            xidx = int(1)
-            yidx = int(2)
+            xidx = int(1)  # ab
+            yidx = int(2)  # D
     elif column_tag == 'alphabeta':
         colidx = int(1)
         if x_tag == 'D':
-            xidx = int(2)
-            yidx = comp_idx
+            xidx = int(2)  # D
+            yidx = tup_idx # F/eps
         else:
-            xidx = comp_idx
-            yidx = int(2)
+            xidx = tup_idx # F/eps
+            yidx = int(2)  # D
     elif column_tag == 'D':
+        print ('D!!!')
         colidx = int(2)
         if x_tag == 'alphabeta':
-            xidx = int(1)
-            yidx = comp_idx
+            xidx = int(1)  # ab
+            yidx = tup_idx # F/eps
         else:
-            xidx = comp_idx
-            yidx = int(1)
+            xidx = tup_idx # F/eps
+            yidx = int(1)  # ab
 
     # Get max/min for data ranges
     sos_max = max(sdata[:]['sos_dist'])
@@ -73,16 +76,24 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = 
     area_min = min(sdata[:]['area_diff'])
     honda_max = max(sdata[:]['hondadelta'])
     honda_min = min(sdata[:]['hondadelta'])
+    locn_max = max(sdata[:]['localization'])
+    locn_min = min(sdata[:]['localization'])
     # Extent of the data range for plotting
     plot_extent = [-0.5, 5.5, -0.5, 5.5]
 
     i = 1
 
     colall = np.sort(np.unique(sdata[:][column_tag]))
+    # Trim if necessary:
+    for ci in range (0, col_trim_back):
+        colall = np.delete (colall, -1)
+    for ci in range (0, col_trim_front):
+        colall = np.delete (colall, 0)
+    print ('column params: {0} type {1}'.format(colall, type(colall)))
+
     print ('sorting x_all on x_tag: {0}'.format(x_tag))
     x_all = np.sort(np.unique(sdata[:][x_tag]))
     y_all = np.sort(np.unique(sdata[:][y_tag]))
-    print ('column params: {0}'.format(colall))
     print ('x params: {0}'.format(x_all))
     print ('y params: {0}'.format(y_all))
 
@@ -100,9 +111,9 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = 
         mapdat = sdata[np.logical_and(sdata[:][column_tag] == coltarg,
                                       sdata[:]['t'] == ttarg)]
 
-        print ('mapdat: {0}'.format(mapdat))
-        print ('{0} is {1}'.format (column_tag, coltarg))
-        print ('hond6x6 will be: {0}'.format(mapdat[:]['hondadelta']))
+        #print ('mapdat: {0}'.format(mapdat))
+        #print ('{0} is {1}'.format (column_tag, coltarg))
+        #print ('hond6x6 will be: {0}'.format(mapdat[:]['hondadelta']))
 
         # Now sort mapdat on cols of interest
         mapdat = np.sort (mapdat, order=(y_tag, x_tag))
@@ -111,11 +122,10 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = 
         hond6x6 = np.flip(mapdat[:]['hondadelta'].reshape((len(y_all), len(x_all))), axis=0)
         sos6x6 = np.flip(mapdat[:]['sos_dist'].reshape((len(y_all), len(x_all))), axis=0)
         area6x6 = np.flip(mapdat[:]['area_diff'].reshape((len(y_all), len(x_all))), axis=0)
+        locn6x6 = np.flip(mapdat[:]['localization'].reshape((len(y_all), len(x_all))), axis=0)
         # Can heat map these to prove the ordering is sensible:
         x6x6 =  mapdat[:][x_tag].reshape((len(y_all), len(x_all)))
         y6x6 =  mapdat[:][y_tag].reshape((len(y_all), len(x_all)))
-
-        ax = F.add_subplot(3,len(colall),i)
 
         # Do we need boxes to show which parameter combinations the
         # maps are drawn for? Is the given parameter on this graph?
@@ -125,13 +135,20 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = 
         param_indices = []
         print ('param_tuples: {0}'.format (param_tuples))
         if param_tuples:
+            # In the tuple, we have (F, ab, D) which are at data cols 10, 2, 1.
             if colidx == 10:
                 colidx = 0
+            elif colidx == 2:
+                colidx = 1
+            elif colidx == 1:
+                colidx = 2
             print ('colidx = {0}'.format (colidx))
             if coltarg in param_tuples[:][colidx]:
                 print ('Draw box/boxes for graph in the column {0}={1}'.format(column_tag, coltarg))
                 for pt in param_tuples:
+                    print ('pt: {0}'.format (pt))
                     if pt[colidx] == coltarg:
+                        print ('xidx={0}, yidx={1}'.format(xidx,yidx))
                         print ('Draw box at x={0}, y={1}'.format(pt[xidx],pt[yidx]))
                         # Find index of the param
                         xparam_idx = np.where (np.abs(x_all - pt[xidx]) < 0.000001)
@@ -140,26 +157,25 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = 
                         param_indices.append ((xparam_idx[0][0]-0.5, yparam_idx[0][0]-0.5))
 
 
+        ax = F.add_subplot(4,len(colall),i)
         im = ax.imshow (hond6x6, cmap='magma_r', vmin=honda_min, vmax=honda_max,
                         extent=plot_extent, interpolation='none')
-
         tlist = []
         for j in range(0,len(x_all)): tlist.append('{0:.2f}'.format(x6x6[0,j]))
-        print ('Setting x tick list to: {0}->{1}'.format(x_tick_list, tlist))
+        # print ('Setting x tick list to: {0}->{1}'.format(x_tick_list, tlist))
         plt.xticks (x_tick_list, tlist)
         tlist = []
         for j in range(0,len(y_all)): tlist.append('{0:.2f}'.format(y6x6[j,0]))
-        print ('Setting y tick list to: {0}->{1}'.format(y_tick_list, tlist))
+        # print ('Setting y tick list to: {0}->{1}'.format(y_tick_list, tlist))
         plt.yticks (y_tick_list, tlist)
         if coltarg == colall[0]:
             ax.set_ylabel ('{0} : honda'.format(y_tag))
         ax.set_title ('{0}={1:.2f}'.format(column_tag,coltarg))
         ax.set_xlabel (x_tag)
 
-        ax1 = F.add_subplot(3,len(colall),len(colall)+i)
+        ax1 = F.add_subplot(4,len(colall),len(colall)+i)
         im1 = ax1.imshow (sos6x6, cmap='plasma_r', vmin=sos_min, vmax=sos_max,
                         extent=plot_extent, interpolation='nearest')
-
         tlist = []
         for j in range(0,len(x_all)): tlist.append('{0:.2f}'.format(x6x6[0,j]))
         plt.xticks (x_tick_list, tlist)
@@ -170,7 +186,7 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = 
             ax1.set_ylabel('{0} : sos'.format(y_tag))
         ax1.set_xlabel(x_tag)
 
-        ax2 = F.add_subplot(3,len(colall),(2*len(colall))+i)
+        ax2 = F.add_subplot(4,len(colall),(2*len(colall))+i)
         im2 = ax2.imshow (area6x6, cmap='viridis_r', vmin=area_min, vmax=area_max,
                         extent=plot_extent, interpolation='nearest')
         tlist = []
@@ -183,14 +199,29 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = 
             ax2.set_ylabel('{0} : areadiff'.format(y_tag))
         ax2.set_xlabel(x_tag)
 
+        ax3 = F.add_subplot(4,len(colall),(3*len(colall))+i)
+        im3 = ax3.imshow (locn6x6, cmap='viridis', vmin=locn_min, vmax=locn_max,
+                              extent=plot_extent, interpolation='nearest')
+        tlist = []
+        for j in range(0,len(x_all)): tlist.append('{0:.2f}'.format(x6x6[0,j]))
+        plt.xticks (x_tick_list, tlist)
+        tlist = []
+        for j in range(0,len(y_all)): tlist.append('{0:.2f}'.format(y6x6[j,0]))
+        plt.yticks (y_tick_list, tlist)
+        if coltarg == colall[0]:
+            ax3.set_ylabel('{0} : locn'.format(y_tag))
+        ax3.set_xlabel(x_tag)
+
         # Draw any boxes
         for pi_ in param_indices:
-            rect = patches.Rectangle (pi_, 1, 1, linewidth=2, edgecolor=boxcmap(colour_idx/9), facecolor='none')
+            rect =  patches.Rectangle (pi_, 1, 1, linewidth=2, edgecolor=boxcmap(colour_idx/9), facecolor='none')
             rect1 = patches.Rectangle (pi_, 1, 1, linewidth=2, edgecolor=boxcmap(colour_idx/9), facecolor='none')
             rect2 = patches.Rectangle (pi_, 1, 1, linewidth=2, edgecolor=boxcmap(colour_idx/9), facecolor='none')
+            rect3 = patches.Rectangle (pi_, 1, 1, linewidth=2, edgecolor=boxcmap(colour_idx/9), facecolor='none')
             ax.add_patch(rect)
             ax1.add_patch(rect1)
             ax2.add_patch(rect2)
+            ax3.add_patch(rect3)
             colour_idx += 1
 
         i += 1
@@ -199,14 +230,17 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = 
     cb_height = 0.151
     cb_wid = 0.01
     cb_xpos = 0.92
-    cb_ax = F.add_axes([cb_xpos, 0.692, cb_wid, cb_height])
+    cb_ax = F.add_axes([cb_xpos, 0.72, cb_wid, cb_height])
     cbar = F.colorbar (im, cax=cb_ax)
 
-    cb_ax1 = F.add_axes([cb_xpos, 0.42, cb_wid, cb_height])
+    cb_ax1 = F.add_axes([cb_xpos, 0.52, cb_wid, cb_height])
     cbar1 = F.colorbar (im1, cax=cb_ax1)
 
-    cb_ax2 = F.add_axes([cb_xpos, 0.148, cb_wid, cb_height])
+    cb_ax2 = F.add_axes([cb_xpos, 0.32, cb_wid, cb_height])
     cbar2 = F.colorbar (im2, cax=cb_ax2)
+
+    cb_ax3 = F.add_axes([cb_xpos, 0.12, cb_wid, cb_height])
+    cbar3 = F.colorbar (im3, cax=cb_ax3)
 
     F.suptitle ('time: {0}'.format(ttarg))
 

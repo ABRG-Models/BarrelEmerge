@@ -103,9 +103,9 @@ F1 = plt.figure (figsize=(20,12))
 pp.paramplot (sdata, F1, 'epsilon', 'D', 'alphabeta', 3, timepoint, param_tuples);
 plt.savefig('plots/pe_{0}_heatmaps.png'.format(fileend))
 
-F2 = plt.figure (figsize=(20,12))
-pp.mapplot (F2, timepoint, param_tuples)
-plt.savefig('plots/pe_{0}_patterns.png'.format(fileend))
+#F2 = plt.figure (figsize=(20,12))
+#pp.mapplot (F2, timepoint, param_tuples)
+#plt.savefig('plots/pe_{0}_patterns.png'.format(fileend))
 
 plt.show()
 exit (0)

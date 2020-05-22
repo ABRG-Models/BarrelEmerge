@@ -42,7 +42,7 @@ sdata = np.genfromtxt ('postproc/paramsearch_k3_comp2_narrower.csv', delimiter="
 # All D and ab possible values:
 D_vals = [ 0.03, 0.06, 0.12, 0.25, 0.5, 1.0 ]
 ab_vals = [ 0.06, 0.18, 0.55, 1.6, 5.0, 15 ]
-#F_vals = [ 0.03, 0.08, 0.19, 0.48, 1.2, 3.0 ]
+#F_vals = [ 0.03, 0.08, 0.19, 0.48, 1.2, 3.0 ] # 7.5 is next.
 
 compute_param_tuples = 1
 if compute_param_tuples:
@@ -50,9 +50,9 @@ if compute_param_tuples:
     # Lets have a little function to set up param_tuples automatically.
 
     # Set the centre box parameters
-    F = 0.03    # doesn't change
-    _ab = 0.55 # then 0.3981 #2.51189# 0.3981   # centre ab - vary with row
-    _D = 0.12  # centre D - vary with col
+    F = 0.19    # doesn't change
+    _ab = 0.18 # then 0.3981 #2.51189# 0.3981   # centre ab - vary with row
+    _D = 0.5  # centre D - vary with col
 
     ab_idx = ab_vals.index(_ab)
     D_idx = D_vals.index(_D)
@@ -64,6 +64,7 @@ if compute_param_tuples:
     for i in range (0, 9):
         param_tuples.append ((0.0, 0.0, 0.0))
 
+    # This sets up param_tuples suitable for the 'F in cols' view of the param space
     for r in range(0,3):
         ab_idx_ = (ab_idx + r - 1) if ((ab_idx + r - 1) >= 0) else len(ab_vals)-1
         _ab = ab_vals[ab_idx_]
@@ -72,6 +73,8 @@ if compute_param_tuples:
             print('D_idx_: {0}'.format(D_idx_ ))
             _D = D_vals[D_idx_]
             param_tuples[r*3+c] = (F, _ab, _D)
+
+    # Fixme: Can set up alternatives if necessary
 
     print ('param_tuples: {0}'.format (param_tuples))
 else:
@@ -91,13 +94,21 @@ else:
 
 F1 = plt.figure (figsize=(20,12))
 #                        col        x    y            k  t
-pp.paramplot (sdata, F1, 'F', 'D', 'alphabeta', 3, timepoint, param_tuples);
-plt.savefig('plots/comp2_{0}_heatmaps.png'.format(fileend))
+pp.paramplot (sdata, F1, 'F', 'D', 'alphabeta', 3, timepoint, param_tuples, 1, 0);
+plt.savefig('plots/comp2_{0}_heatmaps_Fcols.png'.format(fileend))
+
+#F2 = plt.figure (figsize=(20,12))
+#pp.paramplot (sdata, F2, 'alphabeta', 'D', 'F', 3, timepoint, param_tuples);
+#plt.savefig('plots/comp2_{0}_heatmaps_abcols.png'.format(fileend))
+
+#F3 = plt.figure (figsize=(20,12))
+#pp.paramplot (sdata, F3, 'D', 'alphabeta', 'F', 3, timepoint, param_tuples);
+#plt.savefig('plots/comp2_{0}_heatmaps_Dcols.png'.format(fileend))
 
 # Optional map plots:
-#F2 = plt.figure (figsize=(20,12))
-#pp.mapplot (F2, timepoint, param_tuples, True)
-#plt.savefig('plots/comp2_{0}_patterns.png'.format(fileend))
+F4 = plt.figure (figsize=(20,12))
+pp.mapplot (F4, timepoint, param_tuples, True)
+plt.savefig('plots/comp2_{0}_patterns.png'.format(fileend))
 
 plt.show()
 exit (0)
