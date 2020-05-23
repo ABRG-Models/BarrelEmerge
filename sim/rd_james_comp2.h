@@ -86,15 +86,11 @@ public:
     //@{
 
     //! Set either sigmoid_rolloff to be true...
-    //static const bool sigmoid_rolloff = false;
 #ifdef SIGMOID_ROLLOFF_FOR_A
 # undef SIGMOID_ROLLOFF_FOR_A
 #endif
     //! ...OR linear_max to be true, to put a bound on a in the competition term in J_i
-    //static const bool linear_max = false;
-#ifdef LINEAR_MAX
-# undef LINEAR_MAX
-#endif
+#define LINEAR_MAX 1
 
     /*!
      * This is updated wrt rd_james.h as it has the additional terms
@@ -121,7 +117,7 @@ public:
         }
         this->spacegrad2D (this->abar, this->grad_abar);
 #elif defined LINEAR_MAX
-        Flt h = 2000.0; // Max value for a
+        Flt h = 2.0; // Max value for a
 #pragma omp parallel for
         for (unsigned int hi=0; hi<this->nhex; ++hi) {
             this->abar[hi] = fa[hi] > h ? h : fa[hi];
