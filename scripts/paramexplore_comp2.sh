@@ -61,7 +61,7 @@ for D in 0.03 0.06 0.12 0.25 0.5 1.0; do  # 0.03 never works; should go one high
     "logevery": 5000,
     "overwrite_logs": true,
     //"logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore/",
-    "logbase" : "/home/seb/paramexplore_nosig/",
+    "logbase" : "/home/seb/paramexplore_comp2/",
     "hextohex_d" : ${HEXHEXD}, // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/rat_barrels/wb_110405_Dirichlet.svg",
     "boundaryFalloffDist" : 0.03,
