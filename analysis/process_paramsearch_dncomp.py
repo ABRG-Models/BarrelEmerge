@@ -46,7 +46,7 @@ k_vals = [ 3.0 ]
 # Timepoints are 1, 5000, 10000, 15000, 20000, 25000
 #
 # Filename format is like: pe_dncomp_D0.0631_ep300_ab0.01_k3
-basedir = '/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore/'
+basedir = '/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore_dncomp/'
 table = []
 for logdirname in os.listdir(basedir):
 
@@ -188,7 +188,7 @@ for logdirname in os.listdir(basedir):
         table.append (tableline)
 
 import csv
-with open(('paramsearch_k{0}.csv'.format(bdo.k)), 'w', newline='\n') as csvfile:
+with open(('postproc/paramsearch_k{0}_dncomp.csv'.format(bdo.k)), 'w', newline='\n') as csvfile:
     cw = csv.writer (csvfile, delimiter=',')
     cw.writerow (['k','D','alphabeta','alpha','beta','epsilon','t','hondadelta','sos_dist','area_diff','F','localization'])
     for tableline in table:
