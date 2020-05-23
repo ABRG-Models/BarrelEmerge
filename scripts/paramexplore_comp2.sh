@@ -44,10 +44,7 @@ EPSILON=150 # Doesn't do anything, but is incorporated into the JSON anyway
 DT=0.0001
 HEXHEXD=0.03
 
-#for D in 0.03 0.06 0.12 0.25 0.5 1.0; do
-for D in 0.06; do # finish 0.03 on alienmonster, too
-#for D in 0.12 0.25; do
-#for D in 0.5 1.0; do
+for D in 0.03 0.06 0.12 0.25 0.5 1.0; do  # 0.03 never works; should go one higher too
     for F in 0.03 0.08 0.19 0.48 1.2 3.0; do
         for ALPHABETA in 0.06 0.18 0.55 1.6 5.0 15.0; do
 
