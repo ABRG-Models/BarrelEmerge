@@ -247,7 +247,7 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = 
 #
 # Draw simulation barrel maps for the given parameters and time point
 #
-def mapplot (F, ttarg, param_tuples, comp2=False):
+def mapplot (F, ttarg, param_tuples, logdirbase):
 
     #
     # Having drawn the heat maps (and identifier boxes) can now draw
@@ -255,6 +255,10 @@ def mapplot (F, ttarg, param_tuples, comp2=False):
     #
     # Read the data
     #
+
+    comp2 = False
+    if 'comp2' in logdirbase:
+        comp2 = True
 
     plotiter = 1
     for _pt in param_tuples:
@@ -349,9 +353,9 @@ def mapplot (F, ttarg, param_tuples, comp2=False):
                 F_str = '3.0'
 
         if comp2 == True:
-            logdirname = '/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore/pe_comp2_D{0}_F{1}_ab{2}_k3'.format (D_str, F_str, ab_str)
+            logdirname = logdirbase+'/pe_comp2_D{0}_F{1}_ab{2}_k3'.format (D_str, F_str, ab_str)
         else:
-            logdirname = '/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore/pe_dncomp_D{0}_ep{1:d}_ab{2}_k3'.format (D_str, ep__, ab_str)
+            logdirname = logdirbase+'/pe_dncomp_D{0}_ep{1:d}_ab{2}_k3'.format (D_str, ep__, ab_str)
 
         bdo = bd.BarrelData()
         # Set True for inter-lines:

@@ -32,7 +32,7 @@ matplotlib.rc('font', **fnt)
 #
 
 # Cols in sdata are: k,D,alphabeta,alpha,beta,epsilon,t,hondadelta,sos_dist,area_diff
-sdata = np.genfromtxt ('postproc/paramsearch_k3_comp2_narrower.csv', delimiter=",", names=True)
+sdata = np.genfromtxt ('postproc/paramsearch_k3.0_comp2.csv', delimiter=",", names=True)
 # sdata is a numpy 'structured array' with named fields.
 
 #
@@ -107,7 +107,7 @@ plt.savefig('plots/comp2_{0}_heatmaps_Fcols.png'.format(fileend))
 
 # Optional map plots:
 F4 = plt.figure (figsize=(20,12))
-pp.mapplot (F4, timepoint, param_tuples, True)
+pp.mapplot (F4, timepoint, param_tuples, '/home/seb/gdrive_usfd/data/BarrelEmerge/paramsearch_comp2')
 plt.savefig('plots/comp2_{0}_patterns.png'.format(fileend))
 
 plt.show()

@@ -34,7 +34,7 @@ matplotlib.rc('font', **fnt)
 #
 
 # Cols in sdata are: k,D,alphabeta,alpha,beta,epsilon,t,hondadelta,sos_dist,area_diff
-sdata = np.genfromtxt ('postproc/paramsearch_k3_dncomp.csv', delimiter=",", names=True)
+sdata = np.genfromtxt ('postproc/paramsearch_k3.0_dncomp.csv', delimiter=",", names=True)
 # sdata is a numpy 'structured array' with named fields.
 
 #
@@ -101,10 +101,10 @@ else:
 F1 = plt.figure (figsize=(20,12))
 #                        col        x    y            t
 pp.paramplot (sdata, F1, 'epsilon', 'D', 'alphabeta', 3, timepoint, param_tuples);
-plt.savefig('plots/pe_{0}_heatmaps.png'.format(fileend))
+plt.savefig('plots/dncomp_{0}_heatmaps.png'.format(fileend))
 
 #F2 = plt.figure (figsize=(20,12))
-#pp.mapplot (F2, timepoint, param_tuples)
+#pp.mapplot (F2, timepoint, param_tuples, '/home/seb/gdrive_usfd/data/BarrelEmerge/paramsearch_dncomp')
 #plt.savefig('plots/pe_{0}_patterns.png'.format(fileend))
 
 plt.show()
