@@ -224,27 +224,15 @@ connections. To introduce competition also in terms of axon branching we
 %
 \begin{equation} \label{eq:comp}
 \color{blue}
-\chi_i(\mb{x}, t) = \frac{\bar{a}_i F}{N-1} \nabla \hat{a}_i
-\color{black}
-\end{equation}
-
-%
-\cmnt{where $F$ is a parameter and $\bar{a}_i$ is a bounded version of $a_i$
-  obtained by passing the branching density through the sigmoid function}
-%
-\begin{equation} \label{eq:abar}
-\color{blue}
-  \bar{a}_i = \frac{2}{1+\mathrm{e}^{5 - 0.5 a_i}}.
+\chi_i(\mb{x}, t) = \frac{a_i F}{N-1} \nabla \hat{a}_i,
 \color{black}
 \end{equation}
 %
-\cmnt{In this expression for $\bar{a}_i$ (only), we model the idea
- that there must be an upper bound on the axonal branching density.}
-
-\cmnt{which contributes to the \emph{flux of axonal branching} by making branching
-  density for each projection `flow away' from regions} where the branches of
-other projections are dense. Note that this operation is local to individual
-afferent projections.
+\cmnt{which contributes to the \emph{flux of axonal branching} by making
+  branching density for each projection `flow away' from regions} where the
+branches of other projections are dense. \cmnt{$F$ parameterizes the strength
+  of this competitive interaction.} Note that this operation is local to
+individual afferent projections.
 
 The only differences between thalamic projections are their strengths of
 interaction with the guidance fields, $\gamma$, hence any reliable differences
@@ -259,7 +247,7 @@ at the coordinates of 41 barreloid centers recreated from
 
 A cortical boundary enclosing 41 corresponding barrels was traced from a
 cytochrome oxidase stain from \cite{zheng_signal_2001}, and
-Eqs.~\ref{eq:dc}--\ref{eq:norm} were solved for $N=41$ projections on the
+Eqs.~\ref{eq:dc}--\ref{eq:comp} were solved for $N=41$ projections on the
 resulting domain, using $M=2$ linear signalling gradients aligned with the
 anterior-posterior and medial-lateral axes. From random initial conditions for
 $a(\mb{x},0)$ and $c(\mb{x},0)$, a clear Voronoi-like tesselation emerged
