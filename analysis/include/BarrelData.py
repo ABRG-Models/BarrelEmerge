@@ -289,7 +289,9 @@ class BarrelData:
                 for i in range(0, self.N): # np.shape(self.c)[0] should be 41
                     if i == imax:
                         continue
-                    csum -= cc[i]
+                    # Have to guard against the odd trash value in cc
+                    if (cc[i] >= 0.0) and (cc[i] <= 1.0):
+                        csum -= cc[i]
                 self.locn[hnum, tidx] = csum
                 hnum += 1
                 # Add csum to tcsum
