@@ -47,8 +47,7 @@ k_vals = [ 3.0 ]
 #
 # Filename format is like: pe_dncomp_D0.0631_ep300_ab0.01_k3
 # Filename format is like: pe_comp2_D0.0631_F1_ab0.01_k3
-#basedir = '/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore_comp2/'
-basedir = '/home/seb/paramexplore_comp2/'
+basedir = '/home/seb/paramexplore_comp2_linmax/'
 table = []
 for logdirname in os.listdir(basedir):
 
@@ -201,7 +200,7 @@ for logdirname in os.listdir(basedir):
         table.append (tableline)
 
 import csv
-with open(('postproc/paramsearch_k{0}_comp2.csv'.format(k_vals[0])), 'w', newline='\n') as csvfile:
+with open(('postproc/paramsearch_k{0}_comp2_linmax.csv'.format(ff_k)), 'w', newline='\n') as csvfile:
     cw = csv.writer (csvfile, delimiter=',')
     cw.writerow (['k','D','alphabeta','alpha','beta','epsilon','t','hondadelta','sos_dist','area_diff','F','localization'])
     for tableline in table:
