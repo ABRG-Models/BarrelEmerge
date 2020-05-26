@@ -85,13 +85,6 @@ public:
      */
     //@{
 
-    //! Set either sigmoid_rolloff to be true...
-#ifdef SIGMOID_ROLLOFF_FOR_A
-# undef SIGMOID_ROLLOFF_FOR_A
-#endif
-    //! ...OR linear_max to be true, to put a bound on a in the competition term in J_i
-#define LINEAR_MAX 1
-
     /*!
      * This is updated wrt rd_james.h as it has the additional terms
      *
@@ -102,6 +95,13 @@ public:
      * spacegrad2D().  Output: this->divJ
      *
      * Stable with dt = 0.0001;
+     *
+     * In the competition term, it's possible to set \bar{a} equal to either sigmoid
+     * transfer function of {a} with SIGMOID_ROLLOFF_FOR_A (which maxes out at 2.0) or a
+     * linear transfer function of {a} with a maximum of 2.0 with LINEAR_MAX. Do so when
+     * compiling with, e.g. -DLINEAR_MAX. Initially, I thought a transfer function was
+     * necessary, but it is not (though use of a transfer function does extend the range
+     * of parameters for which this model is stable).
      */
     virtual void compute_divJ (std::vector<Flt>& fa, unsigned int i) {
 

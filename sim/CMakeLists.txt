@@ -32,6 +32,15 @@ add_executable(james_comp2c james1.cpp)
 target_compile_definitions(james_comp2c PUBLIC FLT=float COMP2)
 target_link_libraries(james_comp2c ${MORPH_LDFLAGS})
 
+# Comp 2 with linear max and graphics
+add_executable(james_comp2_linmax james1.cpp)
+target_compile_definitions(james_comp2_linmax PUBLIC FLT=float COMPILE_PLOTTING COMP2 LINEAR_MAX)
+target_link_libraries(james_comp2_linmax ${MORPH_LDFLAGS} ${OPENGL_LIBRARIES})
+# Comp 2 with linear max and no graphics
+add_executable(james_comp2_linmaxc james1.cpp)
+target_compile_definitions(james_comp2_linmaxc PUBLIC FLT=float COMP2 LINEAR_MAX)
+target_link_libraries(james_comp2_linmaxc ${MORPH_LDFLAGS})
+
 # Divisive normalization of a_i
 add_executable(james_divnorm james1.cpp)
 target_compile_definitions(james_divnorm PUBLIC FLT=float COMPILE_PLOTTING DIVNORM)
