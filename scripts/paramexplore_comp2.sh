@@ -57,7 +57,7 @@ for D in 0.03 0.06 0.12 0.25 0.5 1.0; do  # 0.03 never works; should go one high
 
             cat > configs/rat/paramexplore/${JSON} <<EOF
 {
-    "steps" : 25000,
+    "steps" : 50000,
     "logevery": 5000,
     "overwrite_logs": true,
     //"logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore/",
