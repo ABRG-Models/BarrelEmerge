@@ -1468,7 +1468,7 @@ about Eq.~\ref{eq:da_comp2_elife}: I included a scalar parameter $F$ to modify
 the relative contribution of this term; and $\bar{a}_i$ is the result of
 passing $a_i$ through a sigmoidal transfer function (see Eq.~\ref{eq:abar})
 which I found necessary to prevent the term from becoming numerically
-unstable.
+unstable.*
 
 I passed Eq.~\ref{eq:da_comp2_elife} over for the preprint, because the
 competition it produced seemed weak, and I was relying on the development of
@@ -1478,6 +1478,17 @@ After re-examining the effect of \code{rd\_james\_comp2}, which expresses
 Eq.~\ref{eq:da_comp2_elife}, I found that it does provide competition enough
 to generate a barrel-field-like ordering, when the argmaxes of the $N$ $c_i$
 values are plotted, as in the preprint.
+
+*: Ah, no sigmoid transfer function required. With $\bar{a}_i = a_i$ the
+ system runs successfully, although for a limited parameter range. The system
+ can be made slightly more stable by making
+%
+\begin{equation}
+\begin{split}
+\bar{a}_i & = a_i, a<a_{max} \\
+          & = a_{max}, a\geq a_{max}
+\end{split}
+\end{equation}
 
 %
 % BIBLIOGRAPHY
