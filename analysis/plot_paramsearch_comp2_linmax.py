@@ -32,7 +32,7 @@ matplotlib.rc('font', **fnt)
 #
 
 # Cols in sdata are: k,D,alphabeta,alpha,beta,epsilon,t,hondadelta,sos_dist,area_diff
-sdata = np.genfromtxt ('postproc/paramsearch_k3.0_comp2.csv', delimiter=",", names=True)
+sdata = np.genfromtxt ('postproc/paramsearch_k3.0_comp2_linmax.csv', delimiter=",", names=True)
 # sdata is a numpy 'structured array' with named fields.
 
 #
@@ -50,7 +50,7 @@ if compute_param_tuples:
     # Lets have a little function to set up param_tuples automatically.
 
     # Set the centre box parameters
-    F = 0.19    # doesn't change
+    F = 1.2    # doesn't change
     _ab = 0.18 # then 0.3981 #2.51189# 0.3981   # centre ab - vary with row
     _D = 0.5  # centre D - vary with col
 
@@ -94,23 +94,23 @@ else:
 
 F1 = plt.figure (figsize=(20,12))
 #                        col        x    y            k  t
-pp.paramplot (sdata, F1, 'F', 'D', 'alphabeta', 3, timepoint, param_tuples, 0, 0);
-plt.savefig('plots/comp2_{0}_heatmaps_Fcols.png'.format(fileend))
+pp.paramplot (sdata, F1, 'F', 'D', 'alphabeta', 3, timepoint, param_tuples, 0, 0, 'plasma');
+plt.savefig('plots/comp2_linmax_{0}_heatmaps_Fcols.png'.format(fileend))
 
 F2 = plt.figure (figsize=(20,12))
-pp.paramplot (sdata, F2, 'alphabeta', 'D', 'F', 3, timepoint, param_tuples, 0, 0);
-plt.savefig('plots/comp2_{0}_heatmaps_abcols.png'.format(fileend))
+pp.paramplot (sdata, F2, 'alphabeta', 'D', 'F', 3, timepoint, param_tuples, 0, 0, 'plasma');
+plt.savefig('plots/comp2_linmax_{0}_heatmaps_abcols.png'.format(fileend))
 
 F3 = plt.figure (figsize=(20,12))
-pp.paramplot (sdata, F3, 'D', 'alphabeta', 'F', 3, timepoint, param_tuples, 0, 0);
-plt.savefig('plots/comp2_{0}_heatmaps_Dcols.png'.format(fileend))
+pp.paramplot (sdata, F3, 'D', 'alphabeta', 'F', 3, timepoint, param_tuples, 0, 0, 'plasma');
+plt.savefig('plots/comp2_linmax_{0}_heatmaps_Dcols.png'.format(fileend))
 
 # Optional map plots:
-do_map = 0
-if do_map:
+do_map_plots = 0
+if do_map_plots:
     F4 = plt.figure (figsize=(20,12))
-    pp.mapplot (F4, timepoint, param_tuples, '/home/seb/paramexplore_comp2')
-    plt.savefig('plots/comp2_{0}_patterns.png'.format(fileend))
+    pp.mapplot (F4, timepoint, param_tuples, '/home/seb/paramexplore_comp2_linmax')
+    plt.savefig('plots/comp2_linmax_{0}_patterns.png'.format(fileend))
 
 plt.show()
 exit (0)
