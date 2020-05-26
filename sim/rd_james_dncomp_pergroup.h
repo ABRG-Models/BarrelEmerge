@@ -6,7 +6,7 @@
 #include "rd_james_dncomp.h"
 
 template <class Flt>
-class RD_James_dncomp2 : public RD_James_dncomp<Flt>
+class RD_James_dncomp_pergroup : public RD_James_dncomp<Flt>
 {
 public:
 
@@ -23,7 +23,7 @@ public:
     //@}
     //@}
 
-    RD_James_dncomp2 (void)
+    RD_James_dncomp_pergroup (void)
         : RD_James_dncomp<Flt>() {
     }
 
@@ -181,4 +181,4 @@ public:
         }
     }
 
-}; // RD_James_dncomp2
+}; // RD_James_dncomp_pergroup

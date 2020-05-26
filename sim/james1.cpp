@@ -31,8 +31,8 @@
 //! Include the relevant reaction diffusion class
 #if defined DIVNORM
 #include "rd_james_divnorm.h"
-#elif defined DNCOMP2
-#include "rd_james_dncomp2.h"
+#elif defined DNCOMP_PERGROUP
+#include "rd_james_dncomp_pergroup.h"
 #elif defined DNCOMP
 #include "rd_james_dncomp.h"
 #elif defined COMP2
@@ -225,7 +225,7 @@ int main (int argc, char **argv)
     const double D = conf.getDouble ("D", 0.1);
     const FLT k = conf.getDouble ("k", 3.0);
 
-#if defined DNCOMP || defined DNCOMP2
+#if defined DNCOMP || defined DNCOMP_PERGROUP
     const FLT l = conf.getDouble ("l", 1.0);
     const FLT m = conf.getDouble ("m", 1e-8);
     const double E = conf.getDouble ("E", 0.0);
@@ -304,8 +304,8 @@ int main (int argc, char **argv)
      */
 #if defined DIVNORM
     RD_James_divnorm<FLT> RD;
-#elif defined DNCOMP2
-    RD_James_dncomp2<FLT> RD;
+#elif defined DNCOMP_PERGROUP
+    RD_James_dncomp_pergroup<FLT> RD;
 #elif defined DNCOMP
     RD_James_dncomp<FLT> RD;
 #elif defined COMP2
@@ -340,7 +340,7 @@ int main (int argc, char **argv)
     // After allocate(), we can set up parameters:
     RD.set_D (D);
 
-#if defined DNCOMP || defined DNCOMP2
+#if defined DNCOMP || defined DNCOMP_PERGROUP
     DBG2 ("Setting RD.l to " << l);
     RD.l = l;
     RD.m = m;
@@ -375,11 +375,11 @@ int main (int argc, char **argv)
         DBG2 ("Set xinit["<<i<<"] to " << gp.x);
         gp.y = v.get("yinit", 0.0).asDouble();
         RD.initmasks.push_back (gp);
-#if defined DNCOMP || defined DNCOMP2
+#if defined DNCOMP || defined DNCOMP_PERGROUP
         RD.epsilon[i] = v.get("epsilon", 0.0).asDouble();
         DBG2 ("Set RD.epsilon["<<i<<"] to " << RD.epsilon[i]);
 #endif
-#if defined DNCOMP2
+#if defined DNCOMP_PERGROUP
         RD.xi[i] = v.get("xi", 0.0).asDouble();
         DBG2 ("Set RD.xi["<<i<<"] to " << RD.xi[i]);
 #endif
