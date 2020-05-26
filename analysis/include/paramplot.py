@@ -18,7 +18,7 @@ import sebcolour as sc
 # format (epsilon, alphabeta, D), then boxes are drawn around the heat
 # map blocks corresponding to those parameters. Use this in
 # combination with the mapplot() function.
-def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = [], col_trim_front = 0, col_trim_back = 0):
+def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = [], col_trim_front = 0, col_trim_back = 0, cmapstr='viridis'):
 
     print ('initial sdata shape: {0}'.format(np.shape (sdata)))
 
@@ -158,7 +158,7 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = 
 
 
         ax = F.add_subplot(4,len(colall),i)
-        im = ax.imshow (hond6x6, cmap='magma_r', vmin=honda_min, vmax=honda_max,
+        im = ax.imshow (hond6x6, cmap=cmapstr+'_r', vmin=honda_min, vmax=honda_max,
                         extent=plot_extent, interpolation='none')
         tlist = []
         for j in range(0,len(x_all)): tlist.append('{0:.2f}'.format(x6x6[0,j]))
@@ -174,7 +174,7 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = 
         ax.set_xlabel (x_tag)
 
         ax1 = F.add_subplot(4,len(colall),len(colall)+i)
-        im1 = ax1.imshow (sos6x6, cmap='plasma_r', vmin=sos_min, vmax=sos_max,
+        im1 = ax1.imshow (sos6x6, cmap=cmapstr+'_r', vmin=sos_min, vmax=sos_max,
                         extent=plot_extent, interpolation='nearest')
         tlist = []
         for j in range(0,len(x_all)): tlist.append('{0:.2f}'.format(x6x6[0,j]))
@@ -187,7 +187,7 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = 
         ax1.set_xlabel(x_tag)
 
         ax2 = F.add_subplot(4,len(colall),(2*len(colall))+i)
-        im2 = ax2.imshow (area6x6, cmap='viridis_r', vmin=area_min, vmax=area_max,
+        im2 = ax2.imshow (area6x6, cmap=cmapstr+'_r', vmin=area_min, vmax=area_max,
                         extent=plot_extent, interpolation='nearest')
         tlist = []
         for j in range(0,len(x_all)): tlist.append('{0:.2f}'.format(x6x6[0,j]))
@@ -200,7 +200,7 @@ def paramplot (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = 
         ax2.set_xlabel(x_tag)
 
         ax3 = F.add_subplot(4,len(colall),(3*len(colall))+i)
-        im3 = ax3.imshow (locn6x6, cmap='viridis', vmin=locn_min, vmax=locn_max,
+        im3 = ax3.imshow (locn6x6, cmap=cmapstr, vmin=locn_min, vmax=locn_max,
                               extent=plot_extent, interpolation='nearest')
         tlist = []
         for j in range(0,len(x_all)): tlist.append('{0:.2f}'.format(x6x6[0,j]))
