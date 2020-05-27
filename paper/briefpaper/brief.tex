@@ -209,30 +209,20 @@ approach the number of barrels, further extensions were required.
 The term in parentheses in Eq.\,\ref{eq:dc} represents competition between
 thalamocortical projections for a limited availability of cortical
 connections. To introduce competition also in terms of axon branching we
-% EITHER
-%%redefined
-%%%
-%%\begin{equation} \label{eq:comp}
-%%\color{blue}
-%%\chi_i(\mb{x}, t) = \frac{\bar{a}_i F}{N-1} \nabla \sum_{j\ne i}{a_j}
-%%\color{black}
-%%\end{equation}
-% OR
-\cmnt{first define a quantity to represent the branching density of all
-  \emph{other} TC types; $\hat{a}_i = \sum_{j\ne i}{a_j}$; then set the term
-  $\chi_i$ to be}
+redefined
 %
 \begin{equation} \label{eq:comp}
 \color{blue}
-\chi_i(\mb{x}, t) = \frac{a_i F}{N-1} \nabla \hat{a}_i,
+\chi_i(\mb{x}, t) = \frac{\epsilon a_i}{N-1} \nabla \textstyle\sum_{j\ne i}{a_j}
 \color{black}
 \end{equation}
 %
-\cmnt{which contributes to the \emph{flux of axonal branching} by making
-  branching density for each projection `flow away' from regions} where the
-branches of other projections are dense. \cmnt{$F$ parameterizes the strength
-  of this competitive interaction.} Note that this operation is local to
-individual afferent projections.
+\cmnt{which contributes to the \emph{flux of axonal branching} as an
+  additional diffusion-like term which makes the branching density for a given
+  projection `flow away' from regions} where the branches of other projections
+become dense. \cmnt{$\epsilon$ parameterizes the strength of this competitive
+  interaction.} Note that this operation is local to individual afferent
+projections.
 
 The only differences between thalamic projections are their strengths of
 interaction with the guidance fields, $\gamma$, hence any reliable differences
@@ -257,6 +247,16 @@ within $\approx 3000$ iterations (Fig.\,1D). A measure of the difference
 in shape between real and simulated barrels revealed a strong correspondence
 (see Fig.\,1D).
 
+\begin{figure}
+\begin{fullwidth}
+\includegraphics[width=\linewidth]{./paramsweep.png}
+\caption{\cmnt{\textbf{A} Parameter sweep caption goes here}}
+\label{fig:paramsweep}
+\end{fullwidth}
+\end{figure}
+
+\cmnt{Parameter sweep paragraph goes here.}
+
 To further investigate the interplay of genetic and intrinsic mechanisms we
 simulated a seminal barrel duplication experiment
 \citep{shimogori_fibroblast_2005}, first by solving on a cortical domain
@@ -276,9 +276,9 @@ fields.
 The present results suggest that the key requirements for the emergence of
 realistic barrel patterning are i) at each cortical location thalamocortical
 projections compete for a limited number of available synaptic connections
-(Eqs.~\ref{eq:dc}--\ref{eq:da}), ii) at each location the branching rate of a
+(Eqs.~\ref{eq:dc}--\ref{eq:da}), ii) \cmnt{review} at each location the branching rate of a
 given projection is reduced by the density of other projections
-(Eq.\,\ref{eq:comp}), and iii) the branch density of each projection is
+(Eq.\,\ref{eq:comp}), and iii)  \cmnt{review} the branch density of each projection is
 conserved over time (Eq.\,\ref{eq:norm}).
 
 The emergence of barrels in simulation required competition between thalamic

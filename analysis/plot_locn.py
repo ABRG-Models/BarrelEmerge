@@ -79,7 +79,8 @@ sf.plotPoly()
 # Or single contour for each field
 for ii in range(0,bdo.N):
     c = bdo.c[ii,:,0]
-    sf.addContour (c, 0.2, 'white', 1.0, ii, False);
+    ccontour = 0.95*np.max(c)
+    sf.addContour (c, ccontour, 'white', 1.0, ii, False);
 
 sf.addOuterBoundary()
 

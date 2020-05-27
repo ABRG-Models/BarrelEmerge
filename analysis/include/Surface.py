@@ -35,7 +35,7 @@ class Surface:
         # If the graph wants a title
         self.title = ''
         # The colourmap to use when plotting z values vs x,y (i.e., when c is empty)
-        self.cmap = plt.cm.jet
+        self.cmap = plt.cm.viridis
         # Scale bar parameters
         self.showScalebar = False
         # Scale bar coordinate 1
@@ -67,7 +67,7 @@ class Surface:
         # Set True to draw a box or something around the map in an ID colour
         self.drawid = False
         self.idcolour = 0
-        self.textid = True
+        self.textid = False
         self.idlabel = ''
 
         # The data to plot

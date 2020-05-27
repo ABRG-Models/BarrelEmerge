@@ -576,14 +576,14 @@ def paramplot_pub (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuple
             for j in range(0,len(y_all)): tlist.append(''.format(y6x6[j,0]))
         plt.yticks (y_tick_list, tlist)
         if coltarg == colall[0]:
-            ax.set_ylabel('{0}'.format(_y_tag))
-            ax.text(-3.5,2.5,'Honda $\delta$',rotation=90,va='center')
+            ax.set_ylabel('{0}'.format(_y_tag),rotation=0)
+            ax.text(-3.5,2.5,'$\delta$',rotation=0)
 
         if column_tag == 'alphabeta':
             alphbet = coltarg
             alph = 20.0*alphbet
             bet = 3.0/alphbet
-            ax.set_title ('$\\alpha$={2:.2f} $\\beta$={1:.2f}'.format(column_tag, bet, alph))
+            ax.set_title ('$\\alpha$ = {2:.2f}   $\\beta$ = {1:.2f}'.format(column_tag, bet, alph))
         else:
             ax.set_title ('{0}={1:.1f}'.format(column_tag,coltarg))
 
@@ -600,8 +600,8 @@ def paramplot_pub (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuple
             for j in range(0,len(y_all)): tlist.append(''.format(y6x6[j,0]))
         plt.yticks (y_tick_list, tlist)
         if coltarg == colall[0]:
-            ax2.set_ylabel('{0}'.format(_y_tag))
-            ax2.text(-3.5,2.5,'Area difference',rotation=90,va='center')
+            ax2.set_ylabel('{0}'.format(_y_tag), rotation=0)
+            ax2.text(-3.5,2.5,'$\eta$',rotation=0)
 
         ax3 = F.add_subplot(graph_rows,len(colall),(2*len(colall))+i)
         im3 = ax3.imshow (locn6x6, cmap=cmapstr, vmin=locn_min, vmax=locn_max,
@@ -633,12 +633,8 @@ def paramplot_pub (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuple
         plt.yticks (y_tick_list, tlist)
 
         if coltarg == colall[0]:
-            ax3.set_ylabel('{0}'.format(_y_tag))
-            # Not going to use lines to show stuff:
-            #l1 = lines.Line2D([-3,-3], [0.03,3.0], lw=3.0, color='b', alpha=1.0)
-            #l1.set_clip_on(False)
-            #ax3.add_line(l1)
-            ax3.text(-3.5,2.5,'Localization',rotation=90,va='center')
+            ax3.set_ylabel('{0}'.format(_y_tag), rotation=0)
+            ax3.text(-3.5,2.5,'$\omega$',rotation=0)
         ax3.set_xlabel(x_tag, labelpad=10)
 
         # Draw any labels
