@@ -39,9 +39,10 @@ bdo = bd.BarrelData()
 bdo.loadAnalaysisData = True
 bdo.loadPositions = True # for totalarea
 bdo.loadGuidance = False
-bdo.loadSimData = False
+bdo.loadSimData = True # For localization
 bdo.loadDivisions = False
 bdo.load (logdirname)
+bdo.computeLocalization() # can then get bdo.locn_vs_t
 
 # The ID colour maps
 do_maps = 0
@@ -79,58 +80,14 @@ print ('t shape {0}, t1_masked shape {1}'.format(np.shape(bdo.t),np.shape(t1_mas
 
 sos_dist = sos_dist.compressed()
 hondadelta = hondadelta.compressed()
+area_diff = area_diff.compressed()
 
 print ('sos_dist shape: {0}, area_diff shape: {1}'.format (np.shape (sos_dist), np.shape (area_diff[:,0])))
 
-xmax = max(t1_masked)
-xmax = xmax[0]
-print ('xmax = {0}'.format(xmax))
-ax1 = F1.add_subplot(1,1,1)
-l1, = ax1.plot(t1_masked, hondadelta, 'o', markersize=12, color=col.black, label='Honda $\delta$')
+# Show graph in 10 k steps
+t1_masked = t1_masked / 10000
 
 np.save ('postproc/honda_t.npy', t1_masked)
 np.save ('postproc/honda_delta.npy', hondadelta)
-
-#l2, = ax1.plot((0,xmax), (0.003, 0.003), '-.', color=col.black, linewidth=3, label="excellent (cells)")
-# 0.054 is Senft and Woolsey's result for barrels (mouse 0,054, other rodents about 0.055)
-l2, = ax1.plot((0,xmax), (0.055, 0.055), '--', color=col.black, linewidth=3, label="good (S&W)")
-l3, = ax1.plot((0,xmax), (0.15, 0.15), '-.', color=col.black, linewidth=3, label="awful (non Dirichlet)")
-
-ax2 = ax1.twinx()
-
-area_measure = area_diff[:,0]*sos_dist
-
-#l4, = ax2.plot(t1_masked, sos_dist, '^', markersize=12, color=col.blue)
-l4, = ax2.plot(t1_masked, area_measure, 'v', markersize=12, color=col.blue)
-np.save ('postproc/area_measure.npy', area_measure)
-
-sos_min = np.min(sos_dist)
-sos_end = sos_dist[-1]
-
-#l5, = ax1.plot(t1, edgedev, 'o', label='Edge deviation')
-#l6, = ax1.plot(t1, domarea/totalarea[0], 'go', label='Domain area proportion')
-#l7, = ax1.plot(t1, s_resid, 's', label='Summed residuals to vert. line fits')
-#l8, = ax1.plot(t1, s_resid_h, 's', label='Summed residuals to horz. line fits')
-
-ax1.set_xlabel ('Steps')
-ax1.set_ylabel ('$\delta$')
-ax2.set_ylabel ('$\zeta$')
-ax2.tick_params (axis='y', labelcolor=col.blue)
-ax1.set_xlim ((0,xmax))
-ax1.set_ylim ((0,0.3))
-ax2.set_ylim ((0,500))
-ax1.set_xticks ((0,0.5*xmax,xmax))
-#plt.legend()
-
-#ax2 = F1.add_subplot(1,1,1, sharex=ax1, frameon=False)
-#l4, = ax2.plot(t1, numdoms, 'ro', label='Number of domains')
-#ax2.yaxis.tick_right()
-#ax2.yaxis.set_label_position("right")
-#ax2.set_ylabel ('Num doms')
-#plt.legend((l1, l2, l3, l4), ('Honda Delta','Edge deviation','Domain area prop.','Number of doms'), loc='right')
-
-plt.tight_layout()
-
-plt.savefig('plots/hondadelta{0}.svg'.format(suffix), transparent=True)
-
-plt.show()
+np.save ('postproc/area_diff.npy', area_diff)
+np.save ('postproc/locn_vs_t.npy', bdo.locn_vs_t)
