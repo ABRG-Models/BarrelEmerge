@@ -23,7 +23,7 @@ import paramplot as pp
 matplotlib.use('TkAgg') # cleaner likely to work
 #matplotlib.use('Qt5Agg') # Ugly, sometimes default
 #matplotlib.use('TkCairo') # Install pycairo to be able to use this
-fs = 12
+fs = 10
 fnt = {'family' : 'DejaVu Sans',
        'weight' : 'regular',
        'size'   : fs}
@@ -99,13 +99,23 @@ else:
     fileend = 't{0}'.format(timepoint)
 
 F1 = plt.figure (figsize=(20,12))
-#                        col        x    y            t
-pp.paramplot (sdata, F1, 'epsilon', 'D', 'alphabeta', 3, timepoint, param_tuples);
-plt.savefig('plots/dncomp_{0}_heatmaps.png'.format(fileend))
+#                        col        x    y            k  t
+pp.paramplot (sdata, F1, 'epsilon', 'D', 'alphabeta', 3, timepoint, param_tuples, 0, 0, 'hot');
+plt.savefig('plots/dncomp_{0}_heatmaps_Fcols.png'.format(fileend))
 
-#F2 = plt.figure (figsize=(20,12))
-#pp.mapplot (F2, timepoint, param_tuples, '/home/seb/gdrive_usfd/data/BarrelEmerge/paramsearch_dncomp')
-#plt.savefig('plots/pe_{0}_patterns.png'.format(fileend))
+F2 = plt.figure (figsize=(20,12))
+pp.paramplot (sdata, F2, 'alphabeta', 'D', 'epsilon', 3, timepoint, param_tuples, 0, 0, 'hot');
+plt.savefig('plots/dncomp_{0}_heatmaps_abcols.png'.format(fileend))
+
+F3 = plt.figure (figsize=(20,12))
+pp.paramplot (sdata, F3, 'D', 'alphabeta', 'epsilon', 3, timepoint, param_tuples, 0, 0, 'hot');
+plt.savefig('plots/dncomp_{0}_heatmaps_Dcols.png'.format(fileend))
+
+do_maps = 0
+if do_maps:
+    F4 = plt.figure (figsize=(20,12))
+    pp.mapplot (F4, timepoint, param_tuples, '/home/seb/gdrive_usfd/data/BarrelEmerge/paramsearch_dncomp')
+    plt.savefig('plots/pe_{0}_patterns.png'.format(fileend))
 
 plt.show()
 exit (0)

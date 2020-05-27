@@ -24,7 +24,7 @@ import paramplot as pp
 
 # Set plotting defaults
 matplotlib.use('TkAgg') # cleaner likely to work
-fnt = {'family' : 'DejaVu Sans', 'weight' : 'regular', 'size' : 12 }
+fnt = {'family' : 'DejaVu Sans', 'weight' : 'regular', 'size' : 10 }
 matplotlib.rc('font', **fnt)
 
 #

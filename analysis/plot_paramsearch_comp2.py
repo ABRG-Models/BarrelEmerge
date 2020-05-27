@@ -24,7 +24,7 @@ import paramplot as pp
 
 # Set plotting defaults
 matplotlib.use('TkAgg') # cleaner likely to work
-fnt = {'family' : 'DejaVu Sans', 'weight' : 'regular', 'size' : 12 }
+fnt = {'family' : 'DejaVu Sans', 'weight' : 'regular', 'size' : 10 }
 matplotlib.rc('font', **fnt)
 
 #
@@ -50,7 +50,7 @@ if compute_param_tuples:
     # Lets have a little function to set up param_tuples automatically.
 
     # Set the centre box parameters
-    F = 0.19    # doesn't change
+    F = 1.2    # doesn't change
     _ab = 0.18 # then 0.3981 #2.51189# 0.3981   # centre ab - vary with row
     _D = 0.5  # centre D - vary with col
 
@@ -106,7 +106,7 @@ pp.paramplot (sdata, F3, 'D', 'alphabeta', 'F', 3, timepoint, param_tuples, 0, 0
 plt.savefig('plots/comp2_{0}_heatmaps_Dcols.png'.format(fileend))
 
 # Optional map plots:
-do_map = 0
+do_map = 1
 if do_map:
     F4 = plt.figure (figsize=(20,12))
     pp.mapplot (F4, timepoint, param_tuples, '/home/seb/paramexplore_comp2')
