@@ -67,6 +67,8 @@ class Surface:
         # Set True to draw a box or something around the map in an ID colour
         self.drawid = False
         self.idcolour = 0
+        self.textid = True
+        self.idlabel = ''
 
         # The data to plot
         self.x = np.array([])
@@ -300,14 +302,25 @@ class Surface:
             print ('mapwidth: {0} mapheight: {1}'.format (mapwidth, mapheight))
             idrect = Rectangle ((min(self.x)-2*self.hextohex_d, min(self.y)-2*self.hextohex_d), mapwidth, mapheight, linewidth=4, edgecolor=self.idcolour, facecolor='none', zorder=10000)
             self.f1.add_patch (idrect)
+            #self.f1.text (min(self.x)+2*em, min(self.y)+10*em, 'D={0:.1f} F={1:.1f}, k={2:.1f} alpha={3:.1f}, beta={4:.1f}'.format(self.D, self.F, self.k, self.alpha, self.beta), fontsize=8, verticalalignment='center', horizontalalignment='left', color='k');
+
+        if self.textid:
             # Also draw some text
             em = 5*self.hextohex_d
-            self.f1.text (min(self.x)+em, min(self.y)+5*em, 'D={0:.1f}'.format(self.D), fontsize=10, horizontalalignment='left', color='k');
-            self.f1.text (min(self.x)+em, min(self.y)+4*em, 'F={0:.1f}'.format(self.F), fontsize=10, horizontalalignment='left', color='k');
-            self.f1.text (min(self.x)+em, min(self.y)+3*em, 'k={0:.1f}'.format(self.k), fontsize=10, horizontalalignment='left', color='k');
-            self.f1.text (min(self.x)+em, min(self.y)+2*em, r'$\alpha$={0:.1f}'.format(self.alpha), fontsize=10, horizontalalignment='left', color='k');
-            self.f1.text (min(self.x)+em, min(self.y)+1*em, r'$\beta$={0:.1f}'.format(self.beta), fontsize=10, horizontalalignment='left', color='k');
-            #self.f1.text (min(self.x)+2*em, min(self.y)+10*em, 'D={0:.1f} F={1:.1f}, k={2:.1f} alpha={3:.1f}, beta={4:.1f}'.format(self.D, self.F, self.k, self.alpha, self.beta), fontsize=8, verticalalignment='center', horizontalalignment='left', color='k');
+            lineoffs = 5
+            if self.idlabel:
+                lineoffs = 6
+                self.f1.text (min(self.x)+em, min(self.y)+lineoffs*em, '{0}'.format(self.idlabel), fontsize=10, horizontalalignment='left', color='k');
+                lineoffs -= 1
+            self.f1.text (min(self.x)+em, min(self.y)+lineoffs*em, 'D={0:.1f}'.format(self.D), fontsize=10, horizontalalignment='left', color='k');
+            lineoffs -= 1
+            self.f1.text (min(self.x)+em, min(self.y)+lineoffs*em, 'F={0:.1f}'.format(self.F), fontsize=10, horizontalalignment='left', color='k');
+            lineoffs -= 1
+            self.f1.text (min(self.x)+em, min(self.y)+lineoffs*em, 'k={0:.1f}'.format(self.k), fontsize=10, horizontalalignment='left', color='k');
+            lineoffs -= 1
+            self.f1.text (min(self.x)+em, min(self.y)+lineoffs*em, r'$\alpha$={0:.1f}'.format(self.alpha), fontsize=10, horizontalalignment='left', color='k');
+            lineoffs -= 1
+            self.f1.text (min(self.x)+em, min(self.y)+lineoffs*em, r'$\beta$={0:.1f}'.format(self.beta), fontsize=10, horizontalalignment='left', color='k');
 
         self.f1.set_aspect ('equal')
         self.F1.tight_layout()
