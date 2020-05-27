@@ -67,7 +67,7 @@ if compute_param_tuples:
     print ('param_tuples: {0}'.format (param_tuples))
 else:
     # Manually set the list
-    # F, ab, D
+    #                 F,    ab,   D
     param_tuples = [ (0.03, 0.06, 0.03), (0.48, 0.18, 0.12), (0.48, 0.18, 1.0) ]
 
 # Set the timepoint for which we'll plot
@@ -80,7 +80,7 @@ else:
     fileend = 't{0}'.format(timepoint)
 
 F1 = plt.figure (figsize=(20,10))
-pp.paramplot_pub (sdata, F1, 'alphabeta', 'D', 'F', 3, timepoint, param_tuples, 0, 0, 'viridis', '/home/seb/paramexplore_comp2');
+pp.paramplot_pub (sdata, F1, 'alphabeta', 'D', 'F', 3, timepoint, param_tuples, 0, 0, 'viridis');
 plt.savefig('plots/paramsweep.svg')
 
 # map plots to go under the param sweep colour grids
