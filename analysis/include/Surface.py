@@ -25,7 +25,7 @@ class Surface:
         # A second fontsize
         self.fs2 = 20
         # Should the axes be shown or not?
-        self.showAxes = True
+        self.showAxes = False
         # Flag to show ID names or not
         self.showNames = True
         # Show boundaries between the hexes of different regions?
