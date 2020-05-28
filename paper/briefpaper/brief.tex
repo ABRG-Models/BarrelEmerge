@@ -82,7 +82,7 @@ shrink, shift, and even duplicate barrels
 \citep{assimacopoulos_fibroblast_2012}.
 
 The barrel boundaries form a Voronoi tessellation across the cortical sheet
-\citep{senft_mouse_1991} (Fig.\,1A), suggesting that barreloid topology is
+\citep{senft_mouse_1991} (Fig.\,\ref{fig:main}A), suggesting that barreloid topology is
 preserved in the projection of thalamocortical axons into the cortex, and that
 a barrel forms by lateral axon branching from an initial center-point that
 ceases upon contact with axons branching from adjacent centers.  However, the
@@ -158,36 +158,42 @@ right quantifies the coupling between axon branching and synaptogenesis. Here
 \section{Results}
 
 \begin{figure}
-\begin{fullwidth}
-%\includegraphics[width=\linewidth]{./MainFig.png}
-\includegraphics[width=\linewidth]{./MainFig_superlowres.png}
-\caption{\textbf{A} Left shows a cytochrome oxidase stain obtained from rat S1
-  by \cite{zheng_signal_2001}, with black lines to delineate barrels and to
-  measure departure (Honda-$\delta$; see \citealp{senft_mouse_1991}) from a
-  perfect Voronoi tesselation. Right shows the initial distribution of axon
-  branching density ($a$) for one thalamocortical projection, and two
-  molecular guidance fields ($\rho$). \textbf{B} The strengths of interaction
-  $\gamma$ with fields $\rho_1$ and $\rho_2$ are indicated for each of 41
-  projections by the lengths of green and blue arrows respectively, assuming
-  that similar fields aligned to the posterior-anterior and medial-lateral
-  axes in the ventroposterior medial nucleus of the thalamus are sampled at
-  the locations of putative barreloid centers (reconstructed from
-  \citealp{haidarliu_size_2001}). \textbf{C} Simulation results for parameters
-  $N=41$, $\alpha=3$, $\beta=20$, $k=3$, $D=0.2$, $\gamma\in\pm 2$,
-  $\epsilon=150$ and $\delta{t}=0.0001$. Colours indicate the thalamic
-  projection for which the connection density is maximal, black lines
-  delineate boundaries, and overlaid contours show $c>0.5$ (see Movie
-  S1). \textbf{D} Red dots show the Honda-$\delta$ metric obtained from
-  simulation approaching that obtained from barrels in \textbf{A} (dotted
-  line); black squares measure the correspondence between the real and
-  simulated barrel shapes, $\eta$ (the product of the sum of squared
-  differences between real and simulated centers and the sum of differences in
-  area; units mm$^4$). \textbf{E} Guidance fields and emergent barrel pattern
-  in a Fgf8 misexpression experiment
-  (c.f. \citealp{assimacopoulos_fibroblast_2012}), simulated by reflecting
-  $\rho_1$ at the join ($\epsilon=80$). All scale bars 1mm.}
-\label{fig:main}
-\end{fullwidth}
+  \begin{fullwidth}
+    %\includegraphics[width=\linewidth]{./MainFig.png}
+    \includegraphics[width=\linewidth]{./MainFig_superlowres.png}
+    \caption{\textbf{A} Left shows a cytochrome oxidase stain obtained from rat S1
+      by \cite{zheng_signal_2001}, with black lines to delineate barrels and to
+      measure departure (Honda-$\delta$; see \citealp{senft_mouse_1991}) from a
+      perfect Voronoi tesselation. Right shows the initial distribution of axon
+      branching density ($a$) for one thalamocortical projection, and two
+      molecular guidance fields ($\rho$), \cmnt{where the domain $S$ has been
+        traced from \textbf{A}}. \textbf{B} The strengths of interaction
+      $\gamma$ with fields $\rho_1$ and $\rho_2$ are indicated for each of 41
+      projections by the lengths of green and blue arrows respectively, assuming
+      that similar fields aligned to the posterior-anterior and medial-lateral
+      axes in the ventroposterior medial nucleus of the thalamus are sampled at
+      the locations of putative barreloid centers (reconstructed from
+      \citealp{haidarliu_size_2001}). \textbf{C} Simulation results for parameters
+      \cmnt{$N=41$, $\alpha=3.6$, $\beta=16.67$, $k=3$, $D=0.5$, $\gamma\in\pm 2$,
+      $\epsilon=1.2$} and $\delta{t}=0.0001$. Colours indicate the thalamic
+      projection for which the connection density is maximal and black lines
+      delineate boundaries (see Movie
+      S1). \textbf{D} Red dots show the Honda-$\delta$ metric obtained from
+      simulation approaching that obtained from barrels in \textbf{A} (dotted
+      line); black squares \cmnt{give a} measure \cmnt{of} the correspondence
+      between the real and
+      simulated barrel shapes, $\eta$ (the sum of differences in
+      area; units \cmnt{mm$^2$});
+      \cmnt{grey hexagons show the measure of localization, $\omega =
+        \oiint_{S} \left( \mathrm{max}_i(c_i)/\sum_{i=1}^{N} c_i\right) \mathrm{d}S$. }
+      \textbf{E} \cmnt{The localization measure plotted across the domain
+        shows that the structure in the connection density which has developed
+        by $t=50000$ is largely absent at $t=1000$. The
+        colour map
+        indicates the values of  $\mathrm{max}_i(c_i)/\sum_{i=1}^{N} c_i$. Overlaid
+        contours show $c_i > 0.95 \mathrm{max}_i(c_i)$.} All scale bars 1mm.}
+    \label{fig:main}
+  \end{fullwidth}
 \end{figure}
 
 First we verified that all results established by \cite{karbowski_model_2004}
@@ -212,9 +218,9 @@ connections. To introduce competition also in terms of axon branching we
 redefined
 %
 \begin{equation} \label{eq:comp}
-\color{blue}
-\chi_i(\mb{x}, t) = \frac{\epsilon a_i}{N-1} \nabla \textstyle\sum_{j\ne i}{a_j}
-\color{black}
+  \color{blue}
+  \chi_i(\mb{x}, t) = \frac{\epsilon a_i}{N-1} \nabla \textstyle\sum_{j\ne i}{a_j}
+  \color{black}
 \end{equation}
 %
 \cmnt{which contributes to the \emph{flux of axonal branching} as an
@@ -233,7 +239,7 @@ determined by the concentration of a similar molecule at its thalamic origin,
 i.e., the putative barreloid center. As such, two orthogonal linear thalamic
 gradients were defined, from which 41 pairs of $\gamma$ values were sampled,
 at the coordinates of 41 barreloid centers recreated from
-\cite{haidarliu_size_2001} (Fig.\,1B).
+\cite{haidarliu_size_2001} (Fig.\,\ref{fig:main}B).
 
 A cortical boundary enclosing 41 corresponding barrels was traced from a
 cytochrome oxidase stain from \cite{zheng_signal_2001}, and
@@ -241,21 +247,32 @@ Eqs.~\ref{eq:dc}--\ref{eq:comp} were solved for $N=41$ projections on the
 resulting domain, using $M=2$ linear signalling gradients aligned with the
 anterior-posterior and medial-lateral axes. From random initial conditions for
 $a(\mb{x},0)$ and $c(\mb{x},0)$, a clear Voronoi-like tesselation emerged
-(Fig.\,1C; see Movie S1). A reduction in the Honda delta metric (see
+(Fig.\,\ref{fig:main}C; see Movie S1). A reduction in the Honda delta metric (see
 \citealp{senft_mouse_1991}) confirmed that a `good' Voronoi pattern emerged
-within $\approx 3000$ iterations (Fig.\,1D). A measure of the difference
+within \cmnt{$\approx 10000$} iterations (Fig.\,\ref{fig:main}D). A measure of the difference
 in shape between real and simulated barrels revealed a strong correspondence
-(see Fig.\,1D).
+(see Fig.\,\ref{fig:main}D).
 
+% Full page width
 \begin{figure}
-\begin{fullwidth}
-\includegraphics[width=\linewidth]{./paramsweep.png}
-\caption{\cmnt{\textbf{A} Parameter sweep caption goes here}}
-\label{fig:paramsweep}
-\end{fullwidth}
+  \begin{fullwidth}
+    \includegraphics[width=\linewidth]{./paramsweep.png}
+    \caption{\cmnt{\textbf{A} Parameter sweep caption goes here}}
+    \label{fig:paramsweep}
+  \end{fullwidth}
 \end{figure}
 
 \cmnt{Parameter sweep paragraph goes here.}
+
+% This figure is text width
+\begin{center}
+  \includegraphics[width=\linewidth]{./Fig3.png}
+  \captionof{figure}{Guidance
+    fields and emergent barrel pattern in a Fgf8 misexpression experiment
+    (c.f. \citealp{assimacopoulos_fibroblast_2012}), simulated by reflecting
+    $\rho_1$ from Fig.\,\ref{fig:main}A at the join ($\epsilon=80$).}
+  \label{fig:fgf8}
+\end{center}
 
 To further investigate the interplay of genetic and intrinsic mechanisms we
 simulated a seminal barrel duplication experiment
@@ -266,7 +283,7 @@ two boundaries only, i.e., no duplication. However, merging the two fields to
 create an extended mirror-symmetric boundary shape, with an anterior-posterior
 guidance field reflected at the join, gave rise to two mirror-symmetrical
 barrel fields comprising 2N barrels, i.e., two cortical fields for each
-thalamic projection (Fig.\,1E). Together these results suggest that by the
+thalamic projection (Fig.\,\ref{fig:main}E). Together these results suggest that by the
 misexpression of Fgf8, \cite{shimogori_fibroblast_2005}
 effectively created one large barrel field rather than two distinct cortical
 fields.
@@ -276,10 +293,10 @@ fields.
 The present results suggest that the key requirements for the emergence of
 realistic barrel patterning are i) at each cortical location thalamocortical
 projections compete for a limited number of available synaptic connections
-(Eqs.~\ref{eq:dc}--\ref{eq:da}), ii) \cmnt{review} at each location the branching rate of a
+(Eqs.~\ref{eq:dc}--\ref{eq:da}), ii) at each location the branching rate of a
 given projection is reduced by the density of other projections
-(Eq.\,\ref{eq:comp}), and iii)  \cmnt{review} the branch density of each projection is
-conserved over time (Eq.\,\ref{eq:norm}).
+(Eq.\,\ref{eq:comp}), and iii) \cmnt{REVIEW: No longer true. Try plotting $a$
+  vs $t$} the branch density of each projection is conserved over time.
 
 The emergence of barrels in simulation required competition between thalamic
 projections in terms of synaptic connectivity and also competition in terms of
@@ -317,10 +334,10 @@ additional developmental mechanisms.
 The cortical sheet was modelled as a two dimensional hexagonal lattice, which
 simplifies the computation of the 2D Laplacian. Within a boundary traced
 around the edge of a
-rat barrel field (Fig.\,1A) we set the hex-to-hex distance
+rat barrel field (Fig.\,\ref{fig:main}A) we set the hex-to-hex distance
 $d$ to 0.03\,mm, which resulted in a lattice containing 6515 hexes for the
-simulations shown in Figs.\,1A,C \& D and 12739 hexes for the Fgf8
-misexpression study shown in Fig.\,1E. Each hex contained 82 time-dependent
+simulations shown in Figs.\,\ref{fig:main}A,C \& D and 12739 hexes for the Fgf8
+misexpression study shown in Fig.\,\ref{fig:fgf8}. Each hex contained 82 time-dependent
 variables: 41 branching densities ($a_i$) and 41 connection densities ($c_i$).
 The rate of change of each of the time-dependent variables (Eqs.\,\ref{eq:dc}
 \& \ref{eq:da}) was computed using a fourth-order Runge-Kutta method.
@@ -431,14 +448,14 @@ the boundary.
 All code required to reproduce these results is available at
 \url{https://github.com/ABRG-Models/BarrelEmerge/tree/eLife}. The
 computations described in (i), (ii) and (iii) may be found in the class method
-\code{RD\_James::compute\_divJ()} which calculates \code{term1}, \code{term2}
+\code{RD\_James\cmnt{\_comp2}::compute\_divJ()} which calculates \code{term1}, \code{term2}
 and \code{term3}, respectively.
 
 \section{Movie S1 caption}
 
-Movie corresponding to Fig.\,1C in the main paper. Simulation parameters were
-$N=41$, $\alpha=3$, $\beta=20$, $k=3$, $D=0.2$, $\gamma\in\pm 2$,
-$\epsilon=150$ and $\delta{t}=0.0001$. Colours indicate the thalamic
+Movie corresponding to Fig.\,\ref{fig:main}C in the main paper. Simulation parameters were
+$N=41$, $\alpha=3.6$, $\beta=16.67$, $k=3$, $D=0.5$, $\gamma\in\pm 2$,
+$\epsilon=1.2$ and $\delta{t}=0.0001$. Colours indicate the thalamic
 projection for which the connection density is maximal, black lines delineate
 boundaries, and overlaid contours show $c>0.5$. The final frame in the movie
 is step 25,000 of the simulation.

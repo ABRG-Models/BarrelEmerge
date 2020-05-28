@@ -264,11 +264,43 @@ class BarrelData:
 
     #
     # New analysis. For each hex, compute a localization variable which is
-    # N*c[i_max] - sum(c[i!=i_max])
+    # N*c[i_max] - sum(c[i!=i_max]) WHERE sum(c) was first normalized
     #
     # Call this function after loading data (being sure to set loadSimData
     # True)
     #
+    def computeLocalization_subtractive (self):
+        if self.loadSimData == False:
+            print ('Error: You have to ensure that you load simulation data by setting loadSimData True before calling load()')
+            return
+        numtimes = np.shape(self.c)[2]
+        self.locn = np.zeros([self.nhex, numtimes], dtype=float)
+        self.locn_vs_t = np.zeros((numtimes), dtype=float)
+        for tidx in range(0, numtimes): # Loop over all times available
+            # This loop runs for each TIME
+            cs = self.c[:,:,tidx]
+            csum = 0.0
+            allhexes_csum = 0.0 # A sum of the "localization measure" over all hexes
+            hnum = int(0);
+            for cc in cs.T:
+                # This loop runs for each HEX
+                imax = int(np.argmax(cc))
+                sum_cc = np.sum(cc)
+                csum = cc[imax] * self.N / sum_cc # do 41 * c_max - sum(c_others)
+                for i in range(0, self.N): # np.shape(self.c)[0] should be 41
+                    if i == imax:
+                        continue
+                    # Have to guard against the odd trash value in cc
+                    if (cc[i] >= 0.0) and (cc[i] <= 1.0):
+                        csum -= (cc[i] / sum_cc)
+                self.locn[hnum, tidx] = csum
+                hnum += 1
+                # Add csum to tcsum
+                allhexes_csum += csum
+            # Now have tcsum for this particular t value; append it to the object:
+            self.locn_vs_t[tidx] = allhexes_csum/float(self.nhex)
+
+    # Localisation measure:
     def computeLocalization (self):
         if self.loadSimData == False:
             print ('Error: You have to ensure that you load simulation data by setting loadSimData True before calling load()')
@@ -285,13 +317,8 @@ class BarrelData:
             for cc in cs.T:
                 # This loop runs for each HEX
                 imax = int(np.argmax(cc))
-                csum = cc[imax] * self.N # do 41 * c_max - sum(c_others)
-                for i in range(0, self.N): # np.shape(self.c)[0] should be 41
-                    if i == imax:
-                        continue
-                    # Have to guard against the odd trash value in cc
-                    if (cc[i] >= 0.0) and (cc[i] <= 1.0):
-                        csum -= cc[i]
+                sum_cc = np.sum(cc)
+                csum = cc[imax] / sum_cc
                 self.locn[hnum, tidx] = csum
                 hnum += 1
                 # Add csum to tcsum

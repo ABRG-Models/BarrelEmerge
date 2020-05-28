@@ -37,7 +37,7 @@ F1 = plt.figure (figsize=(20,10))
 pp.paramplot_pub (sdata, F1, 'alphabeta', 'D', 'F', 3, timepoint, param_tuples, 0, 0, 'viridis');
 plt.savefig('plots/paramsweep.svg')
 
-do_maps = 0
+do_maps = 1
 if do_maps:
     # map plots to go under the param sweep colour grids
     map_i = 1 # map index
@@ -89,9 +89,9 @@ if do_maps:
         sf.textid = False
         sf.plotPoly()
         # A single contour for each field
-        for ii in range(0,bdo.N):
-            c = bdo.c[ii,:,0]
-            sf.addContour (c, 0.5, 'white', 1.0, ii, False);
+        #for ii in range(0,bdo.N):
+        #    c = bdo.c[ii,:,0]
+        #    sf.addContour (c, 0.5, 'white', 1.0, ii, False);
         # The nice grey outer boundary
         sf.addOuterBoundary()
 

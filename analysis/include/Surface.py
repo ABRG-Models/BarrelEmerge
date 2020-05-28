@@ -115,7 +115,7 @@ class Surface:
     #
     def initFig (self):
         # Create the actual figure.
-        fnt = {'family' : 'DejaVu Sans',
+        fnt = {'family' : 'Arial',
                'weight' : 'regular',
                'size'   : self.fs}
         matplotlib.rc ('font', **fnt)
@@ -265,12 +265,20 @@ class Surface:
             count = 0
             cmap_ = matplotlib.cm.get_cmap('Greys')
 
-            print ('In Surface. domcentres shape: {0}'.format (self.domcentres))
+            #print ('In Surface. domcentres: {0}'.format (self.domcentres))
             for dc in self.domcentres:
                 print('dc: {0}'.format(dc))
 
                 # Compute a greyscale colour for the text from the raw index:
-                cidx = np.float32(count)/np.float32(N)
+                if len(self.z) > 0:
+                    # loop through x and y, checking for index for which x==domcentres.x and y==domcentres.y
+                    cidx = 0
+                    for i in range(0, self.nhex):
+                        if self.x[i] == dc[0] and self.y[i] == dc[1]:
+                            # Hit
+                            cidx = c[i]
+                else:
+                    cidx = np.float32(count)/np.float32(N)
                 # or using the sum of the rgb values
                 cidx = (self.gammaColour_byid[cidx][0] + self.gammaColour_byid[cidx][1] + self.gammaColour_byid[cidx][2]) / 3.0
 
@@ -324,6 +332,11 @@ class Surface:
 
         self.f1.set_aspect ('equal')
         self.F1.tight_layout()
+
+    def addColorBar (self):
+        cb_ax = self.F1.add_axes([0.05, 0.05, 0.05, 0.3])
+        cbar = self.F1.colorbar (plt.cm.ScalarMappable(norm=matplotlib.colors.Normalize(), cmap=self.cmap), cax=cb_ax)
+
 
     def addOuterBoundary (self):
         for i in range(self.nhex):

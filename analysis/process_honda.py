@@ -80,7 +80,6 @@ print ('t shape {0}, t1_masked shape {1}'.format(np.shape(bdo.t),np.shape(t1_mas
 
 sos_dist = sos_dist.compressed()
 hondadelta = hondadelta.compressed()
-area_diff = area_diff.compressed()
 
 print ('sos_dist shape: {0}, area_diff shape: {1}'.format (np.shape (sos_dist), np.shape (area_diff[:,0])))
 

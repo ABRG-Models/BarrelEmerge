@@ -85,9 +85,11 @@ def content():
     #sf.addContour (maxc[:,0], 0.4, 'grey', 1.6);
 
     # Or single contour for each field
-    for ii in range(0,bdo.N):
-        c = bdo.c[ii,:,0]
-        sf.addContour (c, 0.5, 'white', 1.0, ii, False);
+    do_contour = 0
+    if do_contour:
+        for ii in range(0,bdo.N):
+            c = bdo.c[ii,:,0]
+            sf.addContour (c, 0.5, 'white', 1.0, ii, False);
 
     sf.addOuterBoundary()
 

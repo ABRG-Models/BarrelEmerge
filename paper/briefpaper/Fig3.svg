@@ -10,13 +10,16 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="543.06244mm"
-   height="253.35493mm"
-   viewBox="0 0 543.06244 253.35493"
+   width="522.41986mm"
+   height="256.33725mm"
+   viewBox="0 0 522.41987 256.33725"
    version="1.1"
    id="svg3401"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="Fig3.svg">
+   sodipodi:docname="Fig3.svg"
+   inkscape:export-filename="/home/seb/models/BarrelEmerge/paper/briefpaper/Fig3.png"
+   inkscape:export-xdpi="200.03569"
+   inkscape:export-ydpi="200.03569">
   <defs
      id="defs3395" />
   <sodipodi:namedview
@@ -27,20 +30,21 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="456.02661"
-     inkscape:cy="526.37709"
+     inkscape:cx="1243.8041"
+     inkscape:cy="563.71536"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     fit-margin-top="0"
-     fit-margin-left="0"
-     fit-margin-right="0"
-     fit-margin-bottom="0"
+     fit-margin-top="0.1"
+     fit-margin-left="0.1"
+     fit-margin-right="0.1"
+     fit-margin-bottom="0.1"
      inkscape:window-width="2493"
      inkscape:window-height="1376"
      inkscape:window-x="67"
      inkscape:window-y="27"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1"
+     inkscape:snap-global="false" />
   <metadata
      id="metadata3398">
     <rdf:RDF>
@@ -49,7 +53,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -57,7 +61,14 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(183.0848,52.683417)">
+     transform="translate(162.07758,55.729532)">
+    <rect
+       style="opacity:0.99299999;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.17946208;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect4630"
+       width="521.69067"
+       height="255.60808"
+       x="-161.713"
+       y="-55.364948" />
     <image
        y="-49.217751"
        x="-13.226927"
@@ -182,5 +193,12 @@
         </g>
       </a>
     </g>
+    <rect
+       style="opacity:0.99299999;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.52916682;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:fill markers stroke"
+       id="rect11777"
+       width="520.74573"
+       height="255.60808"
+       x="-161.713"
+       y="-55.364948" />
   </g>
 </svg>

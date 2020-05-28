@@ -9,6 +9,9 @@ import BarrelData as bd
 import plot as pt
 import sebcolour as sc
 
+# IMPORTANT for svg output of text as things that can be edited in inkscape
+plt.rcParams['svg.fonttype'] = 'none'
+
 # Get target x/y hex to show trace for and the time step to show the
 # map for from the arguments:
 if len(sys.argv) < 3:
@@ -77,14 +80,20 @@ sf.plotPoly()
 #sf.addContour (maxc[:,0], 0.4, 'grey', 1.6);
 
 # Or single contour for each field
-for ii in range(0,bdo.N):
-    c = bdo.c[ii,:,0]
-    ccontour = 0.95*np.max(c)
-    sf.addContour (c, ccontour, 'white', 1.0, ii, False);
+do_contours = 1
+if do_contours:
+    for ii in range(0,bdo.N):
+        c = bdo.c[ii,:,0]
+        ccontour = 0.95*np.max(c)
+        sf.addContour (c, ccontour, 'white', 1.0, ii, False);
 
 sf.addOuterBoundary()
 
 mapname = 'plots/{0}_locn_{1:06d}.png'.format(os.path.basename(logdirname), ti)
+plt.savefig (mapname, dpi=300, transparent=True)
+
+sf.addColorBar()
+mapname = 'plots/{0}_locn_{1:06d}.svg'.format(os.path.basename(logdirname), ti)
 plt.savefig (mapname, dpi=300, transparent=True)
 
 plt.show()

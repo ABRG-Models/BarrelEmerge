@@ -60,7 +60,7 @@ ax2.tick_params (axis='y', labelcolor=col.black)
 ax1.set_xlim ((0,xmax))
 ax1.set_ylim ((0,0.35))
 ax2.set_ylim ((0,1.2))
-ax3.set_ylim ((0,8.5))
+ax3.set_ylim ((0,0.28))
 ax2.set_xlim ((0,xmax))
 
 lw = 2
