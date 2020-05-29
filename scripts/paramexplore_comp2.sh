@@ -43,6 +43,8 @@ EPSILON=150 # Doesn't do anything, but is incorporated into the JSON anyway
 
 DT=0.0001
 HEXHEXD=0.03
+# Boundary fall off distance - should be at least 3 times HEXHEXD
+BFD=0.1
 
 for D in 0.03 0.06 0.12 0.25 0.5 1.0; do  # 0.03 never works; should go one higher too
     for F in 0.03 0.08 0.19 0.48 1.2 3.0; do
@@ -60,11 +62,11 @@ for D in 0.03 0.06 0.12 0.25 0.5 1.0; do  # 0.03 never works; should go one high
     "steps" : 50000,
     "logevery": 5000,
     "overwrite_logs": true,
-    //"logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore/",
-    "logbase" : "/home/seb/paramexplore_comp2/",
+    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore_comp2/",
+    //"logbase" : "/home/seb/paramexplore_comp2/",
     "hextohex_d" : ${HEXHEXD}, // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/rat_barrels/wb_110405_Dirichlet.svg",
-    "boundaryFalloffDist" : 0.1,
+    "boundaryFalloffDist" : ${BFD},
     "G" : 1.0,     // gamma gain
     "dt" : ${DT}, // Timestep. Defaults to 0.00001 if omitted here
 
