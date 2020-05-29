@@ -64,7 +64,7 @@ for D in 0.03 0.06 0.12 0.25 0.5 1.0; do  # 0.03 never works; should go one high
     "logbase" : "/home/seb/paramexplore_comp2/",
     "hextohex_d" : ${HEXHEXD}, // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/rat_barrels/wb_110405_Dirichlet.svg",
-    "boundaryFalloffDist" : 0.03,
+    "boundaryFalloffDist" : 0.1,
     "G" : 1.0,     // gamma gain
     "dt" : ${DT}, // Timestep. Defaults to 0.00001 if omitted here
 

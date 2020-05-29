@@ -583,7 +583,7 @@ def paramplot_pub (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuple
             alphbet = coltarg
             alph = 20.0*alphbet
             bet = 3.0/alphbet
-            ax.set_title ('$\\alpha$ = {2:.2f}   $\\beta$ = {1:.2f}'.format(column_tag, bet, alph))
+            ax.set_title ('$\\alpha / \\beta$ = {0:.2f}'.format(alph/bet))
         else:
             ax.set_title ('{0}={1:.1f}'.format(column_tag,coltarg))
 

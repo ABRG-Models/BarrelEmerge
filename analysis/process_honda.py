@@ -39,7 +39,7 @@ bdo = bd.BarrelData()
 bdo.loadAnalaysisData = True
 bdo.loadPositions = True # for totalarea
 bdo.loadGuidance = False
-bdo.loadSimData = True # For localization
+bdo.loadSimData = True # For localization and a
 bdo.loadDivisions = False
 bdo.load (logdirname)
 bdo.computeLocalization() # can then get bdo.locn_vs_t
@@ -74,6 +74,20 @@ t1_masked = bdo.t_steps[mask_combined].T
 mapdiff = bdo.mapdiff[mask_combined].T
 area_diff = bdo.area_diff[mask_combined].T
 area_diff = area_diff / np.max(area_diff)
+
+# a vs t.
+print ('a shape {0}'.format(np.shape(bdo.a)))
+# a shape: (i, hex, times).
+a_vs_t = np.zeros([np.shape(bdo.a)[0], np.shape(bdo.a)[2]], dtype=float)
+c_vs_t = np.zeros([np.shape(bdo.a)[0], np.shape(bdo.a)[2]], dtype=float)
+print ('a_vs_t shape {0}'.format(np.shape(a_vs_t)))
+# For each i, sum over hexes.
+for i in range(0, np.shape(bdo.a)[0]):
+    for t in range(0, np.shape(bdo.a)[2]):
+        a_vs_t[i,t] = np.sum(bdo.a[i,:,t])
+        c_vs_t[i,t] = np.sum(bdo.c[i,:,t])
+np.save ('postproc/a_vs_t.npy', a_vs_t)
+np.save ('postproc/c_vs_t.npy', c_vs_t)
 
 print ('t shape {0}, t1_masked shape {1}'.format(np.shape(bdo.t),np.shape(t1_masked)))
 # Remove the masked values:

@@ -58,6 +58,7 @@ sf.showAxes = False
 sf.sb1 = [-1.3, -0.9]
 sf.sb2 = [-0.3, -0.9]
 sf.sbtext = ''
+sf.cmap = plt.cm.gray
 sf.sbtpos = [-1.1, -1.1]
 sf.sblw = 5
 sf.sbfs = 48
