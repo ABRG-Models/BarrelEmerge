@@ -6,7 +6,7 @@
     "logbase" : "./logs/",
     "hextohex_d" : 0.03, // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/rat_barrels/wb_110405_Dirichlet.svg",
-    "boundaryFalloffDist" : 0.03,
+    "boundaryFalloffDist" : 0.1,
     "G" : 1.0,     // gamma gain
     "dt" : 0.0001, // Timestep. Defaults to 0.00001 if omitted here
 
