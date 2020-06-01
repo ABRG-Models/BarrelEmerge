@@ -17,7 +17,7 @@ import sebcolour
 col = sebcolour.Colour
 
 # Set plotting defaults
-fs = 32
+fs = 24
 fnt = {'family' : 'Arial',
        'weight' : 'regular',
        'size'   : fs}
@@ -59,7 +59,7 @@ for i in range(np.shape(a_vs_t)[0]):
     ax1.plot(t1_masked, a_vs_t[i,:], '-', markersize=3, color=colmap[i], label='$a_{0}$'.format(i))
 
 ax1.set_ylabel ('$\sum_{hexes} a_i$', rotation=0, labelpad=50)
-ax1.set_xlabel ('t')
+ax1.set_xlabel ('t (10k steps)')
 ax1.set_xlim ((0,xmax))
 ax1.set_ylim ((0,1800))
 for axis in ['top','bottom','left','right']:
@@ -83,7 +83,7 @@ ax3 = F1.add_subplot(1,3,3)
 for i in range(np.shape(c_vs_t)[0]):
     ax3.plot(t1_masked, a_vs_t[i,:]-c_vs_t[i,:], '-', markersize=3, color=colmap[i], label='$c_{0}$'.format(i))
 
-ax3.set_ylabel ('$\sum_{hexes} a_i-c_i$', rotation=0, labelpad=50)
+ax3.set_ylabel ('$\sum_{hexes} (a_i-c_i)$', rotation=0, labelpad=80)
 ax3.set_xlabel ('t (10k steps)')
 ax3.set_xlim ((0,xmax))
 ax3.set_ylim ((0,1800))
