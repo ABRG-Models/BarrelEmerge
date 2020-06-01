@@ -178,7 +178,7 @@ right quantifies the coupling between axon branching and synaptogenesis. Here
       projection for which the connection density is maximal and black lines
       delineate boundaries (see Movie
       S1). \textbf{D} Red dots show the Honda-$\delta$ metric obtained from
-      simulation approaching that obtained from barrels in \textbf{A} (dotted
+      simulation approaching that obtained from \cmnt{real} barrels in \textbf{A} (dotted
       line); black squares \cmnt{give a} measure \cmnt{of} the correspondence
       between the real and
       simulated barrel shapes, $\eta$ (the sum of differences in
@@ -187,7 +187,7 @@ right quantifies the coupling between axon branching and synaptogenesis. Here
         \oiint_{S} \left( \mathrm{max}_i(c_i)/\sum_{i=1}^{N} c_i\right) \mathrm{d}S$. }
       \textbf{E} \cmnt{The localization measure plotted across the domain
         shows that the structure in the connection density which has developed
-        by $t=50000$ is largely absent at $t=1000$. The
+        by $t=30000$ is largely absent at $t=1000$. The
         colour map
         indicates the values of  $\mathrm{max}_i(c_i)/\sum_{i=1}^{N} c_i$. Overlaid
         contours show $c_i > 0.95 \mathrm{max}_i(c_i)$.} All scale bars 1mm.}
@@ -248,9 +248,16 @@ anterior-posterior and medial-lateral axes. From random initial conditions for
 $a(\mb{x},0)$ and $c(\mb{x},0)$, a clear Voronoi-like tesselation emerged
 (Fig.\,\ref{fig:main}C; see Movie S1). A reduction in the Honda delta metric (see
 \citealp{senft_mouse_1991}) confirmed that a `good' Voronoi pattern emerged
-within \cmnt{$\approx 10000$} iterations (Fig.\,\ref{fig:main}D). A measure of the difference
-in shape between real and simulated barrels revealed a strong correspondence
-(see Fig.\,\ref{fig:main}D).
+within \cmnt{$\approx 20000$} iterations (Fig.\,\ref{fig:main}D). A measure of the difference
+in \cmnt{barrel area} between real and simulated barrels revealed a strong correspondence
+(see Fig.\,\ref{fig:main}D). \cmnt{In a chosen region, the ratio of the connection density
+  of the TC type $i$ which makes the densest connections to the sum of all
+  connection densities gives a measure of the localization of the connection
+density. We computed this measure across the entire barrel domain and named it $\omega$
+(Fig.\,\ref{fig:main}D). $\omega$ increases during the first $20000$ simulation
+steps and converges on a stable value. Fig.\,{fig:main}E shows
+the localization measure plotted as a luminance map, giving a more graded
+impression of the structure which develops in the system.}
 
 % Full page width
 \begin{figure}
@@ -261,7 +268,44 @@ in shape between real and simulated barrels revealed a strong correspondence
   \end{fullwidth}
 \end{figure}
 
-\cmnt{Parameter sweep paragraph goes here.}
+\cmnt{To determine the robustness of the model to its parameters, we
+  investigated its behaviour with respect to changes in the parameters $D$,
+  $\epsilon$ and the ratio of $\alpha$ to $\beta$. Fig.\,\ref{fig:paramsweep}A
+  shows the value of the metrics $\delta$, $\eta$ and $\omega$ after $30000$
+  iterations plotted as colour maps for $180$ parameter sets. Each row of maps
+  shows the results for a separate metric. Each column of maps shows
+  results for a different value of the ratio $\alpha / \beta$. The diffusion
+  parameter, $D$ varies with the $x$ axes and the strength of competition,
+  $\epsilon$ varies with the $y$ axes. The colour maps are arranged so that
+  `yellow is good'. Lower values of $\delta$ indicate good Voroni patterns and
+  are yellow. Lower values of the difference between real and simulated barrel
+  area indicates good pattern matching. Higher values of $\omega$ indicate
+  better localization and are coloured yellow. White squares indicate that the
+  simulation was not stable for that parameter set.}
+
+\cmnt{The maps indicate that the pattern is not strongly influenced by the
+  choice of $\alpha/\beta$, which was varied by 5 orders of magnitude. The
+  most Voronoi-like patterns were achieved for parameter sets for which $D$
+  and $\epsilon$ were high. The barrel area metric, $\eta$ indicates a strong
+  preference for $D\approx0.5$, although this does not give the maximally
+  localized solution, which for $D$ should be small. Thus, there is a
+  trade-off between good localization and good Voroni pattern conformation. We
+  chose the parameter set indicated by the asterisk in
+  Fig.\,\ref{fig:paramsweep}A to present in Fig.\,\ref{fig:main} because it
+  provides the best barrel area correspondence and produces a good Voronoi
+  pattern. In Fig.\,\ref{fig:paramsweep}B, we present some patterns
+  representing alternative parameter choices. Fig.\,\ref{fig:paramsweep}B i)
+  shows the simulation result with low diffusion constant, $D$. Reducing the
+  diffusion constant is equivalent to increasing the size of the domain $S$
+  and so this simulation can be thought to represent an animal with a large
+  cortical area but with unchanged cortical complexity. In this simulation, a
+  large proportion of the domain is occupied by the projections with
+  intermediate interaction parameters; those with strong interaction
+  parameters are bunched up towards the edge of the domain. A barrel pattern
+  fails to form. Fig.\,\ref{fig:paramsweep}B ii) and iii) indicate the effect
+  of varying $D$ in either direction from its optimum. ii) is a less
+  exaggerated version of the pattern in i), whereas iii) shows an expansion of
+  the outer barrels and a corresponding compression of the barrels within.}
 
 % This figure is text width
 \begin{center}
@@ -282,7 +326,7 @@ two boundaries only, i.e., no duplication. However, merging the two fields to
 create an extended mirror-symmetric boundary shape, with an anterior-posterior
 guidance field reflected at the join, gave rise to two mirror-symmetrical
 barrel fields comprising 2N barrels, i.e., two cortical fields for each
-thalamic projection (Fig.\,\ref{fig:main}E). Together these results suggest that by the
+thalamic projection (Fig.\,\ref{fig:fgf8}). Together these results suggest that by the
 misexpression of Fgf8, \cite{shimogori_fibroblast_2005}
 effectively created one large barrel field rather than two distinct cortical
 fields.
@@ -294,12 +338,8 @@ realistic barrel patterning are i) at each cortical location thalamocortical
 projections compete for a limited number of available synaptic connections
 (Eqs.~\ref{eq:dc}--\ref{eq:da}), ii) at each location the branching rate of a
 given projection is reduced by the density of other projections
-(Eq.\,\ref{eq:comp}), and iii) \cmnt{REVIEW: plotting $a(t)$, $c(t)$ and
-  $a(t)-c(t)$ showed that there was some leaking of $a$ going on at the
-  boundary; increasing the boundary fall off distance to 3 times hex to hex
-  distance reduces the leaking to a negligible amount. So the branchdesnity of
-each projections IS conserved over time.} the branch density of
-each projection is conserved over time.
+(Eq.\,\ref{eq:comp}), and iii) the branch density of each projection is
+conserved over time.
 
 The emergence of barrels in simulation required competition between thalamic
 projections in terms of synaptic connectivity and also competition in terms of

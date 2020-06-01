@@ -18,8 +18,8 @@
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="Fig3.svg"
    inkscape:export-filename="/home/seb/models/BarrelEmerge/paper/briefpaper/Fig3.png"
-   inkscape:export-xdpi="200.03569"
-   inkscape:export-ydpi="200.03569">
+   inkscape:export-xdpi="199.74001"
+   inkscape:export-ydpi="199.74001">
   <defs
      id="defs3395" />
   <sodipodi:namedview
@@ -29,9 +29,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="819.14111"
-     inkscape:cy="623.98132"
+     inkscape:zoom="0.35"
+     inkscape:cx="148.92201"
+     inkscape:cy="71.58642"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -172,15 +172,13 @@
          x="-151.87892"
          y="-32.621586">A</tspan></text>
     <g
-       id="g21510"
+       id="g21498"
        transform="translate(23.283342)">
-      <g
-         id="g21498">
-        <image
-           y="-51.756809"
-           x="-15.899622"
-           id="image17588"
-           xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAE+wAAAzkCAYAAABrNADHAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+      <image
+         width="380.68814"
+         height="246.32764"
+         preserveAspectRatio="none"
+         xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAE+wAAAzkCAYAAABrNADHAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAAuIwAALiMBeKU/dgAAADh0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uMy4xLjMsIGh0
 dHA6Ly9tYXRwbG90bGliLm9yZy+AADFEAAAgAElEQVR4nOzda7SddWHn8d8+5+RCLtwCQXLhErkJ
 RVGQZITIkQChnbaioFXHS1tkukaXI7OQWuu06786UrUOUlzD2JlqpVVYChUpLjUJCROIghACQSMY
@@ -13261,53 +13259,52 @@ AAAAAAAAAAAAgArBPgAAAAAAAAAAAAAAAAAAAAAAAACoEOwDAAAAAAAAAAAAAAAAAAAAAAAAgArB
 PgAAAAAAAAAAAAAAAAAAAAAAAACoEOwDAAAAAAAAAAAAAAAAAAAAAAAAgIr/AxZmamPH5fJQAAAA
 AElFTkSuQmCC
 "
-           preserveAspectRatio="none"
-           height="246.32764"
-           width="380.68814" />
-        <text
-           id="text16131"
-           y="155.19102"
-           x="225.05019"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;line-height:1.25;font-family:arial;-inkscape-font-specification:arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:round"
-           xml:space="preserve"><tspan
-             y="155.19102"
-             x="225.05019"
-             style="stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:round"
-             id="tspan16129"
-             sodipodi:role="line">30,000 steps</tspan></text>
-        <g
-           transform="matrix(-3.412023,-0.03942142,0.07958294,-1.6901459,657.46717,219.80693)"
-           inkscape:label="#1x0_mm"
-           id="g5321"
-           style="stroke-width:1.25735319;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none">
-          <a
-             id="a5319"
-             style="stroke-width:1.25735319;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none">
-            <g
-               id="g5317"
-               style="display:inline;stroke-width:1.25735319;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none">
-              <path
-                 sodipodi:nodetypes="cc"
-                 inkscape:connector-curvature="0"
-                 style="fill:none;stroke:#000000;stroke-width:1.25735319;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-                 d="m 153.4024,62.575642 -17.46328,0.407319"
-                 id="path5315" />
-            </g>
-          </a>
-        </g>
-      </g>
+         id="image17588"
+         x="-15.899622"
+         y="-51.756809" />
       <text
-         id="text98881-2"
-         y="-32.621586"
-         x="22.980198"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.35799837px;line-height:1.25;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.08371872;stroke-linecap:butt;stroke-linejoin:round"
-         xml:space="preserve"><tspan
-           y="-32.621586"
-           x="22.980198"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:16.07399368px;font-family:arial;-inkscape-font-specification:'arial Bold';stroke-width:0.08371872;stroke-linecap:butt;stroke-linejoin:round"
-           id="tspan98879-9"
-           sodipodi:role="line">B</tspan></text>
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;line-height:1.25;font-family:arial;-inkscape-font-specification:arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:round"
+         x="225.05019"
+         y="155.19102"
+         id="text16131"><tspan
+           sodipodi:role="line"
+           id="tspan16129"
+           style="stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:round"
+           x="225.05019"
+           y="155.19102">30,000 steps</tspan></text>
+      <g
+         style="stroke-width:1.25735319;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+         id="g5321"
+         inkscape:label="#1x0_mm"
+         transform="matrix(-3.412023,-0.03942142,0.07958294,-1.6901459,657.46717,219.80693)">
+        <a
+           style="stroke-width:1.25735319;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+           id="a5319">
+          <g
+             style="display:inline;stroke-width:1.25735319;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+             id="g5317">
+            <path
+               id="path5315"
+               d="m 153.4024,62.575642 -17.46328,0.407319"
+               style="fill:none;stroke:#000000;stroke-width:1.25735319;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+               inkscape:connector-curvature="0"
+               sodipodi:nodetypes="cc" />
+          </g>
+        </a>
+      </g>
     </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.35799837px;line-height:1.25;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.08371872;stroke-linecap:butt;stroke-linejoin:round"
+       x="28.801022"
+       y="-32.621586"
+       id="text98881-2"><tspan
+         sodipodi:role="line"
+         id="tspan98879-9"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:16.07399368px;font-family:arial;-inkscape-font-specification:'arial Bold';stroke-width:0.08371872;stroke-linecap:butt;stroke-linejoin:round"
+         x="28.801022"
+         y="-32.621586">B</tspan></text>
     <rect
        style="opacity:0.99299999;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.52916682;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:fill markers stroke"
        id="rect11777-1"
