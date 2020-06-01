@@ -47,8 +47,8 @@ k_vals = [ 3.0 ]
 #
 # Filename format is like: pe_dncomp_D0.0631_ep300_ab0.01_k3
 # Filename format is like: pe_comp2_D0.0631_F1_ab0.01_k3
-#basedir = '/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore_comp2/'
-basedir = '/home/seb/paramexplore_comp2/'
+basedir = '/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore_comp2/'
+#basedir = '/home/seb/paramexplore_comp2/'
 table = []
 for logdirname in os.listdir(basedir):
 
@@ -188,11 +188,15 @@ for logdirname in os.listdir(basedir):
     bdo.computeLocalization()
     print ("Localization vs. t: {0}".format (bdo.locn_vs_t))
 
+    print ('t_steps: {0}'.format(bdo.t_steps))
     # So, for each line in hondadeta/t/sos_dist, we can output a line of the table.
-    times = [1, 5000, 10000, 15000, 20000, 25000]
+    times = list(bdo.t_steps) #[1, 5000, 10000, 15000, 20000, 25000] # Fill from data?
     for hd in range (0, len(hondadelta)):
         #tableline = [bdo.k, bdo.D, (bdo.meanalpha/20.0), bdo.meanalpha, bdo.meanbeta, bdo.meanepsilon, t1[hd], hondadelta[hd], sos_dist[hd], area_diff[hd,0], bdo.F]
         tableline = [ff_k, ff_D, ff_ab, ff_a, ff_b, ff_ep, t1[hd], hondadelta[hd], sos_dist[hd], area_diff[hd,0], ff_F, bdo.locn_vs_t[hd]]
+        # What did this do?
+        print ('times: {0}'.format(times))
+        print ('t1[hd={0}]: {1}'.format(hd, t1[hd]))
         times.remove (t1[hd])
         table.append (tableline)
     for tt in times:
