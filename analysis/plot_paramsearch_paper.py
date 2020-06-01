@@ -30,7 +30,7 @@ sdata = np.genfromtxt ('postproc/paramsearch_k3.0_comp2.csv', delimiter=",", nam
 param_tuples = [ (0.03, 0.06, 0.03), (0.48, 0.18, 0.12), (0.48, 0.18, 1.0) ]
 
 # Set the timepoint for which we'll plot
-timepoint = 25000
+timepoint = 30000
 
 F1 = plt.figure (figsize=(20,10))
 pp.paramplot_pub (sdata, F1, 'alphabeta', 'D', 'F', 3, timepoint, param_tuples, 0, 0, 'inferno');

@@ -125,7 +125,7 @@ for logdirname in os.listdir(basedir):
     except:
         print ('Failed to load BarrelData object; continue to next')
         # Or maybe add a table line(s) with NANs to aid producing heatmaps and show where the thing failed?
-        for tt in [1, 5000, 10000, 15000, 20000, 25000]:
+        for tt in [1, 5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000]:
             tableline = [ff_k, ff_D, ff_ab, ff_a, ff_b, ff_ep, tt, math.nan, math.nan, math.nan, ff_F, math.nan]
             table.append (tableline)
         continue
