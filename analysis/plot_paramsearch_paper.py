@@ -36,13 +36,13 @@ F1 = plt.figure (figsize=(20,10))
 pp.paramplot_pub (sdata, F1, 'alphabeta', 'D', 'F', 3, timepoint, param_tuples, 0, 0, 'inferno');
 plt.savefig('plots/paramsweep.svg')
 
-do_maps = 0
+do_maps = 1
 if do_maps:
     # map plots to go under the param sweep colour grids
     map_i = 1 # map index
     for pt in param_tuples:
 
-        logdirname = '/home/seb/paramexplore_comp2/pe_comp2_D{2}_F{0}_ab{1}_k3'.format (pt[0], pt[1], pt[2])
+        logdirname = '/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore_comp2/pe_comp2_D{2}_F{0}_ab{1}_k3'.format (pt[0], pt[1], pt[2])
         print ('Plotting image from log dir {0}'.format(logdirname))
         # Read the data
         bdo = bd.BarrelData()
