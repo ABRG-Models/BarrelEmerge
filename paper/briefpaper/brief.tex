@@ -190,7 +190,7 @@ right quantifies the coupling between axon branching and synaptogenesis. Here
         by $t=30000$ is largely absent at $t=1000$. The
         colour map
         indicates the values of  $\mathrm{max}_i(c_i)/\sum_{i=1}^{N} c_i$. Overlaid
-        contours show $c_i > 0.95 \mathrm{max}_i(c_i)$.} All scale bars 1mm.}
+        contours show $c_i > 0.95 \mathrm{max}_i(c_i)$.} All scale bars 1\,mm.}
     \label{fig:main}
   \end{fullwidth}
 \end{figure}
@@ -218,7 +218,7 @@ redefined
 %
 \begin{equation} \label{eq:comp}
   \color{blue}
-  \chi_i(\mb{x}, t) = \frac{\epsilon a_i}{N-1} \nabla \textstyle\sum_{j\ne i}{a_j}
+  \chi_i(\mb{x}, t) = \frac{\epsilon a_i}{N-1} \nabla \textstyle\sum_{j\ne i}^{N}{a_j}
   \color{black}
 \end{equation}
 %
@@ -263,7 +263,20 @@ impression of the structure which develops in the system.}
 \begin{figure}
   \begin{fullwidth}
     \includegraphics[width=\linewidth]{./Fig2.png}
-    \caption{\cmnt{\textbf{A} Parameter sweep caption goes here}}
+    \caption{\cmnt{\textbf{A} Exploring the parameter space of the model given
+        in Eqs.\,1--3. Graphs show the three pattern metrics for $t=30000$
+        steps as colourmaps: Honda $\delta$ (top row) shows conformance to a
+        Voronoi pattern; $\eta$ (middle row) gives the simulated/experimental
+        barrel area difference and $\omega$ (bottom row) is a measure of
+        localization (separation) of the connection densities for the 41
+        thalamocortical axon types. For each row, lighter (orange/yellow)
+        colours imply a better model. The parameter space explored is three
+        dimensional with the parameter ratio $\alpha/\beta$ varied along the
+        columns of graphs, the competition parameter $\epsilon$ varied on the
+        $y$-axes and the diffusion constant, $D$ varied along the $x$-axes. An
+        asterisk (*) marks the parameter set displayed in
+        Fig.\,\ref{fig:main}. Boxes i), ii) and iii) mark parameter sets for which
+        corresponding patterns are shown in \textbf{B} (for $t=30000$ steps).}}
     \label{fig:paramsweep}
   \end{fullwidth}
 \end{figure}
@@ -313,7 +326,9 @@ impression of the structure which develops in the system.}
   \captionof{figure}{Guidance
     fields and emergent barrel pattern in a Fgf8 misexpression experiment
     (c.f. \citealp{assimacopoulos_fibroblast_2012}), simulated by reflecting
-    $\rho_1$ from Fig.\,\ref{fig:main}A at the join ($\epsilon=80$).}
+    $\rho_1$ from Fig.\,\ref{fig:main}A at the join. \cmnt{The model
+      parameters match those in Fig.\,\ref{fig:main}C. Scale
+      bars are 1\,mm.}}
   \label{fig:fgf8}
 \end{center}
 
@@ -391,17 +406,20 @@ Eq.\,\ref{eq:da}:
 %
 \begin{equation}
   \label{eq:divJ}
-  \nabla\vcdot\mb{J}_i(\mb{x},t) = \nabla\vcdot\left(D \nabla a_i-a_i\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x})\right).
+  \nabla\vcdot\mb{J}_i(\mb{x},t) = \nabla\vcdot\left(D \nabla
+  a_i-a_i\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x}) \color{blue}+
+  \frac{\epsilon a_i}{N-1} \nabla \hat{a}_i \color{black}\right),
 \end{equation}
 %
-Note that the sum of the guidance gradients is time-independent and define
-$\mb{g}_i(\mb{x}) \equiv \sum_{j=1}^{M} \gamma_{i,j} \nabla\rho_j(\mb{x})$.
-Because the divergence operator is distributive, Eq.\,\ref{eq:divJ} can be
-expanded using vector calculus identities (dropping references to $\mb{x}$ and
-$t$ for clarity):
+\cmnt{where we have defined $\hat{a}_i=\sum_{j\ne i}^{N}a_j$.} Note that the sum of the
+guidance gradients is time-independent and define $\mb{g}_i(\mb{x}) \equiv
+\sum_{j=1}^{M} \gamma_{i,j} \nabla\rho_j(\mb{x})$.  Because the divergence
+operator is distributive, Eq.\,\ref{eq:divJ} can be expanded using vector
+calculus identities (dropping references to $\mb{x}$ and $t$ for clarity):
 %
 \begin{equation}
-\nabla\vcdot\mb{J}_i = \nabla\vcdot\big(D \nabla a_i\big) - \nabla\vcdot\big(a_i \mb{g}_i\big).
+\nabla\vcdot\mb{J}_i = \nabla\vcdot\big(D \nabla a_i\big) -
+\nabla\vcdot\big(a_i \mb{g}_i\big) \color{blue} + \frac{\epsilon}{N-1}\nabla\vcdot\big({a}_i\nabla\hat{a}_i\big)\color{black}.
 \end{equation}
 %
 Applying the vector calculus product rule identity yields
@@ -415,15 +433,20 @@ D \dvrg a_i % term1
 a_i\nabla\vcdot\mb{g}_i % term2
 -
 \mb{g}_i\vcdot\nabla a_i % term3
+\color{blue}
++ \frac{\epsilon a_i}{N-1} \dvrg \hat{a}_i % term1_1
++ \frac{\epsilon}{N-1} \nabla \hat{a}_i\vcdot\nabla{a}_i% term1_2
+\color{black}
 ,
 \end{equation}
 %
-which has three elements to compute: i)~$D \dvrg a_i$ (the Laplacian of
+which has \cmnt{five} elements to compute: i)~$D \dvrg a_i$ (the Laplacian of
 $a_i$); ii)~a time-independent modulator of $a_i$ (because
-$\nabla\vcdot\mb{g}_i$ is a time-independent static field); and iii)~the
-scalar product of the static vector field $\mb{g}_i$ and the gradient of
-$a_i$. Each of the divergences can be simplified by means of Gauss's Theorem
-following \cite{lee_hexagonal_2014}.
+$\nabla\vcdot\mb{g}_i$ is a time-independent static field); iii)~the scalar
+product of the static vector field $\mb{g}_i$ and the gradient of $a_i$;
+\cmnt{iv)~the Laplacian of $\hat{a}_i$; and v)~a term involving the gradients
+  of $a_i$ and $\hat{a}_i$}. Each of the divergences can be simplified by
+means of Gauss's Theorem following \cite{lee_hexagonal_2014}.
 
 (i) The computation of the mean value of the Laplacian across one hexagon of
 area $\Omega = \frac{\sqrt{3}}{2}d^2$, located at position $\mb{p}_0$, with
@@ -431,16 +454,17 @@ neighbours at positions $\mb{p}_1$--$\mb{p}_6$ is
 %
 \begin{equation} \label{eq:lapl}
 \begin{split}
-\langle D \dvrg a_i(\mb{p}_0,t) \rangle  = \frac{1}{\Omega} \oiint_\Omega \dvrg a_i(\mb{x}, t) \dif\Omega & = \frac{1}{\Omega} \oint \frac{\partial a_i}{\partial \hat{\mb{n}}} \dif\gamma \\
-& \approx \frac{1}{\Omega} \sum_{j=1}^6 \frac{\partial a_i(\mb{p}_j)}{\partial \hat{\mb{n}}} \bigg\rvert_{\mathrm{mid}} v \\
-& = \frac{2}{\sqrt{3} d^2} \sum_{j=1}^6 \frac{a_i(\mb{p}_j) - a_i(\mb{p}_0)}{d} \frac{d}{\sqrt{3}} \\
-& = \frac{2}{3 d^2} \sum_{j=1}^6 \big(a_i(\mb{p}_j) - a_i(\mb{p}_0)\big),
+\langle D \dvrg a_i(\mb{p}_0,t) \rangle  = \frac{D}{\Omega} \oiint_\Omega \dvrg a_i(\mb{x}, t) \dif\Omega & = \frac{D}{\Omega} \oint \frac{\partial a_i}{\partial \hat{\mb{n}}} \dif\gamma \\
+& \approx \frac{D}{\Omega} \sum_{j=1}^6 \frac{\partial a_i(\mb{p}_j)}{\partial \hat{\mb{n}}} \bigg\rvert_{\mathrm{mid}} v \\
+& = \frac{2D}{\sqrt{3} d^2} \sum_{j=1}^6 \frac{a_i(\mb{p}_j) - a_i(\mb{p}_0)}{d} \frac{d}{\sqrt{3}} \\
+& = \frac{2D}{3 d^2} \sum_{j=1}^6 \big(a_i(\mb{p}_j) - a_i(\mb{p}_0)\big),
 \end{split}
 \end{equation}
 %
 where $v = d/\sqrt{3}$ is the length of each edge of the hexagon and $\dif\gamma$
 is an infinitesimally small distance along its perimeter.
 
+\noindent
 ii) The computation of the second term in Eq.\,\ref{eq:divJExpanded},
 $\langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}_i(\mb{p}_0)\rangle$, can be written out similarly:
 
@@ -470,13 +494,28 @@ where $g_i^x$ and $g_i^y$ are the Cartesian components of $\mb{g}_i$. Both this
 last expression, and the final expression of Eq.\,\ref{eq:lapl} can
 be computed locally, by summing over values of the nearest neighbours.
 
-iii) The final term in Eq.\,\ref{eq:divJExpanded} is the scalar product of two
+\noindent
+iii) The \cmnt{middle} term in Eq.\,\ref{eq:divJExpanded} is the scalar product of two
 vector fields which is straightforward to compute from their Cartesian
 components.
 
-By separating the computation of Eq.\,\ref{eq:divJ} into parts (i), (ii) \&
-(iii), the no-flux boundary condition,
-$\mb{J}_i(\mb{x},t)\big\rvert_{\mathrm{boundary}} = 0$, can be fulfilled. On
+\noindent
+\cmnt{iv) The same method used to compute $\dvrg a_i$ in term (i) is used to compute
+$\dvrg \hat{a}_i$.}
+
+\noindent
+\cmnt{v) The final term is the scalar product of the two vector fields $\nabla
+  a_i$ and $\nabla \hat{a}_i$.}
+
+By separating the computation of Eq.\,\ref{eq:divJ} into parts (i)--(v), the
+no-flux boundary condition,
+%
+\begin{equation}
+  \label{eq:noflux}
+  \mb{J}_i(\mb{x},t)\big\rvert_{\mathrm{boundary}} = 0,
+\end{equation}
+%
+can be fulfilled. On
 the boundary, the contribution to $\mb{J}$ resulting from the first term of
 Eq.\,\ref{eq:divJExpanded} can be fixed to 0 by the `ghost cell method' in
 which, during the evaluation of (i), a hex outside the boundary containing the
@@ -484,15 +523,17 @@ same value as the hex inside the boundary is imagined to exist such that the
 flux of $\mb{J}$ across the boundary is 0. Then, $\mb{g}_i(\mb{x})$ can be
 tailored so that it, and its normal derivative approach 0 at the boundary,
 ensuring that the second and third terms of Eq.\,\ref{eq:divJExpanded} also
-contribute nothing to $\mb{J}$. This is achieved by applying to
-$\mb{g}_i(\mb{x})$ a sharp logistic function of the distance from $\mb{x}$ to
-the boundary.
+contribute nothing to $\mb{J}$. This is achieved by \cmnt{multiplying}
+$\mb{g}_i(\mb{x})$ \cmnt{by} a sharp logistic function of the distance, $d_b$,
+from $\mb{x}$ to the boundary, \cmnt{of the form $1/[1 +
+  \exp(100(d_f-d_b))]$, where $d_f=0.1$\,mm is the boundary fall-off distance,
+  chosen to be approximately $3d$}.
 
 All code required to reproduce these results is available at
-\url{https://github.com/ABRG-Models/BarrelEmerge/tree/eLife}. The
-computations described in (i), (ii) and (iii) may be found in the class method
-\code{RD\_James\cmnt{\_comp2}::compute\_divJ()} which calculates \code{term1}, \code{term2}
-and \code{term3}, respectively.
+\url{https://github.com/ABRG-Models/BarrelEmerge/tree/eLife}. The computations
+described in (i)--(v) may be found in the class method
+\code{RD\_James\cmnt{\_comp2}::compute\_divJ()} which calculates \code{term1},
+\code{term2}, \code{term3}, \code{term1\_1} and \code{term1\_2}, respectively.
 
 \section{Movie S1 caption}
 
@@ -501,7 +542,7 @@ $N=41$, $\alpha=3.6$, $\beta=16.67$, $k=3$, $D=0.5$, $\gamma\in\pm 2$,
 $\epsilon=1.2$ and $\delta{t}=0.0001$. Colours indicate the thalamic
 projection for which the connection density is maximal, black lines delineate
 boundaries, and overlaid contours show $c>0.5$. The final frame in the movie
-is step 25,000 of the simulation.
+is step $30000$ of the simulation.
 
 \section{Acknowledgments}
 
