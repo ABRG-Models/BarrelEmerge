@@ -213,7 +213,8 @@ approach the number of barrels, further extensions were required.
 
 The term in parentheses in Eq.\,\ref{eq:dc} represents competition between
 thalamocortical projections for a limited availability of cortical
-connections. To introduce competition also in terms of axon branching we
+connections. To introduce competition also in terms of axon branching,
+\cmnt{whilst ensuring that $a_i$ is conserved over time,} we
 redefined
 %
 \begin{equation} \label{eq:comp}
@@ -224,7 +225,7 @@ redefined
 %
 \cmnt{which contributes to the \emph{flux of axonal branching} as an
   additional diffusion-like term which makes the branching density for a given
-  projection `flow away' from regions} where the branches of other projections
+  projection diffuse away from regions} where the branches of other projections
 become dense. \cmnt{$\epsilon$ parameterizes the strength of this competitive
   interaction.} Note that this operation is local to individual afferent
 projections.
@@ -235,29 +236,52 @@ between emergent cortical fields must be due to differences in these values
 only. We speculate that the contribution of a given ephrin field, to the
 velocity at which a projection migrates across the cortical subplate, is
 determined by the concentration of a similar molecule at its thalamic origin,
-i.e., the putative barreloid center. As such, two orthogonal linear thalamic
-gradients were defined, from which 41 pairs of $\gamma$ values were sampled,
-at the coordinates of 41 barreloid centers recreated from
-\cite{haidarliu_size_2001} (Fig.\,\ref{fig:main}B).
+i.e., the putative barreloid center. \cmnt{Thus, we suggest that there exist a
+  pair of signalling molecules whose expression varies linearly (with
+  orthogonal gradients) across the thalamus, analgous to the ephrins, whose
+  existence is well known in the cortex. Thalamocortical axons growing from a
+  region in the thalamus with high expression of one of these molecules will
+  interact with a corresponding cortical signalling molecule more strongly
+  than an axon emanating from a region with low expression of the thalamic
+  signal.}  \cmnt{We defined two orthogonal, linear gradients oriented in the
+  anterior-posterior and medial-lateral directions and used the coordinates of
+  41 barreloid centers recreated from \cite{haidarliu_size_2001},
+  corresponding to the macrovibrissae, to populate 41 pairs of $\gamma$
+  values.}  (Fig.\,\ref{fig:main}B). \cmnt{In other words, we simply scaled
+  the barreloid coordinates in an anterior-posterior/medial-lateral coordinate
+  system to create the $\gamma$ values. Note that positive \emph{and} negative
+  $\gamma$ values were generated; the origin of the coordinate system was
+  located at the center of the thalamic barreloid field. This prevented an
+  overall drift of the cortical pattern away from the centroid of the barrel
+  field and may explain why coordinate-giving transcription factors and the
+  ephrins are often found as pairs acting in opposing directions.}
+\cmnt{We concentrated on macrovibrissae (excluding microvibrissae) because it
+  is easy to identify their corresponding structures both in the thalamus and
+  in the cortex. We also excluded the 5 rhinal whiskers because their cortical
+  representation is in a separate island, distinct, and somewhat removed from
+  the representation of the macrovibirissae.}
 
-A cortical boundary enclosing 41 corresponding barrels was traced from a
-cytochrome oxidase stain from \cite{zheng_signal_2001}, and
-Eqs.~\ref{eq:dc}--\ref{eq:comp} were solved for $N=41$ projections on the
-resulting domain, using $M=2$ linear signalling gradients aligned with the
-anterior-posterior and medial-lateral axes. From random initial conditions for
-$a(\mb{x},0)$ and $c(\mb{x},0)$, a clear Voronoi-like tesselation emerged
-(Fig.\,\ref{fig:main}C; see Movie S1). A reduction in the Honda delta metric (see
-\citealp{senft_mouse_1991}) confirmed that a `good' Voronoi pattern emerged
-within \cmnt{$\approx 20000$} iterations (Fig.\,\ref{fig:main}D). A measure of the difference
-in \cmnt{barrel area} between real and simulated barrels revealed a strong correspondence
-(see Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of \emph{the connection density
-  of the TC type $i$ which makes the densest connections} to \emph{the sum of all
-  connection densities} gives a measure of the localization of the connection
-density. We computed this measure across the entire barrel domain and named it $\omega$
-(see Fig.\,\ref{fig:main}D, grey hexagons). $\omega$ increases during the first $20000$ simulation
-steps and converges on a stable value. Fig.\,\ref{fig:main}E shows
-the localization measure plotted as a luminance map, giving a more graded
-impression of the structure which develops in the system.}
+A cortical boundary enclosing 41 \cmnt{macrovibrissae} barrels was traced from
+a cytochrome oxidase stain from \cite{zheng_signal_2001} \cmnt{(using the
+  authors' original data)}, and Eqs.~\ref{eq:dc}--\ref{eq:comp} were solved
+for $N=$ 41 projections on the resulting domain, using $M=2$ linear signalling
+gradients aligned with the anterior-posterior and medial-lateral axes. From
+random initial conditions for $a(\mb{x},0)$ and $c(\mb{x},0)$, a clear
+Voronoi-like tesselation emerged (Fig.\,\ref{fig:main}C; see Movie S1). A
+reduction in the Honda delta metric (see \citealp{senft_mouse_1991}) confirmed
+that a `good' Voronoi pattern emerged within \cmnt{$\approx 20000$} iterations
+(Fig.\,\ref{fig:main}D).  A measure of the difference in \cmnt{barrel area}
+between real and simulated barrels revealed a strong correspondence (see
+Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
+  \emph{the connection density of the TC type $i$ which makes the densest
+    connections} to \emph{the sum of all connection densities} gives a measure
+  of the localization of the connection density. We computed this measure
+  across the entire barrel domain and named it $\omega$ (see
+  Fig.\,\ref{fig:main}D, grey hexagons). $\omega$ increases during the first
+  $20000$ simulation steps and converges on a stable
+  value. Fig.\,\ref{fig:main}E shows the localization measure plotted as a
+  luminance map, giving a more graded impression of the structure which
+  develops in the system.}
 
 % Full page width
 \begin{figure}
@@ -345,7 +369,8 @@ barrel fields comprising 2N barrels, i.e., two cortical fields for each
 thalamic projection (Fig.\,\ref{fig:fgf8}). Together these results suggest that by the
 misexpression of Fgf8, \cite{shimogori_fibroblast_2005}
 effectively created one large barrel field rather than two distinct cortical
-fields.
+fields. \cmnt{Add something about the slightly off-vertical arrangement of the
+  fields.}
 
 \section{Discussion}
 
