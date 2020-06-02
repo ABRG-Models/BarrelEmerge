@@ -250,12 +250,12 @@ $a(\mb{x},0)$ and $c(\mb{x},0)$, a clear Voronoi-like tesselation emerged
 \citealp{senft_mouse_1991}) confirmed that a `good' Voronoi pattern emerged
 within \cmnt{$\approx 20000$} iterations (Fig.\,\ref{fig:main}D). A measure of the difference
 in \cmnt{barrel area} between real and simulated barrels revealed a strong correspondence
-(see Fig.\,\ref{fig:main}D). \cmnt{In a chosen region, the ratio of the connection density
-  of the TC type $i$ which makes the densest connections to the sum of all
-  connection densities gives a measure of the localization of the connection
+(see Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of \emph{the connection density
+  of the TC type $i$ which makes the densest connections} to \emph{the sum of all
+  connection densities} gives a measure of the localization of the connection
 density. We computed this measure across the entire barrel domain and named it $\omega$
-(Fig.\,\ref{fig:main}D). $\omega$ increases during the first $20000$ simulation
-steps and converges on a stable value. Fig.\,{fig:main}E shows
+(see Fig.\,\ref{fig:main}D, grey hexagons). $\omega$ increases during the first $20000$ simulation
+steps and converges on a stable value. Fig.\,\ref{fig:main}E shows
 the localization measure plotted as a luminance map, giving a more graded
 impression of the structure which develops in the system.}
 
@@ -302,9 +302,10 @@ impression of the structure which develops in the system.}
   and $\epsilon$ were high. The barrel area metric, $\eta$ indicates a strong
   preference for $D\approx0.5$, although this does not give the maximally
   localized solution, which for $D$ should be small. Thus, there is a
-  trade-off between good localization and good Voroni pattern conformation. We
-  chose the parameter set indicated by the asterisk in
-  Fig.\,\ref{fig:paramsweep}A to present in Fig.\,\ref{fig:main} because it
+  trade-off between good localization and good Voroni pattern
+  conformation. The
+  parameter set indicated by the asterisk in
+  Fig.\,\ref{fig:paramsweep}A is presented in Fig.\,\ref{fig:main} because it
   provides the best barrel area correspondence and produces a good Voronoi
   pattern. In Fig.\,\ref{fig:paramsweep}B, we present some patterns
   representing alternative parameter choices. Fig.\,\ref{fig:paramsweep}B i)
@@ -411,7 +412,7 @@ Eq.\,\ref{eq:da}:
   \frac{\epsilon a_i}{N-1} \nabla \hat{a}_i \color{black}\right),
 \end{equation}
 %
-\cmnt{where we have defined $\hat{a}_i=\sum_{j\ne i}^{N}a_j$.} Note that the sum of the
+\cmnt{where $\hat{a}_i\equiv\sum_{j\ne i}^{N}a_j$.} Note that the sum of the
 guidance gradients is time-independent and define $\mb{g}_i(\mb{x}) \equiv
 \sum_{j=1}^{M} \gamma_{i,j} \nabla\rho_j(\mb{x})$.  Because the divergence
 operator is distributive, Eq.\,\ref{eq:divJ} can be expanded using vector
