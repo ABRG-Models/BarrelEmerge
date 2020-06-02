@@ -1,5 +1,5 @@
-# Read barreloids_vanderloos_dia_only.csv and graph, along with
-# labels. Output 4 sets of gammas assuming two orthogonal signals.
+# Read barreloids_haidarliu.csv and graph, along with labels. Output 2 sets of
+# gammas assuming two orthogonal signals which can be +ve or -ve.
 
 import numpy as np
 import matplotlib
