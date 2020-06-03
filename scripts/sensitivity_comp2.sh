@@ -163,7 +163,6 @@ EOF
             if [ $RTN -ne "0" ]; then
                 echo "Config: ${CONFIG_DIR}/${JSON} FAILED. Moving on to next."
             fi
-        done
     done
 done
 
