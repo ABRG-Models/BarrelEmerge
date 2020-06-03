@@ -32,6 +32,7 @@ F1 = plt.figure (figsize=(9,8))
 t1_masked = np.load ('postproc/honda_t.npy')
 hondadelta = np.load ('postproc/honda_delta.npy')
 area_diff =  np.load ('postproc/area_diff.npy')
+map_diff =  np.load ('postproc/map_diff.npy')
 locn_vs_t =  np.load ('postproc/locn_vs_t.npy')
 
 xmax = max(t1_masked)
@@ -45,12 +46,18 @@ l1, = ax1.plot(t1_masked, hondadelta, 'o', markersize=12, color=col.red, label='
 # 0.054 is Senft and Woolsey's result for barrels (mouse 0,054, other rodents about 0.055)
 l2, = ax1.plot((0,xmax), (0.055, 0.055), '--', color=col.red, linewidth=3, label="good (S&W)")
 
+show_mapdiff = 0
+if show_mapdiff:
+    ax4 = ax1.twinx()
+    l5, = ax4.plot(t1_masked, map_diff, 's', markersize=12, color=col.blue)
+
 ax2 = F1.add_subplot(2,1,2)
 
 l3, = ax2.plot(t1_masked, area_diff, 's', markersize=12, color=col.black)
 
 ax3 = ax2.twinx()
 l4, = ax3.plot(t1_masked, locn_vs_t, 'h', markersize=12, color=col.gray60)
+
 
 ax2.set_xlabel ('time (10k steps)')
 ax1.set_ylabel ('$\delta$', rotation=0, labelpad=30)

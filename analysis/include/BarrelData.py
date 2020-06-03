@@ -139,12 +139,13 @@ class BarrelData:
         # experimental barrels and the simulated barrels. len(t)
         self.sos_dist = np.array([])
 
-        # The 'map difference'. if Hex n expt. ID != Hex n sim. ID, then
-        # add one to this, len(t)
+        # The 'map difference'. if Hex n expt. ID != Hex n sim. ID, then add
+        # one to this, len(t). It's the proportion of hexes which are different
+        # in ID to the experimental map. Lower is better. Range [0,1].
         self.mapdiff = np.array([])
 
-        # The sum of the absolute difference in areas of each
-        # experimental domain and simulated domain. len(t)
+        # The sum (in hexes) of the absolute difference in areas of each
+        # experimental domain and simulated domain. len(t). Range [0,nhex].
         self.area_diff = np.array([])
 
         # The divisions between domains. All those paths that the C++ code
@@ -164,6 +165,7 @@ class BarrelData:
         self.meanbeta=0
         self.meanepsilon=0
 
+        self.debug = False
     #
     # Create self.t and self.t_steps, first checking to see if they've
     # already been created.
@@ -176,7 +178,8 @@ class BarrelData:
         else:
             t_cmp = np.zeros([numtimes], dtype=int)
             if np.shape(t_cmp) == np.shape(self.t_steps):
-                print ('dirich_*.h5 files and c_*.h5 files match up.')
+                if self.debug:
+                    print ('dirich_*.h5 files and c_*.h5 files match up.')
             else:
                 print ('WARNING: dirich_*.h5 files and c_*.h5 files DO NOT match up. Re-creating t...')
                 self.t_steps = np.zeros([numtimes], dtype=int)
@@ -198,7 +201,8 @@ class BarrelData:
                 self.F = 0
             self.k = jd["k"]
             tc = jd["tc"]
-            print ('tc length: {0}'.format(len(jd["tc"])))
+            if self.debug:
+                print ('tc length: {0}'.format(len(jd["tc"])))
             self.N = len(jd["tc"])
             sumalpha = 0
             sumbeta = 0
@@ -207,7 +211,10 @@ class BarrelData:
                 # Do a key-value thing
                 sumalpha = sumalpha + i["alpha"]
                 sumbeta = sumbeta + i["beta"]
-                sumepsilon = sumepsilon + i["epsilon"]
+                try:
+                    sumepsilon = sumepsilon + i["epsilon"]
+                except:
+                    pass
                 theid = count/np.float32(self.N)
                 self.id_byname[i["name"]] = theid
                 self.gamma_byname[i["name"]] = i["gamma"]
@@ -233,18 +240,28 @@ class BarrelData:
         self.loadParams()
 
         if self.loadGuidance == True:
+            if self.debug:
+                print ('readGuidance()')
             self.readGuidance()
 
         if self.loadPositions == True:
+            if self.debug:
+                print ('readPositions()')
             self.readPositions()
 
         if self.loadHexFlags == True:
+            if self.debug:
+                print ('readHexGrid()')
             self.readHexGrid()
 
         if self.loadAnalysisData == True:
+            if self.debug:
+                print ('readDirichData()')
             self.readDirichData()
 
         if self.loadSimData == True:
+            if self.debug:
+                print ('readPositions() then readSimDataFiles()')
             self.readPositions() # override position reading option in this case
             self.readSimDataFiles()
 
@@ -332,9 +349,9 @@ class BarrelData:
     def readDirichData (self):
 
         p = Path(self.logdir+'/')
-        #print ('dir files'.format(p))
 
-        print ('readDirichData: loadTimeStep = {0:05d}'.format (self.loadTimeStep))
+        if self.debug:
+            print ('readDirichData: loadTimeStep = {0:05d}'.format (self.loadTimeStep))
         if self.loadTimeStep > -1:
             globstr = 'dirich_{0:05d}.h5'.format (self.loadTimeStep)
         else:
@@ -397,8 +414,12 @@ class BarrelData:
 
             # The sum of squared distances between the simulated barrels and the experimentally determined pattern
             self.sos_dist[fi] = list(f['sos_distances'])[0]
-            self.mapdiff[fi] = list(f['mapdiff'])[0]
+            # The sum of the square of the absolute differences in area (in num
+            # hexes) between the experimental and simulated barrel fields.
             self.area_diff[fi] = list(f['area_diff'])[0]
+            # Another metric to determine the difference between the current pattern and the
+            # experimentally observed pattern, this one is based on traced barrel boundaries.
+            self.mapdiff[fi] = list(f['mapdiff'])[0]
 
             if readDomCentres:
                 # Coordinates, but need to re-cast them so that they have all ids. Or do I do that in the C++?
@@ -481,7 +502,8 @@ class BarrelData:
         files.sort()
 
         numtimes = len(files)
-        print ('Have {0} files/timepoints which are: {1}'.format(numtimes,files))
+        if self.debug:
+            print ('Have {0} files/timepoints which are: {1}'.format(numtimes,files))
 
         self.createTimeSeries (numtimes)
 

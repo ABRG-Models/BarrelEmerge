@@ -73,7 +73,8 @@ mask_combined = np.invert(hondadelta.mask | sos_dist.mask)
 t1_masked = bdo.t_steps[mask_combined].T
 mapdiff = bdo.mapdiff[mask_combined].T
 area_diff = bdo.area_diff[mask_combined].T
-area_diff = area_diff / np.max(area_diff)
+# area_diff makes sense normalized by nhex
+area_diff = area_diff / bdo.nhex
 
 # a vs t.
 print ('a shape {0}'.format(np.shape(bdo.a)))
@@ -103,4 +104,5 @@ t1_masked = t1_masked / 10000
 np.save ('postproc/honda_t.npy', t1_masked)
 np.save ('postproc/honda_delta.npy', hondadelta)
 np.save ('postproc/area_diff.npy', area_diff)
+np.save ('postproc/map_diff.npy', mapdiff)
 np.save ('postproc/locn_vs_t.npy', bdo.locn_vs_t)

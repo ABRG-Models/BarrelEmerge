@@ -245,31 +245,34 @@ i.e., the putative barreloid center. \cmnt{Thus, we suggest that there exist a
   than an axon emanating from a region with low expression of the thalamic
   signal.}  \cmnt{We defined two orthogonal, linear gradients oriented in the
   anterior-posterior and medial-lateral directions and used the coordinates of
-  $41$ barreloid centers recreated from \cite{haidarliu_size_2001},
+  41 barreloid centers recreated from \cite{haidarliu_size_2001},
   corresponding to the macrovibrissae, to populate 41 pairs of $\gamma$
   values.}  (Fig.\,\ref{fig:main}B). \cmnt{In other words, we simply scaled
   the barreloid coordinates in an anterior-posterior/medial-lateral coordinate
-  system to create the $\gamma$ values. Note that positive \emph{and} negative
-  $\gamma$ values were generated; the origin of the coordinate system was
-  located at the center of the thalamic barreloid field. This prevented an
-  overall drift of the cortical pattern away from the centroid of the barrel
-  field and may explain why coordinate-giving transcription factors and the
-  ephrins are often found as pairs acting in opposing directions.}
-\cmnt{We concentrated on macrovibrissae (excluding microvibrissae) because it
-  is easy to identify their corresponding structures both in the thalamus and
-  in the cortex. We also excluded the 5 rhinal whiskers because their cortical
-  representation is in a separate island, distinct, and somewhat removed from
-  the representation of the macrovibirissae.}
+  system to create the $\gamma$ values in the range [-2,2]. Note that positive
+  \emph{and} negative $\gamma$ values were generated; the origin of the
+  coordinate system was located at the approximate center of the thalamic
+  barreloid field. This prevented an overall drift of the cortical pattern
+  away from the centroid of the barrel field and may explain why
+  coordinate-giving transcription factors and the ephrins are often found as
+  pairs acting in opposing directions.}  \cmnt{We concentrated on
+  macrovibrissae (excluding microvibrissae) because it is easy to identify
+  their corresponding structures both in the thalamus and in the cortex. We
+  also excluded the 5 rhinal whiskers because their cortical representation is
+  in a separate island, distinct, and somewhat removed from the representation
+  of the macrovibirissae.}
 
 A cortical boundary enclosing 41 \cmnt{macrovibrissae} barrels was traced from
 a cytochrome oxidase stain from \cite{zheng_signal_2001} \cmnt{(using the
   authors' original data)}, and Eqs.~\ref{eq:dc}--\ref{eq:comp} were solved
 for $N=41$ projections on the resulting domain, using $M=2$ linear signalling
 gradients aligned with the anterior-posterior and medial-lateral axes. From
-random initial conditions for $a(\mb{x},0)$ and $c(\mb{x},0)$, a clear
-Voronoi-like tesselation emerged (Fig.\,\ref{fig:main}C; see Movie S1). A
-reduction in the Honda delta metric (see \citealp{senft_mouse_1991}) confirmed
-that a `good' Voronoi pattern emerged within \cmnt{$\approx$~20000} iterations
+random initial conditions for $a(\mb{x},0)$, \cmnt{with each hexagonal element
+  of $a_i$ set from a uniform distribution according to $0.2+{U}(0,0.2)$, and
+  $c(\mb{x},0)=0$}, a clear Voronoi-like tesselation
+emerged (Fig.\,\ref{fig:main}C; see Movie S1). A reduction in the Honda delta
+metric (see \citealp{senft_mouse_1991}) confirmed that a `good' Voronoi
+pattern emerged within \cmnt{$\approx$~20000} iterations
 (Fig.\,\ref{fig:main}D).  A measure of the difference in \cmnt{barrel area}
 between real and simulated barrels revealed a strong correspondence (see
 Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
@@ -299,7 +302,7 @@ Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
         columns of graphs, the competition parameter $\epsilon$ varied on the
         $y$-axes and the diffusion constant, $D$ varied along the $x$-axes. An
         asterisk (*) marks the parameter set displayed in
-        Fig.\,\ref{fig:main}. Boxes i), ii) and iii) mark parameter sets for which
+        Fig.\,\ref{fig:main}. Boxes i), ii)~and iii)~mark parameter sets for which
         corresponding patterns are shown in \textbf{B} (for $t=30000$ steps).}}
     \label{fig:paramsweep}
   \end{fullwidth}
@@ -340,10 +343,26 @@ Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
   large proportion of the domain is occupied by the projections with
   intermediate interaction parameters; those with strong interaction
   parameters are bunched up towards the edge of the domain. A barrel pattern
-  fails to form. Fig.\,\ref{fig:paramsweep}B ii) and iii) indicate the effect
-  of varying $D$ in either direction from its optimum. ii) is a less
-  exaggerated version of the pattern in i), whereas iii) shows an expansion of
+  fails to form. Fig.\,\ref{fig:paramsweep}B ii)~and iii)~indicate the effect
+  of varying $D$ in either direction from its optimum. ii)~is a less
+  exaggerated version of the pattern in i), whereas iii)~shows an expansion of
   the outer barrels and a corresponding compression of the barrels within.}
+
+\cmnt{We performed a sensitivity analysis to determine if the quality of the
+  pattern was sensitive to any of the following inputs: i)~The angle and
+  magnitude of each of the two guidance fields (Fig.\,\ref{fig:main}A);
+  ii)~the magnitude, offset and characteristic length scale of the noise
+  applied to $a_i$ at $t=0$; and iii)~the magnitude of each of the interaction
+  parameters, $\gamma_{i,j}$. We analysed the effect on the three pattern
+  metrics, $\delta$, $\eta$ and $\omega$ evaluated after 30000 simulation
+  steps. First, we conducted 10 runs of the simulation to evaluate the mean
+  and standard deviation (as a result of the different random initial
+  conditions for $a_i$) of the three metrics in the default model
+  (Fig.\,\ref{fig:main}C--E) which were $\delta=0.089\pm{0.004}$,
+  $\eta=0.531\pm{0.005}$ and $\omega=0.2165\pm{0.0001}$). These results are
+  not strongly affected by the random initial conditions for $a_i$ but give a
+  baseline from which to evaluate whether changes in the other inputs have a
+  statistically significant effect.}
 
 % This figure is text width
 \begin{center}
@@ -375,11 +394,11 @@ fields. \cmnt{Add something about the slightly off-vertical arrangement of the
 \section{Discussion}
 
 The present results suggest that the key requirements for the emergence of
-realistic barrel patterning are i) at each cortical location thalamocortical
+realistic barrel patterning are i)~at each cortical location thalamocortical
 projections compete for a limited number of available synaptic connections
-(Eqs.~\ref{eq:dc}--\ref{eq:da}), ii) at each location the branching rate of a
+(Eqs.~\ref{eq:dc}--\ref{eq:da}), ii)~at each location the branching rate of a
 given projection is reduced by the density of other projections
-(Eq.\,\ref{eq:comp}), and iii) the branch density of each projection is
+(Eq.\,\ref{eq:comp}), and iii)~the branch density of each projection is
 conserved over time.
 
 The emergence of barrels in simulation required competition between thalamic
