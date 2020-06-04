@@ -49,7 +49,7 @@ for c4_gamma_i in -0.6 -0.3 0 0.3 0.6; do
     "steps" : 30000,
     "logevery": 30000,
     "overwrite_logs": true,
-    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/sensitivity_guide1/",
+    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/sensitivity_gamma_c4/",
     "hextohex_d" : ${HEXHEXD}, // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/rat_barrels/wb_110405_Dirichlet.svg",
     "boundaryFalloffDist" : ${BFD},
