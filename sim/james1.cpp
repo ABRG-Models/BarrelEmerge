@@ -782,7 +782,7 @@ int main (int argc, char **argv)
 #endif // COMPILE_PLOTTING
 
         // Save data every 'logevery' steps
-        if (RD.stepCount == 1 || (RD.stepCount % logevery) == 0) {
+        if ((RD.stepCount % logevery) == 0) {
             DBG ("Logging data at step " << RD.stepCount);
             RD.save();
 
