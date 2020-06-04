@@ -38,9 +38,9 @@ GAIN2=1.0
 for PHI1 in -34 -14 6 26 46; do
     for GAIN1 in 0.1 0.5 1.0; do
 
-            JSON="sa_${PROGTAG}_p1_${PHI1}_g1_${GAIN1}.json"
+        JSON="sa_${PROGTAG}_p1_${PHI1}_g1_${GAIN1}.json"
 
-            cat > ${CONFIG_DIR}/${JSON} <<EOF
+        cat > ${CONFIG_DIR}/${JSON} <<EOF
 {
     "steps" : 30000,
     "logevery": 30000,
@@ -156,13 +156,13 @@ for PHI1 in -34 -14 6 26 46; do
     "plot_dr_with_guide" : false
 }
 EOF
-            # A version of the sim prog:
-            echo "./build/sim/james_${PROGTAG}c ${CONFIG_DIR}/${JSON}"
-            ./build/sim/james_${PROGTAG}c ${CONFIG_DIR}/${JSON}
-            RTN=$?
-            if [ $RTN -ne "0" ]; then
-                echo "Config: ${CONFIG_DIR}/${JSON} FAILED. Moving on to next."
-            fi
+        # A version of the sim prog:
+        echo "./build/sim/james_${PROGTAG}c ${CONFIG_DIR}/${JSON}"
+        ./build/sim/james_${PROGTAG}c ${CONFIG_DIR}/${JSON}
+        RTN=$?
+        if [ $RTN -ne "0" ]; then
+            echo "Config: ${CONFIG_DIR}/${JSON} FAILED. Moving on to next."
+        fi
     done
 done
 
