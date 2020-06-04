@@ -35,11 +35,11 @@ def content():
     # Compute max of c
     maxc = np.max (bdo.c, axis=0)
 
-    # Either use the precomputed ID map:
-    c_id = bdo.id_c[:,0]
+    # Either use the precomputed ID map: ONLY GOOD IF dr was computed!!
+    #c_id = bdo.id_c[:,0]
     # or compute it here:
-    # c_id_int = np.argmax (bdo.c, axis=0)
-    # c_id = c_id_int[:,0].astype(np.float32) / np.float32(bdo.N)
+    c_id_int = np.argmax (bdo.c, axis=0)
+    c_id = c_id_int[:,0].astype(np.float32) / np.float32(bdo.N)
 
     # Compute the colour map
     colmap = np.zeros([bdo.nhex,3], dtype=float)
