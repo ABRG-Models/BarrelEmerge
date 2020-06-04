@@ -40,8 +40,8 @@ for d4_gamma_i in -0.6 -0.3 0 0.3 0.6; do
     for d4_gamma_j in -0.6 -0.3 0 0.3 0.6; do
 
         # D4 normal gamma is: [0.848405242531084, -0.7748322941280898]
-        ((D4I=d4_gamma_i - ))
-        ((D4J=d4_gamma_j + ))
+        ((D4I=d4_gamma_i + 0.8484))
+        ((D4J=d4_gamma_j - 0.7748))
         JSON="sa_gamma_d4_i${D4I}_j${D4J}.json"
 
         cat > ${CONFIG_DIR}/${JSON} <<EOF
