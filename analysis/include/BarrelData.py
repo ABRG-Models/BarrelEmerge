@@ -536,7 +536,8 @@ class BarrelData:
 
         fileidx = 0
         for filename in files:
-            #print ('Search {0} with RE pattern {1}'.format(filename, (self.logdir+'/c_(.*).h5')))
+            if self.debug:
+                print ('Search {0} with RE pattern {1}'.format(filename, (self.logdir+'/c_(.*).h5')))
 
             # Get the time index from the filename with a reg. expr.
             idxsearch = re.search(self.logdir+'/c_(.*).h5', '{0}'.format(filename))
@@ -544,13 +545,15 @@ class BarrelData:
             # WARNING: re-setting self.t (as well as doing it in readDirichData)
             self.t_steps[fileidx] = thetime # Time in number of simulation steps.
             self.t[fileidx] = thetime * self.dt
-            # print ('Time {0}: {1}'.format(fileidx, thetime))
+            if self.debug:
+                print ('Time {0}: {1}'.format(fileidx, thetime))
 
             f = h5py.File(filename, 'r')
             klist = list(f.keys())
 
             for k in klist:
-                #print ('Key: {0} fileidx: {1}'.format(k, fileidx))
+                if self.debug:
+                    print ('Key: {0} fileidx: {1}'.format(k, fileidx))
                 if k[0] == 'c':
                     cnum = int(k[1:])
                     self.c[cnum,:,fileidx] = np.array(f[k])
@@ -560,6 +563,8 @@ class BarrelData:
                 elif k[0] == 'n':
                     self.n[:,fileidx] = np.array(f[k])
                 elif k[0] == 'd' and k[1] == 'r':
+                    if self.debug:
+                        print ('f[k]: {0}'.format(f[k]))
                     if np.array(f[k]).size > 0:
                         self.id_c[:,fileidx] = np.array(f[k])
 
