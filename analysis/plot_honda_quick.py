@@ -32,6 +32,7 @@ F1 = plt.figure (figsize=(9,8))
 t1_masked = np.load ('postproc/honda_t.npy')
 hondadelta = np.load ('postproc/honda_delta.npy')
 area_diff =  np.load ('postproc/area_diff.npy')
+sos_dist =  np.load ('postproc/sos_dist.npy')
 map_diff =  np.load ('postproc/map_diff.npy')
 locn_vs_t =  np.load ('postproc/locn_vs_t.npy')
 
@@ -50,9 +51,12 @@ show_mapdiff = 0
 if show_mapdiff:
     ax4 = ax1.twinx()
     l5, = ax4.plot(t1_masked, map_diff, 's', markersize=12, color=col.blue)
+show_sos = 1
+if show_sos:
+    ax4 = ax1.twinx()
+    l5, = ax4.plot(t1_masked, sos_dist, 's', markersize=12, color=col.blue)
 
 ax2 = F1.add_subplot(2,1,2)
-
 l3, = ax2.plot(t1_masked, area_diff, 's', markersize=12, color=col.black)
 
 ax3 = ax2.twinx()

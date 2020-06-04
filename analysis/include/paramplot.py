@@ -499,6 +499,17 @@ def paramplot_pub (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuple
     honda_min = min(sdata[:]['hondadelta'])
     locn_max = max(sdata[:]['localization'])
     locn_min = min(sdata[:]['localization'])
+    sos_max = max(sdata[:]['sos_dist'])
+    sos_min = min(sdata[:]['sos_dist'])
+    print ('Output to include in code for sensitivity graphs:')
+    print ('honda_min={0}'.format(honda_min))
+    print ('honda_max={0}'.format(honda_max))
+    print ('area_min={0}'.format(area_min))
+    print ('area_max={0}'.format(area_max))
+    print ('locn_min={0}'.format(locn_min))
+    print ('locn_max={0}'.format(locn_max))
+    print ('sos_min={0}'.format(sos_min))
+    print ('sos_max={0}'.format(sos_max))
     # Extent of the data range for plotting
     plot_extent = [-0.5, 5.5, -0.5, 5.5]
 

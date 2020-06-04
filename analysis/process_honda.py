@@ -93,7 +93,8 @@ np.save ('postproc/c_vs_t.npy', c_vs_t)
 print ('t shape {0}, t1_masked shape {1}'.format(np.shape(bdo.t),np.shape(t1_masked)))
 # Remove the masked values:
 
-sos_dist = sos_dist.compressed()
+sos_dist = np.sqrt(sos_dist.compressed()/bdo.N)
+
 hondadelta = hondadelta.compressed()
 
 print ('sos_dist shape: {0}, area_diff shape: {1}'.format (np.shape (sos_dist), np.shape (area_diff[:,0])))
@@ -104,5 +105,6 @@ t1_masked = t1_masked / 10000
 np.save ('postproc/honda_t.npy', t1_masked)
 np.save ('postproc/honda_delta.npy', hondadelta)
 np.save ('postproc/area_diff.npy', area_diff)
+np.save ('postproc/sos_dist.npy', sos_dist)
 np.save ('postproc/map_diff.npy', mapdiff)
 np.save ('postproc/locn_vs_t.npy', bdo.locn_vs_t)

@@ -172,7 +172,12 @@ for logdirname in os.listdir(basedir):
     #print ('t shape {0}, t1_masked shape {1}'.format(np.shape(bdo.t),np.shape(t1_masked)))
     # Remove the masked values:
     #print ('t: {0}'.format (bdo.t)) # real t in seconds
-    sos_dist = sos_dist.compressed()
+
+    # Now, sos_dist is the summed sum of squared differences. So to get the
+    # mean distance between sim and expt. need to /41 and then take square
+    # root.
+    sos_dist = np.sqrt(sos_dist.compressed()/bdo.N)
+
     hondadelta = hondadelta.compressed()
     # Uncomment for debug:
     #print ('hondadelta: {0}'.format (hondadelta))
