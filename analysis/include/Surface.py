@@ -267,20 +267,20 @@ class Surface:
 
             #print ('In Surface. domcentres: {0}'.format (self.domcentres))
             for dc in self.domcentres:
-                print('dc: {0}'.format(dc))
+                print('dc: {0}'.format(dc)) # Hmm All domcentres are 0?
 
+                cidx = 0
                 # Compute a greyscale colour for the text from the raw index:
                 if len(self.z) > 0:
                     # loop through x and y, checking for index for which x==domcentres.x and y==domcentres.y
-                    cidx = 0
                     for i in range(0, self.nhex):
-                        if self.x[i] == dc[0] and self.y[i] == dc[1]:
-                            # Hit
-                            cidx = c[i]
+                        if abs(self.x[i] - dc[0]) <= self.hextohex_d and abs(self.y[i] - dc[1]) <= self.hextohex_d:
+                            cidx = self.z[i]
                 else:
+                    # Use count/N to set up cidx
                     cidx = np.float32(count)/np.float32(N)
-                # or using the sum of the rgb values
-                cidx = (self.gammaColour_byid[cidx][0] + self.gammaColour_byid[cidx][1] + self.gammaColour_byid[cidx][2]) / 3.0
+                    # Then use the sum of the rgb values at that location
+                    cidx = (self.gammaColour_byid[cidx][0] + self.gammaColour_byid[cidx][1] + self.gammaColour_byid[cidx][2]) / 3.0
 
                 # Transfer from background lightness to text colour via a sigmoid:
                 cout = 1.0 / ( 1.0 + np.exp(-80.0*(cidx-0.3)));
