@@ -93,5 +93,8 @@ target_link_libraries(jamesdual ${MORPH_LDFLAGS} morphdisplay0)
 
 # View convolution kernel
 add_executable(convKernel convKernel.cpp)
-#target_compile_definitions(convKernel PUBLIC FLT=float COMPILE_PLOTTING)
 target_link_libraries(convKernel ${MORPH_LDFLAGS} ${OPENGL_LIBRARIES})
+
+# Small random number generator, used by scripts/gamma_noise.sh
+add_executable(randomgammas randomgammas.cpp)
+target_link_libraries(randomgammas ${MORPH_LDFLAGS})
