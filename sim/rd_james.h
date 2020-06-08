@@ -276,7 +276,7 @@ public:
      * Noise for Guidance molecules. Note this is a common parameter, and not a
      * per-guidance molecule parameter.
      */
-    alignas(Flt) Flt mNoiseGain = 0.1;
+    alignas(Flt) Flt mNoiseGain = Flt{0};
     alignas(Flt) Flt mNoiseSigma = 0.09; // hex to hex d is usually 0.03
 
     /*!
