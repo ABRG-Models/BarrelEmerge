@@ -40,7 +40,7 @@ GAIN2=1.0
 #exit 0
 
 # Barrel B4
-for gamma_noise_mag in  0.001 0.002 0.005 0.01 0.02 0.05 0.1 0.2 0.5; do
+for gamma_noise_mag in 0.001 0.002 0.005 0.01 0.02 0.05 0.1 0.2 0.5 1.0; do
 
     JSON="gammanoise_gain${gamma_noise_mag}.json"
 
