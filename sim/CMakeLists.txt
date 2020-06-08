@@ -90,3 +90,8 @@ target_link_libraries(honda ${MORPH_LDFLAGS})
 add_executable(jamesdual jamesdual.cpp)
 target_compile_definitions(jamesdual PUBLIC FLT=float COMPILE_PLOTTING)
 target_link_libraries(jamesdual ${MORPH_LDFLAGS} morphdisplay0)
+
+# View convolution kernel
+add_executable(convKernel convKernel.cpp)
+#target_compile_definitions(convKernel PUBLIC FLT=float COMPILE_PLOTTING)
+target_link_libraries(convKernel ${MORPH_LDFLAGS} ${OPENGL_LIBRARIES})

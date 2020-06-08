@@ -8,6 +8,7 @@
 #include "morph/BezCurvePath.h"
 #include "morph/Hex.h"
 #include "morph/HdfData.h"
+#include "morph/Random.h"
 
 #include <vector>
 #include <array>
@@ -22,7 +23,8 @@
 /*!
  * Enumerates the way that the guidance molecules are set up
  */
-enum class FieldShape {
+enum class FieldShape
+{
     Gauss1D,
     Gauss2D,
     Exponential1D,
@@ -36,7 +38,8 @@ enum class FieldShape {
  * (i.e. circular) 2D Gaussian.
  */
 template <class Flt>
-struct GaussParams {
+struct GaussParams
+{
     Flt gain;
     Flt sigma;
     Flt x;
@@ -141,7 +144,7 @@ protected:
      */
     alignas(Flt) Flt D = 0.1;
 
-    alignas(Flt) Flt twoDover3dd = this->D+this->D / 3*this->d*this->d;
+    alignas(Flt) Flt twoDover3dd = (this->D+this->D) / 3*this->d*this->d;
 
 public:
 
@@ -270,6 +273,13 @@ public:
     alignas(Flt) Flt aInitialOffset = 0.8;
 
     /*!
+     * Noise for Guidance molecules. Note this is a common parameter, and not a
+     * per-guidance molecule parameter.
+     */
+    alignas(Flt) Flt mNoiseGain = 0.1;
+    alignas(Flt) Flt mNoiseSigma = 0.09; // hex to hex d is usually 0.03
+
+    /*!
      * Data containers for summed n, c and a.
      */
     //@{
@@ -366,9 +376,7 @@ public:
     /*!
      * Simple constructor; no arguments. Just calls RD_Base constructor
      */
-    RD_James (void)
-        : morph::RD_Base<Flt>() {
-    }
+    RD_James (void) : morph::RD_Base<Flt>() {}
 
     /*!
      * Initialise this vector of vectors with noise. This is a model-specific
@@ -376,8 +384,11 @@ public:
      *
      * I apply a sigmoid to the boundary hexes, so that the noise drops away towards
      * the edge of the domain.
+     *
+     * gp is a set of Gaussian shaped _masks_.
      */
-    virtual void noiseify_vector_vector (std::vector<std::vector<Flt> >& vv, std::vector<GaussParams<Flt> >& gp) {
+    virtual void noiseify_vector_vector (std::vector<std::vector<Flt> >& vv, std::vector<GaussParams<Flt> >& gp)
+    {
         for (unsigned int i = 0; i<this->N; ++i) {
             for (auto h : this->hg->hexen) {
                 // boundarySigmoid. Jumps sharply (100, larger is sharper) over length
@@ -394,14 +405,62 @@ public:
     }
 
     /*!
+     * Similar to the above, but just adds noise to v (with a gain only) to \a vv. Has no boundary sigmoid.
+     */
+    virtual void addnoise_vector (std::vector<Flt>& v)
+    {
+        std::cout << "Add noise to vector?...";
+        if (this->mNoiseGain == Flt{0}) {
+            // No noise
+            std::cout << "NO.\n";
+            return;
+        }
+        std::cout << "Yes.\n";
+
+        // First, fill a duplicate vector with noise
+        morph::RandUniform<Flt> rng(-this->mNoiseGain/Flt{2}, this->mNoiseGain/Flt{2});
+        std::vector<Flt> noise (v.size(), Flt{0});
+        for (unsigned int h = 0; h<v.size(); ++h) {
+            noise[h] = rng.get();
+        }
+
+        // Set up the Gaussian convolution kernel on a circular HexGrid.
+        morph::HexGrid kernel(this->hextohex_d, Flt{20}*this->mNoiseSigma, 0, morph::HexDomainShape::Boundary);
+        kernel.setCircularBoundary (Flt{6}*this->mNoiseSigma);
+        std::vector<Flt> kerneldata (kernel.num(), 0.0f);
+        // Once-only parts of the calculation of the Gaussian.
+        Flt one_over_sigma_root_2_pi = 1 / this->mNoiseSigma * 2.506628275;
+        Flt two_sigma_sq = 2.0f * this->mNoiseSigma * this->mNoiseSigma;
+        Flt gsum = 0;
+        for (auto& k : kernel.hexen) {
+            Flt gauss = (one_over_sigma_root_2_pi * std::exp ( -(k.r*k.r) / two_sigma_sq ));
+            kerneldata[k.vi] = gauss;
+            gsum += gauss;
+        }
+        // Renormalise
+        for (size_t k = 0; k < kernel.num(); ++k) { kerneldata[k] /= gsum; }
+
+        // A vector for the result
+        std::vector<Flt> convolved (v.size(), 0.0f);
+
+        // Call the convolution method from HexGrid:
+        this->hg->convolve (kernel, kerneldata, noise, convolved);
+
+        // Now add the noise to the vector:
+        for (size_t h = 0; h < v.size(); ++h) {
+            v[h] += convolved[h];
+        }
+    }
+
+    /*!
      * Apply a mask to the noise in a vector of vectors. This masks with a 2D Gaussian
      * for each a (there are N TC type, so for each i in N, apply a different Gaussian
      * mask, probably with the same width, but different centre).
      *
      * This allows me to initialise the system in a more biologically realistic manner.
      */
-    void mask_a (std::vector<std::vector<Flt> >& vv, std::vector<GaussParams<Flt> >& gp) {
-
+    void mask_a (std::vector<std::vector<Flt> >& vv, std::vector<GaussParams<Flt> >& gp)
+    {
         // Once-only parts of the calculation of the Gaussian.
         Flt root_2_pi = 2.506628275;
 
@@ -483,8 +542,8 @@ public:
     /*!
      * Perform memory allocations, vector resizes and so on.
      */
-    virtual void allocate (void) {
-
+    virtual void allocate (void)
+    {
         morph::RD_Base<Flt>::allocate();
 #ifdef USE_USER_SUPPLIED_CIRCLES
         // Copy the list of circles from the ReadCurves object
@@ -540,8 +599,8 @@ public:
      * of the model. This should be able to re-initialise a finished simulation as
      * well as initialise the first time.
      */
-    virtual void init (void) {
-
+    virtual void init (void)
+    {
         DBG ("RD_James::init() called");
 
         this->stepCount = 0;
@@ -572,6 +631,7 @@ public:
         }
 
         // Initialise a with noise
+        //this->zero_vector_vector (this->a, this->N);
         this->noiseify_vector_vector (this->a, this->initmasks);
 
         // Mask the noise off (set sigmas to 0 to ignore the masking)
@@ -613,23 +673,29 @@ public:
             if (this->rhoMethod[m] == FieldShape::Gauss1D) {
                 // Construct Gaussian-waves rather than doing the full-Karbowski shebang.
                 this->gaussian1D_guidance (m);
+                this->addnoise_vector (this->rho[m]);
 
             } else if (this->rhoMethod[m] == FieldShape::Gauss2D) {
                 // Construct 2 dimensional gradients
                 this->gaussian2D_guidance (m);
+                this->addnoise_vector (this->rho[m]);
 
             } else if (this->rhoMethod[m] == FieldShape::Exponential1D) {
                 // Construct an 'exponential wave'
                 this->exponential_guidance (m);
+                this->addnoise_vector (this->rho[m]);
 
             } else if (this->rhoMethod[m] == FieldShape::Sigmoid1D) {
                 this->sigmoid_guidance (m);
+                this->addnoise_vector (this->rho[m]);
 
             } else if (this->rhoMethod[m] == FieldShape::Linear1D) {
                 this->linear_guidance (m);
+                this->addnoise_vector (this->rho[m]);
 
             } else if (this->rhoMethod[m] == FieldShape::CircLinear2D) {
                 this->circlinear_guidance (m);
+                this->addnoise_vector (this->rho[m]);
             }
         }
 
@@ -681,7 +747,8 @@ protected:
      * Given a TC id string @idstr, look it up in tcnames and find the Flt ID that it
      * corresponds to. Client code should have set up tcnames.
      */
-    Flt tc_name_to_id (const std::string& idstr) {
+    Flt tc_name_to_id (const std::string& idstr)
+    {
         Flt theid = -1.0;
         typename std::map<Flt, std::string>::iterator tcn = this->tcnames.begin();
         while (tcn != this->tcnames.end()) {
@@ -700,7 +767,8 @@ protected:
      * Require private setter for d. Slightly different from the base class version.
      */
     //@{
-    void set_d (Flt d_) {
+    void set_d (Flt d_)
+    {
         morph::RD_Base<Flt>::set_d (d_);
         this->updateTwoDover3dd();
     }
@@ -712,11 +780,13 @@ public:
      * same time.
      */
     //@{
-    void set_D (Flt D_) {
+    void set_D (Flt D_)
+    {
         this->D = D_;
         this->updateTwoDover3dd();
     }
-    Flt get_D (void) {
+    Flt get_D (void)
+    {
         return this->D;
     }
     //@}
@@ -725,7 +795,8 @@ protected:
     /*!
      * Compute 2D/3d^2 (and 1/3d^2 too)
      */
-    void updateTwoDover3dd (void) {
+    void updateTwoDover3dd (void)
+    {
         this->twoDover3dd = (this->D+this->D) / (3*this->d*this->d);
     }
 
@@ -738,7 +809,8 @@ public:
      * setGamma for the guidance molecule index m_idx and the TC index n_idx to
      * @value. If group_m==m_idx, then set this->group[n_idx]=@value
      */
-    int setGamma (unsigned int m_idx, unsigned int n_idx, Flt value, unsigned int group_m = 0) {
+    int setGamma (unsigned int m_idx, unsigned int n_idx, Flt value, unsigned int group_m = 0)
+    {
         if (gamma.size() > m_idx) {
             if (gamma[m_idx].size() > n_idx) {
                 // Ok, we can set the value
@@ -767,7 +839,8 @@ public:
     /*!
      * Save the c, a and n variables.
      */
-    virtual void save (void) {
+    virtual void save (void)
+    {
         std::stringstream fname;
         fname << this->logpath << "/c_";
         fname.width(5);
@@ -796,14 +869,16 @@ public:
         data.add_contained_vals ("/dr", this->regions);
     }
 
-    void saveHG (void) {
+    void saveHG (void)
+    {
         std::stringstream hgname;
         hgname << this->logpath << "/hexgrid.h5";
         this->hg->save(hgname.str().c_str());
     }
 
     // Save out the dirichlet domains, their paths, and various statistical measures.
-    void saveDirichletDomains (void) {
+    void saveDirichletDomains (void)
+    {
         std::stringstream fname;
         fname << this->logpath << "/dirich_";
         fname.width(5);
@@ -849,7 +924,8 @@ public:
     /*!
      * Save asum, nsum and csum. Call once at end of simulation.
      */
-    void savesums (void) {
+    void savesums (void)
+    {
         std::stringstream fname;
         fname << this->logpath << "/sums.h5";
         morph::HdfData data(fname.str());
@@ -864,7 +940,8 @@ public:
      * Also save the experimental ID map in this file, as this is something that needs
      * saving once only.
      */
-    void saveGuidance (void) {
+    void saveGuidance (void)
+    {
         std::stringstream fname;
         fname << this->logpath << "/guidance.h5";
         morph::HdfData data(fname.str());
@@ -897,7 +974,8 @@ public:
     /*!
      * Compute the values of c, the connection density
      */
-    virtual void integrate_c (void) {
+    virtual void integrate_c (void)
+    {
         // 3. Do integration of c
         for (unsigned int i=0; i<this->N; ++i) {
 
@@ -948,7 +1026,8 @@ public:
     /*!
      * The normalization/transfer function with a default no-op implementation.
      */
-    virtual inline Flt transfer_a (const Flt& _a, const unsigned int _i) {
+    virtual inline Flt transfer_a (const Flt& _a, const unsigned int _i)
+    {
         Flt a_rtn = _a;
         return a_rtn;
     }
@@ -956,8 +1035,8 @@ public:
     /*!
      * Compute the values of a, the branching density
      */
-    virtual void integrate_a (void) {
-
+    virtual void integrate_a (void)
+    {
         // 2. Do integration of a (RK in the 1D model). Involves computing axon
         // branching flux.
 
@@ -1035,8 +1114,8 @@ public:
     /*!
      * Compute n
      */
-    virtual void compute_n (void) {
-
+    virtual void compute_n (void)
+    {
         Flt nsum = 0.0;
         Flt csum = 0.0;
 #pragma omp parallel for reduction(+:nsum,csum)
@@ -1065,8 +1144,8 @@ public:
     /*!
      * Do a single step through the model.
      */
-    virtual void step (void) {
-
+    virtual void step (void)
+    {
         this->stepCount++;
 
         // 1. Compute Karb2004 Eq 3. (coupling between connections made by each TC type)
@@ -1083,7 +1162,8 @@ public:
      * Examine the value in each Hex of the hexgrid of the scalar field f. If
      * abs(f[h]) exceeds the size of dangerThresh, then output debugging information.
      */
-    void debug_values (std::vector<Flt>& f, Flt dangerThresh) {
+    void debug_values (std::vector<Flt>& f, Flt dangerThresh)
+    {
         for (auto h : this->hg->hexen) {
             if (std::abs(f[h.vi]) > dangerThresh) {
                 DBG ("Blow-up threshold exceeded at Hex.vi=" << h.vi << " ("<< h.ri <<","<< h.gi <<")" <<  ": " << f[h.vi]);
@@ -1099,7 +1179,8 @@ public:
      * Does: f = (alpha * f) + betaterm. c.f. Karb2004, Eq 1. f is c[i] or q from the
      * RK algorithm.
      */
-    std::vector<Flt> compute_dci_dt (std::vector<Flt>& f, unsigned int i) {
+    std::vector<Flt> compute_dci_dt (std::vector<Flt>& f, unsigned int i)
+    {
         std::vector<Flt> dci_dt (this->nhex, 0.0);
 #pragma omp parallel for
         for (unsigned int h=0; h<this->nhex; h++) {
@@ -1114,8 +1195,8 @@ public:
      *
      * This computation is based on Gauss's theorem.
      */
-    void compute_divg_over3d (void) {
-
+    void compute_divg_over3d (void)
+    {
         // Change to have one for each m in M? They should then sum, right?
 
         for (unsigned int i = 0; i < this->N; ++i) {
@@ -1182,8 +1263,8 @@ public:
      *
      * Stable with dt = 0.0001;
      */
-    virtual void compute_divJ (std::vector<Flt>& fa, unsigned int i) {
-
+    virtual void compute_divJ (std::vector<Flt>& fa, unsigned int i)
+    {
         // Compute gradient of a_i(x), for use computing the third term, below.
         this->spacegrad2D (fa, this->grad_a[i]);
 
@@ -1232,7 +1313,8 @@ public:
      *
      * @m The molecule id
      */
-    void gaussian1D_guidance (unsigned int m) {
+    void gaussian1D_guidance (unsigned int m)
+    {
         for (auto h : this->hg->hexen) {
             Flt cosphi = (Flt) std::cos (this->TWOPI_OVER_360 * this->guidance_phi[m]);
             Flt sinphi = (Flt) std::sin (this->TWOPI_OVER_360 * this->guidance_phi[m]);
@@ -1247,8 +1329,8 @@ public:
      *
      * @m The molecule id
      */
-    void gaussian2D_guidance (unsigned int m) {
-
+    void gaussian2D_guidance (unsigned int m)
+    {
         // Centre of the Gaussian is offset from 0 by guidance_offset, then rotated by
         // guidance_phi
         Flt x_ = (Flt)this->guidance_offset[m];
@@ -1274,7 +1356,8 @@ public:
      *
      * @m The molecule id
      */
-    void exponential_guidance (unsigned int m) {
+    void exponential_guidance (unsigned int m)
+    {
         for (auto h : this->hg->hexen) {
             Flt cosphi = (Flt) std::cos (this->TWOPI_OVER_360 * this->guidance_phi[m]);
             Flt sinphi = (Flt) std::sin (this->TWOPI_OVER_360 * this->guidance_phi[m]);
@@ -1286,7 +1369,8 @@ public:
     /*!
      * @m The molecule id
      */
-    void sigmoid_guidance (unsigned int m) {
+    void sigmoid_guidance (unsigned int m)
+    {
         for (auto h : this->hg->hexen) {
             Flt cosphi = (Flt) cos (this->TWOPI_OVER_360 * this->guidance_phi[m]);
             Flt sinphi = (Flt) sin (this->TWOPI_OVER_360 * this->guidance_phi[m]);
@@ -1300,7 +1384,11 @@ public:
     /*!
      * @m The molecule id
      */
-    void linear_guidance (unsigned int m) {
+    void linear_guidance (unsigned int m)
+    {
+        std::cout << "Apply linear guidance to molecule " << m << "\n";
+        Flt themax = -1e7;
+        Flt themin = 1e7;
         for (auto h : this->hg->hexen) {
             Flt cosphi = (Flt) cos (this->TWOPI_OVER_360 * this->guidance_phi[m]);
             Flt sinphi = (Flt) sin (this->TWOPI_OVER_360 * this->guidance_phi[m]);
@@ -1310,14 +1398,19 @@ public:
             } else {
                 x_ = (h.x * cosphi) + (h.y * sinphi);
             }
-            this->rho[m][h.vi] = (x_-guidance_offset[m]) * this->guidance_gain[m];
+            Flt scaled = (x_-guidance_offset[m]) * this->guidance_gain[m];
+            this->rho[m][h.vi] = scaled;
+            if (scaled > themax) { themax = scaled; }
+            if (scaled < themin) { themin = scaled; }
         }
+        std::cout << "Linear guidance range was " << themin << " to " << themax << "\n";
     }
 
     /*!
      * @m The molecule id
      */
-    void circlinear_guidance (unsigned int m) {
+    void circlinear_guidance (unsigned int m)
+    {
         for (auto h : this->hg->hexen) {
             // Initial position is guidance_offset * cosphi/sinphi
             Flt cosphi = (Flt) cos (this->TWOPI_OVER_360 * this->guidance_phi[m]);
@@ -1335,7 +1428,8 @@ public:
     /*!
      * Compute experimental pattern Dirichlet metric
      */
-    void expt_dirichlet (void) {
+    void expt_dirichlet (void)
+    {
         //expt_barrel_id is 'regions'
         this->vertices.clear();
         // Find the vertices and construct domains
@@ -1349,8 +1443,8 @@ public:
     /*!
      * Compute Dirichlet analysis on the c variable
      */
-    void dirichlet (void) {
-
+    void dirichlet (void)
+    {
         // Don't recompute unnecessarily
         if (this->dirichletComputed == true) {
             DBG ("dirichlet already computed, no need to recompute.");
