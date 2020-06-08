@@ -1,7 +1,8 @@
 #!/bin/zsh
 
-# Explore the sensitivity of the 41N2M system from the paper to noise
-# in its guidance molecules.
+# Explore the behaviour of the 41N2M system from the paper to
+# different levels and length scales of noise in its guidance
+# molecules.
 
 # Check we're running from BarrelEmerge dir
 CURDIR=$(pwd | awk -F '/' '{print $NF}')
