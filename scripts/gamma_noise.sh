@@ -40,8 +40,7 @@ GAIN2=1.0
 #exit 0
 
 # Barrel B4
-#for gamma_noise_mag in 0.001 0.002 0.005 0.01 0.02 0.05 0.1 0.2 0.5 0.75 1.0 1.5 2.0 2.5; do
-for gamma_noise_mag in 0.3 0.4 0.6 0.55 0.65 0.7; do
+for gamma_noise_mag in 0.001 0.002 0.005 0.01 0.02 0.05 0.1 0.2 0.3 0.4 0.5 0.55 0.6 0.65 0.7 0.75 1.0 1.5 2.0 2.5; do
     JSON="gammanoise_gain${gamma_noise_mag}.json"
 
     # Now generate 82 random numbers to add to the gammas, below. Do
