@@ -207,6 +207,22 @@ class BarrelData:
             sumalpha = 0
             sumbeta = 0
             sumepsilon = 0
+
+            # To set up the colour scheme, need to know the range of min to max gamma values
+            max_gamma0 = -1000.0
+            max_gamma1 = -1000.0
+            min_gamma0 = 1000.0
+            min_gamma1 = 1000.0
+            for i in tc:
+                max_gamma0 = i["gamma"][0] if i["gamma"][0] > max_gamma0 else max_gamma0
+                max_gamma1 = i["gamma"][1] if i["gamma"][1] > max_gamma1 else max_gamma1
+                min_gamma0 = i["gamma"][0] if i["gamma"][0] < min_gamma0 else min_gamma0
+                min_gamma1 = i["gamma"][1] if i["gamma"][1] < min_gamma1 else min_gamma1
+            print ('max_gamma0 = {0}. max_gamma1 = {1}'.format(max_gamma0, max_gamma1))
+            print ('min_gamma0 = {0}. min_gamma1 = {1}'.format(min_gamma0, min_gamma1))
+            absmax_gamma0 = max_gamma0 if max_gamma0 > abs(min_gamma0) else abs(min_gamma0)
+            absmax_gamma1 = max_gamma1 if max_gamma1 > abs(min_gamma1) else abs(min_gamma1)
+
             for i in tc:
                 # Do a key-value thing
                 sumalpha = sumalpha + i["alpha"]
@@ -221,9 +237,9 @@ class BarrelData:
                 self.gamma_byid[theid] = i["gamma"]
                 #
                 if self.gammaColourScheme == 'redblue':
-                    self.gammaColour_byid[theid] = (0.5+i["gamma"][0]/4.0, 0, 0.5+i["gamma"][1]/4.0)
+                    self.gammaColour_byid[theid] = (0.5+i["gamma"][0]/(2.0*absmax_gamma0), 0, 0.5+i["gamma"][1]/(2.0*absmax_gamma1))
                 else: # green blue
-                    self.gammaColour_byid[theid] = (0, 0.5+i["gamma"][0]/4.0, 0.5+i["gamma"][1]/4.0)
+                    self.gammaColour_byid[theid] = (0, 0.5+i["gamma"][0]/(2.0*absmax_gamma0), 0.5+i["gamma"][1]/(2.0*absmax_gamma1))
                 #print ('Setting gammaColour_byid[{0}] to {1}'.format (theid, self.gammaColour_byid[theid]))
                 count = count + np.float32(1.0)
             self.meanalpha = sumalpha/count
@@ -343,6 +359,66 @@ class BarrelData:
             # Now have tcsum for this particular t value; append it to the object:
             self.locn_vs_t[tidx] = allhexes_csum/float(self.nhex)
 
+    #
+    # An adjacency measure. Each Barrel ID has a 41D vector of the proportion
+    # of the barrel boundary which is adjacent to each other ID. This could be
+    # discretized so that the vectors were of element 1 if non-zero and then
+    # normalized to length 1.
+    #
+    # Must have called readHexGrid for this to work.
+    #
+    def computeAdjacencyMeasure (self):
+
+        print ('id_byname: {0}'.format(self.id_byname))
+
+        # Containers for the measure, which is N N-d vectors.
+        self.adjacency_vectors = np.zeros([len(self.t_steps), self.N, self.N], dtype=float)
+        self.barrel_boundary_lengths = np.zeros ([len(self.t_steps), self.N], dtype=float)
+
+        # For each t:
+        for tidx in range (0, len(self.t_steps)):
+
+            # For each hex in the grid
+            for h in range (0, self.nhex):
+
+                # The ID of the hex under consideration
+                my_id = self.id_c[h, tidx]
+                my_id_i = int(np.round(np.float32(self.N)*my_id))
+                # print ('Hex has ID float: {0} / int: {1}'.format(my_id, my_id_i))
+
+                # The the neighbour iterators:
+                h_e = self.d_ne[h]
+                h_ne = self.d_nne[h]
+                h_nw = self.d_nnw[h]
+                h_w = self.d_nw[h]
+                h_sw = self.d_nsw[h]
+                h_se = self.d_nse[h]
+
+                #print ('Hex to the east has id_c: {0} and corresponding index: {1}'.format (self.id_c[h_e], int(self.N*self.id_c[h_e])))
+                if self.id_c[h_e] != my_id: # Then hex to east has a different ID:
+                    self.barrel_boundary_lengths[tidx, my_id_i] += 1
+                    # int(self.N*self.id_c[h_e]) makes an integer index out of id_c
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_e]))] += 1
+                if self.id_c[h_ne] != my_id:
+                    self.barrel_boundary_lengths[tidx,my_id_i] += 1
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_ne]))] += 1
+                if self.id_c[h_nw] != my_id:
+                    self.barrel_boundary_lengths[tidx,my_id_i] += 1
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_nw]))] += 1
+                if self.id_c[h_w] != my_id:
+                    self.barrel_boundary_lengths[tidx,my_id_i] += 1
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_w]))] += 1
+                if self.id_c[h_sw] != my_id:
+                    self.barrel_boundary_lengths[tidx,my_id_i] += 1
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_sw]))] += 1
+                if self.id_c[h_se] != my_id:
+                    self.barrel_boundary_lengths[tidx,my_id_i] += 1
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_se]))] += 1
+
+            # Debug output:
+            for i in range (0, self.N):
+                print ('adjacency_vectors[tidx={0},i={1}] = {2}'.format (tidx, i, self.adjacency_vectors[tidx,i,:]))
+                print ('barrel_boundary_lengths[tidx={0},i={1}] = {2}'.format (tidx, i, self.barrel_boundary_lengths[tidx,i]))
     #
     # Read analysis data from the dirich_*.h5 files.
     #
@@ -551,6 +627,7 @@ class BarrelData:
             f = h5py.File(filename, 'r')
             klist = list(f.keys())
 
+            populated_id_c = False
             for k in klist:
                 if self.debug:
                     print ('Key: {0} fileidx: {1}'.format(k, fileidx))
@@ -567,9 +644,22 @@ class BarrelData:
                         print ('f[k]: {0}'.format(f[k]))
                     if np.array(f[k]).size > 0:
                         self.id_c[:,fileidx] = np.array(f[k])
+                        populated_id_c = True
 
-            # Not right yet.
-            self.id_a[:,fileidx] = np.max(self.a[:,:,fileidx], axis=0)
+            # If id_c is empty, then genereate it from self.c
+            if not populated_id_c:
+                # id_c: matrix nhex by numtimes
+                # c: matrix numcs by nhex by numtimes
+                # populate id_c[:,fileidx] from c[:,:,fileidx]
+                idxes = np.argmax(self.c[:,:,fileidx], axis=0).astype(np.float32)/np.float32(self.N)
+                print ('c idxes shape: {0}'.format(np.shape(idxes)))
+                self.id_c[:,fileidx] = idxes
+
+
+            # May be right now
+            idxes = np.argmax(self.a[:,:,fileidx], axis=0).astype(np.float32)/np.float32(self.N)
+            print ('a idxes shape: {0}'.format(np.shape(idxes)))
+            self.id_a[:,fileidx] = idxes
 
             if readDomCentres:
                 # Get domcentres, only if necessary
