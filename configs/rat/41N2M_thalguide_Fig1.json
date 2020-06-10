@@ -15,7 +15,7 @@
     "aInitialOffset" : 0.2,
 
     // Guidance molecule noise
-    "mNoiseGain" : 0.15, // 0.15 is about 5% of the range set in "guidance" below
+    "mNoiseGain" : 0.0,
     "mNoiseSigma" : 0.04,
 
     // Parameters that will vary
