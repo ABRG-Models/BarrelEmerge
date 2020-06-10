@@ -27,7 +27,7 @@ matplotlib.rc('font', **fnt)
 plt.rcParams['svg.fonttype'] = 'none'
 
 # And plot this longhand here:
-F1 = plt.figure (figsize=(9,8))
+F1 = plt.figure (figsize=(9,12))
 
 t1_masked = np.load ('postproc/honda_t.npy')
 hondadelta = np.load ('postproc/honda_delta.npy')
@@ -35,12 +35,14 @@ area_diff =  np.load ('postproc/area_diff.npy')
 sos_dist =  np.load ('postproc/sos_dist.npy')
 map_diff =  np.load ('postproc/map_diff.npy')
 locn_vs_t =  np.load ('postproc/locn_vs_t.npy')
+adjacency_arrangement =  np.load ('postproc/adjacency_arrangement.npy')
+adjacency_differencemag =  np.load ('postproc/adjacency_differencemag.npy')
 
 xmax = max(t1_masked)
 xmax = xmax[0]
 print ('xmax = {0}'.format(xmax))
 
-ax1 = F1.add_subplot(2,1,1)
+ax1 = F1.add_subplot(3,1,1)
 
 l1, = ax1.plot(t1_masked, hondadelta, 'o', markersize=12, color=col.red, label='Honda $\delta$')
 
@@ -51,17 +53,26 @@ show_mapdiff = 0
 if show_mapdiff:
     ax4 = ax1.twinx()
     l5, = ax4.plot(t1_masked, map_diff, 's', markersize=12, color=col.blue)
-show_sos = 1
+show_sos = 0
 if show_sos:
     ax4 = ax1.twinx()
     l5, = ax4.plot(t1_masked, sos_dist, 's', markersize=12, color=col.blue)
 
-ax2 = F1.add_subplot(2,1,2)
+ax2 = F1.add_subplot(3,1,2)
 l3, = ax2.plot(t1_masked, area_diff, 's', markersize=12, color=col.black)
 
 ax3 = ax2.twinx()
 l4, = ax3.plot(t1_masked, locn_vs_t, 'h', markersize=12, color=col.gray60)
 
+ax5 = F1.add_subplot(3,1,3)
+l5, = ax5.plot(t1_masked, adjacency_arrangement, '^', markersize=12, color=col.blue, label='Arr.')
+ax5.set_ylabel('Arr.')
+ax5.set_xlabel ('time (10k steps)')
+ax6 = ax5.twinx()
+l6, = ax6.plot(t1_masked, adjacency_differencemag, 'v', markersize=12, color=col.purple, label='Diff mag.')
+ax6.set_ylabel('Diff. mag.')
+ax5.legend(loc='center', prop={'size': 12})
+ax6.legend(loc='center right', prop={'size': 12})
 
 ax2.set_xlabel ('time (10k steps)')
 ax1.set_ylabel ('$\delta$', rotation=0, labelpad=30)

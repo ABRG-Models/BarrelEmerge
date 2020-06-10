@@ -38,11 +38,13 @@ if len(sys.argv) > 2:
 bdo = bd.BarrelData()
 bdo.loadAnalaysisData = True
 bdo.loadPositions = True # for totalarea
-bdo.loadGuidance = False
+bdo.loadGuidance = True # For adjacency
+bdo.loadHexFlags = True # also for adjacency
 bdo.loadSimData = True # For localization and a
 bdo.loadDivisions = False
 bdo.load (logdirname)
 bdo.computeLocalization() # can then get bdo.locn_vs_t
+bdo.computeAdjacencyMeasure()
 
 # The ID colour maps
 do_maps = 0
@@ -76,6 +78,9 @@ area_diff = bdo.area_diff[mask_combined].T
 # area_diff makes sense normalized by nhex
 area_diff = area_diff / bdo.nhex
 
+adjacency_arrangement = bdo.mean_adjacency_arrangement[mask_combined].T
+adjacency_differencemag = bdo.mean_adjacency_differencemag[mask_combined].T
+
 # a vs t.
 print ('a shape {0}'.format(np.shape(bdo.a)))
 # a shape: (i, hex, times).
@@ -108,3 +113,5 @@ np.save ('postproc/area_diff.npy', area_diff)
 np.save ('postproc/sos_dist.npy', sos_dist)
 np.save ('postproc/map_diff.npy', mapdiff)
 np.save ('postproc/locn_vs_t.npy', bdo.locn_vs_t)
+np.save ('postproc/adjacency_arrangement.npy', adjacency_arrangement)
+np.save ('postproc/adjacency_differencemag.npy', adjacency_differencemag)
