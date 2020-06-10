@@ -417,8 +417,80 @@ class BarrelData:
 
             # Debug output:
             for i in range (0, self.N):
+                self.adjacency_vectors[tidx,i,:] = np.divide (self.adjacency_vectors[tidx,i,:], self.barrel_boundary_lengths[tidx,i])
                 print ('adjacency_vectors[tidx={0},i={1}] = {2}'.format (tidx, i, self.adjacency_vectors[tidx,i,:]))
                 print ('barrel_boundary_lengths[tidx={0},i={1}] = {2}'.format (tidx, i, self.barrel_boundary_lengths[tidx,i]))
+
+        if not self.expt_id.any():
+            print ('No experimental barrels loaded (from guidance.h5), so return without computing expt adjacency vectors')
+            return
+
+        # Now compute adjacency measure for the experimental ids
+        self.expt_adjacency_vectors = np.zeros([self.N, self.N], dtype=float)
+        self.expt_barrel_boundary_lengths = np.zeros ([self.N], dtype=float)
+        for h in range (0, self.nhex):
+
+            # The ID of the expt hex under consideration
+            my_id = self.expt_id[h]
+
+            if my_id == -1:
+                continue
+
+            my_id_i = int(np.round(np.float32(self.N)*my_id))
+            print ('Expt Hex has ID float: {0} / int: {1}'.format(my_id, my_id_i))
+
+            # The the neighbour iterators:
+            h_e = self.d_ne[h]
+            h_ne = self.d_nne[h]
+            h_nw = self.d_nnw[h]
+            h_w = self.d_nw[h]
+            h_sw = self.d_nsw[h]
+            h_se = self.d_nse[h]
+
+            #print ('Hex to the east has id_c: {0} and corresponding index: {1}'.format (self.id_c[h_e], int(self.N*self.id_c[h_e])))
+            if self.expt_id[h_e] != my_id: # Then hex to east has a different ID:
+                self.expt_barrel_boundary_lengths[my_id_i] += 1
+                # int(self.N*self.expt_id[h_e]) makes an integer index out of expt_id
+                if self.expt_id[h_e] != -1:
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_e]))] += 1
+            if self.expt_id[h_ne] != my_id:
+                self.expt_barrel_boundary_lengths[my_id_i] += 1
+                if self.expt_id[h_ne] != -1:
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_ne]))] += 1
+            if self.expt_id[h_nw] != my_id:
+                self.expt_barrel_boundary_lengths[my_id_i] += 1
+                if self.expt_id[h_nw] != -1:
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_nw]))] += 1
+            if self.expt_id[h_w] != my_id:
+                self.expt_barrel_boundary_lengths[my_id_i] += 1
+                if self.expt_id[h_w] != -1:
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_w]))] += 1
+            if self.expt_id[h_sw] != my_id:
+                self.expt_barrel_boundary_lengths[my_id_i] += 1
+                if self.expt_id[h_sw] != -1:
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_sw]))] += 1
+            if self.expt_id[h_se] != my_id:
+                self.expt_barrel_boundary_lengths[my_id_i] += 1
+                if self.expt_id[h_se] != -1:
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_se]))] += 1
+
+        # Debug output:
+        for i in range (0, self.N):
+            self.expt_adjacency_vectors[i,:] = np.divide (self.expt_adjacency_vectors[i,:], self.expt_barrel_boundary_lengths[i])
+            print ('expt_adjacency_vectors[i={0}] = {1}'.format (i, self.expt_adjacency_vectors[i,:]))
+            print ('expt_barrel_boundary_lengths[i={0}] = {1}'.format (i, self.expt_barrel_boundary_lengths[i]))
+
+        # Now (drum-roll please) can compute the dot product of the
+        # experimental and simulated vectors to give 41 numbers as a metric of
+        # each barrels pattern similarity to its experimental equivalent!
+        self.adjacency_metric = np.zeros([len(self.t_steps), self.N], dtype=float)
+        self.mean_adjacency =  np.zeros([len(self.t_steps)], dtype=float)
+        for tidx in range (0, len(self.t_steps)):
+            for i in range (0, self.N):
+                self.adjacency_metric[tidx,i] = np.dot (self.expt_adjacency_vectors[i,:], self.adjacency_vectors[tidx,i,:])
+            print ('Adjacency metrix for this time: {0}'.format(self.adjacency_metric))
+            self.mean_adjacency[tidx] = np.mean(self.adjacency_metric)
+            print ('Adjacency mean for this time: {0}'.format(self.mean_adjacency[tidx]))
     #
     # Read analysis data from the dirich_*.h5 files.
     #

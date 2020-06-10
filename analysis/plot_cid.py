@@ -25,12 +25,13 @@ def content():
     # Set True for inter-lines:
     bdo.loadAnalysisData = True
     bdo.loadDivisions = False
-    # If loadGuidance is True, then expt id map will be plotted:
-    bdo.loadGuidance = False
+    # If loadGuidance is True, then expt barrel adjacency measure can be calculated in computeAdjacencyMeasure()
+    bdo.loadGuidance = True
     bdo.loadSimData = True
     bdo.loadTimeStep = ti
     bdo.loadHexFlags = True
     bdo.load (logdirname)
+    bdo.computeAdjacencyMeasure()
 
     # Compute max of c
     maxc = np.max (bdo.c, axis=0)
