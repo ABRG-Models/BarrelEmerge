@@ -38,6 +38,9 @@ locn_vs_t =  np.load ('postproc/locn_vs_t.npy')
 adjacency_arrangement =  np.load ('postproc/adjacency_arrangement.npy')
 adjacency_differencemag =  np.load ('postproc/adjacency_differencemag.npy')
 
+# My pattern quality measure, eta
+eta = (area_diff * adjacency_differencemag) / adjacency_arrangement
+
 xmax = max(t1_masked)
 xmax = xmax[0]
 print ('xmax = {0}'.format(xmax))
@@ -59,7 +62,7 @@ if show_sos:
     l5, = ax4.plot(t1_masked, sos_dist, 's', markersize=12, color=col.blue)
 
 ax2 = F1.add_subplot(3,1,2)
-l3, = ax2.plot(t1_masked, area_diff, 's', markersize=12, color=col.black)
+l3, = ax2.plot(t1_masked, eta, 's', markersize=12, color=col.black)
 
 ax3 = ax2.twinx()
 l4, = ax3.plot(t1_masked, locn_vs_t, 'h', markersize=12, color=col.gray60)
@@ -81,7 +84,7 @@ ax3.set_ylabel ('$\omega$', rotation=0, labelpad=30)
 ax2.tick_params (axis='y', labelcolor=col.black)
 ax1.set_xlim ((0,xmax))
 ax1.set_ylim ((0,0.35))
-ax2.set_ylim ((0,1.2))
+ax2.set_ylim ((0,1000))
 ax3.set_ylim ((0,0.28))
 ax2.set_xlim ((0,xmax))
 
