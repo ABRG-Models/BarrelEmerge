@@ -443,7 +443,7 @@ class BarrelData:
                 continue
 
             my_id_i = int(np.round(np.float32(self.N)*my_id))
-            print ('Expt Hex has ID float: {0} / int: {1}'.format(my_id, my_id_i))
+            #print ('Expt Hex has ID float: {0} / int: {1}'.format(my_id, my_id_i))
 
             # The the neighbour iterators:
             h_e = self.d_ne[h]
