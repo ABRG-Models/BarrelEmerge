@@ -22,6 +22,7 @@ honda = np.zeros([5, 5], dtype=float)
 sos = np.zeros([5, 5], dtype=float)
 area = np.zeros([5, 5], dtype=float)
 locn = np.zeros([5, 5], dtype=float)
+eta = np.zeros([5, 5], dtype=float)
 
 idx_g1 = { 0.03 : int(0),  0.06: int(1), 0.15 : int(2), 0.6 : int(3), 1.5 : int(4)}
 idx_s1 = {0.015 : int(0), 0.022: int(1), 0.03 : int(2), 0.06: int(3), 0.1 : int(4)}
@@ -36,6 +37,7 @@ for s in sdata:
     sos[r,c] = s['sos_dist']
     area[r,c] = s['area_diff']
     locn[r,c] = s['localization']
+    eta[r,c] = s['eta']
 
 # These come from the output of plot_paramsearch_paper.py:
 honda_min=0.016603905707597733
@@ -46,6 +48,8 @@ locn_min=0.041788052869136255
 locn_max=0.7319451998375573
 sos_min=2.9542248615230577
 sos_max=3.350204398214124
+eta_min=0
+eta_max=600
 
 # Use same min/maxes as produced by the parameter search?
 im1 = ax1.imshow (honda, cmap='inferno_r', origin='lower', vmin=honda_min, vmax=honda_max, interpolation='nearest')
@@ -66,8 +70,8 @@ ax2.set_yticks ([0,1,2,3,4])
 ax2.set_yticklabels (ylbl)
 ax2.set_xlabel('Noise mag.')
 
-im3 = ax3.imshow (area,  cmap='inferno_r', origin='lower', vmin=area_min,  vmax=area_max,  interpolation='nearest')
-ax3.set_title('Area $\eta$')
+im3 = ax3.imshow (eta,  cmap='inferno_r', origin='lower', vmin=eta_min,  vmax=eta_max,  interpolation='nearest')
+ax3.set_title('$\eta$')
 ax3.set_xticks ([0,1,2,3,4])
 ax3.set_xticklabels (xlbl)
 ax3.set_yticks ([0,1,2,3,4])

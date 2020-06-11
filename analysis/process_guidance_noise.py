@@ -34,7 +34,8 @@ for logdirname in os.listdir(basedir):
     bdo = bd.BarrelData()
     bdo.loadAnalaysisData = True
     bdo.loadPositions = False # required for totalarea
-    bdo.loadGuidance = False
+    bdo.loadGuidance = True # For adjacency
+    bdo.loadHexFlags = True # also for adjacency
     bdo.loadSimData = True # Need sim data to do any analysis of the c values, e.g. max me - max others.
     bdo.loadDivisions = False
     try:
@@ -55,25 +56,28 @@ for logdirname in os.listdir(basedir):
         area_diff = area_diff / bdo.nhex
         sos_dist = np.sqrt(sos_dist.compressed()/bdo.N)
         hondadelta = hondadelta.compressed()
-        # Uncomment for debug:
-        print ('hondadelta: {0}'.format (hondadelta))
-        print ('sos_dist shape: {0}, area_diff shape: {1}'.format (np.shape (sos_dist), np.shape (area_diff[:,0])))
-        print ('sos_dist: {0}, area_diff: {1}'.format (sos_dist, area_diff))
 
         # So here, I have t, honda, sos at 1 time point, providing one table line.
         bdo.computeLocalization()
         print ("Localization vs. t: {0}".format (bdo.locn_vs_t))
+        bdo.computeAdjacencyMeasure()
 
-        tableline = [ff_gain, ff_sigma, hondadelta[0], sos_dist[0], area_diff[0,0], bdo.locn_vs_t[0]]
+        # Eta is a combined measure
+        eta = area_diff[0,0] * bdo.mean_adjacency_differencemag[0] / bdo.mean_adjacency_arrangement[0]
+
+        if np.isinf(eta):
+            eta = math.nan
+
+        tableline = [ff_gain, ff_sigma, hondadelta[0], sos_dist[0], area_diff[0,0], bdo.locn_vs_t[0], eta]
         table.append (tableline)
     except:
         print ('Failed to load BarrelData object')
-        tableline = [ff_gain, ff_sigma, math.nan, math.nan, math.nan, math.nan]
+        tableline = [ff_gain, ff_sigma, math.nan, math.nan, math.nan, math.nan, math.nan]
         table.append (tableline)
 
 import csv
 with open('postproc/guidance_noise.csv', 'w', newline='\n') as csvfile:
     cw = csv.writer (csvfile, delimiter=',')
-    cw.writerow (['noise_gain','noise_sigma','hondadelta','sos_dist','area_diff','localization'])
+    cw.writerow (['noise_gain','noise_sigma','hondadelta','sos_dist','area_diff','localization','eta'])
     for tableline in table:
         cw.writerow (tableline)
