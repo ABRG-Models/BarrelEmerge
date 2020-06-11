@@ -30,7 +30,8 @@ for logdirname in os.listdir(basedir):
     bdo = bd.BarrelData()
     bdo.loadAnalaysisData = True
     bdo.loadPositions = False # required for totalarea
-    bdo.loadGuidance = False
+    bdo.loadGuidance = True # For adjacency
+    bdo.loadHexFlags = True # also for adjacency
     bdo.loadSimData = True # Need sim data to do any analysis of the c values, e.g. max me - max others.
     bdo.loadDivisions = False
     try:
@@ -49,17 +50,20 @@ for logdirname in os.listdir(basedir):
         sos_dist = np.sqrt(sos_dist.compressed()/bdo.N)
         hondadelta = hondadelta.compressed()
         bdo.computeLocalization()
+        bdo.computeAdjacencyMeasure()
+        # Eta is a combined measure
+        eta = area_diff[0,0] * bdo.mean_adjacency_differencemag[0] / bdo.mean_adjacency_arrangement[0]
 
-        tableline = [ff_gain, hondadelta[0], sos_dist[0], area_diff[0,0], bdo.locn_vs_t[0]]
+        tableline = [ff_gain, hondadelta[0], sos_dist[0], area_diff[0,0], bdo.locn_vs_t[0], eta]
         table.append (tableline)
     except:
         print ('Failed to load BarrelData object')
-        tableline = [ff_gain, math.nan, math.nan, math.nan, math.nan]
+        tableline = [ff_gain, math.nan, math.nan, math.nan, math.nan, math.nan]
         table.append (tableline)
 
 import csv
 with open('postproc/gamma_noise.csv', 'w', newline='\n') as csvfile:
     cw = csv.writer (csvfile, delimiter=',')
-    cw.writerow (['noise_gain','hondadelta','sos_dist','area_diff','localization'])
+    cw.writerow (['noise_gain','hondadelta','sos_dist','area_diff','localization','eta'])
     for tableline in table:
         cw.writerow (tableline)
