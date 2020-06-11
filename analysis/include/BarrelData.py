@@ -370,7 +370,8 @@ class BarrelData:
     #
     def computeAdjacencyMeasure (self):
 
-        print ('id_byname: {0}'.format(self.id_byname))
+        if self.debug:
+            print ('computeAdjacencyMeasure: id_byname: {0}'.format(self.id_byname))
 
         # Containers for the measure, which is N N-d vectors.
         self.adjacency_vectors = np.zeros([len(self.t_steps), self.N, self.N], dtype=float)
@@ -378,6 +379,10 @@ class BarrelData:
 
         # For each t:
         for tidx in range (0, len(self.t_steps)):
+
+            if self.debug:
+                print ('computeAdjacencyMeasure for tidx={0}'.format (tidx))
+                print ('Shapes: self.id_c: {0} self.d_ne: {1}'.format(np.shape(self.id_c), np.shape(self.d_ne)))
 
             # For each hex in the grid
             for h in range (0, self.nhex):
@@ -724,8 +729,8 @@ class BarrelData:
 
             populated_id_c = False
             for k in klist:
-                if self.debug:
-                    print ('Key: {0} fileidx: {1}'.format(k, fileidx))
+                #if self.debug: # very noisy
+                #    print ('Key: {0} fileidx: {1}'.format(k, fileidx))
                 if k[0] == 'c':
                     cnum = int(k[1:])
                     self.c[cnum,:,fileidx] = np.array(f[k])
