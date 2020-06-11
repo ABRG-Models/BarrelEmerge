@@ -41,6 +41,8 @@ locn_min=0.041788052869136255
 locn_max=0.7319451998375573
 sos_min=2.9542248615230577
 sos_max=3.350204398214124
+eta_min=0
+eta_max=600
 
 bc = int(0) # 'barrel counter'
 for br in ['b', 'c', 'd']:
@@ -61,6 +63,7 @@ for br in ['b', 'c', 'd']:
     sos = np.zeros([5, 5], dtype=float)
     area = np.zeros([5, 5], dtype=float)
     locn = np.zeros([5, 5], dtype=float)
+    eta = np.zeros([5, 5], dtype=float)
 
     # Sort bdata on gamma_i then gamma_j (CARE: May need to look at order)
     np.sort (bdata, axis=0, order='gamma_i')
@@ -75,6 +78,7 @@ for br in ['b', 'c', 'd']:
         sos[r,c] = s['sos_dist']
         area[r,c] = s['area_diff']
         locn[r,c] = s['localization']
+        eta[r,c] = s['eta']
         mcount += int(1)
 
     # Use same min/maxes as produced by the parameter search?
@@ -96,7 +100,7 @@ for br in ['b', 'c', 'd']:
     axs[1][bc].set_xlabel('$\gamma_i$')
     #axs[1][bc].set_ylabel('$\gamma_j$')
 
-    im3 = axs[2][bc].imshow (area,  cmap='inferno_r', vmin=area_min,  vmax=area_max,  interpolation='nearest')
+    im3 = axs[2][bc].imshow (eta,  cmap='inferno_r', vmin=eta_min,  vmax=eta_max,  interpolation='nearest')
     axs[2][bc].set_title('{0} $\eta$'.format(modified_barrel))
     #axs[2][bc].set_xticks ([0,1,2,3,4])
     #axs[2][bc].set_xticklabels ([0.1, 0.5, 1, 2, 10])

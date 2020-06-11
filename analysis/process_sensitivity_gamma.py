@@ -41,7 +41,8 @@ for br in ['b', 'c', 'd']:
         bdo.loadTimeStep = tpoint
         bdo.loadAnalaysisData = True
         bdo.loadPositions = False # required for totalarea
-        bdo.loadGuidance = False
+        bdo.loadGuidance = True # For adjacency
+        bdo.loadHexFlags = True # also for adjacency
         bdo.loadSimData = True # Need sim data to do any analysis of the c values, e.g. max me - max others.
         bdo.loadDivisions = False
         try:
@@ -62,6 +63,7 @@ for br in ['b', 'c', 'd']:
         sos_dist = np.sqrt(sos_dist.compressed()/bdo.N)
         hondadelta = hondadelta.compressed()
         bdo.computeLocalization()
+        bdo.computeAdjacencyMeasure()
 
         # Make a data table line for the CSV output
         barrel_id = 0
@@ -71,12 +73,13 @@ for br in ['b', 'c', 'd']:
             barrel_id = 2
         elif modified_barrel == 'd4':
             barrel_id = 3
-        tableline = [barrel_id, ff_gamma_i, ff_gamma_j, hondadelta[0], sos_dist[0], area_diff[0,0], bdo.locn_vs_t[0]]
+        eta = area_diff[0,0] * bdo.adjacency_differencemag_metric[0,0] / bdo.adjacency_arrangement_metric[0,0]
+        tableline = [barrel_id, ff_gamma_i, ff_gamma_j, hondadelta[0], sos_dist[0], area_diff[0,0], bdo.locn_vs_t[0], eta]
         table.append (tableline)
 
 import csv
 with open('postproc/sensitivity_gammas.csv', 'w', newline='\n') as csvfile:
     cw = csv.writer (csvfile, delimiter=',')
-    cw.writerow (['barrel','gamma_i','gamma_j','hondadelta','sos_dist','area_diff','localization'])
+    cw.writerow (['barrel','gamma_i','gamma_j','hondadelta','sos_dist','area_diff','localization','eta'])
     for tableline in table:
         cw.writerow (tableline)
