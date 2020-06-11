@@ -73,7 +73,7 @@ for br in ['b', 'c', 'd']:
             barrel_id = 2
         elif modified_barrel == 'd4':
             barrel_id = 3
-        eta = area_diff[0,0] * bdo.adjacency_differencemag_metric[0,0] / bdo.adjacency_arrangement_metric[0,0]
+        eta = area_diff[0,0] * bdo.mean_adjacency_differencemag[0] / bdo.mean_adjacency_arrangement[0]
         tableline = [barrel_id, ff_gamma_i, ff_gamma_j, hondadelta[0], sos_dist[0], area_diff[0,0], bdo.locn_vs_t[0], eta]
         table.append (tableline)
 
