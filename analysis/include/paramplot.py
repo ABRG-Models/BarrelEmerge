@@ -446,7 +446,7 @@ def mapplot (F, ttarg, param_tuples, logdirbase):
 # Second/Publication version of paramplot()
 def paramplot_pub (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuples = [], col_trim_front = 0, col_trim_back = 0, cmapstr='viridis'):
 
-    graph_rows = 3 # honda, areadiff, localization
+    graph_rows = 3 # honda, eta, localization
 
     # Analyse one k at a time
     sdata = sdata[sdata[:]['k'] == ktarg]
@@ -501,6 +501,10 @@ def paramplot_pub (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuple
     locn_min = min(sdata[:]['localization'])
     sos_max = max(sdata[:]['sos_dist'])
     sos_min = min(sdata[:]['sos_dist'])
+    eta_min = 0
+    eta_max = 600
+    adj_diffmag_max = 62
+    adj_diffmag_min = 15
     print ('Output to include in code for sensitivity graphs:')
     print ('honda_min={0}'.format(honda_min))
     print ('honda_max={0}'.format(honda_max))
@@ -510,6 +514,8 @@ def paramplot_pub (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuple
     print ('locn_max={0}'.format(locn_max))
     print ('sos_min={0}'.format(sos_min))
     print ('sos_max={0}'.format(sos_max))
+    print ('eta_min={0}'.format(eta_min))
+    print ('eta_max={0}'.format(eta_max))
     # Extent of the data range for plotting
     plot_extent = [-0.5, 5.5, -0.5, 5.5]
 
@@ -543,6 +549,16 @@ def paramplot_pub (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuple
         hond6x6 = np.flip(mapdat[:]['hondadelta'].reshape((len(y_all), len(x_all))), axis=0)
         area6x6 = np.flip(mapdat[:]['area_diff'].reshape((len(y_all), len(x_all))), axis=0)
         locn6x6 = np.flip(mapdat[:]['localization'].reshape((len(y_all), len(x_all))), axis=0)
+        arr6x6 = np.flip(mapdat[:]['adj_arrangement'].reshape((len(y_all), len(x_all))), axis=0)
+        #print ('area6x6: {0}'.format(area6x6))
+        #print ('arr6x6: {0}'.format(arr6x6))
+        #arr6x6 = arr6x6 * area6x6
+        #print ('arr6x6 * area6x6 : {0}'.format(arr6x6))
+
+        # eta is now area*adj_diffmag/adj_arrangement:
+        eta6x6 = (area6x6 * np.flip(mapdat[:]['adj_diffmag'].reshape((len(y_all), len(x_all))), axis=0))/arr6x6
+        print ('eta6x6: {0}'.format(eta6x6))
+
         # Can heat map these to prove the ordering is sensible:
         x6x6 =  mapdat[:][x_tag].reshape((len(y_all), len(x_all)))
         y6x6 =  mapdat[:][y_tag].reshape((len(y_all), len(x_all)))
@@ -599,8 +615,7 @@ def paramplot_pub (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuple
             ax.set_title ('{0}={1:.1f}'.format(column_tag,coltarg))
 
         ax2 = F.add_subplot(graph_rows,len(colall),(len(colall))+i)
-        im2 = ax2.imshow (area6x6, cmap=cmapstr+'_r', vmin=area_min, vmax=area_max,
-                        extent=plot_extent, interpolation='nearest')
+        im2 = ax2.imshow (eta6x6, cmap=cmapstr+'_r', vmin=eta_min, vmax=eta_max, extent=plot_extent, interpolation='nearest')
         tlist = []
         for j in range(0,len(x_all)): tlist.append(''.format(x6x6[0,j]))
         plt.xticks (x_tick_list, tlist)
@@ -615,8 +630,7 @@ def paramplot_pub (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuple
             ax2.text(-3.5,2.5,'$\eta$',rotation=0)
 
         ax3 = F.add_subplot(graph_rows,len(colall),(2*len(colall))+i)
-        im3 = ax3.imshow (locn6x6, cmap=cmapstr, vmin=locn_min, vmax=locn_max,
-                              extent=plot_extent, interpolation='nearest')
+        im3 = ax3.imshow (locn6x6, cmap=cmapstr, vmin=locn_min, vmax=locn_max, extent=plot_extent, interpolation='nearest')
         # x ticks
         tlist = []
         #for j in range(0,len(x_all)): tlist.append('{0:.2f}'.format(x6x6[0,j]))
