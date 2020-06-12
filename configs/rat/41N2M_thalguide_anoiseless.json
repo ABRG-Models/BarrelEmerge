@@ -11,8 +11,8 @@
     "dt" : 0.0001, // Timestep. Defaults to 0.00001 if omitted here
 
     // Initial conditions parameters
-    "aNoiseGain" : 0.4,
-    "aInitialOffset" : 0.4,
+    "aNoiseGain" : 0.0,
+    "aInitialOffset" : 0.2,
 
     // Guidance molecule noise
     "mNoiseGain" : 0.0,
