@@ -60,6 +60,11 @@ l2, = ax2.plot(gmn_noise_gain[:-mo], gmn_locn[:-mo], 'h-', markersize=12, color=
 ax3 = F1.add_subplot(3,3,7)
 l3, = ax3.plot(gmn_noise_gain[:-mo], gmn_eta[:-mo], 's-', markersize=12, color=col.black, label='$\eta$')
 
+# this is an inset axes over the third axis
+ax3_1 = plt.axes([.17, .24, .1, .06])
+ax3_1.plot(gmn_noise_gain[:-10], gmn_eta[:-10], 's-', markersize=8, color=col.black, label='$\eta$')
+ax3_1.tick_params(axis='both', which='major', labelsize=14)
+
 #
 # Guidance noise
 #
