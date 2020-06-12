@@ -17,9 +17,6 @@ plt.rcParams['svg.fonttype'] = 'none'
 
 sdata = np.genfromtxt ('postproc/gamma_noise.csv', delimiter=",", names=True)
 s = np.sort (sdata, order='noise_gain')
-# If required
-#xlbl = (['.03', '.06', '.15', '.6', '1.5'])
-#ylbl = (['.015', '.022', '.03', '.06', '.1'])
 
 noise_gain = s['noise_gain']
 honda = s['hondadelta']
@@ -50,8 +47,6 @@ ax2 = F1.add_subplot(3,1,2)
 l2, = ax2.plot(noise_gain, locn, 'h-', markersize=12, color=col.gray60, label='Locn $\omega$')
 ax3 = F1.add_subplot(3,1,3)
 l3, = ax3.plot(noise_gain, eta, 's-', markersize=12, color=col.black, label='$\eta$')
-##ax4 = ax3.twinx()
-##l4, = ax4.plot(noise_gain, sos, 'v-', markersize=12, color=col.blue, label='SOS')
 
 # Axis tweaking
 ax1.set_xlabel ('Noise mag.')
@@ -60,15 +55,8 @@ ax2.set_xlabel ('Noise mag.')
 ax2.set_ylabel ('$\omega$', rotation=0, labelpad=30)
 ax3.set_xlabel ('Noise mag.')
 ax3.set_ylabel ('$\eta$', rotation=0, labelpad=30)
-##ax4.set_ylabel ('SOS', rotation=0, labelpad=30)
-#ax2.tick_params (axis='y', labelcolor=col.black)
-#ax1.set_xlim((0,1.0))
 ax1.set_ylim ((honda_min,honda_max))
 ax2.set_ylim ((locn_min,locn_max)) # locn, omega
-#ax2.set_xlim((0,1.0))
-#ax3.set_ylim ((eta_min,eta_max)) # area, eta
-#ax3.set_ylim ((0.52,0.62))
-#ax4.set_ylim ((sos_min,3.6))
 
 lw = 2
 for axis in ['top','bottom','left','right']:
@@ -78,8 +66,6 @@ for axis in ['top','bottom','left','right']:
   ax2.tick_params(width=lw)
   ax3.spines[axis].set_linewidth(lw)
   ax3.tick_params(width=lw)
-  ##ax4.spines[axis].set_linewidth(lw)
-  ##ax4.tick_params(width=lw)
 
 plt.tight_layout()
 
