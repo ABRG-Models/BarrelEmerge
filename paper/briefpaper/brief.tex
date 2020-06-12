@@ -358,20 +358,49 @@ Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
 \end{figure}
 
 \cmnt{We performed a sensitivity analysis to determine if the quality of the
-  pattern was sensitive to any of the following inputs: i)~The angle and
-  magnitude of each of the two guidance fields (Fig.\,\ref{fig:main}A);
-  ii)~the magnitude, offset and characteristic length scale of the noise
-  applied to $a_i$ at $t=0$; and iii)~the magnitude of each of the interaction
-  parameters, $\gamma_{i,j}$. We analysed the effect on the three pattern
-  metrics, $\delta$, $\eta$ and $\omega$ evaluated after 30000 simulation
-  steps. First, we conducted 10 runs of the simulation to evaluate the mean
-  and standard deviation (as a result of the different random initial
-  conditions for $a_i$) of the three metrics in the default model
-  (Fig.\,\ref{fig:main}C--E) which were $\delta=0.089\pm{0.004}$,
-  $\eta=0.531\pm{0.005}$ and $\omega=0.2165\pm{0.0001}$). These results are
-  not strongly affected by the random initial conditions for $a_i$ but give a
-  baseline from which to evaluate whether changes in the other inputs have a
-  statistically significant effect.}
+  pattern was affected by perturbations to any of the following inputs:
+%
+  i)~the magnitude and offset of the noise applied to $a_i$ at $t=0$;
+%
+  ii)~random noise applied to the interaction parameters, $\gamma_{i,j}$;
+%
+  iii)~random noise (of various length scales) applied to the guidance fields;
+%
+  and
+%
+  iv)~The angle and magnitude of one of the guidance fields, ($\rho_1$;
+  Fig.\,\ref{fig:main}A).
+%
+  We analysed the effect on the three pattern metrics, $\delta$ (the Honda
+  Voronoi metric), $\eta$ (the pattern-match metric) and $\omega$ (which
+  measures localization of connections, $c_i$) evaluated after 30000
+  simulation steps.}
+
+\cmnt{First, we conducted 10 runs of the simulation shown in
+  Fig.\,\ref{fig:main}C to evaluate the mean and standard deviation of the
+  three metrics in the default model. The results (where deviations occur as a
+  result of the different random initial conditions for $a_i$) were
+  $\delta=0.089\pm{0.004}$, $\eta=113.5\pm{1.2}$ and
+  $\omega=0.2165\pm{0.0001}$. None of the three metrics were strongly affected
+  by the random initial conditions for $a_i$. The results give a baseline from
+  which to evaluate whether changes in the other inputs have a statistically
+  significant effect.}
+
+\cmnt{Next, we changed the initial condition for $a_i$, changing the
+  parameters of the generating uniform distribution to set each hex to
+  $0.4+{U}(0,0.4)$. We ran this system 10 times and obtain the result
+  $\delta=0.0\pm{0.000}$, $\eta=100\pm{0}$ and $\omega=0.2ish\pm{0.0000}$. A
+  t-test demonstrates that this is ????. A final test of a noise-free initial
+  condition with $a_i=0.2$ for every hex also ????.}
+
+\cmnt{Fig\,\ref{fig:sens}A shows the results for perturbations ii) to iv). The
+  first column shows the results for the three metrics where the interaction
+  parameters $\gamma_{i,j}$ are replaced by $\gamma_{i,j}'$ according to
+  $\gamma_{i,j}' = \gamma_{i,j} + U(0,4\nu_\gamma)$, where $\nu_\gamma$ is the
+  chosen magnitude of the noise (the proportion of the full range of
+  $\gamma_{i,j}$, which is 4). The Voronoi nature of the pattern ($\delta$)
+  and the localization of the fields are not strongly affected by interaction
+  parameter noise, but the pattern metric, $\eta$ shows a... ADD SUB GRAPH.}
 
 % This figure is text width
 \begin{center}
@@ -582,6 +611,8 @@ $\mb{g}_i(\mb{x})$ \cmnt{by} a sharp logistic function of the distance, $d_b$,
 from $\mb{x}$ to the boundary, \cmnt{of the form $1/[1 +
   \exp(100(d_f-d_b))]$, where $d_f=0.1$\,mm is the boundary fall-off distance,
   chosen to be approximately $3d$}.
+
+\cmnt{Add a description of $\eta$, the pattern-matching measure, here.}
 
 All code required to reproduce these results is available at
 \url{https://github.com/ABRG-Models/BarrelEmerge/tree/eLife}. The computations
