@@ -25,8 +25,8 @@ HEXHEXD=0.03
 # Boundary fall off distance - should be at least 3 times HEXHEXD
 BFD=0.1
 # Noise on a
-ANG=0.4 # gain
-ANO=0.4 # offset
+ANG=0.4 # gain   # Should have same mean as 0.2/0.2
+ANO=0.1 # offset
 
 # How many runs to do?
 R=10

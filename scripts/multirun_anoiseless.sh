@@ -26,7 +26,7 @@ HEXHEXD=0.03
 BFD=0.1
 # Noise on a
 ANG=0.0 # gain
-ANO=0.2 # offset
+ANO=0.3 # offset
 
 # How many runs to do?
 R=10
