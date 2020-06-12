@@ -19,6 +19,7 @@ sos = []
 area = []
 mapdiffs = []
 locns = []
+eta = []
 
 for logdirname in os.listdir(basedir):
     print (logdirname)
@@ -28,7 +29,8 @@ for logdirname in os.listdir(basedir):
     bdo.loadTimeStep = t
     bdo.loadAnalaysisData = True
     bdo.loadPositions = True # for totalarea
-    bdo.loadGuidance = False
+    bdo.loadGuidance = True
+    bdo.loadHexFlags = True
     bdo.loadSimData = True # For localization and a
     bdo.loadDivisions = False
     try:
@@ -36,6 +38,7 @@ for logdirname in os.listdir(basedir):
         bdo.load (basedir+logdirname)
         print ('loaded')
         bdo.computeLocalization() # can then get bdo.locn_vs_t
+        bdo.computeAdjacencyMeasure()
 
         #gfits, s_resid = dc.domcentres_analyse (bdo.domcentres, vert)
         #gfits_h, s_resid_h = dc.domcentres_analyse (bdo.domcentres, horz)
@@ -47,10 +50,17 @@ for logdirname in os.listdir(basedir):
         print ('bdo.locn_vs_t: {0}'.format(bdo.locn_vs_t))
         hondas.append(bdo.honda[0])
         sos.append(bdo.sos_dist[0])
-        # area_diff = area_diff / np.max(area_diff) # I don't like this division by the max of area_diff.
-        area.append(bdo.area_diff[0]/bdo.nhex)
+        area_diff = bdo.area_diff[0] / bdo.nhex
+        area.append(area_diff)
+
         mapdiffs.append(bdo.mapdiff[0])
         locns.append(bdo.locn_vs_t[0])
+
+        print ('bdo.mean_adjacency_differencemag: {0}'.format(bdo.mean_adjacency_differencemag))
+        print ('bdo.mean_adjacency_arrangement: {0}'.format(bdo.mean_adjacency_arrangement))
+        adjacency_arrangement = bdo.mean_adjacency_arrangement[0]
+        adjacency_differencemag = bdo.mean_adjacency_differencemag[0]
+        eta.append(adjacency_differencemag * area_diff / adjacency_arrangement)
 
     except:
         print ('exception')
@@ -59,5 +69,6 @@ for logdirname in os.listdir(basedir):
 print ('honda: {0} +/- {1}'.format(np.mean(hondas), np.std(hondas)))
 print ('sos_dist: {0} +/- {1}'.format(np.mean(sos), np.std(sos)))
 print ('area_diff: {0} +/- {1}'.format(np.mean(area), np.std(area)))
+print ('eta: {0} +/- {1}'.format(np.mean(eta), np.std(eta)))
 print ('map_diff: {0} +/- {1}'.format(np.mean(mapdiffs), np.std(mapdiffs)))
 print ('locn: {0} +/- {1}'.format(np.mean(locns), np.std(locns)))

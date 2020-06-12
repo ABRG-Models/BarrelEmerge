@@ -371,7 +371,7 @@ class BarrelData:
     def computeAdjacencyMeasure (self):
 
         if self.debug:
-            print ('computeAdjacencyMeasure: id_byname: {0}'.format(self.id_byname))
+            print ('computeAdjacencyMeasure: id_byname: {0} number of times: {1}'.format(self.id_byname, len(self.t_steps)))
 
         # Containers for the measure, which is N N-d vectors.
         self.adjacency_vectors = np.zeros([len(self.t_steps), self.N, self.N], dtype=float)
@@ -400,7 +400,7 @@ class BarrelData:
                 h_sw = self.d_nsw[h]
                 h_se = self.d_nse[h]
 
-                #print ('Hex to the east has id_c: {0} and corresponding index: {1}'.format (self.id_c[h_e], int(self.N*self.id_c[h_e])))
+                #print ('Hex to the east has id_c: {0} and corresponding index: {1} (cf my_id={2}/{3})'.format (self.id_c[h_e], int(self.N*self.id_c[h_e]), my_id, my_id_i))
                 if self.id_c[h_e, tidx] != my_id: # Then hex to east has a different ID:
                     self.barrel_boundary_lengths[tidx, my_id_i] += 1
                     # int(self.N*self.id_c[h_e]) makes an integer index out of id_c
@@ -422,10 +422,10 @@ class BarrelData:
                     self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_se, tidx]))] += 1
 
             # Debug output:
-            for i in range (0, self.N):
-                ##self.adjacency_vectors[tidx,i,:] = np.divide (self.adjacency_vectors[tidx,i,:], self.barrel_boundary_lengths[tidx,i])
-                print ('adjacency_vectors[tidx={0},i={1}] = {2}'.format (tidx, i, self.adjacency_vectors[tidx,i,:]))
-                print ('barrel_boundary_lengths[tidx={0},i={1}] = {2}'.format (tidx, i, self.barrel_boundary_lengths[tidx,i]))
+            if self.debug:
+                for i in range (0, self.N):
+                    print ('adjacency_vectors[tidx={0},i={1}] = {2}'.format (tidx, i, self.adjacency_vectors[tidx,i,:]))
+                    print ('barrel_boundary_lengths[tidx={0},i={1}] = {2}'.format (tidx, i, self.barrel_boundary_lengths[tidx,i]))
 
         if not self.expt_id.any():
             print ('No experimental barrels loaded (from guidance.h5), so return without computing expt adjacency vectors')
@@ -480,12 +480,10 @@ class BarrelData:
                 if self.expt_id[h_se] != -1:
                     self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_se]))] += 1
 
-        # Debug output:
-        for i in range (0, self.N):
-            # Experimented with a 'divide by boundary length' idea
-            ##self.expt_adjacency_vectors[i,:] = np.divide (self.expt_adjacency_vectors[i,:], self.expt_barrel_boundary_lengths[i])
-            print ('expt_adjacency_vectors[i={0}] = {1}'.format (i, self.expt_adjacency_vectors[i,:]))
-            print ('expt_barrel_boundary_lengths[i={0}] = {1}'.format (i, self.expt_barrel_boundary_lengths[i]))
+        if self.debug:
+            for i in range (0, self.N):
+                print ('expt_adjacency_vectors[i={0}] = {1}'.format (i, self.expt_adjacency_vectors[i,:]))
+                print ('expt_barrel_boundary_lengths[i={0}] = {1}'.format (i, self.expt_barrel_boundary_lengths[i]))
 
         # Now (drum-roll please) can compute the dot product of the
         # experimental and simulated vectors to give 41 numbers as a metric of
@@ -684,6 +682,8 @@ class BarrelData:
         self.createTimeSeries (numtimes)
 
         # Count up how many c files we have in each time point once only:
+        if self.debug:
+            print ('Opening h5 file {0}'.format(files[0]))
         f = h5py.File(files[0], 'r')
         klist = list(f.keys())
         numcs = 0
@@ -746,15 +746,13 @@ class BarrelData:
                         self.id_c[:,fileidx] = np.array(f[k])
                         populated_id_c = True
 
-            # If id_c is empty, then genereate it from self.c
-            if not populated_id_c:
-                # id_c: matrix nhex by numtimes
-                # c: matrix numcs by nhex by numtimes
-                # populate id_c[:,fileidx] from c[:,:,fileidx]
-                idxes = np.argmax(self.c[:,:,fileidx], axis=0).astype(np.float32)/np.float32(self.N)
-                #print ('c idxes shape: {0}'.format(np.shape(idxes)))
-                self.id_c[:,fileidx] = idxes
-
+            # Generate id_c from self.c (even if populated_id_c is True)
+            # if not populated_id_c:
+            # id_c: matrix nhex by numtimes
+            # c: matrix numcs by nhex by numtimes
+            # populate id_c[:,fileidx] from c[:,:,fileidx]
+            idxes = np.argmax(self.c[:,:,fileidx], axis=0).astype(np.float32)/np.float32(self.N)
+            self.id_c[:,fileidx] = idxes
 
             # May be right now
             idxes = np.argmax(self.a[:,:,fileidx], axis=0).astype(np.float32)/np.float32(self.N)
