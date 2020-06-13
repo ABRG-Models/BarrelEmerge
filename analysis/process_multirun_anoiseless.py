@@ -66,9 +66,10 @@ for logdirname in os.listdir(basedir):
         print ('exception')
         continue
 
+print ('honda_anoiseless = {0}'.format (hondas))
+print ('etas_anoiseless = {0}'.format (eta))
+print ('locns_anoiseless = {0}'.format (locns))
+
 print ('honda: {0} +/- {1}'.format(np.mean(hondas), np.std(hondas)))
-print ('sos_dist: {0} +/- {1}'.format(np.mean(sos), np.std(sos)))
-print ('area_diff: {0} +/- {1}'.format(np.mean(area), np.std(area)))
 print ('eta: {0} +/- {1}'.format(np.mean(eta), np.std(eta)))
-print ('map_diff: {0} +/- {1}'.format(np.mean(mapdiffs), np.std(mapdiffs)))
 print ('locn: {0} +/- {1}'.format(np.mean(locns), np.std(locns)))
