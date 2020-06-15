@@ -23,6 +23,9 @@
 \newcommand*\vcdot{\mathpalette\vcdot@{.35}}
 \newcommand*\vcdot@[2]{\mathbin{\vcenter{\hbox{\scalebox{#2}{$\m@th#1\bullet$}}}}}
 \newcommand{\code}[1]{\textsf{#1}}
+% Nice norms:
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
 
 \title{Modelling the emergence of whisker barrels}
 
@@ -627,7 +630,58 @@ from $\mb{x}$ to the boundary, \cmnt{of the form $1/[1 +
   \exp(100(d_f-d_b))]$, where $d_f=0.1$\,mm is the boundary fall-off distance,
   chosen to be approximately $3d$}.
 
-\cmnt{Add a description of $\eta$, the pattern-matching measure, here.}
+\cmnt{The pattern-matching metric, $\eta$, incorporates information about i)
+  the differences in the areas of the simulated and experimental barrels
+  ($\mathcal{A}_i^{\mathrm{sim}}$ and $\mathcal{A}_i^{\mathrm{exp}}$); and ii)
+  the information provided by `adjacency vectors', $\mathcal{V}_i$ (one for
+  each barrel) whose $N$ elements contain the length of the barrel boundary
+  which adjoins each other barrel in the pattern. The value of
+  $\mathcal{V}_{i,j}$ (the $j^{\mathrm{th}}$ element of $\mathcal{V}_i$) is
+  the length of the boundaries between regions of type $i$ and regions of type
+  $j$. In a well-formed barrel pattern, $\mathcal{V}_{i}$ is a sparse vector
+  and note that $\mathcal{V}_{i,i} = 0, \forall i$. $\mathcal{V}_{i}$ can be
+  computed for the experimental and simulated barrel patterns and compared. A
+  dimensionless measure of the pattern's arrangement and neighbour relations
+  can be obtained from the scalar product of the simulated and experimental
+  adjacency vectors:
+  $\frac{1}{N} \sum_i \frac { \mathcal{V}_{i}^{\mathrm{sim}}}
+  {b_{i}^{\mathrm{sim}} } \vcdot \frac{\mathcal{V}_{i}^{\mathrm{exp}}}{b_{i}^{\mathrm{exp}}}$, where
+  $b_i^{\mathrm{exp}}$($b_i^{\mathrm{sim}}$) is the total length of the boundary of
+  experimental(simulated) barrel $i$. This measure is low early in the simulation, when the regions do
+  not have the neighbour relations of the experimental pattern
+  (Fig.\,\ref{fig:main}C, $t=1000$) and maximal when the neighbour relations
+  have become established ($t=10000$). It does not distinguish between
+  $t=10000$ and $t=30000$.}
+%
+\cmnt{A second way to analyse the adjacency vectors is to consider
+  the mean magnitude of the difference between the simulated and experimental
+  vectors: $\frac{1}{N} \sum_i \norm{ \mathcal{V}_{i}^{\mathrm{sim}} -
+    \mathcal{V}_{i}^{\mathrm{exp}} } $. This tends to 0 for a perfect
+  match and can separate patterns with straight boundaries from those with
+  noise on the boundary shape (For an example of `noisy edges', see Fig.\,\ref{fig:sens}B.ii).}
+%
+\cmnt{We combined all of these measures into a single pattern quality metric:}
+%
+\begin{equation} \label{eq:eta}
+\color{blue}
+  \eta =
+  \frac
+  {
+    \frac{1}{N} \sum_i \norm[\big]{ \mathcal{A}_i^{\mathrm{sim}} - \mathcal{A}_i^{\mathrm{exp}} }
+    \times
+    \frac{1}{N} \sum_i \norm[\big]{ \mathcal{V}_{i}^{\mathrm{sim}} -
+      \mathcal{V}_{i}^{\mathrm{exp}} }
+  }
+  {
+    \frac{1}{N}
+    \sum_i \frac {\mathcal{V}_{i}^{\mathrm{sim}}} {b_{i}^{\mathrm{sim}}}
+    \vcdot
+    \frac {\mathcal{V}_{i}^{\mathrm{exp}}} {b_{i}^{\mathrm{exp}}}
+  }
+\color{black}
+\end{equation}
+%
+\cmnt{which has units of mm$^3$.}
 
 All code required to reproduce these results is available at
 \url{https://github.com/ABRG-Models/BarrelEmerge/tree/eLife}. The computations
