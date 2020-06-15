@@ -377,6 +377,9 @@ class BarrelData:
         self.adjacency_vectors = np.zeros([len(self.t_steps), self.N, self.N], dtype=float)
         self.barrel_boundary_lengths = np.zeros ([len(self.t_steps), self.N], dtype=float)
 
+        # What's the length of one hex edge? It's hextohex_d/2
+        hex_edge_length = self.hextohex_d/2.0
+
         # For each t:
         for tidx in range (0, len(self.t_steps)):
 
@@ -402,24 +405,24 @@ class BarrelData:
 
                 #print ('Hex to the east has id_c: {0} and corresponding index: {1} (cf my_id={2}/{3})'.format (self.id_c[h_e], int(self.N*self.id_c[h_e]), my_id, my_id_i))
                 if self.id_c[h_e, tidx] != my_id: # Then hex to east has a different ID:
-                    self.barrel_boundary_lengths[tidx, my_id_i] += 1
+                    self.barrel_boundary_lengths[tidx, my_id_i] += hex_edge_length
                     # int(self.N*self.id_c[h_e]) makes an integer index out of id_c
-                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_e, tidx]))] += 1
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_e, tidx]))] += hex_edge_length
                 if self.id_c[h_ne, tidx] != my_id:
-                    self.barrel_boundary_lengths[tidx,my_id_i] += 1
-                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_ne, tidx]))] += 1
+                    self.barrel_boundary_lengths[tidx,my_id_i] += hex_edge_length
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_ne, tidx]))] += hex_edge_length
                 if self.id_c[h_nw, tidx] != my_id:
-                    self.barrel_boundary_lengths[tidx,my_id_i] += 1
-                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_nw, tidx]))] += 1
+                    self.barrel_boundary_lengths[tidx,my_id_i] += hex_edge_length
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_nw, tidx]))] += hex_edge_length
                 if self.id_c[h_w, tidx] != my_id:
-                    self.barrel_boundary_lengths[tidx,my_id_i] += 1
-                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_w, tidx]))] += 1
+                    self.barrel_boundary_lengths[tidx,my_id_i] += hex_edge_length
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_w, tidx]))] += hex_edge_length
                 if self.id_c[h_sw, tidx] != my_id:
-                    self.barrel_boundary_lengths[tidx,my_id_i] += 1
-                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_sw, tidx]))] += 1
+                    self.barrel_boundary_lengths[tidx,my_id_i] += hex_edge_length
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_sw, tidx]))] += hex_edge_length
                 if self.id_c[h_se, tidx] != my_id:
-                    self.barrel_boundary_lengths[tidx,my_id_i] += 1
-                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_se, tidx]))] += 1
+                    self.barrel_boundary_lengths[tidx,my_id_i] += hex_edge_length
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_se, tidx]))] += hex_edge_length
 
             # Debug output:
             if self.debug:
@@ -455,30 +458,30 @@ class BarrelData:
 
             #print ('Hex to the east has id_c: {0} and corresponding index: {1}'.format (self.id_c[h_e], int(self.N*self.id_c[h_e])))
             if self.expt_id[h_e] != my_id: # Then hex to east has a different ID:
-                self.expt_barrel_boundary_lengths[my_id_i] += 1
+                self.expt_barrel_boundary_lengths[my_id_i] += hex_edge_length
                 # int(self.N*self.expt_id[h_e]) makes an integer index out of expt_id
                 if self.expt_id[h_e] != -1:
-                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_e]))] += 1
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_e]))] += hex_edge_length
             if self.expt_id[h_ne] != my_id:
-                self.expt_barrel_boundary_lengths[my_id_i] += 1
+                self.expt_barrel_boundary_lengths[my_id_i] += hex_edge_length
                 if self.expt_id[h_ne] != -1:
-                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_ne]))] += 1
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_ne]))] += hex_edge_length
             if self.expt_id[h_nw] != my_id:
-                self.expt_barrel_boundary_lengths[my_id_i] += 1
+                self.expt_barrel_boundary_lengths[my_id_i] += hex_edge_length
                 if self.expt_id[h_nw] != -1:
-                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_nw]))] += 1
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_nw]))] += hex_edge_length
             if self.expt_id[h_w] != my_id:
-                self.expt_barrel_boundary_lengths[my_id_i] += 1
+                self.expt_barrel_boundary_lengths[my_id_i] += hex_edge_length
                 if self.expt_id[h_w] != -1:
-                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_w]))] += 1
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_w]))] += hex_edge_length
             if self.expt_id[h_sw] != my_id:
-                self.expt_barrel_boundary_lengths[my_id_i] += 1
+                self.expt_barrel_boundary_lengths[my_id_i] += hex_edge_length
                 if self.expt_id[h_sw] != -1:
-                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_sw]))] += 1
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_sw]))] += hex_edge_length
             if self.expt_id[h_se] != my_id:
-                self.expt_barrel_boundary_lengths[my_id_i] += 1
+                self.expt_barrel_boundary_lengths[my_id_i] += hex_edge_length
                 if self.expt_id[h_se] != -1:
-                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_se]))] += 1
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_se]))] += hex_edge_length
 
         if self.debug:
             for i in range (0, self.N):
