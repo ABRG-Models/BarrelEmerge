@@ -6,7 +6,29 @@ import BarrelData as bd
 # For boxes:
 import matplotlib.patches as patches
 from matplotlib import lines
+from matplotlib.ticker import StrMethodFormatter
 import sebcolour as sc
+
+# Extend string method formatter
+
+class SebStrMethodFormatter(StrMethodFormatter):
+    def __call__(self, x, pos=None):
+        """
+        Return the format for tick value *x* at position *pos*.
+        """
+        print ('Called CALLED')
+        if len(self.locs) == 0:
+            return ''
+        else:
+            xp = (x - self.offset) / (10. ** self.orderOfMagnitude)
+            if np.abs(xp) < 1e-8:
+                xp = 0
+            if self._useLocale:
+                s = locale.format_string(self.format, (xp,))
+            else:
+                s = self.format % xp
+            s += 'seb'
+            return self.fix_minus(s)
 
 # Plot heatmaps. The parameter 'column_tag' is varied along
 # columns of heat maps. 3 rows show 3 different metrics for the
@@ -598,9 +620,18 @@ def paramplot_pub (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuple
         plt.xticks (x_tick_list, tlist)
         tlist = []
         if coltarg == colall[0]:
-            for j in range(0,len(y_all)): tlist.append('{0:.2f}'.format(y6x6[j,0]))
+            for j in range(0,len(y_all)):
+                if y6x6[j,0] == 0:
+                    lab = '0'
+                elif  y6x6[j,0] < 1 and y6x6[j,0] > 0:
+                    lab = '{0:.2g}'.format(y6x6[j,0])[1:]
+                elif y6x6[j,0] > -1 and y6x6[j,0] < 0:
+                    lab = '-{0:.2g}'.format(y6x6[j,0])[2:]
+                else:
+                    lab = '{0:.2g}'.format(y6x6[j,0])
+                tlist.append(lab)
         else:
-            for j in range(0,len(y_all)): tlist.append(''.format(y6x6[j,0]))
+            for j in range(0,len(y_all)): tlist.append('')
         plt.yticks (y_tick_list, tlist)
         if coltarg == colall[0]:
             ax.set_ylabel('{0}'.format(_y_tag),rotation=0)
@@ -621,9 +652,18 @@ def paramplot_pub (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuple
         plt.xticks (x_tick_list, tlist)
         tlist = []
         if coltarg == colall[0]:
-            for j in range(0,len(y_all)): tlist.append('{0:.2f}'.format(y6x6[j,0]))
+            for j in range(0,len(y_all)):
+                if y6x6[j,0] == 0:
+                    lab = '0'
+                elif  y6x6[j,0] < 1 and y6x6[j,0] > 0:
+                    lab = '{0:.2g}'.format(y6x6[j,0])[1:]
+                elif y6x6[j,0] > -1 and y6x6[j,0] < 0:
+                    lab = '-{0:.2g}'.format(y6x6[j,0])[2:]
+                else:
+                    lab = '{0:.2g}'.format(y6x6[j,0])
+                tlist.append(lab)
         else:
-            for j in range(0,len(y_all)): tlist.append(''.format(y6x6[j,0]))
+            for j in range(0,len(y_all)): tlist.append('')
         plt.yticks (y_tick_list, tlist)
         if coltarg == colall[0]:
             ax2.set_ylabel('{0}'.format(_y_tag), rotation=0)
@@ -634,12 +674,16 @@ def paramplot_pub (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuple
         # x ticks
         tlist = []
         #for j in range(0,len(x_all)): tlist.append('{0:.2f}'.format(x6x6[0,j]))
-        tlist.append('{0:.2f}'.format(x6x6[0,0]))
-        tlist.append('{0:.2f}'.format(x6x6[0,1]))
-        tlist.append('{0:.2f}'.format(x6x6[0,2]))
-        tlist.append('{0:.2f}'.format(x6x6[0,3]))
-        tlist.append('{0:.1f}'.format(x6x6[0,4]))
-        tlist.append('{0:.1f}'.format(x6x6[0,5]))
+        for j in range(0,6):
+            if x6x6[0,j] == 0:
+                lab = '0'
+            elif x6x6[0,j] < 1 and x6x6[0,j] > 0:
+                lab = '{0:.2g}'.format(x6x6[0,j])[1:]
+            elif x6x6[0,j] > -1 and x6x6[0,j] < 0:
+                lab = '-{0:.2g}'.format(x6x6[0,j])[2:]
+            else:
+                lab = '{0:.2g}'.format(x6x6[0,j])
+            tlist.append(lab)
 
         # rotate:
         # plt.xticks (x_tick_list, tlist, rotation=45)
@@ -652,9 +696,18 @@ def paramplot_pub (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuple
         # y ticks
         tlist = []
         if coltarg == colall[0]:
-            for j in range(0,len(y_all)): tlist.append('{0:.2f}'.format(y6x6[j,0]))
+            for j in range(0,len(y_all)):
+                if y6x6[j,0] == 0:
+                    lab = '0'
+                elif  y6x6[j,0] < 1 and y6x6[j,0] > 0:
+                    lab = '{0:.2g}'.format(y6x6[j,0])[1:]
+                elif y6x6[j,0] > -1 and y6x6[j,0] < 0:
+                    lab = '-{0:.2g}'.format(y6x6[j,0])[2:]
+                else:
+                    lab = '{0:.2g}'.format(y6x6[j,0])
+                tlist.append(lab)
         else:
-            for j in range(0,len(y_all)): tlist.append(''.format(y6x6[j,0]))
+            for j in range(0,len(y_all)): tlist.append('')
         plt.yticks (y_tick_list, tlist)
 
         if coltarg == colall[0]:
@@ -681,11 +734,17 @@ def paramplot_pub (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuple
 
     cb_ax = F.add_axes([cb_xpos, 0.647, cb_wid, cb_height])
     cbar = F.colorbar (im, cax=cb_ax)
+    cbar.set_ticks ([0.1, 0.2, 0.3, 0.4])
+    cbar.set_ticklabels (['.1', '.2', '.3', '.4'])
 
     cb_ax2 = F.add_axes([cb_xpos, 0.377, cb_wid, cb_height])
     cbar2 = F.colorbar (im2, cax=cb_ax2)
+    cbar2.set_ticks ([0, 0.5, 1, 1.5])
+    cbar2.set_ticklabels (['0', '.5', '1', '1.5'])
 
     cb_ax3 = F.add_axes([cb_xpos, 0.106, cb_wid, cb_height])
     cbar3 = F.colorbar (im3, cax=cb_ax3)
+    cbar3.set_ticks ([0.2, 0.4, 0.6])
+    cbar3.set_ticklabels (['.2', '.4', '.6'])
 
     F.subplots_adjust (left=0.125, bottom=0.1, right=0.9, top=0.9, wspace=0.05, hspace=0.05)

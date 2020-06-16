@@ -61,10 +61,9 @@ ax3 = F1.add_subplot(3,3,7)
 l3, = ax3.plot(gmn_noise_gain[:-mo], gmn_eta[:-mo], 's-', markersize=12, color=col.black, label='$\eta$')
 
 # this is an inset axes over the third axis
-ax3_1 = plt.axes([.2, .24, .1, .06])
-ax3_1.plot(gmn_noise_gain[:-10], gmn_eta[:-10], 's-', markersize=8, color=col.black, label='$\eta$')
-ax3_1.tick_params(axis='both', which='major', labelsize=14)
-#ax3_1.set_yticks([0.0014,0.0017])
+#ax3_1 = plt.axes([.2, .24, .1, .06])
+#ax3_1.plot(gmn_noise_gain[:-10], gmn_eta[:-10], 's-', markersize=8, color=col.b#lack, label='$\eta$')
+#ax3_1.tick_params(axis='both', which='major', labelsize=14)
 
 #
 # Guidance noise
@@ -181,6 +180,22 @@ ax3.set_ylabel ('$\eta$', rotation=0, labelpad=lp)
 ax1.set_ylim ((honda_min,honda_max))
 ax2.set_ylim ((locn_min,locn_max)) # locn, omega
 ax3.set_ylim ((eta_min,eta_max))
+
+ax1.set_xticks([0, 0.2])
+ax1.set_xticklabels(['0','.2'])
+ax2.set_xticks([0, 0.2])
+ax2.set_xticklabels(['0','.2'])
+ax3.set_xticks([0, 0.2])
+ax3.set_xticklabels(['0','.2'])
+
+ax1.set_yticks ([0.1, 0.2, 0.3, 0.4])
+ax1.set_yticklabels (['.1', '.2', '.3', '.4'])
+ax2.set_yticks ([0.2, 0.4, 0.6])
+ax2.set_yticklabels (['.2', '.4', '.6'])
+ax3.set_yticks ([0, 0.5, 1.0, 1.5])
+ax3.set_yticklabels (['0', '.5', '1', '1.5'])
+
+
 equal_aspect (ax1)
 equal_aspect (ax2)
 equal_aspect (ax3)
@@ -207,21 +222,21 @@ ax6.set_xlabel('$\\nu_{\\rho}$')
 ax6.set_ylabel('$\\sigma_{\\rho}$', rotation=0, labelpad=lp-15)
 
 ax7.set_xticks ([0,1,2,3,4])
-ax7.set_xticklabels ([0.1, 0.5, 1, 2, 10])
+ax7.set_xticklabels (['.1', '.5', 1, 2, 10])
 ax7.set_yticks ([0,1,2,3,4])
 ax7.set_yticklabels ([-34, -14, 6, 26, 46])
 ax7.set_xlabel('$G_{\\rho_1}$')
 ax7.set_ylabel('$\\phi_{\\rho_1}$', rotation=0, labelpad=lp-10)
 
 ax8.set_xticks ([0,1,2,3,4])
-ax8.set_xticklabels ([0.1, 0.5, 1, 2, 10])
+ax8.set_xticklabels (['.1', '.5', 1, 2, 10])
 ax8.set_yticks ([0,1,2,3,4])
 ax8.set_yticklabels ([-34, -14, 6, 26, 46])
 ax8.set_xlabel('$G_{\\rho_1}$')
 ax8.set_ylabel('$\\phi_{\\rho_1}$', rotation=0, labelpad=lp-10)
 
 ax9.set_xticks ([0,1,2,3,4])
-ax9.set_xticklabels ([0.1, 0.5, 1, 2, 10])
+ax9.set_xticklabels (['.1', '.5', 1, 2, 10])
 ax9.set_yticks ([0,1,2,3,4])
 ax9.set_yticklabels ([-34, -14, 6, 26, 46])
 ax9.set_xlabel('$G_{\\rho_1}$')
@@ -234,10 +249,18 @@ cb_xpos = 0.92
 
 cb_ax = F1.add_axes([cb_xpos, 0.731, cb_wid, cb_height])
 cbar = F1.colorbar (im4, cax=cb_ax)
+cbar.set_ticks ([0.1, 0.2, 0.3, 0.4])
+cbar.set_ticklabels (['.1', '.2', '.3', '.4'])
+
 cb_ax2 = F1.add_axes([cb_xpos, 0.406, cb_wid, cb_height])
 cbar2 = F1.colorbar (im5, cax=cb_ax2)
+cbar2.set_ticks ([0, 0.5, 1, 1.5])
+cbar2.set_ticklabels (['0', '.5', '1', '1.5'])
+
 cb_ax3 = F1.add_axes([cb_xpos, 0.081, cb_wid, cb_height])
 cbar3 = F1.colorbar (im6, cax=cb_ax3)
+cbar3.set_ticks ([0.2, 0.4, 0.6])
+cbar3.set_ticklabels (['.2', '.4', '.6'])
 
 #for axis in ['top','bottom','left','right']:
 #  cb_ax.spines[axis].set_linewidth(lw)
