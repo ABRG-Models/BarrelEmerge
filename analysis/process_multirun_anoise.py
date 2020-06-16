@@ -50,7 +50,7 @@ for logdirname in os.listdir(basedir):
         print ('bdo.locn_vs_t: {0}'.format(bdo.locn_vs_t))
         hondas.append(bdo.honda[0])
         sos.append(bdo.sos_dist[0])
-        area_diff = bdo.area_diff[0] / bdo.nhex
+        area_diff = bdo.area_diff[0]
         area.append(area_diff)
 
         mapdiffs.append(bdo.mapdiff[0])
