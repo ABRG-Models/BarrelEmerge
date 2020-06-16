@@ -58,7 +58,6 @@ for logdirname in os.listdir(basedir):
     #print ('t1: {0}'.format (t1))
     mapdiff = bdo.mapdiff[mask_combined].T
     area_diff = bdo.area_diff[mask_combined].T
-    area_diff = area_diff / bdo.nhex
     sos_dist = np.sqrt(sos_dist.compressed()/bdo.N)
     hondadelta = hondadelta.compressed()
     # So here, I have t, honda, sos at 1 time point, providing one table line.

@@ -29,7 +29,7 @@ locn_max=0.7319451998375573
 sos_min=2.9542248615230577
 sos_max=3.350204398214124
 eta_min=0
-eta_max=600
+eta_max=1.5
 
 # One figure:
 F1 = plt.figure (figsize=(16,12))
@@ -61,9 +61,10 @@ ax3 = F1.add_subplot(3,3,7)
 l3, = ax3.plot(gmn_noise_gain[:-mo], gmn_eta[:-mo], 's-', markersize=12, color=col.black, label='$\eta$')
 
 # this is an inset axes over the third axis
-ax3_1 = plt.axes([.17, .24, .1, .06])
+ax3_1 = plt.axes([.2, .24, .1, .06])
 ax3_1.plot(gmn_noise_gain[:-10], gmn_eta[:-10], 's-', markersize=8, color=col.black, label='$\eta$')
 ax3_1.tick_params(axis='both', which='major', labelsize=14)
+#ax3_1.set_yticks([0.0014,0.0017])
 
 #
 # Guidance noise

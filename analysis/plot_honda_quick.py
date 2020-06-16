@@ -27,7 +27,7 @@ matplotlib.rc('font', **fnt)
 plt.rcParams['svg.fonttype'] = 'none'
 
 # And plot this longhand here:
-F1 = plt.figure (figsize=(9,12))
+F1 = plt.figure (figsize=(10,12))
 
 t1_masked = np.load ('postproc/honda_t.npy')
 hondadelta = np.load ('postproc/honda_delta.npy')
@@ -84,7 +84,8 @@ ax3.set_ylabel ('$\omega$', rotation=0, labelpad=30)
 ax2.tick_params (axis='y', labelcolor=col.black)
 ax1.set_xlim ((0,xmax))
 ax1.set_ylim ((0,0.35))
-ax2.set_ylim ((0,1000))
+eta_max = 1.5
+ax2.set_ylim ((0,eta_max))
 ax3.set_ylim ((0,0.28))
 ax2.set_xlim ((0,xmax))
 

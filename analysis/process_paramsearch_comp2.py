@@ -169,7 +169,6 @@ for logdirname in os.listdir(basedir):
     #print ('t1: {0}'.format (t1))
     mapdiff = bdo.mapdiff[mask_combined].T
     area_diff = bdo.area_diff[mask_combined].T
-    area_diff = area_diff / np.max(area_diff)
     adj_arrangement = bdo.mean_adjacency_arrangement[mask_combined].T
     adj_diffmag = bdo.mean_adjacency_differencemag[mask_combined].T
 

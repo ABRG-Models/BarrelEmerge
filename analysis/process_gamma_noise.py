@@ -46,7 +46,6 @@ for logdirname in os.listdir(basedir):
         t1 = t1_masked[:,0]
         mapdiff = bdo.mapdiff[mask_combined].T
         area_diff = bdo.area_diff[mask_combined].T
-        area_diff = area_diff / bdo.nhex
         sos_dist = np.sqrt(sos_dist.compressed()/bdo.N)
         hondadelta = hondadelta.compressed()
         bdo.computeLocalization()

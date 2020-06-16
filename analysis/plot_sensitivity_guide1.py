@@ -46,7 +46,7 @@ locn_max=0.7319451998375573
 sos_min=2.9542248615230577
 sos_max=3.350204398214124
 eta_min=0
-eta_max=600
+eta_max=1.5
 
 # Use same min/maxes as produced by the parameter search?
 im1 = ax1.imshow (honda, cmap='inferno_r', vmin=honda_min, vmax=honda_max, interpolation='nearest')

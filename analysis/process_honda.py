@@ -75,8 +75,6 @@ mask_combined = np.invert(hondadelta.mask | sos_dist.mask)
 t1_masked = bdo.t_steps[mask_combined].T
 mapdiff = bdo.mapdiff[mask_combined].T
 area_diff = bdo.area_diff[mask_combined].T
-# area_diff makes sense normalized by nhex
-area_diff = area_diff / bdo.nhex
 
 adjacency_arrangement = bdo.mean_adjacency_arrangement[mask_combined].T
 adjacency_differencemag = bdo.mean_adjacency_differencemag[mask_combined].T

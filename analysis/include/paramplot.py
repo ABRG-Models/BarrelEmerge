@@ -502,7 +502,7 @@ def paramplot_pub (sdata, F, column_tag, x_tag, y_tag, ktarg, ttarg, param_tuple
     sos_max = max(sdata[:]['sos_dist'])
     sos_min = min(sdata[:]['sos_dist'])
     eta_min = 0
-    eta_max = 600
+    eta_max = 1.5
     adj_diffmag_max = 62
     adj_diffmag_min = 15
     print ('Output to include in code for sensitivity graphs:')

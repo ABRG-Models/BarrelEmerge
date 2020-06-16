@@ -35,7 +35,7 @@ locn_max=0.7319451998375573
 sos_min=2.9542248615230577
 sos_max=3.350204398214124
 eta_min=0
-eta_max=600
+eta_max=1.5
 
 # And plot this longhand here:
 F1 = plt.figure (figsize=(5,12))
