@@ -7,7 +7,7 @@
 % barrels. Everything in the paper should be tailored towards arguing
 % this idea.
 
-\documentclass[9pt,lineno]{elife}
+\documentclass[9pt,lineno,draft]{elife}
 
 \usepackage{color}
 \usepackage{amsmath,esint}
@@ -15,6 +15,7 @@
 % Some document-defined commands
 \newcommand*\dif{\mathop{}\!\mathrm{d}}
 \newcommand{\cmnt}[1]{\textcolor{blue}{#1}}
+\newcommand{\stu}[1]{\textcolor{red}{#1}}
 \newcommand{\dvrg}{\nabla\vcdot\nabla}
 \newcommand{\e}{\emph}
 \newcommand{\bol}{\textbf}
@@ -151,7 +152,7 @@ thalamic projection (indexed by $i$), is determined by $\gamma_{i,j}$, which
 may be positive or negative in order that axons may branch in the direction of
 either higher or lower concentrations. Note that computing the divergence in
 simulation requires cells on the cortical sheet to communicate with immedately
-adjacent cells only (see \emph{Materials \& Methods}) The second term on the
+adjacent cells only (see \emph{Materials \& Methods}). The second term on the
 right quantifies the coupling between axon branching and synaptogenesis. Here
   $\chi_i=0$ is a placeholder.
 
@@ -177,19 +178,14 @@ right quantifies the coupling between axon branching and synaptogenesis. Here
       $\epsilon=1.2$} and $\delta{t}=0.0001$. Colours indicate the thalamic
       projection for which the connection density is maximal and black lines
       delineate boundaries (see Movie
-      S1). \textbf{D} Red dots show the Honda-$\delta$ metric obtained from
+      S1). \textbf{D} Red dots show the Honda-$\delta$ metric obtained from \stu{the}
       simulation approaching that obtained from \cmnt{real} barrels in \textbf{A} (dotted
-      line); black squares \cmnt{give a} measure \cmnt{of} the correspondence
-      between the real and
-      simulated barrel shapes, $\eta$ (the sum of differences in
+      line); black squares \stu{provide a} measure \cmnt{of} the correspondence
+      between the real and simulated barrel shapes, $\eta$ (the sum of differences in
       area; units \cmnt{mm$^2$});
-      \cmnt{grey hexagons show the measure of localization, $\omega =
-        \oiint_{S} \left( \mathrm{max}_i(c_i)/\sum_{i=1}^{N} c_i\right) \mathrm{d}S$. }
-      \textbf{E} \cmnt{The localization measure plotted across the domain
-        shows that the structure in the connection density which has developed
-        by $t=30000$ is largely absent at $t=1000$. The
-        colour map
-        indicates the values of  $\mathrm{max}_i(c_i)/\sum_{i=1}^{N} c_i$. Overlaid
+      \cmnt{grey hexagons \stu{provide a measure of how selectively each cortical site is innervated}, $\omega = \oiint_{S} \left( \mathrm{max}_i(c_i)/\sum_{i=1}^{N} c_i\right) \mathrm{d}S$. }
+      \textbf{E} \stu{Plotted across the cortical sheet, the selectivity develops to reveal an alignment with the emergent barrel boundary shapes}
+      \cmnt{The colour map indicates the values of  $\mathrm{max}_i(c_i)/\sum_{i=1}^{N} c_i$. Overlaid
         contours show $c_i > 0.95 \mathrm{max}_i(c_i)$.} All scale bars 1\,mm.}
     \label{fig:main}
   \end{fullwidth}
@@ -219,15 +215,12 @@ redefined
 %
 \begin{equation} \label{eq:comp}
   \color{blue}
-  \chi_i(\mb{x}, t) = \frac{\epsilon a_i}{N-1} \nabla \textstyle\sum_{j\ne i}^{N}{a_j}
+  \chi_i(\mb{x}, t) = \frac{\epsilon a_i}{N-1} \nabla \textstyle\sum_{j\ne i}^{N}{a_j}.
   \color{black}
 \end{equation}
 %
-\cmnt{which contributes to the \emph{flux of axonal branching} as an
-  additional diffusion-like term which makes the branching density for a given
-  projection diffuse away from regions} where the branches of other projections
-become dense. \cmnt{$\epsilon$ parameterizes the strength of this competitive
-  interaction.} Note that this operation is local to individual afferent
+\stu{This term contributes to the \emph{flux of axonal branching} as an
+ additional source of diffusion, which reduces the branching density for a given projection where the branches of other projections are dense.} \stu{The strength of this additional competition is parameterized by $\epsilon$}. Note that this operation is local to individual afferent
 projections.
 
 The only differences between thalamic projections are their strengths of
@@ -236,31 +229,15 @@ between emergent cortical fields must be due to differences in these values
 only. We speculate that the contribution of a given ephrin field, to the
 velocity at which a projection migrates across the cortical subplate, is
 determined by the concentration of a similar molecule at its thalamic origin,
-i.e., the putative barreloid center. \cmnt{Thus, we suggest that there exist a
-  pair of signalling molecules whose expression varies linearly (with
-  orthogonal gradients) across the thalamus, analgous to the ephrins, whose
-  existence is well known in the cortex. Thalamocortical axons growing from a
-  region in the thalamus with high expression of one of these molecules will
-  interact with a corresponding cortical signalling molecule more strongly
-  than an axon emanating from a region with low expression of the thalamic
-  signal.}  \cmnt{We defined two orthogonal, linear gradients oriented in the
-  anterior-posterior and medial-lateral directions and used the coordinates of
-  41 barreloid centers recreated from \cite{haidarliu_size_2001},
-  corresponding to the macrovibrissae, to populate 41 pairs of $\gamma$
-  values.}  (Fig.\,\ref{fig:main}B). \cmnt{In other words, we simply scaled
-  the barreloid coordinates in an anterior-posterior/medial-lateral coordinate
-  system to create the $\gamma$ values in the range [-2,2]. Note that positive
-  \emph{and} negative $\gamma$ values were generated; the origin of the
-  coordinate system was located at the approximate center of the thalamic
-  barreloid field. This prevented an overall drift of the cortical pattern
-  away from the centroid of the barrel field and may explain why
-  coordinate-giving transcription factors and the ephrins are often found as
-  pairs acting in opposing directions.}  \cmnt{We concentrated on
-  macrovibrissae (excluding microvibrissae) because it is easy to identify
-  their corresponding structures both in the thalamus and in the cortex. We
-  also excluded the 5 rhinal whiskers because their cortical representation is
-  in a separate island, distinct, and somewhat removed from the representation
-  of the macrovibirissae.}
+i.e., the putative barreloid center. \stu{As such, we consider linear gradients aligned to anterior-posterior and medial-lateral axes through the VPM, and as $\gamma$-values use the coordinates of the barreloid centers in these axes as they appear in \citep{haidarliu_size_2001} (Fig.\,\ref{fig:main}B).} \stu{Complementary thalamic and cortical molecular guidance gradients of this form have been well established experimentally \citep{vanderhaeghen_mapping_2000,miller_epha7-ephrin-a5_2006}, e.g., cells originating in the medial part of ventrobasal thalamus (comprising VPM and VPL) express high levels of EphA receptors and project to the lateral part of S1, which expresses low levels of ephrin-A5, and cells originating in the lateral part of ventrobasal thalamus express low levels of EphA receptors and project to the medial part of S1, which expresses high levels of ephrin-A5 (see Gao, 1998; Dufour et al., 2003; Vanderhaegen \& Polleux, 2004; Speer \& Chapman, 2005)}
+
+
+%\cmnt{In other words, we simply scaled the barreloid coordinates in an anterior-posterior/medial-lateral coordinate system to create the $\gamma$ values in the range [-2,2]. Note that positive \emph{and} negative $\gamma$ values were generated; the origin of the coordinate system was located at the approximate center of the thalamic barreloid field. This prevented an overall drift of the cortical pattern away from the centroid of the barrel field and may explain why coordinate-giving transcription factors and the ephrins are often found as pairs acting in opposing directions.}  \cmnt{We concentrated on macrovibrissae (excluding microvibrissae) because it is easy to identify their corresponding structures both in the thalamus and in the cortex. We also excluded the 5 rhinal whiskers because their cortical representation is in a separate island, distinct, and somewhat removed from the representation of the macrovibirissae.}}
+
+%\cmnt{Thus, we suggest that there exist a pair of signalling molecules whose expression varies linearly (with orthogonal gradients) across the thalamus, analgous to the ephrins, whose existence is well known in the cortex. Thalamocortical axons growing from a region in the thalamus with high expression of one of these molecules will interact with a corresponding cortical signalling molecule more strongly than an axon emanating from a region with low expression of the thalamic signal.}  
+
+%\cmnt{We defined two orthogonal, linear gradients oriented in the anterior-posterior and medial-lateral directions and used the coordinates of 41 barreloid centers recreated from \cite{haidarliu_size_2001}, corresponding to the macrovibrissae, to populate 41 pairs of $\gamma$ values.}  (Fig.\,\ref{fig:main}B). \cmnt{In other words, we simply scaled the barreloid coordinates in an anterior-posterior/medial-lateral coordinate system to create the $\gamma$ values in the range [-2,2]. Note that positive \emph{and} negative $\gamma$ values were generated; the origin of the coordinate system was located at the approximate center of the thalamic barreloid field. This prevented an overall drift of the cortical pattern away from the centroid of the barrel field and may explain why coordinate-giving transcription factors and the ephrins are often found as pairs acting in opposing directions.}  \cmnt{We concentrated on macrovibrissae (excluding microvibrissae) because it is easy to identify their corresponding structures both in the thalamus and in the cortex. We also excluded the 5 rhinal whiskers because their cortical representation is in a separate island, distinct, and somewhat removed from the representation of the macrovibirissae.}
+
 
 A cortical boundary enclosing 41 \cmnt{macrovibrissae} barrels was traced from
 a cytochrome oxidase stain from \cite{zheng_signal_2001} \cmnt{(using the
