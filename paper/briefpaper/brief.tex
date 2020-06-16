@@ -264,11 +264,11 @@ between real and simulated barrels revealed a strong correspondence (see
 Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
   \emph{the connection density of the TC type $i$ which makes the densest
     connections} to \emph{the sum of all connection densities} gives a measure
-  of the localization of the connection density. We computed this measure
-  across the entire barrel domain and named it $\omega$ (see
+  of the selectivity of the connection density, $\mu(\mb{x},t)$. We summed this measure
+  across the entire barrel domain and named it $\omega(t)$ (see
   Fig.\,\ref{fig:main}D, grey hexagons). $\omega$ increases during the first
   20000 simulation steps and converges on a stable
-  value. Fig.\,\ref{fig:main}E shows the localization measure plotted as a
+  value. Fig.\,\ref{fig:main}E shows the selectivity measure plotted as a
   luminance map, giving a more graded impression of the structure which
   develops in the system.}
 
@@ -281,7 +281,7 @@ Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
         steps as colourmaps: Honda $\delta$ (top row) shows conformance to a
         Voronoi pattern; $\eta$ (middle row) gives the simulated/experimental
         barrel area difference and $\omega$ (bottom row) is a measure of
-        localization (separation) of the connection densities for the 41
+        selectivity of the connection densities for the 41
         thalamocortical axon types. For each row, lighter (orange/yellow)
         colours imply a better model. The parameter space explored is three
         dimensional with the parameter ratio $\alpha/\beta$ varied along the
@@ -306,16 +306,16 @@ Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
   `yellow is good'. Lower values of $\delta$ indicate good Voroni patterns and
   are yellow. Lower values of the difference between real and simulated barrel
   area indicates good pattern matching. Higher values of $\omega$ indicate
-  better localization and are coloured yellow. White squares indicate that the
+  greater selectivity and are coloured yellow. White squares indicate that the
   simulation was not stable for that parameter set.}
 
 \cmnt{The maps indicate that the pattern is not strongly influenced by the
   choice of $\alpha/\beta$, which was varied by 5 orders of magnitude. The
   most Voronoi-like patterns were achieved for parameter sets for which $D$
   and $\epsilon$ were high. The barrel area metric, $\eta$ indicates a strong
-  preference for $D\approx0.5$, although this does not give the maximally
-  localized solution, which for $D$ should be small. Thus, there is a
-  trade-off between good localization and good Voroni pattern
+  preference for $D\approx0.5$, although this does not give the
+  solution of maximum selectivity, which for $D$ should be small. Thus, there is a
+  trade-off between good selection and good Voroni pattern
   conformation. The
   parameter set indicated by the asterisk in
   Fig.\,\ref{fig:paramsweep}A is presented in Fig.\,\ref{fig:main} because it
@@ -359,7 +359,7 @@ Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
 %
   In the following analysis, we always evaluated the three pattern metrics,
   $\delta$ (the Honda Voronoi metric), $\eta$ (the pattern-match metric) and
-  $\omega$ (which measures localization of connections, $c_i$) after running
+  $\omega$ (which measures selectivity of connections, $c_i$) after running
   the model for 30000 simulation steps.}
 
 \cmnt{First, we conducted 10 runs of the simulation shown in
@@ -400,7 +400,7 @@ Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
   $\gamma_{i,j}' = \gamma_{i,j} + U(0,4\nu_\gamma)$, where $\nu_\gamma$ is the
   chosen magnitude of the noise (the proportion of the full range of
   $\gamma_{i,j}$, which is 4). The Voronoi nature of the pattern ($\delta$)
-  and the localization of the fields are not strongly affected by interaction
+  and the selectivity of the fields are not strongly affected by interaction
   parameter noise, but the pattern metric, $\eta$ shows a... ADD SUB GRAPH.}
 
 % This figure is text width
