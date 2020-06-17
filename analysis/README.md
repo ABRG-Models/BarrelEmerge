@@ -89,7 +89,8 @@ plot_aid.py ../logs/41N2M_thalguide_Fig1/ 30000
 ```
 
 Plot a colour map of argmax(a_i) at time 30000 from the simulation results in
-../logs/41N2M_thalguide_Fig1/. Adjust time to suit.
+../logs/41N2M_thalguide_Fig1/. Adjust time to suit. Figures for
+argmax(a_i) are not included in the paper.
 
 ### plot_aid_all.py
 Plot a maps for all times. Used to make up movie
@@ -110,16 +111,17 @@ plot_cid.py ../logs/41N2M_thalguide_Fig1/ 30000
 
 Plot a colour map of argmax(c_i) at time 30000 from the simulation results in
 ../logs/41N2M_thalguide_Fig1/. Adjust time to suit. Used to generate
-maps in Fig.1C in the paper.
+maps in Fig. 1C, Fig. 2B and Fig. 3B in the paper.
 
 ### plot_cid_all.py
 Like plot_aid_all.py, but for argmax(c).
 
 ### plot_cid_fgfmis.py
-Like plot_cid.py, but for the Fgf8 misexpression experiment.
+Like plot_cid.py, but for the Fgf8 misexpression experiment. Fig 4. in
+the paper.
 
 ### plot_FigSensitivity.py
-Plots Fig 3 from the paper, sensitivity analysis.
+Plots Fig 3A from the paper, sensitivity analysis.
 
 ### plot_guidance.py
 
@@ -136,11 +138,11 @@ Plot graphs included in Fig. 1D.
 ```
 python plot_locn.py ../logs/41N2M_thalguide_Fig1/ ${t}
 ```
-Plot the selectivity measure, mu(x, t)
+Plot the selectivity measure, mu(x, t). Shown in Fig. 1E.
 
 ### plot_paramsearch_paper.py
-Plot the components of Fig. 2
+Plot the components of Fig. 2.
 
 ### plot_singlemap.py
 A bit like plot_cid.py, but ALSO plots the
-experimental map, in a separate window.
+experimental map, in a separate window. Figures not shown in paper.
