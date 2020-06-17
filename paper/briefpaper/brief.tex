@@ -27,6 +27,8 @@
 % Nice norms:
 \usepackage{mathtools}
 \DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+% Degrees symbol:
+\usepackage{textcomp}
 
 \title{Modelling the emergence of whisker barrels}
 
@@ -338,7 +340,47 @@ Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
 \begin{figure}
   \begin{fullwidth}
     \includegraphics[width=\linewidth]{./Fig3.png}
-    \caption{\cmnt{Sensitivity analysis. Column \textbf{A} shows...}}
+    \caption{
+      \cmnt{\textbf{A} Sensitivity of the system pattern
+        metrics $\delta(t)$ (top row), $\omega(t)$ (middle row) and $\eta(t)$
+        (bottom row), evaluated at $t=30000$ steps,
+        to three classes of perturbation. $y$-axes and colour scales have identical ranges
+        to the colour scales in Fig.\,\ref{fig:paramsweep}, to ease comparison
+        with the parameter exploration.
+        %
+        \emph{Column 1:} Random noise drawn from a uniform distribution,
+        $(\gamma_{max}-\gamma_{min})\,U(0,\nu_\gamma)$, added
+        to the values for the interaction parameters, $\gamma_{i,j}$ used in
+        Fig.\,\ref{fig:main}.
+        %
+        \emph{Column 2:} Random noise $(\rho_{max} - \rho_{min})\,U(0, \nu_{\rho})$
+        was added to each hex element of $\rho_1(\mb{x})$ and $\rho_2(\mb{x})$ and the result
+        was smoothed by convolution with a symmetric 2D
+        Gaussian kernel of width $\sigma_\rho$. Colour maps in this column
+        thus show the effect of changing the magnitude and the length scale of
+        noise in the guidance fields.
+        %
+        \emph{Column 3:} Colour maps show the result of setting the rotational angle
+        of the linearly varying guidance field, $\rho_1(\mb{x})$, to $\phi_{\rho_1}$,
+        and modifying its overall gain to $G_{\rho_1}$, whilst keeping the
+        parameters of $\rho_2(\mb{x})$
+        unchanged from those used in the simulation in
+        Fig.\,\ref{fig:main}, for which $\phi_{\rho_1}=6$\textdegree~and
+        $\phi_{\rho_2}=84$\textdegree.
+        %
+        \textbf{B} Four ways in which the perturbations in \textbf{A} affect
+        the patterns. i) The effect of significant interaction parameter noise
+        causes barrels to become swapped from the positions they would
+        otherwise take. ii) High magnitude, short lengthscale noise in
+        $\rho(\mb{x})$ leads to `wiggly' boundaries between barrels. iii)
+        Shows the effect of reducing the slope of $\rho_1$ (by a factor of 10)
+        which reduces the strength of the axons' interaction with the guidance
+        field in the left-right sense. Barrel rows B, C and D become `crushed'
+        down the center line, and edge barrels dominate. iv) The effect of
+        rotating $\rho_1$ by 20\textdegree~is a relatively mild distortion of
+        the pattern in the anticlockwise sense.
+      }
+    }
     \label{fig:sens}
   \end{fullwidth}
 \end{figure}
@@ -391,7 +433,7 @@ Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
 % Quick check that noise free result is within 1 SD for the noisier initial conditions
 %         Noisefree    Normal noise    NF SD from Normal?   Noisy            NF SD from Noisy?
 % delta   0.0928       0.089(0.004)    <1                   0.090 (0.005)    <1
-% eta     114.31       113.5(1.2)      <1                   115 (1.9)        <1
+% eta     0.2124       0.2108(0.002)   <1                   0.2136 (0.004)   <1
 % omega   0.21649      0.2165(0.0001)  <1                   0.2166 (0.0003)  <1
 
 \cmnt{Fig\,\ref{fig:sens}A shows the results for perturbations ii) to iv). The
