@@ -13,7 +13,7 @@
     "steps" : 50000,                // Number of steps to simulate for
     "logevery": 1000,
     "overwrite_logs": true,
-    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/",
+    "logbase" : "./logs/",
     "hextohex_d" : 0.03,           // Hex to hex distance, determines num hexes
     "hexspan" : 8, // how large the initial hex of hexes is (into which the boundary is "impressed")
     "svgpath" : "./boundaries/rat_barrels/wb_110405_FgfMis.svg",
