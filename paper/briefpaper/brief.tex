@@ -14,8 +14,23 @@
 
 % Some document-defined commands
 \newcommand*\dif{\mathop{}\!\mathrm{d}}
+
+% Colours for revisions:
+% Custom colours
+\definecolor{revgreen}{rgb}{0.220, 0.463, 0.114}
+\definecolor{revblue}{rgb}{0.235, 0.471, 0.847}
+\definecolor{revred}{rgb}{1.0, 0.0, 0.0}
+\definecolor{revgrey}{rgb}{0.6, 0.6, 0.63}
+\definecolor{revcomp}{rgb}{0.0, 0.0, 0.0}
+\definecolor{revpurp}{rgb}{0.8, 0.1, 0.8}
+
+% Blue changes are mostly major points 2 (competition mechanism) and 3 (parameter/sensitivity)
 \newcommand{\cmnt}[1]{\textcolor{blue}{#1}}
+% Red for Stuart's updates
 \newcommand{\stu}[1]{\textcolor{red}{#1}}
+% Minor point 6:
+\newcommand{\mpsix}[1]{\textcolor{revpurp}{#1}}
+
 \newcommand{\dvrg}{\nabla\vcdot\nabla}
 \newcommand{\e}{\emph}
 \newcommand{\bol}{\textbf}
@@ -67,7 +82,18 @@ the most distinctive pattern can be found in the barrel cortex of many rodent
 species \citep{woolsey_structural_1970}. The barrels are identifiable soon
 after birth in layer 4 of primary somatosensory cortex as dense clusters of
 thalamocortical axons, which are enclosed by borders a few neurons thick from
-postnatal day 3 \citep{erzurumlu_development_2012}. In the plane tangential to
+postnatal day 3 \citep{erzurumlu_development_2012}.
+%
+% These timings, from erzurumlu_development_2012 originate from
+% sehara_neuronal_2011, where they relate to mouse.
+\mpsix{In the mouse, axons from the trigeminal ganglion arrive in the principal sensory
+  nucleus of the trigeminal nerve (PrV) at E12, then axons from the PrV arrive
+  in the ventroposteromedial nucleus of the thalamus (VPM) at E17, then axons
+  from the VPM arrive in the cortical plate at E18/P0. Distinct whisker-related
+  clusters then become apparent in the PrV at P0-P1, in the VPM at P2-P3, and
+  in the cortex at P3-P5} \citep{erzurumlu_development_2012,sehara_neuronal_2011}.
+%
+In the plane tangential to
 the cortical surface the barrels constitute a somatotopic map of the whiskers,
 with cells within adjacent barrels responding most strongly and quickly to
 deflection of adjacent whiskers \citep{armstrong-james_flow_1992}. Barrel
