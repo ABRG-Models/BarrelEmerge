@@ -14,8 +14,25 @@
 
 % Some document-defined commands
 \newcommand*\dif{\mathop{}\!\mathrm{d}}
+
+% Colours for revisions:
+% Custom colours
+\definecolor{revgreen}{rgb}{0.220, 0.463, 0.114}
+\definecolor{revblue}{rgb}{0.235, 0.471, 0.847}
+\definecolor{revred}{rgb}{1.0, 0.0, 0.0}
+\definecolor{revgrey}{rgb}{0.6, 0.6, 0.63}
+\definecolor{revcomp}{rgb}{0.0, 0.0, 0.0}
+\definecolor{revpurp}{rgb}{0.8, 0.1, 0.8}
+
+% Blue changes are mostly major points 2 (competition mechanism) and 3 (parameter/sensitivity)
 \newcommand{\cmnt}[1]{\textcolor{blue}{#1}}
+% Red for Stuart's updates
 \newcommand{\stu}[1]{\textcolor{red}{#1}}
+% Minor point 4:
+\newcommand{\mpfour}[1]{\textcolor{revgreen}{#1}}
+% Minor point 6:
+\newcommand{\mpsix}[1]{\textcolor{revpurp}{#1}}
+
 \newcommand{\dvrg}{\nabla\vcdot\nabla}
 \newcommand{\e}{\emph}
 \newcommand{\bol}{\textbf}
@@ -27,6 +44,8 @@
 % Nice norms:
 \usepackage{mathtools}
 \DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+% Degrees symbol:
+\usepackage{textcomp}
 
 \title{Modelling the emergence of whisker barrels}
 
@@ -65,7 +84,18 @@ the most distinctive pattern can be found in the barrel cortex of many rodent
 species \citep{woolsey_structural_1970}. The barrels are identifiable soon
 after birth in layer 4 of primary somatosensory cortex as dense clusters of
 thalamocortical axons, which are enclosed by borders a few neurons thick from
-postnatal day 3 \citep{erzurumlu_development_2012}. In the plane tangential to
+postnatal day 3 \citep{erzurumlu_development_2012}.
+%
+% These timings, from erzurumlu_development_2012 originate from
+% sehara_neuronal_2011, where they relate to mouse.
+\mpsix{In the mouse, axons from the trigeminal ganglion arrive in the principal sensory
+  nucleus of the trigeminal nerve (PrV) at E12, then axons from the PrV arrive
+  in the ventroposteromedial nucleus of the thalamus (VPM) at E17, then axons
+  from the VPM arrive in the cortical plate at E18/P0. Distinct whisker-related
+  clusters then become apparent in the PrV at P0-P1, in the VPM at P2-P3, and
+  in the cortex at P3-P5} \citep{erzurumlu_development_2012,sehara_neuronal_2011}.
+%
+In the plane tangential to
 the cortical surface the barrels constitute a somatotopic map of the whiskers,
 with cells within adjacent barrels responding most strongly and quickly to
 deflection of adjacent whiskers \citep{armstrong-james_flow_1992}. Barrel
@@ -81,7 +111,8 @@ molecules such as cadherin-6 and 8
 is orchestrated by interactions between morphogens Fgf8 and Fgf17 and
 transcription factors Emx2, Pax6, Sp8, and Coup-tf1
 \citep{shimogori_fibroblast_2005,bishop_regulation_2000}, which are expressed
-in gradients that mark orthogonal axes and can be manipulated to stretch,
+in gradients \mpfour{across the full cortical sheet} that mark orthogonal axes
+and can be manipulated to stretch,
 shrink, shift, and even duplicate barrels
 \citep{assimacopoulos_fibroblast_2012}.
 
@@ -181,23 +212,21 @@ right quantifies the coupling between axon branching and synaptogenesis. Here
       $\epsilon=1.2$} and $\delta{t}=0.0001$. Colours indicate the thalamic
       projection for which the connection density is maximal and black lines
       delineate boundaries (see Movie
-      S1). \textbf{D} Red dots show the Honda-$\delta$ metric obtained from \stu{the}
+      S1). \textbf{D} Red dots show the Honda metric, \cmnt{$\delta(t)$}, obtained from \stu{the}
       simulation approaching that obtained from \cmnt{real} barrels in \textbf{A} (dotted
-      line); black squares \cmnt{give a} measure \cmnt{of} the correspondence
+      line); black squares \cmnt{provide a} measure \cmnt{of} the correspondence
       between the real and
-      simulated barrel shapes, $\eta$ (the \cmnt{pattern quality metric---see
+      simulated barrel shapes, $\eta(t)$ (the \cmnt{pattern quality metric---see
         Materials \& Methods; units mm$^3$});
       \cmnt{grey hexagons \stu{provide a measure of how selectively each
-          cortical site is innervated} OR: show the measure of localization, $\omega =
-        \oiint_{S} \left( \mathrm{max}_i(c_i)/\sum_{i=1}^{N} c_i\right) \mathrm{d}S$. }
+          cortical site is innervated};
+        $\omega(t) = \oiint_{S} \mu(\mb{x},t) \mathrm{d}S$, where
+        $\mu(\mb{x}) \equiv \mathrm{max}_i\big(c_i(\mb{x},t)\big)\big/\sum_{j=1}^{N} c_j(\mb{x},t)$.}
       \textbf{E} \stu{Plotted across the cortical sheet, the selectivity
         develops to reveal an alignment with the emergent barrel boundary
-        shapes} OR: \cmnt{The localization measure plotted across the domain
-        shows that the structure in the connection density which has developed
-        by $t=30000$ is largely absent at $t=1000$. The
-        colour map
-        indicates the values of  $\mathrm{max}_i(c_i)/\sum_{i=1}^{N} c_i$. Overlaid
-        contours show $c_i > 0.95 \mathrm{max}_i(c_i)$.} All scale bars 1\,mm.}
+        shapes}. \cmnt{The colour map
+        indicates the values of $\mu(\mb{x})$. Overlaid
+        contours show $c_i > 0.95 \mathrm{max}_i\big(c_i(\mb{x})\big)$.} All scale bars 1\,mm.}
     \label{fig:main}
   \end{fullwidth}
 \end{figure}
@@ -240,13 +269,35 @@ between emergent cortical fields must be due to differences in these values
 only. We speculate that the contribution of a given ephrin field, to the
 velocity at which a projection migrates across the cortical subplate, is
 determined by the concentration of a similar molecule at its thalamic origin,
-i.e., the putative barreloid center. \stu{As such, we consider linear gradients aligned to anterior-posterior and medial-lateral axes through the VPM, and as $\gamma$-values use the coordinates of the barreloid centers in these axes as they appear in \citep{haidarliu_size_2001} (Fig.\,\ref{fig:main}B).} \stu{Complementary thalamic and cortical molecular guidance gradients of this form have been well established experimentally \citep{vanderhaeghen_mapping_2000,miller_epha7-ephrin-a5_2006}, e.g., cells originating in the medial part of ventrobasal thalamus (comprising VPM and VPL) express high levels of EphA receptors and project to the lateral part of S1, which expresses low levels of ephrin-A5, and cells originating in the lateral part of ventrobasal thalamus express low levels of EphA receptors and project to the medial part of S1, which expresses high levels of ephrin-A5 (see Gao, 1998; Dufour et al., 2003; Vanderhaegen \& Polleux, 2004; Speer \& Chapman, 2005).} \stu{We concentrate on the representation of the 41 macrovibrissae because their thalamic and cortical correlates are easily identifiable and consistently positioned, we exclude the microvibrissae to limit the complexity of the simulations, and we exclude the five rhinal whiskers as their representation in S1 is isolated from the main barrel field.} A cortical boundary enclosing \stu{the} 41 \cmnt{macrovibrissae} barrels was traced from
+
+i.e., the putative barreloid center. \stu{As such, we consider linear gradients aligned to anterior-posterior and medial-lateral axes through the VPM, and as $\gamma$-values use the coordinates of the barreloid centers in these axes as they appear in \citep{haidarliu_size_2001} (Fig.\,\ref{fig:main}B).} \stu{Complementary thalamic and cortical molecular guidance gradients of this form have been well established experimentally} \citep{vanderhaeghen_mapping_2000,miller_epha7-ephrin-a5_2006}, \stu{e.g., cells originating in the medial part of ventrobasal thalamus (comprising VPM and VPL) express high levels of EphA receptors and project to the lateral part of S1, which expresses low levels of ephrin-A5, and cells originating in the lateral part of ventrobasal thalamus express low levels of EphA receptors and project to the medial part of S1, which expresses high levels of ephrin-A5 (see} \citealp{gao_regulation_1998,dufour_area_2003,vanderhaeghen_developmental_2004,speer_grading_2005}). \stu{We concentrate on the representation of the 41 macrovibrissae because their thalamic and cortical correlates are easily identifiable and consistently positioned, we exclude the microvibrissae to limit the complexity of the simulations, and we exclude the five rhinal whiskers as their representation in S1 is isolated from the main barrel field.} A cortical boundary enclosing \stu{the} 41 \cmnt{macrovibrissae} barrels was traced from
 a cytochrome oxidase stain from \cite{zheng_signal_2001} \cmnt{(using the
   authors' original data)}, and Eqs.~\ref{eq:dc}--\ref{eq:comp} were solved
 for $N=41$ projections on the resulting domain, using $M=2$ linear signalling
 gradients aligned with the anterior-posterior and medial-lateral axes. 
 
-\stu{From}
+
+%\cmnt{In other words, we simply scaled the barreloid coordinates in an anterior-posterior/medial-lateral coordinate system to create the $\gamma$ values in the range [-2,2]. Note that positive \emph{and} negative $\gamma$ values were generated; the origin of the coordinate system was located at the approximate center of the thalamic barreloid field. This prevented an overall drift of the cortical pattern away from the centroid of the barrel field and may explain why coordinate-giving transcription factors and the ephrins are often found as pairs acting in opposing directions.}  \cmnt{We concentrated on macrovibrissae (excluding microvibrissae) because it is easy to identify their corresponding structures both in the thalamus and in the cortex. We also excluded the 5 rhinal whiskers because their cortical representation is in a separate island, distinct, and somewhat removed from the representation of the macrovibirissae.}}
+
+%\cmnt{Thus, we suggest that there exist a pair of signalling molecules whose expression varies linearly (with orthogonal gradients) across the thalamus, analgous to the ephrins, whose existence is well known in the cortex. Thalamocortical axons growing from a region in the thalamus with high expression of one of these molecules will interact with a corresponding cortical signalling molecule more strongly than an axon emanating from a region with low expression of the thalamic signal.}
+
+%\cmnt{We defined two orthogonal, linear gradients oriented in the anterior-posterior and medial-lateral directions and used the coordinates of 41 barreloid centers recreated from \cite{haidarliu_size_2001}, corresponding to the macrovibrissae, to populate 41 pairs of $\gamma$ values.}  (Fig.\,\ref{fig:main}B). \cmnt{In other words, we simply scaled the barreloid coordinates in an anterior-posterior/medial-lateral coordinate system to create the $\gamma$ values in the range [-2,2]. Note that positive \emph{and} negative $\gamma$ values were generated; the origin of the coordinate system was located at the approximate center of the thalamic barreloid field. This prevented an overall drift of the cortical pattern away from the centroid of the barrel field and may explain why coordinate-giving transcription factors and the ephrins are often found as pairs acting in opposing directions.}  \cmnt{We concentrated on macrovibrissae (excluding microvibrissae) because it is easy to identify their corresponding structures both in the thalamus and in the cortex. We also excluded the 5 rhinal whiskers because their cortical representation is in a separate island, distinct, and somewhat removed from the representation of the macrovibirissae.}
+
+
+A cortical boundary enclosing 41 \cmnt{macrovibrissae} barrels was traced from
+a cytochrome oxidase stain from \cite{zheng_signal_2001} \cmnt{(using the
+  authors' original data)}, and Eqs.~\ref{eq:dc}--\ref{eq:comp} were solved
+for $N=41$ projections on the resulting domain, using $M=2$ linear signalling
+gradients aligned with the anterior-posterior and medial-lateral axes.
+%
+\mpfour{The signalling gradients are assumed not to interact with the barrel
+  field boundary and to continue well beyond its extent (see
+  \citealp{miller_epha7-ephrin-a5_2006}, their Fig.\,11) in order to
+  participate in other developmental processes, such as inter-area positional
+  specification \citep{sur_patterning_2005,oleary_area_2007}.} % Just oleary_area_2007 would be ok
+%
+From
+>>>>>>> 7ffae6aecb56153dad7c6dd9a5aa658a6d9e293d
 random initial conditions for $a(\mb{x},0)$, \cmnt{with each hexagonal element
   of $a_i$ set from a uniform distribution according to $0.2+{U}(0,0.2)$, and
   $c(\mb{x},0)=0$}, a clear Voronoi-like tesselation
@@ -258,11 +309,11 @@ between real and simulated barrels revealed a strong correspondence (see
 Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
   \emph{the connection density of the TC type $i$ which makes the densest
     connections} to \emph{the sum of all connection densities} gives a measure
-  of the localization of the connection density. We computed this measure
-  across the entire barrel domain and named it $\omega$ (see
+  of the selectivity of the connection density, $\mu(\mb{x},t)$. We summed this measure
+  across the entire barrel domain and named it $\omega(t)$ (see
   Fig.\,\ref{fig:main}D, grey hexagons). $\omega$ increases during the first
   20000 simulation steps and converges on a stable
-  value. Fig.\,\ref{fig:main}E shows the localization measure plotted as a
+  value. Fig.\,\ref{fig:main}E shows the selectivity measure plotted as a
   luminance map, giving a more graded impression of the structure which
   develops in the system.}
 
@@ -275,7 +326,7 @@ Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
         steps as colourmaps: Honda $\delta$ (top row) shows conformance to a
         Voronoi pattern; $\eta$ (middle row) gives the simulated/experimental
         barrel area difference and $\omega$ (bottom row) is a measure of
-        localization (separation) of the connection densities for the 41
+        selectivity of the connection densities for the 41
         thalamocortical axon types. For each row, lighter (orange/yellow)
         colours imply a better model. The parameter space explored is three
         dimensional with the parameter ratio $\alpha/\beta$ varied along the
@@ -300,16 +351,16 @@ Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
   `yellow is good'. Lower values of $\delta$ indicate good Voroni patterns and
   are yellow. Lower values of the difference between real and simulated barrel
   area indicates good pattern matching. Higher values of $\omega$ indicate
-  better localization and are coloured yellow. White squares indicate that the
+  greater selectivity and are coloured yellow. White squares indicate that the
   simulation was not stable for that parameter set.}
 
 \cmnt{The maps indicate that the pattern is not strongly influenced by the
   choice of $\alpha/\beta$, which was varied by 5 orders of magnitude. The
   most Voronoi-like patterns were achieved for parameter sets for which $D$
   and $\epsilon$ were high. The barrel area metric, $\eta$ indicates a strong
-  preference for $D\approx0.5$, although this does not give the maximally
-  localized solution, which for $D$ should be small. Thus, there is a
-  trade-off between good localization and good Voroni pattern
+  preference for $D\approx0.5$, although this does not give the
+  solution of maximum selectivity, which for $D$ should be small. Thus, there is a
+  trade-off between good selection and good Voroni pattern
   conformation. The
   parameter set indicated by the asterisk in
   Fig.\,\ref{fig:paramsweep}A is presented in Fig.\,\ref{fig:main} because it
@@ -332,7 +383,47 @@ Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
 \begin{figure}
   \begin{fullwidth}
     \includegraphics[width=\linewidth]{./Fig3.png}
-    \caption{\cmnt{Sensitivity analysis. Column \textbf{A} shows...}}
+    \caption{
+      \cmnt{\textbf{A} Sensitivity of the system pattern
+        metrics $\delta(t)$ (top row), $\omega(t)$ (middle row) and $\eta(t)$
+        (bottom row), evaluated at $t=30000$ steps,
+        to three classes of perturbation. $y$-axes and colour scales have identical ranges
+        to the colour scales in Fig.\,\ref{fig:paramsweep}, to ease comparison
+        with the parameter exploration.
+        %
+        \emph{Column 1:} Random noise drawn from a uniform distribution,
+        $(\gamma_{max}-\gamma_{min})\,U(0,\nu_\gamma)$, added
+        to the values for the interaction parameters, $\gamma_{i,j}$ used in
+        Fig.\,\ref{fig:main}.
+        %
+        \emph{Column 2:} Random noise $(\rho_{max} - \rho_{min})\,U(0, \nu_{\rho})$
+        was added to each hex element of $\rho_1(\mb{x})$ and $\rho_2(\mb{x})$ and the result
+        was smoothed by convolution with a symmetric 2D
+        Gaussian kernel of width $\sigma_\rho$. Colour maps in this column
+        thus show the effect of changing the magnitude and the length scale of
+        noise in the guidance fields.
+        %
+        \emph{Column 3:} Colour maps show the result of setting the rotational angle
+        of the linearly varying guidance field, $\rho_1(\mb{x})$, to $\phi_{\rho_1}$,
+        and modifying its overall gain to $G_{\rho_1}$, whilst keeping the
+        parameters of $\rho_2(\mb{x})$
+        unchanged from those used in the simulation in
+        Fig.\,\ref{fig:main}, for which $\phi_{\rho_1}=6$\textdegree~and
+        $\phi_{\rho_2}=84$\textdegree.
+        %
+        \textbf{B} Four ways in which the perturbations in \textbf{A} affect
+        the patterns. i) The effect of significant interaction parameter noise
+        causes barrels to become swapped from the positions they would
+        otherwise take. ii) High magnitude, short lengthscale noise in
+        $\rho(\mb{x})$ leads to `wiggly' boundaries between barrels. iii)
+        Shows the effect of reducing the slope of $\rho_1$ (by a factor of 10)
+        which reduces the strength of the axons' interaction with the guidance
+        field in the left-right sense. Barrel rows B, C and D become `crushed'
+        down the center line, and edge barrels dominate. iv) The effect of
+        rotating $\rho_1$ by 20\textdegree~is a relatively mild distortion of
+        the pattern in the anticlockwise sense.
+      }
+    }
     \label{fig:sens}
   \end{fullwidth}
 \end{figure}
@@ -353,14 +444,14 @@ Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
 %
   In the following analysis, we always evaluated the three pattern metrics,
   $\delta$ (the Honda Voronoi metric), $\eta$ (the pattern-match metric) and
-  $\omega$ (which measures localization of connections, $c_i$) after running
+  $\omega$ (which measures selectivity of connections, $c_i$) after running
   the model for 30000 simulation steps.}
 
 \cmnt{First, we conducted 10 runs of the simulation shown in
   Fig.\,\ref{fig:main}C to evaluate the mean and standard deviation of the
   three metrics in the default model. The
   results (where deviations occur as a result of the different random initial
-  conditions for $a_i$) were $\delta=0.089\,(0.004)$, $\eta=113.5\textbf{!!}\,(1.2)$ and
+  conditions for $a_i$) were $\delta=0.089\,(0.004)$, $\eta=0.2108\,(0.002)$ and
   $\omega=0.2165\,(0.0001)$. None of the three metrics were strongly affected
   by the random changes to $a_i$ on each run. The results give a baseline from
   which to evaluate whether changes in the other inputs have a statistically
@@ -370,22 +461,22 @@ Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
   to initialize $a_i$ for each hex to $0.1+{U}(0,0.4)$ (increasing the variability of
   $a_i(\mb{x},t=0)$ without changing the mean initial activation). We ran this
   system 10 times and obtained the results $\delta=0.090\,(0.005)$,
-  $\eta=115\,(1.9)\textbf{!!}$ and $\omega=0.2166\,(0.0003)$. Paired two-sample t-tests
+  $\eta=0.2136\,(0.004)$ and $\omega=0.2166\,(0.0003)$. Paired two-sample t-tests
   demonstrated that the increase in noise amplitude made no significant
   difference to the metric results ($\delta:
   \mathrm{t}=-0.69,\mathrm{p}=0.49$,
-  $\eta: \mathrm{t}=-2.0,\mathrm{p}=0.06\textbf{!!}$,
+  $\eta: \mathrm{t}=-2.0,\mathrm{p}=0.06$,
   $\omega: \mathrm{t}=-1.7,\mathrm{p}=0.11$). 10 runs of a
   noise-free initial condition with $a_i=0.3$ for every hex showed that
   the model is deterministic (all runs produced the results $\delta=0.0928$,
-  $\eta=114.31\textbf{!!}$ and $\omega=0.21649$) and that stochasticity in
+  $\eta=0.21236$ and $\omega=0.21649$) and that stochasticity in
   $a_i(\mb{x},t=0)$ is not required by this model, as all three results lay within
   one standard deviation of those for the runs in which $a_i$ was initialized stochastically.}
 
 % Quick check that noise free result is within 1 SD for the noisier initial conditions
 %         Noisefree    Normal noise    NF SD from Normal?   Noisy            NF SD from Noisy?
 % delta   0.0928       0.089(0.004)    <1                   0.090 (0.005)    <1
-% eta     114.31       113.5(1.2)      <1                   115 (1.9)        <1
+% eta     0.2124       0.2108(0.002)   <1                   0.2136 (0.004)   <1
 % omega   0.21649      0.2165(0.0001)  <1                   0.2166 (0.0003)  <1
 
 \cmnt{Fig\,\ref{fig:sens}A shows the results for perturbations ii) to iv). The
@@ -394,7 +485,7 @@ Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
   $\gamma_{i,j}' = \gamma_{i,j} + U(0,4\nu_\gamma)$, where $\nu_\gamma$ is the
   chosen magnitude of the noise (the proportion of the full range of
   $\gamma_{i,j}$, which is 4). The Voronoi nature of the pattern ($\delta$)
-  and the localization of the fields are not strongly affected by interaction
+  and the selectivity of the fields are not strongly affected by interaction
   parameter noise, but the pattern metric, $\eta$ shows a... ADD SUB GRAPH.}
 
 % This figure is text width

@@ -95,12 +95,20 @@ class Surface:
         self.id_byname = BarrelDataObject.id_byname
         self.gammaColour_byid = BarrelDataObject.gammaColour_byid
         self.hex_flags = BarrelDataObject.hex_flags
-        self.d_ne = BarrelDataObject.d_ne
-        self.d_nne = BarrelDataObject.d_nne
-        self.d_nnw = BarrelDataObject.d_nnw
-        self.d_nw = BarrelDataObject.d_nw
-        self.d_nsw = BarrelDataObject.d_nsw
-        self.d_nse = BarrelDataObject.d_nse
+        try:
+            self.d_ne = BarrelDataObject.d_ne
+            self.d_nne = BarrelDataObject.d_nne
+            self.d_nnw = BarrelDataObject.d_nnw
+            self.d_nw = BarrelDataObject.d_nw
+            self.d_nsw = BarrelDataObject.d_nsw
+            self.d_nse = BarrelDataObject.d_nse
+        except AttributeError:
+            self.d_ne = []
+            self.d_nne = []
+            self.d_nnw = []
+            self.d_nw = []
+            self.d_nsw = []
+            self.d_nse = []
         # FIXME: These are different for different sims and may have variable shape
         #self.domcentres = BarrelDataObject.domcentres
         #self.domdivision = BarrelDataObject.domdivision

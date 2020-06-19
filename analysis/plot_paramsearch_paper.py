@@ -36,7 +36,7 @@ F1 = plt.figure (figsize=(20,10))
 pp.paramplot_pub (sdata, F1, 'alphabeta', 'D', 'F', 3, timepoint, param_tuples, 0, 0, 'inferno');
 plt.savefig('plots/paramsweep.svg')
 
-do_maps = 1
+do_maps = 0
 if do_maps:
     # map plots to go under the param sweep colour grids
     map_i = 1 # map index
