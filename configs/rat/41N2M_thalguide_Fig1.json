@@ -24,7 +24,7 @@
     "k" : 3,    // Exponent on a
     // Also: alpha, beta, epsilon; see gamma list below
 
-    // Array of parameters for N thalamocortical populations.
+    // Array of parameters for N thalamocortical populations. Note: "epsilon" in this array is ignored.
     "tc": [
         { "alpha" : 3.6, "beta" : 16.7, "epsilon" : 150, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.0, 0.08297875929160803], "name" : "a" }, // a
         { "alpha" : 3.6, "beta" : 16.7, "epsilon" : 150, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.841803677231407, 0.5955182340971339], "name" : "A1" }, // A1
