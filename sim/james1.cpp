@@ -19,6 +19,22 @@
 #endif
 
 #include <iostream>
+
+//! A global variable used as a finished-the-loop flag. Global so that signalHandler can
+//! set it true to break out of the loop early, but with the program completing correctly.
+namespace sighandling {
+    bool finished = false;
+    bool user_interrupt = false;
+
+    //! Signal handler to catch Ctrl-C
+    void handler (int signum) {
+        std::cerr << "User has interrupted the simulation. Finish up, save logs then exit...\n";
+        //! Set true to finish early
+        finished = true;
+        user_interrupt = true;
+    }
+}
+
 #include <fstream>
 #include <vector>
 #include <list>
@@ -26,6 +42,7 @@
 #include <sstream>
 #include <limits>
 #include <cmath>
+#include <csignal>
 #include <chrono>
 
 //! Include the relevant reaction diffusion class
@@ -151,6 +168,10 @@ using namespace std;
  */
 int main (int argc, char **argv)
 {
+    // register signal handler
+    signal (SIGINT, sighandling::handler);
+    signal (SIGTERM, sighandling::handler);
+
     // Randomly set the RNG seed
     srand (morph::Tools::randomSeed());
 
@@ -230,10 +251,6 @@ int main (int argc, char **argv)
     const FLT m = conf.getDouble ("m", 1e-8);
     const double E = conf.getDouble ("E", 0.0);
     DBG2 ("E is set to " << E);
-#endif
-
-#if defined COMP2
-    const double F = conf.getDouble ("F", 0.0);
 #endif
 
     bool do_fgf_duplication = conf.getBool ("do_fgf_duplication", false);
@@ -357,10 +374,6 @@ int main (int argc, char **argv)
     RD.E = E;
 #endif
 
-#if defined COMP2
-    RD.F = F;
-#endif
-
     RD.contour_threshold = contour_threshold;
     RD.k = k;
     RD.doFgfDuplication = do_fgf_duplication;
@@ -379,7 +392,7 @@ int main (int argc, char **argv)
         DBG2 ("Set xinit["<<i<<"] to " << gp.x);
         gp.y = v.get("yinit", 0.0).asDouble();
         RD.initmasks.push_back (gp);
-#if defined DNCOMP || defined DNCOMP_PERGROUP
+#if defined DNCOMP || defined DNCOMP_PERGROUP || defined COMP2
         RD.epsilon[i] = v.get("epsilon", 0.0).asDouble();
         DBG2 ("Set RD.epsilon["<<i<<"] to " << RD.epsilon[i]);
 #endif
@@ -713,102 +726,114 @@ int main (int argc, char **argv)
 
 #endif // COMPILE_PLOTTING
 
-    // Start the loop
-    bool finished = false;
-    while (finished == false) {
-        // Step the model
-        RD.step();
+    // Innocent until proven guilty
+    sighandling::user_interrupt = false;
+    conf.set ("crashed", false);
+
+    try {
+        // Start the loop
+        sighandling::finished = false;
+        while (sighandling::finished == false) {
+            // Step the model
+            RD.step();
 
 #ifdef COMPILE_PLOTTING
 
-        if ((RD.stepCount % plotevery) == 0) {
-            DBG2("Plot at step " << RD.stepCount);
-            // Do a plot of the ctrs as found.
-            vector<FLT> ctrmap = ShapeAnalysis<FLT>::get_contour_map (RD.hg, RD.c, RD.contour_threshold);
+            if ((RD.stepCount % plotevery) == 0) {
+                DBG2("Plot at step " << RD.stepCount);
+                // Do a plot of the ctrs as found.
+                vector<FLT> ctrmap = ShapeAnalysis<FLT>::get_contour_map (RD.hg, RD.c, RD.contour_threshold);
 
-            if (do_dirichlet_analysis == true) {
-                RD.dirichlet();
-                DBG2 ("dirich_value = " << RD.honda);
-            }
+                if (do_dirichlet_analysis == true) {
+                    RD.dirichlet();
+                    DBG2 ("dirich_value = " << RD.honda);
+                }
 
-            if (plot_contours) {
-                mdlptr = (VdmPtr)plt.getVisualModel (c_ctr_grid);
-                mdlptr->updateData (&ctrmap);
-            }
+                if (plot_contours) {
+                    mdlptr = (VdmPtr)plt.getVisualModel (c_ctr_grid);
+                    mdlptr->updateData (&ctrmap);
+                }
 
-            if (plot_a_contours) {
-                vector<FLT> actrmap = ShapeAnalysis<FLT>::get_contour_map (RD.hg, RD.a, RD.contour_threshold);
-                mdlptr = (VdmPtr)plt.getVisualModel (a_ctr_grid);
-                mdlptr->updateData (&actrmap);
-            }
+                if (plot_a_contours) {
+                    vector<FLT> actrmap = ShapeAnalysis<FLT>::get_contour_map (RD.hg, RD.a, RD.contour_threshold);
+                    mdlptr = (VdmPtr)plt.getVisualModel (a_ctr_grid);
+                    mdlptr->updateData (&actrmap);
+                }
 
-            if (plot_a) {
-                for (unsigned int i = 0; i<RD.N; ++i) {
-                    mdlptr = (VdmPtr)plt.getVisualModel (agrids[i]);
-                    mdlptr->updateData (&RD.a[i]);
+                if (plot_a) {
+                    for (unsigned int i = 0; i<RD.N; ++i) {
+                        mdlptr = (VdmPtr)plt.getVisualModel (agrids[i]);
+                        mdlptr->updateData (&RD.a[i]);
+                    }
+                }
+                if (plot_c) {
+                    for (unsigned int i = 0; i<RD.N; ++i) {
+                        mdlptr = (VdmPtr)plt.getVisualModel (cgrids[i]);
+                        mdlptr->updateData (&RD.c[i]);
+
+                    }
+                }
+                if (plot_n) {
+                    mdlptr = (VdmPtr)plt.getVisualModel (ngrid);
+                    mdlptr->updateData (&RD.n);
+                }
+                if (plot_dr && do_dirichlet_analysis) {
+                    mdlptr = (VdmPtr)plt.getVisualModel (dr_grid);
+                    mdlptr->updateData (&RD.regions);
+                }
+                // Then add:
+                //plt.plot_dirichlet_boundaries (displays[n_id], RD.hg, vv);
+
+                // With the new all-in-one-window OpenGL format, there's only one savePngs
+                // call at a time.
+                if (vidframes) {
+                    savePngs (logpath, "sim", framecount, plt);
+                    ++framecount;
+                } else {
+                    savePngs (logpath, "sim", RD.stepCount, plt);
                 }
             }
-            if (plot_c) {
-                for (unsigned int i = 0; i<RD.N; ++i) {
-                    mdlptr = (VdmPtr)plt.getVisualModel (cgrids[i]);
-                    mdlptr->updateData (&RD.c[i]);
 
-                }
+            // rendering the graphics.
+            steady_clock::duration sincerender = steady_clock::now() - lastrender;
+            if (duration_cast<milliseconds>(sincerender).count() > 17) { // 17 is about 60 Hz
+                glfwPollEvents();
+                plt.render();
+                lastrender = steady_clock::now();
             }
-            if (plot_n) {
-                mdlptr = (VdmPtr)plt.getVisualModel (ngrid);
-                mdlptr->updateData (&RD.n);
-            }
-            if (plot_dr && do_dirichlet_analysis) {
-                mdlptr = (VdmPtr)plt.getVisualModel (dr_grid);
-                mdlptr->updateData (&RD.regions);
-            }
-            // Then add:
-            //plt.plot_dirichlet_boundaries (displays[n_id], RD.hg, vv);
-
-            // With the new all-in-one-window OpenGL format, there's only one savePngs
-            // call at a time.
-            if (vidframes) {
-                savePngs (logpath, "sim", framecount, plt);
-                ++framecount;
-            } else {
-                savePngs (logpath, "sim", RD.stepCount, plt);
-            }
-        }
-
-        // rendering the graphics.
-        steady_clock::duration sincerender = steady_clock::now() - lastrender;
-        if (duration_cast<milliseconds>(sincerender).count() > 17) { // 17 is about 60 Hz
-            glfwPollEvents();
-            plt.render();
-            lastrender = steady_clock::now();
-        }
 #endif // COMPILE_PLOTTING
 
-        // Save data every 'logevery' steps
-        if ((RD.stepCount % logevery) == 0) {
-            DBG ("Logging data at step " << RD.stepCount);
-            RD.save();
+            // Save data every 'logevery' steps
+            if ((RD.stepCount % logevery) == 0) {
+                DBG ("Logging data at step " << RD.stepCount);
+                RD.save();
 
-            // Fixme. Save the hex contours in their own file. Each Hex has a save() method.
-            vector<list<Hex> > sv_ctrs = ShapeAnalysis<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
+                // Fixme. Save the hex contours in their own file. Each Hex has a save() method.
+                vector<list<Hex> > sv_ctrs = ShapeAnalysis<FLT>::get_contours (RD.hg, RD.c, RD.contour_threshold);
 
-            if (do_dirichlet_analysis == true) {
-                // We HAVE to RD.dirichlet again, in case the frequency at which we're plotting is
-                // different from the frequency at which we're loggin.
-                RD.dirichlet();
-                RD.saveDirichletDomains();
+                if (do_dirichlet_analysis == true) {
+                    // We HAVE to RD.dirichlet again, in case the frequency at which we're plotting is
+                    // different from the frequency at which we're loggin.
+                    RD.dirichlet();
+                    RD.saveDirichletDomains();
+                }
             }
-        }
 
 #ifdef COMPILE_PLOTTING
-        if (RD.stepCount % 1000 == 0) {
-            cout << RD.stepCount << " steps computed...\n";
-        }
+            if (RD.stepCount % 1000 == 0) {
+                cout << RD.stepCount << " steps computed...\n";
+            }
 #endif
-        if (RD.stepCount > steps) {
-            finished = true;
+            if (RD.stepCount > steps) {
+                sighandling::finished = true;
+            }
         }
+    } catch (const std::exception& e) {
+        // Set some stuff in the config as to what happened, so it'll get saved into params.conf
+        conf.set ("crashed", true);
+        std::stringstream ee;
+        ee << e.what();
+        conf.set ("exception_message", ee.str());
     }
 
     // Save out the sums.
@@ -821,6 +846,8 @@ int main (int argc, char **argv)
     conf.set ("float_width", (unsigned int)sizeof(FLT));
     string tnow = morph::Tools::timeNow();
     conf.set ("sim_ran_at_time", tnow.substr(0,tnow.size()-1));
+    conf.set ("final_step", RD.stepCount);
+    conf.set ("user_interrupt", sighandling::user_interrupt);
     conf.set ("hextohex_d", RD.hextohex_d);
     conf.set ("D", RD.get_D());
     conf.set ("k", RD.k);
@@ -886,8 +913,10 @@ int main (int argc, char **argv)
 #endif
 
 #ifdef COMPILE_PLOTTING
-    cout << "Ctrl-c or press x in graphics window to exit.\n";
-    plt.keepOpen();
+    if (sighandling::user_interrupt == false) {
+        cout << "Press x in graphics window to exit.\n";
+        plt.keepOpen();
+    }
 #endif
 
     return 0;

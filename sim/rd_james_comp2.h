@@ -17,8 +17,11 @@ public:
      * Parameter which controls the strength of diffusion away from
      * axon branching of other TC types.
      */
-    alignas(Flt) Flt F = 0.2;
-    alignas(Flt) Flt FOverNm1 = 0.0;
+    alignas(alignof(std::vector<Flt>))
+    std::vector<Flt> epsilon;
+    //! epsilon / (N-1)
+    alignas(alignof(std::vector<Flt>))
+    std::vector<Flt> epsilonOverNm1;
 
     /*!
      * \hat{a}_i. Recomputed for each new i, so doesn't need to be a
@@ -70,6 +73,9 @@ public:
         this->resize_vector_variable (this->div_ahat);
         this->resize_vector_variable (this->abar);
         this->resize_gradient_field (this->grad_abar);
+        // epsilon based competition
+        this->resize_vector_param (this->epsilon, this->N);
+        this->resize_vector_param (this->epsilonOverNm1, this->N);
     }
     virtual void init (void) {
         RD_James<Flt>::init();
@@ -78,6 +84,15 @@ public:
         this->zero_vector_variable (this->div_ahat);
         this->zero_vector_variable (this->abar);
         this->zero_gradient_field (this->grad_abar);
+
+        // Set up the competition params
+        if (this->N > 0) {
+            for (unsigned int i = 0; i < this->N; ++i) {
+                this->epsilonOverNm1[i] = this->epsilon[i]/(this->N-1);
+            }
+        } else {
+            this->zero_vector_param (this->epsilonOverNm1, this->N);
+        }
     }
     //@}
     /*!
@@ -128,12 +143,6 @@ public:
         // Compute gradient of a_i(x), for use computing the third term, below.
         this->spacegrad2D (fa, this->grad_a[i]);
 
-        if (this->N > 0) {
-            this->FOverNm1 = this->F/(this->N-1);
-        } else {
-            this->FOverNm1 = 0.0;
-        }
-
         // _Five_ terms to compute; see Eq. 17 in methods_notes.pdf. Copy comp3.
 #pragma omp parallel for //schedule(static) // This was about 10% faster than schedule(dynamic,50).
         for (unsigned int hi=0; hi<this->nhex; ++hi) {
@@ -160,11 +169,11 @@ public:
 
             Flt term1_1 = Flt{0};
 #if defined SIGMOID_ROLLOFF_FOR_A || defined LINEAR_MAX
-            // Term 1.1 is F/N-1 abar div(ahat)
-            term1_1 = this->FOverNm1 * abar[hi] * this->div_ahat[hi];
+            // Term 1.1 is epsilon/N-1 abar div(ahat)
+            term1_1 = this->epsilonOverNm1[i] * abar[hi] * this->div_ahat[hi];
 #else
-            // Term 1.1 is F/N-1 a div(ahat)
-            term1_1 = this->FOverNm1 * fa[hi] * this->div_ahat[hi];
+            // Term 1.1 is epsilon/N-1 a div(ahat)
+            term1_1 = this->epsilonOverNm1[i] * fa[hi] * this->div_ahat[hi];
 #endif
 
             if (isnan(term1_1)) {
@@ -176,12 +185,12 @@ public:
             Flt term1_2 = Flt{0};
 #if defined SIGMOID_ROLLOFF_FOR_A || defined LINEAR_MAX
             // Term 1.2 is F/N-1 grad(ahat) . grad(abar)
-            term1_2 = this->FOverNm1 * (this->grad_ahat[0][hi] * this->grad_abar[0][hi]
-                                        + this->grad_ahat[1][hi] * this->grad_abar[1][hi]);
+            term1_2 = this->epsilonOverNm1[i] * (this->grad_ahat[0][hi] * this->grad_abar[0][hi]
+                                                 + this->grad_ahat[1][hi] * this->grad_abar[1][hi]);
 #else
             // Term 1.2 is F/N-1 grad(ahat) . grad(a)
-            term1_2 = this->FOverNm1 * (this->grad_ahat[0][hi] * this->grad_a[i][0][hi]
-                                        + this->grad_ahat[1][hi] * this->grad_a[i][1][hi]);
+            term1_2 = this->epsilonOverNm1[i] * (this->grad_ahat[0][hi] * this->grad_a[i][0][hi]
+                                                 + this->grad_ahat[1][hi] * this->grad_a[i][1][hi]);
 #endif
 
             if (isnan(term1_2)) {
