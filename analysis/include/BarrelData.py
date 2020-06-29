@@ -90,6 +90,8 @@ class BarrelData:
 
         # idnames are read from the parameters json file
         self.id_byname = {}
+        self.name_by_id = {}
+        self.name_by_index = {}
         self.gamma_byname = {}
         self.gamma_byid = {} # indexed by a float32
 
@@ -250,6 +252,8 @@ class BarrelData:
                     pass
                 theid = count/np.float32(self.N)
                 self.id_byname[i["name"]] = theid
+                self.name_by_id[theid] = i["name"]
+                self.name_by_index[count] = i["name"]
                 self.gamma_byname[i["name"]] = i["gamma"]
                 self.gamma_byid[theid] = i["gamma"]
                 #
