@@ -7,7 +7,7 @@
 % barrels. Everything in the paper should be tailored towards arguing
 % this idea.
 
-\documentclass[9pt,lineno,draft]{elife}
+\documentclass[9pt,lineno]{elife}
 
 \usepackage{color}
 \usepackage{amsmath,esint}
@@ -260,7 +260,10 @@ redefined
 \end{equation}
 %
 \stu{This term contributes to the \emph{flux of axonal branching} as an
- additional source of diffusion, which reduces the branching density for a given projection where the branches of other projections are dense.} \stu{The strength of this additional competition is parameterized by $\epsilon$}. Note that this operation is local to individual afferent
+  additional source of diffusion, which reduces the branching density for a
+  given projection where the branches of other projections are dense.}
+\stu{The strength of this additional competition is parameterized by
+  $\epsilon$}. Note that this operation is local to individual afferent
 projections.
 
 The only differences between thalamic projections are their strengths of
@@ -268,12 +271,30 @@ interaction with the guidance fields, $\gamma$, hence any reliable differences
 between emergent cortical fields must be due to differences in these values
 only. We speculate that the contribution of a given ephrin field, to the
 velocity at which a projection migrates across the cortical subplate, is
-determined by the concentration of a similar molecule at its thalamic origin, i.e., the putative barreloid center. 
+determined by the concentration of a similar molecule at its thalamic origin, i.e., the putative barreloid center.
 
-\stu{As such, we consider linear gradients aligned to anterior-posterior and medial-lateral axes through the VPM, and as $\gamma$-values use the coordinates of the barreloid centers in these axes as they appear in \citep{haidarliu_size_2001} (Fig.\,\ref{fig:main}B).} \stu{Complementary thalamic and cortical molecular guidance gradients of this form have been well established experimentally} \citep{vanderhaeghen_mapping_2000,miller_epha7-ephrin-a5_2006}, \stu{e.g., cells originating in the medial part of ventrobasal thalamus (comprising VPM and VPL) express high levels of EphA receptors and project to the lateral part of S1, which expresses low levels of ephrin-A5, and cells originating in the lateral part of ventrobasal thalamus express low levels of EphA receptors and project to the medial part of S1, which expresses high levels of ephrin-A5 (see} \citealp{gao_regulation_1998,dufour_area_2003,vanderhaeghen_developmental_2004,speer_grading_2005}). \stu{We concentrate on the representation of the 41 macrovibrissae because their thalamic and cortical correlates are easily identifiable and consistently positioned, we exclude the microvibrissae to limit the complexity of the simulations, and we exclude the five rhinal whiskers as their representation in S1 is isolated from the main barrel field.} 
+\stu{As such, we consider linear gradients aligned to anterior-posterior and
+  medial-lateral axes through the VPM, and as $\gamma$-values use the
+  coordinates of the barreloid centers in these axes as they appear in
+  \citep{haidarliu_size_2001} (Fig.\,\ref{fig:main}B).} \stu{Complementary
+  thalamic and cortical molecular guidance gradients of this form have been
+  well established experimentally}
+\citep{vanderhaeghen_mapping_2000,miller_epha7-ephrin-a5_2006}, \stu{e.g.,
+  cells originating in the medial part of ventrobasal thalamus (comprising VPM
+  and VPL) express high levels of EphA receptors and project to the lateral
+  part of S1, which expresses low levels of ephrin-A5, and cells originating
+  in the lateral part of ventrobasal thalamus express low levels of EphA
+  receptors and project to the medial part of S1, which expresses high levels
+  of ephrin-A5 (see}
+\citealp{gao_regulation_1998,dufour_area_2003,vanderhaeghen_developmental_2004,speer_grading_2005}). \stu{We
+  concentrate on the representation of the 41 macrovibrissae because their
+  thalamic and cortical correlates are easily identifiable and consistently
+  positioned, we exclude the microvibrissae to limit the complexity of the
+  simulations, and we exclude the five rhinal whiskers as their representation
+  in S1 is isolated from the main barrel field.}
 
 A cortical boundary enclosing \stu{the} 41 \cmnt{macrovibrissae} barrels was traced from
-a cytochrome oxidase stain from \cite{zheng_signal_2001} \cmnt{(using original data kindly supplied by the authors)}, and Eqs.~\ref{eq:dc}--\ref{eq:comp} were solved for $N=41$ projections on the resulting domain, using $M=2$ linear signalling gradients aligned with the anterior-posterior and medial-lateral axes. 
+a cytochrome oxidase stain from \cite{zheng_signal_2001} \cmnt{(using original data kindly supplied by the authors)}, and Eqs.~\ref{eq:dc}--\ref{eq:comp} were solved for $N=41$ projections on the resulting domain, using $M=2$ linear signalling gradients aligned with the anterior-posterior and medial-lateral axes.
 
 
 %\cmnt{In other words, we simply scaled the barreloid coordinates in an anterior-posterior/medial-lateral coordinate system to create the $\gamma$ values in the range [-2,2]. Note that positive \emph{and} negative $\gamma$ values were generated; the origin of the coordinate system was located at the approximate center of the thalamic barreloid field. This prevented an overall drift of the cortical pattern away from the centroid of the barrel field and may explain why coordinate-giving transcription factors and the ephrins are often found as pairs acting in opposing directions.}  \cmnt{We concentrated on macrovibrissae (excluding microvibrissae) because it is easy to identify their corresponding structures both in the thalamus and in the cortex. We also excluded the 5 rhinal whiskers because their cortical representation is in a separate island, distinct, and somewhat removed from the representation of the macrovibirissae.}}
@@ -494,7 +515,10 @@ To further investigate the interplay of genetic and intrinsic mechanisms we
 simulated a seminal barrel duplication experiment
 \citep{shimogori_fibroblast_2005}, first by solving on a cortical domain
 comprising two separate, identically shaped cortical boundaries. In this case
-one distinct cortical field per thalamic projection emerged, within one of the
+\cmnt{NOTE: The following only holds for the divisive normalization system -
+  in the comp2 system, there's no `coupling' at all between the two regions,
+  so the mirrored region arranges itself as expected with the one reversed
+  guidance field.} one distinct cortical field per thalamic projection emerged, within one of the
 two boundaries only, i.e., no duplication. However, merging the two fields to
 create an extended mirror-symmetric boundary shape, with an anterior-posterior
 guidance field reflected at the join, gave rise to two mirror-symmetrical
@@ -504,6 +528,17 @@ misexpression of Fgf8, \cite{shimogori_fibroblast_2005}
 effectively created one large barrel field rather than two distinct cortical
 fields. \cmnt{Add something about the slightly off-vertical arrangement of the
   fields.}
+
+\begin{center}
+  \includegraphics[width=\linewidth]{./Fig5.png}
+  \captionof{figure}{\cmnt{Simulating whisker trimming by reduction of
+      $\epsilon$ for the thalamocortical projection for barrel C3, for which
+      $i=13$. All other model parameters match those in
+      Fig.\,\ref{fig:main}C. \textbf{A} Graph of individual barrel measures
+      plotted vs.~the multiplier applied to $\epsilon_{13}$. \textbf{B} The
+      pattern for $\epsilon_{m}=0.64$.}}
+  \label{fig:whiskertrim}
+\end{center}
 
 \section{Discussion}
 
@@ -778,4 +813,3 @@ supported by a Collaborative Activity Award, \emph{Cortical Plasticity Within
 %\cmnt{Thus, we suggest that there exist a pair of signalling molecules whose expression varies linearly (with orthogonal gradients) across the thalamus, analgous to the ephrins, whose existence is well known in the cortex. Thalamocortical axons growing from a region in the thalamus with high expression of one of these molecules will interact with a corresponding cortical signalling molecule more strongly than an axon emanating from a region with low expression of the thalamic signal.}
 
 %\cmnt{We defined two orthogonal, linear gradients oriented in the anterior-posterior and medial-lateral directions and used the coordinates of 41 barreloid centers recreated from \cite{haidarliu_size_2001}, corresponding to the macrovibrissae, to populate 41 pairs of $\gamma$ values.}  (Fig.\,\ref{fig:main}B). \cmnt{In other words, we simply scaled the barreloid coordinates in an anterior-posterior/medial-lateral coordinate system to create the $\gamma$ values in the range [-2,2]. Note that positive \emph{and} negative $\gamma$ values were generated; the origin of the coordinate system was located at the approximate center of the thalamic barreloid field. This prevented an overall drift of the cortical pattern away from the centroid of the barrel field and may explain why coordinate-giving transcription factors and the ephrins are often found as pairs acting in opposing directions.}  \cmnt{We concentrated on macrovibrissae (excluding microvibrissae) because it is easy to identify their corresponding structures both in the thalamus and in the cortex. We also excluded the 5 rhinal whiskers because their cortical representation is in a separate island, distinct, and somewhat removed from the representation of the macrovibirissae.}
-
