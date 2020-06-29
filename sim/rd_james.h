@@ -349,9 +349,11 @@ public:
     //! The overall Honda 1983 Dirichlet approximation. 0.003 is a good fit. 0.05 not
     //! so good.
     Flt honda = 0.0;
+    std::map<Flt, Flt> honda_arr;
 
     //! Honda Dirichlet approx for the experimentally supplied barrels
     Flt expt_honda = 0.0;
+    std::map<Flt, Flt> expt_honda_arr;
     //@}
 
     /*!
@@ -366,6 +368,7 @@ public:
      * between the experimental and simulated barrel fields.
      */
     Flt area_diff = 0.0;
+    std::vector<Flt> area_diffs;
 
     /*!
      * Another metric to determine the difference between the current pattern and the
@@ -578,6 +581,8 @@ public:
         this->resize_vector_array_vector (this->J, this->N);
 
         this->resize_vector_variable (this->expt_barrel_id);
+
+        this->area_diffs.resize (this->N, Flt{0});
 
         // rhomethod is a vector of size M
         this->rhoMethod.resize (this->M);
@@ -895,10 +900,22 @@ public:
         }
         // Save the overall honda value for the system
         data.add_val ("/honda", this->honda);
+        // And individual honda delta_js:
+        // We have to make two vectors out of the map.
+        std::vector<Flt> ha_keys;
+        std::vector<Flt> ha_vals;
+        for (auto mi : this->honda_arr) {
+            ha_keys.push_back (mi.first);
+            ha_vals.push_back (mi.second);
+        }
+        data.add_contained_vals ("/honda_arr_keys", ha_keys);
+        data.add_contained_vals ("/honda_arr_vals", ha_vals);
+
         // Save sum of square distances
         data.add_val ("/sos_distances", this->sos_distances);
         // Save sum of square of area differences
         data.add_val ("/area_diff", this->area_diff);
+        data.add_contained_vals ("/area_diffs", this->area_diffs);
         // The difference between the experimental barrel map and the simulated map
         data.add_val ("/mapdiff", this->mapdiff);
         // Save the region centroids
@@ -1435,7 +1452,7 @@ public:
         this->domains = morph::ShapeAnalysis<Flt>::dirichlet_vertices (this->hg, this->expt_barrel_id, this->vertices);
         // Carry out the analysis.
         std::vector<std::pair<float, float>> d_centres;
-        this->expt_honda = morph::ShapeAnalysis<float>::dirichlet_analyse (this->domains, d_centres);
+        this->expt_honda = morph::ShapeAnalysis<float>::dirichlet_analyse (this->domains, d_centres, this->expt_honda_arr);
         DBG ("Real barrels have Honda: " << this->expt_honda);
     }
 
@@ -1503,7 +1520,8 @@ public:
                 acount += this->regions[h] == idx ? 1 : 0;
             }
             this->region_areas[idx] = acount;
-            this->area_diff += std::abs(static_cast<Flt>(this->region_areas[idx] - this->expt_areas[idx]));
+            this->area_diffs[i] = std::abs(static_cast<Flt>(this->region_areas[idx] - this->expt_areas[idx]));
+            this->area_diff += this->area_diffs[i];
         }
         DBG ("overall area_diff = " << this->area_diff);
 
@@ -1525,7 +1543,7 @@ public:
         this->domains = morph::ShapeAnalysis<Flt>::dirichlet_vertices (this->hg, this->regions, this->vertices);
         // Carry out the analysis.
         std::vector<std::pair<Flt, Flt>> d_centres;
-        this->honda = morph::ShapeAnalysis<Flt>::dirichlet_analyse (this->domains, d_centres);
+        this->honda = morph::ShapeAnalysis<Flt>::dirichlet_analyse (this->domains, d_centres, this->honda_arr);
 
         this->dirichletComputed = true;
     }

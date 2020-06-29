@@ -81,7 +81,8 @@ for logdirname in os.listdir(basedir):
             hond_dj = bdo.honda_delta_j[0][int(i)]
         except:
             hond_dj = math.nan
-        tableline = [eps_mult, epsilon, eps_modified, bdo.name_by_index[i], hond_dj, bdo.area_diffs[int(i)][0], bdo.barrel_areas[int(i)][0]]
+        print ('name_by_index: {0}'.format (bdo.name_by_index[i]))
+        tableline = [eps_mult, epsilon, eps_modified, bdo.name_by_index[i], i, hond_dj, bdo.area_diffs[int(i)][0], bdo.barrel_areas[int(i)][0]]
         print ('TL: {0}'.format(tableline))
         table_ind.append (tableline)
 
@@ -93,6 +94,6 @@ with open('postproc/whisker_trim_overall.csv', 'w', newline='\n') as csvfile:
         cw.writerow (tableline)
 with open('postproc/whisker_trim_individual.csv', 'w', newline='\n') as csvfile:
     cw = csv.writer (csvfile, delimiter=',')
-    cw.writerow (['eps_mult','epsilon','eps_modified','barrel','hondadelta','area_diff','area'])
+    cw.writerow (['eps_mult','epsilon','eps_modified','barrel','barrel_index','hondadelta','area_diff','area'])
     for tableline in table_ind:
         cw.writerow (tableline)
