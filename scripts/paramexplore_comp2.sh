@@ -39,23 +39,21 @@ PROGTAG=comp2 # NOT dccomp because in comp2 we need to vary F, not epsilon
 # Choose k (1.abit or 3)
 k=3
 
-EPSILON=150 # Doesn't do anything, but is incorporated into the JSON anyway
-
 DT=0.0001
 HEXHEXD=0.03
 # Boundary fall off distance - should be at least 3 times HEXHEXD
 BFD=0.1
 
 for D in 0.03 0.06 0.12 0.25 0.5 1.0; do  # 0.03 never works; should go one higher too
-    for F in 0.03 0.08 0.19 0.48 1.2 3.0; do
+    for EPSILON in 0.03 0.08 0.19 0.48 1.2 3.0; do
         for ALPHABETA in 0.06 0.18 0.55 1.6 5.0 15.0; do
 
             ((BETA=3/ALPHABETA))
             ((ALPHA=20*ALPHABETA))
 
-            JSON="pe_${PROGTAG}_D${D}_F${F}_ab${ALPHABETA}_k${k}.json"
+            JSON="pe_${PROGTAG}_D${D}_eps${EPSILON}_ab${ALPHABETA}_k${k}.json"
 
-            echo "D = ${D}, F = ${F}, alphabeta = ${ALPHABETA} (alpha=${ALPHA} beta=${BETA})"
+            echo "D = ${D}, eps = ${EPSILON}, alphabeta = ${ALPHABETA} (alpha=${ALPHA} beta=${BETA})"
 
             cat > configs/rat/paramexplore/${JSON} <<EOF
 {
@@ -76,7 +74,6 @@ for D in 0.03 0.06 0.12 0.25 0.5 1.0; do  # 0.03 never works; should go one high
 
     // Parameters that will vary
     "D" : ${D},
-    "F" : ${F},
     "k" : ${k},    // Exponent on a
     // Also: alpha, beta, epsilon; see gamma list below
 
