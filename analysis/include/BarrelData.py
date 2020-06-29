@@ -115,6 +115,10 @@ class BarrelData:
 
         # The Honda delta value, Shape: len(t)
         self.honda = np.array([])
+        # Honda delta_j is to be a list of dictionaries, each entry in the list
+        # relating to a different time, t. In the dictionaries, the key is the
+        # ID, the value is the delta_j.
+        self.honda_delta_j = []
 
         # The edge deviation value, Shape: len(t). How much the edges in the
         # pattern deviate from the straight lines which connect the
@@ -150,6 +154,11 @@ class BarrelData:
         # domain and simulated domain. len(t). Range [0,nhex].
         self.area_diff = np.array([])
 
+        # Area diffs per-barrel. N by len(t)
+        self.area_diffs = np.array([])
+        # Barrel areas. N by len(t)
+        self.barrel_areas = np.array([])
+
         # The divisions between domains. All those paths that the C++ code
         # walks.
         self.domdivision = []
@@ -161,6 +170,10 @@ class BarrelData:
         # Some more self attributes to set to defaults - these should
         # be modified in loadParams()
         self.hextohex_d = 0
+        # hex area = self.hextohex_d * self.hextohex_d * math.sqrt(3) / 2.0
+        self.hex_area = 0
+        # What's the length of one hex edge? It's hextohex_d/2
+        self.hex_edge_length = 0
         self.F = 0
         self.k = 0
         self.meanalpha=0
@@ -196,6 +209,8 @@ class BarrelData:
             jd = json.load(f)
             self.dt = jd["dt"]
             self.hextohex_d = jd["hextohex_d"]
+            self.hex_area = self.hextohex_d * self.hextohex_d * math.sqrt(3) / 2.0
+            self.hex_edge_length = self.hextohex_d/2.0
             self.D = jd["D"]
             try:
                 self.F = jd["F"]
@@ -377,9 +392,7 @@ class BarrelData:
         # Containers for the measure, which is N N-d vectors.
         self.adjacency_vectors = np.zeros([len(self.t_steps), self.N, self.N], dtype=float)
         self.barrel_boundary_lengths = np.zeros ([len(self.t_steps), self.N], dtype=float)
-
-        # What's the length of one hex edge? It's hextohex_d/2
-        hex_edge_length = self.hextohex_d/2.0
+        self.barrel_areas = np.zeros([self.N, len(self.t_steps)], dtype=float)
 
         # For each t:
         for tidx in range (0, len(self.t_steps)):
@@ -396,6 +409,9 @@ class BarrelData:
                 my_id_i = int(np.round(np.float32(self.N)*my_id))
                 # print ('Hex has ID float: {0} / int: {1}'.format(my_id, my_id_i))
 
+                # Add to barrel_areas:
+                self.barrel_areas[my_id_i][tidx] += self.hex_area
+
                 # The the neighbour iterators:
                 h_e = self.d_ne[h]
                 h_ne = self.d_nne[h]
@@ -406,24 +422,24 @@ class BarrelData:
 
                 #print ('Hex to the east has id_c: {0} and corresponding index: {1} (cf my_id={2}/{3})'.format (self.id_c[h_e], int(self.N*self.id_c[h_e]), my_id, my_id_i))
                 if self.id_c[h_e, tidx] != my_id: # Then hex to east has a different ID:
-                    self.barrel_boundary_lengths[tidx, my_id_i] += hex_edge_length
+                    self.barrel_boundary_lengths[tidx, my_id_i] += self.hex_edge_length
                     # int(self.N*self.id_c[h_e]) makes an integer index out of id_c
-                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_e, tidx]))] += hex_edge_length
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_e, tidx]))] += self.hex_edge_length
                 if self.id_c[h_ne, tidx] != my_id:
-                    self.barrel_boundary_lengths[tidx,my_id_i] += hex_edge_length
-                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_ne, tidx]))] += hex_edge_length
+                    self.barrel_boundary_lengths[tidx,my_id_i] += self.hex_edge_length
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_ne, tidx]))] += self.hex_edge_length
                 if self.id_c[h_nw, tidx] != my_id:
-                    self.barrel_boundary_lengths[tidx,my_id_i] += hex_edge_length
-                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_nw, tidx]))] += hex_edge_length
+                    self.barrel_boundary_lengths[tidx,my_id_i] += self.hex_edge_length
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_nw, tidx]))] += self.hex_edge_length
                 if self.id_c[h_w, tidx] != my_id:
-                    self.barrel_boundary_lengths[tidx,my_id_i] += hex_edge_length
-                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_w, tidx]))] += hex_edge_length
+                    self.barrel_boundary_lengths[tidx,my_id_i] += self.hex_edge_length
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_w, tidx]))] += self.hex_edge_length
                 if self.id_c[h_sw, tidx] != my_id:
-                    self.barrel_boundary_lengths[tidx,my_id_i] += hex_edge_length
-                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_sw, tidx]))] += hex_edge_length
+                    self.barrel_boundary_lengths[tidx,my_id_i] += self.hex_edge_length
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_sw, tidx]))] += self.hex_edge_length
                 if self.id_c[h_se, tidx] != my_id:
-                    self.barrel_boundary_lengths[tidx,my_id_i] += hex_edge_length
-                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_se, tidx]))] += hex_edge_length
+                    self.barrel_boundary_lengths[tidx,my_id_i] += self.hex_edge_length
+                    self.adjacency_vectors[tidx, my_id_i, int(np.round(np.float32(self.N)*self.id_c[h_se, tidx]))] += self.hex_edge_length
 
             # Debug output:
             if self.debug:
@@ -459,30 +475,30 @@ class BarrelData:
 
             #print ('Hex to the east has id_c: {0} and corresponding index: {1}'.format (self.id_c[h_e], int(self.N*self.id_c[h_e])))
             if self.expt_id[h_e] != my_id: # Then hex to east has a different ID:
-                self.expt_barrel_boundary_lengths[my_id_i] += hex_edge_length
+                self.expt_barrel_boundary_lengths[my_id_i] += self.hex_edge_length
                 # int(self.N*self.expt_id[h_e]) makes an integer index out of expt_id
                 if self.expt_id[h_e] != -1:
-                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_e]))] += hex_edge_length
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_e]))] += self.hex_edge_length
             if self.expt_id[h_ne] != my_id:
-                self.expt_barrel_boundary_lengths[my_id_i] += hex_edge_length
+                self.expt_barrel_boundary_lengths[my_id_i] += self.hex_edge_length
                 if self.expt_id[h_ne] != -1:
-                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_ne]))] += hex_edge_length
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_ne]))] += self.hex_edge_length
             if self.expt_id[h_nw] != my_id:
-                self.expt_barrel_boundary_lengths[my_id_i] += hex_edge_length
+                self.expt_barrel_boundary_lengths[my_id_i] += self.hex_edge_length
                 if self.expt_id[h_nw] != -1:
-                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_nw]))] += hex_edge_length
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_nw]))] += self.hex_edge_length
             if self.expt_id[h_w] != my_id:
-                self.expt_barrel_boundary_lengths[my_id_i] += hex_edge_length
+                self.expt_barrel_boundary_lengths[my_id_i] += self.hex_edge_length
                 if self.expt_id[h_w] != -1:
-                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_w]))] += hex_edge_length
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_w]))] += self.hex_edge_length
             if self.expt_id[h_sw] != my_id:
-                self.expt_barrel_boundary_lengths[my_id_i] += hex_edge_length
+                self.expt_barrel_boundary_lengths[my_id_i] += self.hex_edge_length
                 if self.expt_id[h_sw] != -1:
-                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_sw]))] += hex_edge_length
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_sw]))] += self.hex_edge_length
             if self.expt_id[h_se] != my_id:
-                self.expt_barrel_boundary_lengths[my_id_i] += hex_edge_length
+                self.expt_barrel_boundary_lengths[my_id_i] += self.hex_edge_length
                 if self.expt_id[h_se] != -1:
-                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_se]))] += hex_edge_length
+                    self.expt_adjacency_vectors[my_id_i, int(np.round(np.float32(self.N)*self.expt_id[h_se]))] += self.hex_edge_length
 
         if self.debug:
             for i in range (0, self.N):
@@ -553,6 +569,7 @@ class BarrelData:
         self.sos_dist = np.zeros([numtimes], dtype=float)
         self.mapdiff = np.zeros([numtimes], dtype=float)
         self.area_diff = np.zeros([numtimes], dtype=float)
+        self.area_diffs = np.zeros([self.N, numtimes], dtype=float)
         # To hold the edgedeviation
         self.edgedev = np.zeros([numtimes], dtype=float)
         # To hold a count of number of domains
@@ -589,6 +606,21 @@ class BarrelData:
 
             # Get the Honda Dirichlet value (the overall value)
             self.honda[fi] = list(f['honda'])[0]
+            keylist = list(f['honda_arr_keys'])
+            vallist = list(f['honda_arr_vals'])
+            print ('keylist: {0}'.format(keylist))
+            print ('vallist: {0} of size {1}'.format(vallist, len(vallist)))
+            delta_j_dict = {}
+            for lcount in range(0, len(keylist)):
+                ## Convert key from flt to int
+                keyint = round (keylist[lcount] * np.float32(self.N))
+                print ('keyint: {0}'.format(keyint))
+                keyint = int(keyint)
+                print ('keyint as int: {0}'.format(keyint))
+                delta_j_dict[keyint] = vallist[lcount]
+                #self.honda_delta_j[keyint,fi] = vallist[keyint] # problem: less than 41 entries
+            self.honda_delta_j.append(delta_j_dict)
+            print ('honda_delta_j is now {0}'.format(self.honda_delta_j))
 
             # The sum of squared distances between the simulated barrels and the experimentally determined pattern
             self.sos_dist[fi] = list(f['sos_distances'])[0]
@@ -598,14 +630,19 @@ class BarrelData:
             # barrel fields. This is a total difference for all barrels:
             # sum_i^N (abs(area_diff_i))...
             self.area_diff[fi] = list(f['area_diff'])[0]
+            self.area_diffs[:,fi] = list(f['area_diffs'])
+
             # ...now convert the area_diff in hexes into an area by multiplying
             # by the area of one hex
-            hex_area = self.hextohex_d * self.hextohex_d * math.sqrt(3) / 2.0
-            self.area_diff[fi] *= hex_area
+            self.area_diff[fi] *= self.hex_area
             # And divide by N, to get the area_diff per barrel, rather than the
             # total area diff, as this is how the statistic is presented in the
             # paper.
             self.area_diff[fi] /= float(self.N)
+
+            # area_diffs also need multiplying by hex_area
+            self.area_diffs[:,fi] *= self.hex_area
+            print ('area_diffs: {0}'.format(self.area_diffs))
 
             # Another metric to determine the difference between the current pattern and the
             # experimentally observed pattern, this one is based on traced barrel boundaries.
@@ -619,7 +656,7 @@ class BarrelData:
                 #print ('x coords: {0}'.format(domcentres[fi, :, 0]))
 
             # Now process the domains.
-            nondomset = set(['honda', 'N', 'reg_centroids_id', 'reg_centroids_x', 'reg_centroids_y', 'reg_centroids_id_all', 'sos_distances', 'mapdiff', 'area_diff'])
+            nondomset = set(['honda', 'honda_arr', 'honda_arr_vals', 'honda_arr_keys', 'N', 'reg_centroids_id', 'reg_centroids_x', 'reg_centroids_y', 'reg_centroids_id_all', 'sos_distances', 'mapdiff', 'area_diff', 'area_diffs'])
             kset = set(f.keys()) # dom000, dom001, dom002, etc, honda
             domset = kset.difference(nondomset) # Removes 'honda'
 
@@ -630,6 +667,8 @@ class BarrelData:
             all_domboundcoords = []
             for dom in domset:
                 domboundcoords = []
+                print (' dom: {0}'.format(dom))
+                print (' list(f[dom][edgedev]): {0}'.format(list(f[dom]['edgedev'])))
                 self.edgedev[fi] += list(f[dom]['edgedev'])[0]
                 self.domarea[fi] += list(f[dom]['area'])[0]
                 #print('P: {0}'.format(list(f[dom]['P'])))

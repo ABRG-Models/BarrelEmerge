@@ -95,6 +95,9 @@ class Surface:
         self.id_byname = BarrelDataObject.id_byname
         self.gammaColour_byid = BarrelDataObject.gammaColour_byid
         self.hex_flags = BarrelDataObject.hex_flags
+        self.honda_delta_j = BarrelDataObject.honda_delta_j
+        self.area_diffs = BarrelDataObject.area_diffs
+        self.barrel_areas = BarrelDataObject.barrel_areas
         try:
             self.d_ne = BarrelDataObject.d_ne
             self.d_nne = BarrelDataObject.d_nne
@@ -265,9 +268,22 @@ class Surface:
         if self.showNames == True:
             count = 0
             idn_arr = []
+            hd_arr = [] # honda delta array
+            id_bycount = 0
             for idn in self.id_byname:
                 idn_arr.append(idn)
-                #print ('{0}'.format(idn))
+                hdval = 0
+                for hd in self.honda_delta_j:
+                    print ('hd, part of honda_delta_j, is {0}'.format(hd))
+                    try :
+                        if hd[count]:
+                            hdval = hd[count]
+                            break
+                    except:
+                        pass
+                hd_arr.append(hdval)
+                print ('idn: {0}'.format(idn))
+                print ('hdval: {0}'.format(hdval))
                 count = count + 1
             N = count
             count = 0
@@ -304,6 +320,16 @@ class Surface:
                     thechar = r'$\delta$'
                 else:
                     thechar = idn_arr[count]
+
+                # To add the individual Honda delta for each barrel that has one:
+                #if hd_arr[count] != 0:
+                #    thechar = '{0} {1:.4f}'.format(thechar, hd_arr[count])
+
+                # To add the area diff per barrel (assumes barreldata object loaded for just one time:
+                #thechar = '{0} {1:.3f}'.format(thechar, self.area_diffs[count][0])
+
+                # To add the area of each barrel (assumes barreldata object loaded for just one time):
+                #thechar = '{0} {1:.3f}'.format(thechar, self.barrel_areas[count][0])
 
                 self.f1.text (dc[0], dc[1], thechar, fontsize=self.fs2, verticalalignment='center', horizontalalignment='center', color=cmap_(cout))
 
