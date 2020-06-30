@@ -414,20 +414,41 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
 \begin{figure}
   \begin{fullwidth}
     \includegraphics[width=\linewidth]{./Fig2.png}
-    \caption{\paramsearch{\textbf{A} Exploring the parameter space of the model given
-        in Eqs.\,1--3. Graphs show the three pattern metrics for $t=30000$
-        steps as colourmaps: Honda $\delta$ (top row) shows conformance to a
-        Voronoi pattern; $\eta$ (middle row) gives the simulated/experimental
-        barrel area difference and $\omega$ (bottom row) is a measure of
-        selectivity of the connection densities for the 41
-        thalamocortical axon types. For each row, lighter (orange/yellow)
-        colours imply a better model. The parameter space explored is three
-        dimensional with the parameter ratio $\alpha/\beta$ varied along the
-        columns of graphs, the competition parameter $\epsilon$ varied on the
-        $y$-axes and the diffusion constant, $D$ varied along the $x$-axes. An
-        asterisk (*) marks the parameter set displayed in
-        Fig.\,\ref{fig:main}. Boxes i), ii)~and iii)~mark parameter sets for which
-        corresponding patterns are shown in \textbf{B} (for $t=30000$ steps).}}
+    \caption{\paramsearch{\textbf{A} Exploring the parameter space of the
+        model given in Eqs.\,\ref{eq:dc}--\ref{eq:comp}. Graphs show the three
+        pattern metrics for $t=30000$ steps as colourmaps: Honda $\delta$ (top
+        row) shows conformance to a Voronoi pattern; $\eta$ (middle row) gives
+        the simulated/experimental barrel area difference and $\omega$ (bottom
+        row) is a measure of selectivity of the connection densities for the
+        41 thalamocortical axon types. The colour maps are chosen so that for
+        each row, lighter (orange and yellow) colours indicate desirable
+        properties for the simulations: Lower values of $\delta$ are yellow,
+        indicating good Voroni patterns; Lower values of $\eta$ indicate good
+        pattern matching; Higher values of $\omega$ indicate greater
+        selectivity. White squares indicate that the simulation was not stable
+        for that parameter set.
+%
+        The parameter space explored is three dimensional with the parameter
+        ratio $\alpha/\beta$ varied along the columns of graphs, the
+        competition parameter $\epsilon$ varied on the $y$-axes and the
+        diffusion constant, $D$ varied along the $x$-axes. An asterisk (*)
+        marks the parameter set displayed in Fig.\,\ref{fig:main}. Boxes i),
+        ii)~and iii)~mark parameter sets for which corresponding patterns are
+        shown in \textbf{B} (for $t=30000$ steps).
+%
+        \textbf{B} The effect of varying the diffusion constant,
+        $D$. i)~Increasing $D$ above the optimum value gives an expansion of
+        the outer barrels and a corresponding compression of the barrels
+        within. ii)~Conversely, an expansion of the central barrels and
+        compression of those near the boundary results from reducing $D$ from
+        its optimum. iii) Reducing the diffusion constant is equivalent to
+        increasing the size of the domain $S$ and so this simulation, in which
+        $D$ had the lowest stable value, can be thought to represent an animal
+        with a large cortical area but with unchanged cortical complexity. A
+        large proportion of the domain is occupied by the projections with
+        intermediate interaction parameters; those with strong interaction
+        parameters are compressed around the edge of the domain. A barrel
+        pattern fails to form.}}
     \label{fig:paramsweep}
   \end{fullwidth}
 \end{figure}
@@ -436,41 +457,35 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
   investigated its behaviour with respect to changes in the parameters $D$,
   $\epsilon$ and the ratio of $\alpha$ to $\beta$. Fig.\,\ref{fig:paramsweep}A
   shows the value of the metrics $\delta$, $\eta$ and $\omega$ after 30000
-  iterations plotted as colour maps for 216 parameter sets. Each row of maps
-  shows the results for a separate metric. Each column of maps shows results
-  for a different value of the ratio $\alpha / \beta$. The diffusion
-  parameter, $D$, varies with the $x$ axes and the strength of competition,
-  $\epsilon$ varies with the $y$ axes. The colour maps are chosen so that
-  yellow indicates desirable properties for the simulations: Lower values of
-  $\delta$ indicate good Voroni patterns and are yellow; Lower values of
-  $\eta$ indicate good pattern matching; Higher values of $\omega$ indicate
-  greater selectivity and are also coloured yellow. White squares indicate
-  that the simulation was not stable for that parameter set.}
+  iterations, plotted as colour maps, for 216 parameter sets. The maps
+  indicate that the pattern is not strongly influenced by the choice of
+  $\alpha/\beta$, which was varied by 5 orders of magnitude. The most
+  Voronoi-like patterns were achieved for parameter sets for which $D$ and
+  $\epsilon$ were high. The barrel area metric, $\eta$ indicates a strong
+  preference for $D\approx0.5$, although this does not give the solution of
+  maximum selectivity, which favours lower values of $D$. Thus, there is a
+  trade-off between good selection and good Voroni pattern conformation.  The
+  parameter set indicated by the asterisk in Fig.\,\ref{fig:paramsweep}A was
+  chosen for Fig.\,\ref{fig:main} because it provides good pattern
+  correspondence and a close approximation to a Voronoi tesselation.}
 
-\paramsearch{The maps indicate that the pattern is not strongly influenced by the
-  choice of $\alpha/\beta$, which was varied by 5 orders of magnitude. The
-  most Voronoi-like patterns were achieved for parameter sets for which $D$
-  and $\epsilon$ were high. The barrel area metric, $\eta$ indicates a strong
-  preference for $D\approx0.5$, although this does not give the
-  solution of maximum selectivity, which for $D$ should be small. Thus, there is a
-  trade-off between good selection and good Voroni pattern
-  conformation. The
-  parameter set indicated by the asterisk in
-  Fig.\,\ref{fig:paramsweep}A is presented in Fig.\,\ref{fig:main} because it
-  provides the best barrel area correspondence and produces a good Voronoi
-  pattern. In Fig.\,\ref{fig:paramsweep}B, we present some patterns
-  representing alternative parameter choices. Fig.\,\ref{fig:paramsweep}B i)
-  shows the simulation result with low diffusion constant, $D$. Reducing the
-  diffusion constant is equivalent to increasing the size of the domain $S$
-  and so this simulation can be thought to represent an animal with a large
-  cortical area but with unchanged cortical complexity. In this simulation, a
-  large proportion of the domain is occupied by the projections with
-  intermediate interaction parameters; those with strong interaction
-  parameters are bunched up towards the edge of the domain. A barrel pattern
-  fails to form. Fig.\,\ref{fig:paramsweep}B ii)~and iii)~indicate the effect
-  of varying $D$ in either direction from its optimum. ii)~is a less
-  exaggerated version of the pattern in i), whereas iii)~shows an expansion of
-  the outer barrels and a corresponding compression of the barrels within.}
+\paramsearch{In Fig.\,\ref{fig:paramsweep}B, we present some patterns
+  representing alternative parameter choices. Because the patterns are robust
+  to alterations in $\epsilon$ and the choices of $\alpha$ and $\beta$, we
+  concentrate our attention on the diffusion constant, $D$. Changing $D$,
+  whose value defines the rate at which a region of localized branching will
+  spread out across the domain, $S$, is equivalent to making changes to the
+  size of $S$ with a fixed branching diffusion rate. These simulations can
+  therefore be thought of as representing animals with a varying cortical
+  areas but with unchanged cortical complexity. The most extreme example
+  (Fig.\,\ref{fig:paramsweep}B iii) could represent an animal with a very
+  large cortical area (such as the South American capybara) which receives
+  sensory input from $N=41$ thalamic barreloids. Here, a large proportion of
+  the domain is occupied by the projections with intermediate interaction
+  parameters and those with strong interaction parameters are bunched up
+  towards the edge of the domain. In this case, a barrel pattern fails to
+  form, agreeing with the observation that cortical whisker barrels are absent
+  in the capybara.}
 
 % Full page width
 \begin{figure}
@@ -521,6 +536,7 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
   \end{fullwidth}
 \end{figure}
 
+% This section needs to emphasize that the absolute values of gamma are not important
 \sensitivity{We performed a sensitivity analysis to determine if the quality of the
   pattern was affected by perturbations to any of the following inputs:
 %
@@ -815,7 +831,7 @@ from $\mb{x}$ to the boundary, \cmnt{of the form $1/[1 +
   \exp(100(d_f-d_b))]$, where $d_f=0.1$\,mm is the boundary fall-off distance,
   chosen to be approximately $3d$}.
 
-\cmnt{The pattern-matching metric, $\eta$, incorporates information about i)
+\metrics{The pattern-matching metric, $\eta$, incorporates information about i)
   the differences in the areas of the simulated and experimental barrels
   ($\mathcal{A}_i^{\mathrm{sim}}$ and $\mathcal{A}_i^{\mathrm{exp}}$); and ii)
   the information provided by `adjacency vectors', $\mathcal{V}_i$ (one for
@@ -838,17 +854,17 @@ from $\mb{x}$ to the boundary, \cmnt{of the form $1/[1 +
   have become established ($t=10000$). It does not distinguish between
   $t=10000$ and $t=30000$.}
 %
-\cmnt{A second way to analyse the adjacency vectors is to consider
+\metrics{A second way to analyse the adjacency vectors is to consider
   the mean magnitude of the difference between the simulated and experimental
   vectors: $\frac{1}{N} \sum_i \norm{ \mathcal{V}_{i}^{\mathrm{sim}} -
     \mathcal{V}_{i}^{\mathrm{exp}} } $. This tends to 0 for a perfect
   match and can separate patterns with straight boundaries from those with
   noise on the boundary shape (For an example of `noisy edges', see Fig.\,\ref{fig:sens}B.ii).}
 %
-\cmnt{We combined all of these measures into a single pattern quality metric:}
+\metrics{We combined all of these measures into a single pattern quality metric:}
 %
 \begin{equation} \label{eq:eta}
-\color{blue}
+\color{revred}
   \eta =
   \frac
   {
@@ -866,7 +882,7 @@ from $\mb{x}$ to the boundary, \cmnt{of the form $1/[1 +
 \color{black}
 \end{equation}
 %
-\cmnt{which has units of mm$^3$.}
+\metrics{which has units of mm$^3$.}
 
 All code required to reproduce these results is available at
 \url{https://github.com/ABRG-Models/BarrelEmerge/tree/eLife}. The computations
