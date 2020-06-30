@@ -29,25 +29,25 @@
 \definecolor{revbblack}{rgb}{0, 0, 0.3}
 \definecolor{revgblack}{rgb}{0, 0.2, 0}
 
+% Miscellaneous changes
+\newcommand{\cmnt}[1]{\textcolor{blue}{#1}}
+% Justify gamma/interaction parameter choice. major point 1.
+\newcommand{\MPone}[1]{\textcolor{revpink}{#1}}
 % Blue changes are major point 2 (competition mechanism) and other, general
 % uncategorised changes.
-\newcommand{\cmnt}[1]{\textcolor{blue}{#1}}
-% Red for Stuart's first updates
-\newcommand{\stu}[1]{\textcolor{red}{#1}}
+\newcommand{\MPtwo}[1]{\textcolor{revblue}{#1}}
+% Parameter search. Major point 3
+\newcommand{\MPthreePar}[1]{\textcolor{revbblack}{#1}}
+% Sensitivity analysis. Major point 3
+\newcommand{\MPthreeSens}[1]{\textcolor{revgblack}{#1}}
+% Justify competition:
+\newcommand{\mpfive}[1]{\textcolor{revpurp2}{#1}}
 % Minor point 4:
 \newcommand{\mpfour}[1]{\textcolor{revgreen}{#1}}
 % Minor point 6:
 \newcommand{\mpsix}[1]{\textcolor{revpurp}{#1}}
-% Justify competition:
-\newcommand{\mpfive}[1]{\textcolor{revpurp2}{#1}}
-% Justify gamma/interaction parameter choice. major point 1.
-\newcommand{\MPone}[1]{\textcolor{revpink}{#1}}
 % Describe the metrics
 \newcommand{\metrics}[1]{\textcolor{revred}{#1}}
-% Parameter search. Major point 3
-\newcommand{\paramsearch}[1]{\textcolor{revbblack}{#1}}
-% Sensitivity analysis. Major point 3
-\newcommand{\sensitivity}[1]{\textcolor{revgblack}{#1}}
 
 \newcommand{\dvrg}{\nabla\vcdot\nabla}
 \newcommand{\e}{\emph}
@@ -190,7 +190,7 @@ non-linearly ($k>1$) with the density of axon branching. Axon branching is
 modelled as
 %
 \begin{equation} \label{eq:da}
-\frac{\partial a_i}{\partial t} = \nabla\vcdot\left(D \nabla a_i-a_i\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x}) \cmnt{+ \chi_i}\right) - \frac{\partial c_i}{\partial t}.
+\frac{\partial a_i}{\partial t} = \nabla\vcdot\left(D \nabla a_i-a_i\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x}) \MPtwo{+ \chi_i}\right) - \frac{\partial c_i}{\partial t}.
 \end{equation}
 %
 The first term on the right describes the divergence (indicated by
@@ -223,24 +223,24 @@ right quantifies the coupling between axon branching and synaptogenesis. Here
       that similar fields aligned to the posterior-anterior and medial-lateral
       axes in the ventroposterior medial nucleus of the thalamus are sampled at
       the locations of putative barreloid centers (reconstructed from
-      \citealp{haidarliu_size_2001}, \cmnt{Fig.\,5b}). \textbf{C} Simulation results for parameters
-      \cmnt{$N=41$, $\alpha=3.6$, $\beta=16.67$, $k=3$, $D=0.5$, $\gamma\in\pm 2$,
+      \citealp{haidarliu_size_2001}, \MPone{Fig.\,5b}). \textbf{C} Simulation results for parameters
+      \MPtwo{$N=41$, $\alpha=3.6$, $\beta=16.67$, $k=3$, $D=0.5$, $\gamma\in\pm 2$,
       $\epsilon=1.2$} and $\delta{t}=0.0001$. Colours indicate the thalamic
       projection for which the connection density is maximal and black lines
       delineate boundaries (see Movie
-      S1). \textbf{D} Red dots show the Honda metric, \cmnt{$\delta(t)$}, obtained from \cmnt{the}
-      simulation approaching that obtained from \cmnt{real} barrels in \textbf{A} (dotted
-      line); black squares \cmnt{provide a} measure \cmnt{of} the correspondence
+      S1). \textbf{D} Red dots show the Honda metric, \metrics{$\delta(t)$}, obtained from \metrics{the}
+      simulation approaching that obtained from \metrics{real} barrels in \textbf{A} (dotted
+      line); black squares \metrics{provide a} measure \metrics{of} the correspondence
       between the real and
-      simulated barrel shapes, $\eta(t)$ (the \cmnt{pattern quality metric---see
+      simulated barrel shapes, $\eta(t)$ (the \metrics{pattern quality metric---see
         Materials \& Methods; units mm$^3$});
-      \cmnt{grey hexagons \cmnt{provide a measure of how selectively each
+      \metrics{grey hexagons \metrics{provide a measure of how selectively each
           cortical site is innervated};
         $\omega(t) = \oiint_{S} \mu(\mb{x},t) \mathrm{d}S$, where
         $\mu(\mb{x}) \equiv \mathrm{max}_i\big(c_i(\mb{x},t)\big)\big/\sum_{j=1}^{N} c_j(\mb{x},t)$.}
-      \textbf{E} \cmnt{Plotted across the cortical sheet, the selectivity
+      \textbf{E} \metrics{Plotted across the cortical sheet, the selectivity
         develops to reveal an alignment with the emergent barrel boundary
-        shapes}. \cmnt{The colour map
+        shapes}. \metrics{The colour map
         indicates the values of $\mu(\mb{x})$. Overlaid
         contours show $c_i > 0.95 \mathrm{max}_i\big(c_i(\mb{x})\big)$.} All scale bars 1\,mm.}
     \label{fig:main}
@@ -298,11 +298,11 @@ approach the number of barrels, \cmnt{modifications to the model} were required.
 The term in parentheses in Eq.\,\ref{eq:dc} represents competition between
 thalamocortical projections for a limited availability of cortical
 connections. To introduce competition also in terms of axon branching,
-\cmnt{whilst ensuring that $a_i$ is conserved over time,} we
+\MPtwo{whilst ensuring that $a_i$ is conserved over time,} we
 redefined
 %
 \begin{equation} \label{eq:comp}
-  \color{blue}
+  \color{revblue}
   \chi_i(\mb{x}, t) = \frac{\epsilon a_i}{N-1} \nabla \textstyle\sum_{j\ne i}^{N}{a_j}.
   \color{black}
 \end{equation}
@@ -354,7 +354,7 @@ anterior-posterior and medial-lateral axes.  \mpfour{These gradients may
 From initial conditions sample from a uniform random distribution for
 $a(\mb{x},0)\in(0.2,0.4)$ and $c(\mb{x},0)=0$, and across a wide range of
 parameter values,
-%From random initial conditions for $a(\mb{x},0)$, \cmnt{with each hexagonal element
+%From random initial conditions for $a(\mb{x},0)$, \MPtwo{with each hexagonal element
 %  of $a_i$ set from a uniform distribution according to $0.2+{U}(0,0.2)$, and
 %  $c(\mb{x},0)=0$},
 a clear Voronoi-like tesselation \cmnt{of topographically organised
@@ -414,7 +414,7 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
 \begin{figure}
   \begin{fullwidth}
     \includegraphics[width=\linewidth]{./Fig2.png}
-    \caption{\paramsearch{\textbf{A} Exploring the parameter space of the
+    \caption{\MPthreePar{\textbf{A} Exploring the parameter space of the
         model given in Eqs.\,\ref{eq:dc}--\ref{eq:comp}. Graphs show the three
         pattern metrics for $t=30000$ steps as colourmaps: Honda $\delta$ (top
         row) shows conformance to a Voronoi pattern; $\eta$ (middle row) gives
@@ -453,7 +453,7 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
   \end{fullwidth}
 \end{figure}
 
-\paramsearch{To determine the robustness of the model to its parameters, we
+\MPthreePar{To determine the robustness of the model to its parameters, we
   investigated its behaviour with respect to changes in the parameters $D$,
   $\epsilon$ and the ratio of $\alpha$ to $\beta$. Fig.\,\ref{fig:paramsweep}A
   shows the value of the metrics $\delta$, $\eta$ and $\omega$ after 30000
@@ -469,7 +469,7 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
   chosen for Fig.\,\ref{fig:main} because it provides good pattern
   correspondence and a close approximation to a Voronoi tesselation.}
 
-\paramsearch{In Fig.\,\ref{fig:paramsweep}B, we present some patterns
+\MPthreePar8u{In Fig.\,\ref{fig:paramsweep}B, we present some patterns
   representing alternative parameter choices. Because the patterns are robust
   to alterations in $\epsilon$ and the choices of $\alpha$ and $\beta$, we
   concentrate our attention on the diffusion constant, $D$. Changing $D$,
@@ -492,7 +492,7 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
   \begin{fullwidth}
     \includegraphics[width=\linewidth]{./Fig3.png}
     \caption{
-      \sensitivity{\textbf{A} Sensitivity of the system pattern
+      \MPthreeSens{\textbf{A} Sensitivity of the system pattern
         metrics $\delta(t)$ (top row), $\omega(t)$ (middle row) and $\eta(t)$
         (bottom row), evaluated at $t=30000$ steps,
         to three classes of perturbation. $y$-axes and colour scales have identical ranges
@@ -537,7 +537,7 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
 \end{figure}
 
 % This section needs to emphasize that the absolute values of gamma are not important
-\sensitivity{We performed a sensitivity analysis to determine if the quality
+\MPthreeSens{We performed a sensitivity analysis to determine if the quality
   of the pattern (i.e.~the values of $\delta$, $\eta$ \& $\omega$ after
   $t=30000$ steps) was affected by perturbations to any of the following
   inputs:
@@ -554,7 +554,7 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
   Fig.\,\ref{fig:main}A).
 }
 
-\sensitivity{First, we conducted 10 runs of the simulation shown in
+\MPthreeSens{First, we conducted 10 runs of the simulation shown in
   Fig.\,\ref{fig:main}C to evaluate the mean and standard deviation of the
   metrics in the default model. The results (where deviations occur as a
   result of the different random initial conditions for $a_i$) were
@@ -562,7 +562,7 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
   $\omega=0.2165\,(0.0001)$. The pattern was barely affected by the random
   changes to $a_i(t=0)$ on each run.}
 %
-\sensitivity{Next, we modified the parameters of the generating uniform
+\MPthreeSens{Next, we modified the parameters of the generating uniform
   distribution to initialize $a_i$ for each hex to $0.1+{U}(0,0.4)$,
   increasing the variability of $a_i(\mb{x},t=0)$ without changing the mean
   initial activation. We ran this system 10 times and obtained the results
@@ -585,7 +585,7 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
 % eta     0.2124       0.2108(0.002)   <1                   0.2136 (0.004)   <1
 % omega   0.21649      0.2165(0.0001)  <1                   0.2166 (0.0003)  <1
 
-\sensitivity{Fig\,\ref{fig:sens}A shows the results for perturbations ii) to
+\MPthreeSens{Fig\,\ref{fig:sens}A shows the results for perturbations ii) to
   iv). The results show that the Voronoi nature of the pattern ($\delta$) and
   the selectivity of the fields are not strongly affected by interaction
   parameter noise, but the pattern metric, $\eta$ shows a degradation in the
@@ -630,7 +630,7 @@ Add paragraph on whisker trimming here.
 
 \begin{center}
   \includegraphics[width=\linewidth]{./Fig5.png}
-  \captionof{figure}{\cmnt{Simulating whisker trimming by reduction of
+  \captionof{figure}{\MPtwo{Simulating whisker trimming by reduction of
       $\epsilon$ for the thalamocortical projection for barrel C3, for which
       $i=13$. All other model parameters match those in
       Fig.\,\ref{fig:main}C. \textbf{A} Graph of individual barrel measures
@@ -660,7 +660,7 @@ ordered modular structures may be an inevitable consequence of local
 competition for cortical territory driven by input from an array of discrete
 sensory organs \citep{purves_iterated_1992}.
 
-\stu{In reality, scores of smaller Dirichletform barrels representing the
+\cmnt{In reality, scores of smaller Dirichletform barrels representing the
   microvibrissae form to the right of where the E-row barrels emerge in our
   simulations, presumably via the same competitive processes. Enforcing here
   the same boundary condition as used to represent the true edges of the
@@ -710,11 +710,11 @@ Eq.\,\ref{eq:da}:
 \begin{equation}
   \label{eq:divJ}
   \nabla\vcdot\mb{J}_i(\mb{x},t) = \nabla\vcdot\left(D \nabla
-  a_i-a_i\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x}) \color{blue}+
+  a_i-a_i\sum_{j=1}^{M} \gamma_{i,j}\nabla \rho_j(\mb{x}) \color{revblue}+
   \frac{\epsilon a_i}{N-1} \nabla \hat{a}_i \color{black}\right),
 \end{equation}
 %
-\cmnt{where $\hat{a}_i\equiv\sum_{j\ne i}^{N}a_j$.} Note that the sum of the
+\MPtwo{where $\hat{a}_i\equiv\sum_{j\ne i}^{N}a_j$.} Note that the sum of the
 guidance gradients is time-independent and define $\mb{g}_i(\mb{x}) \equiv
 \sum_{j=1}^{M} \gamma_{i,j} \nabla\rho_j(\mb{x})$.  Because the divergence
 operator is distributive, Eq.\,\ref{eq:divJ} can be expanded using vector
@@ -722,7 +722,7 @@ calculus identities (dropping references to $\mb{x}$ and $t$ for clarity):
 %
 \begin{equation}
 \nabla\vcdot\mb{J}_i = \nabla\vcdot\big(D \nabla a_i\big) -
-\nabla\vcdot\big(a_i \mb{g}_i\big) \color{blue} + \frac{\epsilon}{N-1}\nabla\vcdot\big({a}_i\nabla\hat{a}_i\big)\color{black}.
+\nabla\vcdot\big(a_i \mb{g}_i\big) \color{revblue} + \frac{\epsilon}{N-1}\nabla\vcdot\big({a}_i\nabla\hat{a}_i\big)\color{black}.
 \end{equation}
 %
 Applying the vector calculus product rule identity yields
@@ -736,18 +736,18 @@ D \dvrg a_i % term1
 a_i\nabla\vcdot\mb{g}_i % term2
 -
 \mb{g}_i\vcdot\nabla a_i % term3
-\color{blue}
+\color{revblue}
 + \frac{\epsilon a_i}{N-1} \dvrg \hat{a}_i % term1_1
 + \frac{\epsilon}{N-1} \nabla \hat{a}_i\vcdot\nabla{a}_i% term1_2
 \color{black}
 ,
 \end{equation}
 %
-which has \cmnt{five} elements to compute: i)~$D \dvrg a_i$ (the Laplacian of
+which has \MPtwo{five} elements to compute: i)~$D \dvrg a_i$ (the Laplacian of
 $a_i$); ii)~a time-independent modulator of $a_i$ (because
 $\nabla\vcdot\mb{g}_i$ is a time-independent static field); iii)~the scalar
 product of the static vector field $\mb{g}_i$ and the gradient of $a_i$;
-\cmnt{iv)~the Laplacian of $\hat{a}_i$; and v)~a term involving the gradients
+\MPtwo{iv)~the Laplacian of $\hat{a}_i$; and v)~a term involving the gradients
   of $a_i$ and $\hat{a}_i$}. Each of the divergences can be simplified by
 means of Gauss's Theorem following \cite{lee_hexagonal_2014}.
 
@@ -798,16 +798,16 @@ last expression, and the final expression of Eq.\,\ref{eq:lapl} can
 be computed locally, by summing over values of the nearest neighbours.
 
 \noindent
-iii) The \cmnt{middle} term in Eq.\,\ref{eq:divJExpanded} is the scalar product of two
+iii) The \MPtwo{middle} term in Eq.\,\ref{eq:divJExpanded} is the scalar product of two
 vector fields which is straightforward to compute from their Cartesian
 components.
 
 \noindent
-\cmnt{iv) The same method used to compute $\dvrg a_i$ in term (i) is used to compute
+\MPtwo{iv) The same method used to compute $\dvrg a_i$ in term (i) is used to compute
 $\dvrg \hat{a}_i$.}
 
 \noindent
-\cmnt{v) The final term is the scalar product of the two vector fields $\nabla
+\MPtwo{v) The final term is the scalar product of the two vector fields $\nabla
   a_i$ and $\nabla \hat{a}_i$.}
 
 By separating the computation of Eq.\,\ref{eq:divJ} into parts (i)--(v), the
@@ -826,9 +826,9 @@ same value as the hex inside the boundary is imagined to exist such that the
 flux of $\mb{J}$ across the boundary is 0. Then, $\mb{g}_i(\mb{x})$ can be
 tailored so that it, and its normal derivative approach 0 at the boundary,
 ensuring that the second and third terms of Eq.\,\ref{eq:divJExpanded} also
-contribute nothing to $\mb{J}$. This is achieved by \cmnt{multiplying}
-$\mb{g}_i(\mb{x})$ \cmnt{by} a sharp logistic function of the distance, $d_b$,
-from $\mb{x}$ to the boundary, \cmnt{of the form $1/[1 +
+contribute nothing to $\mb{J}$. This is achieved by \MPtwo{multiplying}
+$\mb{g}_i(\mb{x})$ \MPtwo{by} a sharp logistic function of the distance, $d_b$,
+from $\mb{x}$ to the boundary, \MPtwo{of the form $1/[1 +
   \exp(100(d_f-d_b))]$, where $d_f=0.1$\,mm is the boundary fall-off distance,
   chosen to be approximately $3d$}.
 
@@ -888,7 +888,7 @@ from $\mb{x}$ to the boundary, \cmnt{of the form $1/[1 +
 All code required to reproduce these results is available at
 \url{https://github.com/ABRG-Models/BarrelEmerge/tree/eLife}. The computations
 described in (i)--(v) may be found in the class method
-\code{RD\_James\cmnt{\_comp2}::compute\_divJ()} which calculates \code{term1},
+\code{RD\_James\MPtwo{\_comp2}::compute\_divJ()} which calculates \code{term1},
 \code{term2}, \code{term3}, \code{term1\_1} and \code{term1\_2}, respectively.
 
 \section{Movie S1 caption}
@@ -916,8 +916,8 @@ supported by a Collaborative Activity Award, \emph{Cortical Plasticity Within
 
 % NOTES
 
-%\cmnt{In other words, we simply scaled the barreloid coordinates in an anterior-posterior/medial-lateral coordinate system to create the $\gamma$ values in the range [-2,2]. Note that positive \emph{and} negative $\gamma$ values were generated; the origin of the coordinate system was located at the approximate center of the thalamic barreloid field. This prevented an overall drift of the cortical pattern away from the centroid of the barrel field and may explain why coordinate-giving transcription factors and the ephrins are often found as pairs acting in opposing directions.}  \cmnt{We concentrated on macrovibrissae (excluding microvibrissae) because it is easy to identify their corresponding structures both in the thalamus and in the cortex. We also excluded the 5 rhinal whiskers because their cortical representation is in a separate island, distinct, and somewhat removed from the representation of the macrovibirissae.}}
+%\MPtwo{In other words, we simply scaled the barreloid coordinates in an anterior-posterior/medial-lateral coordinate system to create the $\gamma$ values in the range [-2,2]. Note that positive \emph{and} negative $\gamma$ values were generated; the origin of the coordinate system was located at the approximate center of the thalamic barreloid field. This prevented an overall drift of the cortical pattern away from the centroid of the barrel field and may explain why coordinate-giving transcription factors and the ephrins are often found as pairs acting in opposing directions.}  \MPtwo{We concentrated on macrovibrissae (excluding microvibrissae) because it is easy to identify their corresponding structures both in the thalamus and in the cortex. We also excluded the 5 rhinal whiskers because their cortical representation is in a separate island, distinct, and somewhat removed from the representation of the macrovibirissae.}}
 
-%\cmnt{Thus, we suggest that there exist a pair of signalling molecules whose expression varies linearly (with orthogonal gradients) across the thalamus, analgous to the ephrins, whose existence is well known in the cortex. Thalamocortical axons growing from a region in the thalamus with high expression of one of these molecules will interact with a corresponding cortical signalling molecule more strongly than an axon emanating from a region with low expression of the thalamic signal.}
+%\MPtwo{Thus, we suggest that there exist a pair of signalling molecules whose expression varies linearly (with orthogonal gradients) across the thalamus, analgous to the ephrins, whose existence is well known in the cortex. Thalamocortical axons growing from a region in the thalamus with high expression of one of these molecules will interact with a corresponding cortical signalling molecule more strongly than an axon emanating from a region with low expression of the thalamic signal.}
 
-%\cmnt{We defined two orthogonal, linear gradients oriented in the anterior-posterior and medial-lateral directions and used the coordinates of 41 barreloid centers recreated from \cite{haidarliu_size_2001}, corresponding to the macrovibrissae, to populate 41 pairs of $\gamma$ values.}  (Fig.\,\ref{fig:main}B). \cmnt{In other words, we simply scaled the barreloid coordinates in an anterior-posterior/medial-lateral coordinate system to create the $\gamma$ values in the range [-2,2]. Note that positive \emph{and} negative $\gamma$ values were generated; the origin of the coordinate system was located at the approximate center of the thalamic barreloid field. This prevented an overall drift of the cortical pattern away from the centroid of the barrel field and may explain why coordinate-giving transcription factors and the ephrins are often found as pairs acting in opposing directions.}  \cmnt{We concentrated on macrovibrissae (excluding microvibrissae) because it is easy to identify their corresponding structures both in the thalamus and in the cortex. We also excluded the 5 rhinal whiskers because their cortical representation is in a separate island, distinct, and somewhat removed from the representation of the macrovibirissae.}
+%\MPtwo{We defined two orthogonal, linear gradients oriented in the anterior-posterior and medial-lateral directions and used the coordinates of 41 barreloid centers recreated from \cite{haidarliu_size_2001}, corresponding to the macrovibrissae, to populate 41 pairs of $\gamma$ values.}  (Fig.\,\ref{fig:main}B). \MPtwo{In other words, we simply scaled the barreloid coordinates in an anterior-posterior/medial-lateral coordinate system to create the $\gamma$ values in the range [-2,2]. Note that positive \emph{and} negative $\gamma$ values were generated; the origin of the coordinate system was located at the approximate center of the thalamic barreloid field. This prevented an overall drift of the cortical pattern away from the centroid of the barrel field and may explain why coordinate-giving transcription factors and the ephrins are often found as pairs acting in opposing directions.}  \MPtwo{We concentrated on macrovibrissae (excluding microvibrissae) because it is easy to identify their corresponding structures both in the thalamus and in the cortex. We also excluded the 5 rhinal whiskers because their cortical representation is in a separate island, distinct, and somewhat removed from the representation of the macrovibirissae.}
