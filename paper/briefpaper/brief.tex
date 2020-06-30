@@ -40,6 +40,8 @@
 \newcommand{\MPthreePar}[1]{\textcolor{revbblack}{#1}}
 % Sensitivity analysis. Major point 3
 \newcommand{\MPthreeSens}[1]{\textcolor{revgblack}{#1}}
+% More predictions. Major point 3
+\newcommand{\MPthreePred}[1]{\textcolor{revorange}{#1}}
 % Justify competition:
 \newcommand{\mpfive}[1]{\textcolor{revpurp2}{#1}}
 % Minor point 4:
@@ -596,23 +598,52 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
   or if one field becomes substantially stronger in its interaction with the
   thalamocortical projections. Fig\,\ref{fig:sens}B shows perturbed examples.}
 
-To further investigate the interplay of genetic and intrinsic mechanisms we
-simulated a seminal barrel duplication experiment
-\citep{shimogori_fibroblast_2005}, first by solving on a cortical domain
-comprising two separate, identically shaped cortical boundaries. In this case
-\cmnt{NOTE: The following only holds for the divisive normalization system -
-  in the comp2 system, there's no `coupling' at all between the two regions,
-  so the mirrored region arranges itself as expected with the one reversed
-  guidance field.} one distinct cortical field per thalamic projection emerged, within one of the
-two boundaries only, i.e., no duplication. However, merging the two fields to
-create an extended mirror-symmetric boundary shape, with an anterior-posterior
-guidance field reflected at the join, gave rise to two mirror-symmetrical
-barrel fields comprising 2N barrels, i.e., two cortical fields for each
-thalamic projection (Fig.\,\ref{fig:fgf8}). Together these results suggest that by the
-misexpression of Fgf8, \cite{shimogori_fibroblast_2005}
-effectively created one large barrel field rather than two distinct cortical
-fields. \cmnt{Add something about the slightly off-vertical arrangement of the
-  fields.}
+% This should be a little less terse than in the original.
+\MPthreePred{To further investigate the interplay of genetic and intrinsic
+  mechanisms we simulated two well known experimental manipulations of the
+  whisker barrel system. First, we simulated a seminal barrel duplication
+  experiments}
+\citep{shimogori_fibroblast_2005,assimacopoulos_fibroblast_2012}
+\MPthreePred{in which the growth factor Fgf8, which is normally expressed at
+  the anterior end of the cortical sub-plate from around E9.5}
+\citep{crossley_mouse_1995}, \MPthreePred{is ectopically expressed (by
+  electroporation) also at the posterior end. Because Fgf8 sets off a chain of
+  gene interactions which are involved in the control of the expression of
+  ephrin and cadherin molecules in gradients across the cortical plate, its
+  misexpression at the posterior pole of a cortical hemisphere could be
+  expected to mirror those gradients which usually vary along the
+  rostro-caudal axis. We assume that this results in a mirror of the primary
+  barrel cortex boundary along the rostro-caudal axis, to match the
+  experimental results of}
+\citealp{assimacopoulos_fibroblast_2012}. \MPthreePred{We also assume that a
+  further consequence of the posterior Fgf8 electroporation is the mirrored
+  anterior-posterior guidance gradient $\rho_1$ (Fig.\,\ref{fig:fgf8}A). We
+  mirrored this across a reflection line which is orthogonal to its angle
+  $\phi_{\rho_1}=6$\textdegree, and left $\rho_2$ unmodified. Although the
+  rostro-caudal boundary reflection is not perfectly aligned with $\rho_1$,
+  and we might expect some modification of both $\rho_1$ \emph{and} $\rho_2$,
+  mirroring only $\rho_1$ retains the simplicity of the guidance fields; they
+  remain either linear ($\rho_2$), or piece-wise linear ($\rho_1$).}
+
+\MPthreePred{The new boundary shape and $\rho_1$ guidance gradient were the
+  only changes made to the simulation of Fig.\,\ref{fig:main}; the simulation
+  was run with $N=41$ thalamocortical axon types as before and the initial
+  values for $a_i$ were randomly initialised according to the same
+  distribution. The result, after 30000 simulation steps, was two
+  mirror-symmetrical barrel fields comprising $2N$ barrels
+  (Fig\,\ref{fig:main}B). This result suggests that by the misexpression of
+  Fgf8,} \cite{shimogori_fibroblast_2005} and \cite{assimacopoulos_fibroblast_2012}
+  \MPthreePred{created the correct cortical
+  conditions for the self-organization of the two mirrored barrel fields. }
+
+%However, merging the two fields to
+%create an extended mirror-symmetric boundary shape, with an anterior-posterior
+%guidance field reflected at the join, gave rise to two mirror-symmetrical
+%barrel fields comprising 2N barrels, i.e., two cortical fields for each
+%thalamic projection (Fig.\,\ref{fig:fgf8}). Together these results suggest that by the
+%misexpression of Fgf8, \cite{shimogori_fibroblast_2005}
+%effectively created one large barrel field rather than two distinct cortical
+%fields.
 
 % This figure is text width
 \begin{center}
@@ -626,7 +657,7 @@ fields. \cmnt{Add something about the slightly off-vertical arrangement of the
   \label{fig:fgf8}
 \end{center}
 
-Add paragraph on whisker trimming here.
+\MPthreePred{Add paragraph on whisker trimming here.}
 
 \begin{center}
   \includegraphics[width=\linewidth]{./Fig5.png}
