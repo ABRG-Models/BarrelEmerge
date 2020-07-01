@@ -94,6 +94,6 @@ with open('postproc/whisker_trim_overall.csv', 'w', newline='\n') as csvfile:
         cw.writerow (tableline)
 with open('postproc/whisker_trim_individual.csv', 'w', newline='\n') as csvfile:
     cw = csv.writer (csvfile, delimiter=',')
-    cw.writerow (['eps_mult','epsilon','eps_modified','barrel','barrel_index','hondadelta','area_diff','area'])
+    cw.writerow (['eps_mult','epsilon','eps_modified','barrel','barrel_index','hondadeltaj','area_diff','area'])
     for tableline in table_ind:
         cw.writerow (tableline)

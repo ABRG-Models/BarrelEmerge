@@ -368,27 +368,30 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
 
 % New section to describe and introduce the metrics
 \metrics{First, we used an algorithm introduced by Honda to measure the
-  discrepancy of each barrel shape from a Dirichletform shape. Low
-  overall values of the \emph{Honda-}$\delta$ metric obtained from simulated
-  barrels indicate a close correspondence of the simulated barrel field with a
-  Voronoi tesselation, and thus with a biological barrel field. For the
+  discrepancy of each barrel shape from a Dirichletform shape. Low overall
+  values of the dimensionless \emph{Honda-}$\delta$ metric (called $\Delta$
+  in}
+\citealp{honda_geometrical_1983}) \metrics{obtained from simulated barrels indicate a close
+  correspondence of the simulated barrel field with a Voronoi tesselation, and
+  thus with a biological barrel field. For the
   % Run ./build/sim/honda boundaries/rat_barrels/wb_110405_Dirichlet.svg to
   % get this result:
-  tesselation overlaid on the real barrel field in Fig.\,1A, $\delta=0.025$,
-  and a reduction in the Honda-$\delta$ metric in simulation
+  tesselation overlaid on the real barrel field in Fig.\,\ref{fig:main}A,
+  $\delta=0.025$, and a reduction in the Honda-$\delta$ metric in simulation
   confirmed that an equivalent `good' Voronoi pattern} (see
-    \citealp{senft_mouse_1991}) \metrics{emerged within $\approx$~20000
-  iterations (Fig.\,\ref{fig:main}D, red circles). Second, we devised a
-  \emph{pattern difference} measure that is sensitive to deviations in the
-  component shapes and overall topographic registration of two tesselations,
-  $\eta$, and we used this measure to compare the simulated barrel fields to
-  the real barrel field from which the simulation boundary shape was obtained
-  (see Materials and Methods for details). A similar reduction in pattern
+\citealp{senft_mouse_1991}) \metrics{emerged within $\approx$~20000 iterations
+  (Fig.\,\ref{fig:main}D, red circles). Second, we devised a \emph{pattern
+    difference} measure that is sensitive to deviations in the component
+  shapes and overall topographic registration of two tesselations, $\eta$, and
+  we used this measure to compare the simulated barrel fields to the real
+  barrel field from which the simulation boundary shape was obtained (see
+  Materials and Methods for details). A similar reduction in pattern
   difference over simulation time confirmed that the shapes and arrangement of
   emergent connection fields matched those of the real barrel field by around
   20000 iterations. Third, we measured the \emph{connection selectivity} at
   each location on the cortical sheet, as the connection density of the most
-  dense projection divided by the sum over all projection densities, $\omega$.}
+  dense projection divided by the sum over all projection densities,
+  $\omega$.}
 %
 \metrics{Against these three metrics we are also able to characterise the
   robustness of self-organization to the model parameters, and to investigate
@@ -471,7 +474,7 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
   chosen for Fig.\,\ref{fig:main} because it provides good pattern
   correspondence and a close approximation to a Voronoi tesselation.}
 
-\MPthreePar8u{In Fig.\,\ref{fig:paramsweep}B, we present some patterns
+\MPthreePar{In Fig.\,\ref{fig:paramsweep}B, we present some patterns
   representing alternative parameter choices. Because the patterns are robust
   to alterations in $\epsilon$ and the choices of $\alpha$ and $\beta$, we
   concentrate our attention on the diffusion constant, $D$. Changing $D$,
@@ -661,7 +664,7 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
 
 \begin{center}
   \includegraphics[width=\linewidth]{./Fig5.png}
-  \captionof{figure}{\MPtwo{Simulating whisker trimming by reduction of
+  \captionof{figure}{\MPthreePred{Simulating whisker trimming by reduction of
       $\epsilon$ for the thalamocortical projection for barrel C3, for which
       $i=13$. All other model parameters match those in
       Fig.\,\ref{fig:main}C. \textbf{A} Graph of individual barrel measures

@@ -18,8 +18,8 @@
    sodipodi:docname="Fig2.svg"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
    inkscape:export-filename="/home/seb/models/BarrelEmerge/paper/briefpaper/Fig2.png"
-   inkscape:export-xdpi="199.78"
-   inkscape:export-ydpi="199.78">
+   inkscape:export-xdpi="199.68657"
+   inkscape:export-ydpi="199.68657">
   <metadata
      id="metadata2989">
     <rdf:RDF>
@@ -28,7 +28,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -45,9 +45,9 @@
      inkscape:window-height="1376"
      id="namedview2987"
      showgrid="false"
-     inkscape:zoom="0.60251389"
-     inkscape:cx="1068.1107"
-     inkscape:cy="730.20293"
+     inkscape:zoom="0.42604166"
+     inkscape:cx="-310.74158"
+     inkscape:cy="927.6771"
      inkscape:window-x="67"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
@@ -10916,12 +10916,12 @@
   </g>
   <g
      id="patch_36-6"
-     style="stroke:#929292;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+     style="stroke:#d6d6d6;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
      transform="translate(-24.645519,-32.027786)">
     <path
        clip-path="url(#pcf20b63953-4)"
        d="m 516.288,555.09677 h 29.76 v -29.76 h -29.76 z"
-       style="fill:none;stroke:#929292;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#d6d6d6;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        id="path988-0"
        inkscape:connector-curvature="0" />
   </g>
@@ -10939,11 +10939,11 @@
   <g
      transform="translate(-24.645519,-227.12456)"
      id="patch_35-6-0"
-     style="stroke:#929292;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1">
+     style="stroke:#d6d6d6;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1">
     <path
        clip-path="url(#pcf20b63953-6-8)"
        d="m 427.008,555.09677 h 29.76 v -29.76 h -29.76 z"
-       style="fill:none;stroke:#929292;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#d6d6d6;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        id="path985-2-3"
        inkscape:connector-curvature="0" />
   </g>
@@ -10983,22 +10983,22 @@
   <g
      transform="translate(-271.65352,-332.94133)"
      id="patch_35-9-8"
-     style="stroke:#929292;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1">
+     style="stroke:#d6d6d6;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1">
     <path
        clip-path="url(#pcf20b63953-1-9)"
        d="m 427.008,555.09677 h 29.76 v -29.76 h -29.76 z"
-       style="fill:none;stroke:#929292;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#d6d6d6;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        id="path985-3-9"
        inkscape:connector-curvature="0" />
   </g>
   <g
      transform="translate(-271.65352,-137.84456)"
      id="patch_35-78-4"
-     style="stroke:#929292;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1">
+     style="stroke:#d6d6d6;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1">
     <path
        clip-path="url(#pcf20b63953-19-1)"
        d="m 427.008,555.09677 h 29.76 v -29.76 h -29.76 z"
-       style="fill:none;stroke:#929292;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#d6d6d6;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        id="path985-4-1"
        inkscape:connector-curvature="0" />
   </g>
@@ -11130,13 +11130,13 @@
        y="295.61014">*</tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.70375395px;line-height:1.25;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12037117;stroke-linecap:butt;stroke-linejoin:round"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.70375395px;line-height:1.25;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#d6d6d6;fill-opacity:1;stroke:none;stroke-width:0.12037117;stroke-linecap:butt;stroke-linejoin:round;"
      x="471.49899"
      y="490.23422"
      id="text98881-5-8-6-4"><tspan
        sodipodi:role="line"
        id="tspan98879-0-0-4-5"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:23.11125565px;font-family:arial;-inkscape-font-specification:'arial Bold';stroke-width:0.12037117;stroke-linecap:butt;stroke-linejoin:round"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:23.11125565px;font-family:arial;-inkscape-font-specification:'arial Bold';stroke-width:0.12037117;stroke-linecap:butt;stroke-linejoin:round;fill:#d6d6d6;fill-opacity:1;"
        x="471.49899"
        y="490.23422">*</tspan></text>
   <text
