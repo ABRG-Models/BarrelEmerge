@@ -108,9 +108,9 @@ ax2.set_ylim([0,0.11])
 ax1.set_xlim([0.5,1.0])
 ax2.set_xlim([0.5,1.0])
 
-ax1.set_xlabel ('$\epsilon_m$')
-ax1.set_ylabel ('$A_i$', labelpad=35, rotation=0)
-ax2.set_xlabel ('$\epsilon_m$')
+ax1.set_xlabel ('$m$')
+ax1.set_ylabel ('$Area$', labelpad=35)
+ax2.set_xlabel ('$m$')
 ax2.set_ylabel ('$\delta$', labelpad=22, rotation=0)
 
 lw = 2; ll = 6

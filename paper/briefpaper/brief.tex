@@ -651,12 +651,29 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
 % This figure is text width
 \begin{center}
   \includegraphics[width=\linewidth]{./Fig4.png}
-  \captionof{figure}{Guidance
-    fields and emergent barrel pattern in a Fgf8 misexpression experiment
-    (c.f. \citealp{assimacopoulos_fibroblast_2012}), simulated by reflecting
-    $\rho_1$ from Fig.\,\ref{fig:main}A at the join. \cmnt{The model
-      parameters match those in Fig.\,\ref{fig:main}C. Scale
-      bars are 1\,mm.}}
+  \captionof{figure}{
+    \MPthreePred{
+      Two simulated whisker barrel manipulations.  Guidance fields
+      (\textbf{A}) and emergent barrel pattern (\textbf{B}) in a Fgf8
+      misexpression experiment
+      (c.f.~\citealp{assimacopoulos_fibroblast_2012}), simulated by reflecting
+      $\rho_1$ from Fig.\,\ref{fig:main}A at the join of the original boundary
+      with its mirror. The model parameters match those in
+      Fig.\,\ref{fig:main}C. \textbf{C} Simulating whisker trimming by a
+      reduction of the competition parameter, $\epsilon$, in the expression
+      $\chi_i$ (Eq.\,\ref{eq:comp}) for the C3 thalamocortical projection. For
+      C3, $\epsilon$ is replaced by $m\,\epsilon$, where $m$ is a scalar
+      multiplier. For the rest of the projections, $\chi_i$ is left unchanged
+      and all other parameters are identical to those reported in
+      Fig.\,\ref{fig:main}C. The pattern formed after 30000 steps with
+      $m=0.64$. Barrel C3 is reduced in size as its axon branching competes
+      less strongly with its neighbours, whose area is slightly
+      increased. \textbf{D} Individual barrel area plotted vs.~$m$ shows that
+      as $m$ is reduced, the area of C3 (blue squares) goes down, disappearing
+      for $m\approx0.5$, whereas the average area of neighbouring barrels
+      (triangles) increases. Scale bars are 1\,mm.
+    }
+  }
   \label{fig:fgf8}
 \end{center}
 
@@ -678,29 +695,11 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
   in Eq.\,\ref{eq:comp} for the C3 projection, leaving other simulation
   parameters unchanged. The reduced competition for branching limited the area
   over which the C3 projection could make connections and its resulting barrel
-  size was diminished (Fig.\,\ref{fig:whiskertrim}A). Its neighbours, whose
+  size was diminished (Fig.\,\ref{fig:fgf8}C). Its neighbours, whose
   ability to compete for branching was unchanged, were able to increase in
   size compared to the control simulation presented in Fig\,\ref{fig:main}C
-  (Fig.\,\ref{fig:whiskertrim}B). The C3 barrel disappeared altogether if its
+  (Fig.\,\ref{fig:fgf8}D). The C3 barrel disappeared altogether if its
   competition parameter was reduced below a half of the original value.}
-
-\begin{center}
-  \includegraphics[width=\linewidth]{./Fig5.png}
-  \captionof{figure}{\MPthreePred{Simulating whisker trimming by a reduction
-      of the competition parameter, $\epsilon$, in the expression $\chi_i$
-      (Eq.\,\ref{eq:comp}) for the C3 thalamocortical projection. For C3,
-      $\epsilon$ is replaced by $m \epsilon$, where $m$ is a scalar
-      multiplier. For the rest of the projections, $\chi_i$ is left unchanged
-      and all other parameters are identical to those reported in
-      Fig.\,\ref{fig:main}C. \textbf{A} The pattern formed after 30000 steps
-      for $m=0.64$. Barrel C3 is reduced in size as its axon branching
-      competes less strongly with its neighbours, whose area is slightly
-      increased. \textbf{B} Individual barrel area plotted vs.~$m$
-      shows that as $m$ is reduced, the area of C3 (blue squares) goes down,
-      disappearing for $m\approx0.5$, whereas the average area of neighbouring
-      barrels (triangles) increases.}}
-  \label{fig:whiskertrim}
-\end{center}
 
 \section{Discussion}
 
