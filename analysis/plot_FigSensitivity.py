@@ -53,12 +53,12 @@ mo=2 # miss-out how many data points at end of the next three graphs?
 # Honda (Voronoi)
 ax1 = F1.add_subplot(3,3,1)
 l1, = ax1.plot(gmn_noise_gain[:-mo], gmn_honda[:-mo], 'o-', markersize=12, color=col.red, label='Honda $\delta$')
-# Omega (Localisation)
-ax2 = F1.add_subplot(3,3,4)
-l2, = ax2.plot(gmn_noise_gain[:-mo], gmn_locn[:-mo], 'h-', markersize=12, color=col.gray60, label='Locn $\omega$')
 # Eta (Pattern)
+ax2 = F1.add_subplot(3,3,4)
+l2, = ax2.plot(gmn_noise_gain[:-mo], gmn_eta[:-mo], 's-', markersize=12, color=col.black, label='$\eta$')
+# Omega (Localisation)
 ax3 = F1.add_subplot(3,3,7)
-l3, = ax3.plot(gmn_noise_gain[:-mo], gmn_eta[:-mo], 's-', markersize=12, color=col.black, label='$\eta$')
+l3, = ax3.plot(gmn_noise_gain[:-mo], gmn_locn[:-mo], 'h-', markersize=12, color=col.gray60, label='Locn $\omega$')
 
 # this is an inset axes over the third axis
 #ax3_1 = plt.axes([.2, .24, .1, .06])
@@ -95,12 +95,12 @@ for gdn in guidenoise:
 # Honda
 ax4 = F1.add_subplot(3,3,2)
 im4 = ax4.imshow (gdn_honda, cmap='inferno_r', origin='lower', vmin=honda_min, vmax=honda_max, interpolation='nearest')
-# Localization
-ax5 = F1.add_subplot(3,3,5)
-im5 = ax5.imshow (gdn_locn,  cmap='inferno', origin='lower', vmin=locn_min,  vmax=locn_max,  interpolation='nearest')
 # Eta
+ax5 = F1.add_subplot(3,3,5)
+im5 = ax5.imshow (gdn_eta,  cmap='inferno_r', origin='lower', vmin=eta_min,  vmax=eta_max,  interpolation='nearest')
+# Localization
 ax6 = F1.add_subplot(3,3,8)
-im6 = ax6.imshow (gdn_eta,  cmap='inferno_r', origin='lower', vmin=eta_min,  vmax=eta_max,  interpolation='nearest')
+im6 = ax6.imshow (gdn_locn,  cmap='inferno', origin='lower', vmin=locn_min,  vmax=locn_max,  interpolation='nearest')
 
 #
 # Sensitivity to changes to one guidance input; guidance phi/mag modification sensitivity
@@ -129,12 +129,12 @@ for g1 in guide1:
 # Honda
 ax7 = F1.add_subplot(3,3,3)
 im7 = ax7.imshow (g1_honda, cmap='inferno_r', vmin=honda_min, vmax=honda_max, interpolation='nearest')
-# Localization
-ax8 = F1.add_subplot(3,3,6)
-im8 = ax8.imshow (g1_locn,  cmap='inferno', vmin=locn_min,  vmax=locn_max,  interpolation='nearest')
 # Pattern
+ax8 = F1.add_subplot(3,3,6)
+im8 = ax8.imshow (g1_eta,  cmap='inferno_r', vmin=eta_min,  vmax=eta_max,  interpolation='nearest')
+# Localization
 ax9 = F1.add_subplot(3,3,9)
-im9 = ax9.imshow (g1_eta,  cmap='inferno_r', vmin=eta_min,  vmax=eta_max,  interpolation='nearest')
+im9 = ax9.imshow (g1_locn,  cmap='inferno', vmin=locn_min,  vmax=locn_max,  interpolation='nearest')
 
 #
 # Axis tweaking
@@ -174,12 +174,12 @@ for axis in ['top','bottom','left','right']:
 ax1.set_xlabel ('$\\nu_{\gamma}$')
 ax1.set_ylabel ('$\delta$', rotation=0, labelpad=lp)
 ax2.set_xlabel ('$\\nu_{\gamma}$')
-ax2.set_ylabel ('$\omega$', rotation=0, labelpad=lp)
+ax2.set_ylabel ('$\eta$', rotation=0, labelpad=lp)
 ax3.set_xlabel ('$\\nu_{\gamma}$')
-ax3.set_ylabel ('$\eta$', rotation=0, labelpad=lp)
+ax3.set_ylabel ('$\omega$', rotation=0, labelpad=lp)
 ax1.set_ylim ((honda_min,honda_max))
-ax2.set_ylim ((locn_min,locn_max)) # locn, omega
-ax3.set_ylim ((eta_min,eta_max))
+ax2.set_ylim ((eta_min,eta_max)) # locn, omega
+ax3.set_ylim ((locn_min,locn_max))
 
 ax1.set_xticks([0, 0.2])
 ax1.set_xticklabels(['0','.2'])

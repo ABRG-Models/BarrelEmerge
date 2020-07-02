@@ -5,7 +5,6 @@ import sys
 sys.path.insert (0, './include')
 import numpy as np
 # Import data loading code
-#import load as ld
 import BarrelData as bd
 # Import MY plotting code:
 import plot as pt
@@ -39,9 +38,6 @@ td = np.sort (trimdata, order='barrel')
 alldata = np.genfromtxt ('postproc/whisker_trim_overall.csv', delimiter=",", names=True)
 ad = np.sort (alldata, order='eps_mult')
 
-# Show an example map for this multiplier
-map_mult = 0.64
-
 # Get per-barrel results
 # barrels of interest are: B3, C2, C3, C4, D2, D3
 #              TC indices:  8, 12, 13, 14, 22, 23
@@ -53,6 +49,14 @@ tdd2 = td[td[:]['barrel_index'] == 22]
 tdd3 = td[td[:]['barrel_index'] == 23]
 
 ax1 = F1.add_subplot(1,1,1)
+
+# Max area
+ymax = max(tdc3[:]['area'])
+print ('Max area: {0}, 0.65 * max area (Kossut, 1992): {1}'.format (ymax, 0.65*ymax))
+# Show an example map for this multiplier. 0.86 is the area of the experimental manip
+map_mult = 0.64
+map_expt = 0.86
+
 
 xmax = max(tdc3[:]['eps_mult'])
 xmin = min(tdc3[:]['eps_mult'])
@@ -69,25 +73,27 @@ col_d2 = col.royalblue2
 col_d3 = col.cornflowerblue
 col_others = col.gray50
 
-
-l1_map = ax1.plot([map_mult,map_mult], [0, 0.16], '--', color=col.gray70)
+#l1_map = ax1.plot([map_mult,map_mult], [0, 0.16], '--', color=col.gray70)
+l1_expt = ax1.plot([map_expt,map_expt], [0, 0.16], '--', color=col.gray70)
+# The line of "shrunk by factor of 0.65" (Kossut, 1992)
+#l1_horz = ax1.plot([0, xmax], [0.65*ymax,0.65*ymax], '--', color=col.gray70)
 
 # Compute mean values of the neighbouring areas:
 others = np.vstack ((tdb3[:]['area'], tdc2[:]['area'], tdc4[:]['area'], tdd2[:]['area'], tdd3[:]['area']))
 mn_oth = np.mean(others, axis=0)
 
-l1_1, = ax1.plot(tdb3[:]['eps_mult'], mn_oth, 'o-', markersize=main_size, linewidth=m_width, color=col_others, label='Neighbours')
+l1_1, = ax1.plot(tdb3[:]['eps_mult'], mn_oth, 'o-', markersize=main_size, linewidth=m_width, color=col_others, label='neighbours of C3')
 l1, = ax1.plot(tdc3[:]['eps_mult'], tdc3[:]['area'], 's-', markersize=main_size, linewidth=m_width, color=col_c3, label='C3')
 
 ax1.set_xlim([0.5,1.0])
 ax1.set_ylim([0,0.16])
 
 ax1.text (0.55, 0.022, 'C3', fontsize=24, horizontalalignment='left', color=col.black);
-ax1.text (0.67, 0.144, 'Neighbours', fontsize=24, horizontalalignment='left', color=col.black);
+ax1.text (0.67, 0.144, 'neighbours of C3', fontsize=24, horizontalalignment='left', color=col.black);
 
 
 ax1.set_xlabel ('$m$')
-ax1.set_ylabel ('$Area$', labelpad=25)
+ax1.set_ylabel ('area', labelpad=25)
 
 lw = 2; ll = 6
 for axis in ['top','bottom','left','right']:

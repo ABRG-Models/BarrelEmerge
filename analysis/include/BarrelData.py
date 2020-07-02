@@ -610,8 +610,12 @@ class BarrelData:
 
             # Get the Honda Dirichlet value (the overall value)
             self.honda[fi] = list(f['honda'])[0]
-            keylist = list(f['honda_arr_keys'])
-            vallist = list(f['honda_arr_vals'])
+            try:
+                keylist = list(f['honda_arr_keys'])
+                vallist = list(f['honda_arr_vals'])
+            except:
+                keylist = []
+                vallist = []
 
             delta_j_dict = {}
             for lcount in range(0, len(keylist)):
@@ -631,7 +635,10 @@ class BarrelData:
             # barrel fields. This is a total difference for all barrels:
             # sum_i^N (abs(area_diff_i))...
             self.area_diff[fi] = list(f['area_diff'])[0]
-            self.area_diffs[:,fi] = list(f['area_diffs'])
+            try:
+                self.area_diffs[:,fi] = list(f['area_diffs'])
+            except:
+                pass
 
             # ...now convert the area_diff in hexes into an area by multiplying
             # by the area of one hex
