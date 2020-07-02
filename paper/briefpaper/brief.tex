@@ -258,22 +258,16 @@ ordering defined by the original $\gamma$ values. However, we found that
 specifying $N$ ordered areas required $M\approx (N+1)/2$ signalling
 fields. This is because localization of axon densities occurs only when
 projections are influenced by interactions with two or more signalling
-gradients that encourage migration in opposing directions.
-%
-%Note that these dynamics are quite unlike classic chemospecificity models
-%\citep{sperry_chemoaffinity_1963}, which essentially assume center-points
-%i.e., conditions in the target tissue that instruct pre-identified afferents
-%to stop growing.
-%
-As the number of distinct guidance fields is unlikely to
-approach the number of barrels, \cmnt{modifications to the model} were required.
+gradients that encourage migration in opposing directions. As the number of
+guidance fields is unlikely to approach the number of individual barrels,
+\cmnt{modifications to the model} were required.
 
 % Justify competition term. This pulled from Stuart's Google doc
-\mpfive{We reasoned that an arbitrary number of distinct field locations
-  may be specified using a minimum of two guidance fields, if the tendency for
-  the density of each projection to concentrate is appropriately balanced
-  against the tendency of projections that interact more strongly with the
-  guidance fields to migrate further in the directions specified by their
+\mpfive{We reasoned that an arbitrary number of distinct field locations may
+  be specified using a minimum of two guidance fields, if the tendency for the
+  density of each projection to concentrate is appropriately balanced against
+  the tendency of projections that interact more strongly with the guidance
+  fields to migrate further in the directions specified by their
   gradients. Accordingly, projections that interact most strongly with a given
   guidance gradient would come to occupy cortical locations at which that
   field has extreme values, leaving adjacent locations available to be
@@ -284,18 +278,19 @@ approach the number of barrels, \cmnt{modifications to the model} were required.
   spatial ordering of the $\gamma$ values at the level of the thalamus.}
 
 \mpfive{Such dynamics are quite unlike those described by classic
-  chemospecificity models} \citep{sperry_chemoaffinity_1963},
-\mpfive{which essentially assume center-points by specifying conditions
-  in the target tissue that instruct pre-identified afferents to stop
-  growing. Consider, for example, that when simulated in isolation from
-  one-another, all projections in the model described would simply migrate to
-  the extrema of the cortical guidance fields.}
+  chemospecificity models} \citep{sperry_chemoaffinity_1963}, \mpfive{which
+  essentially assume center-points by specifying conditions in the target
+  tissue that instruct pre-identified afferents to stop growing. Consider, for
+  example, that when simulated in isolation from one-another, all projections
+  in the model described would simply migrate to the extrema of the cortical
+  guidance fields.}
 
 \mpfive{Testing this reasoning required increasing the strength of the
   competition between simulated thalamocortical projections for cortical
-  territory, by increasing the tendency for the density of each projection to
-  concentrate. The major modification required was thus to introduce into the
-  model an additional source of competition between thalamic projections.}
+  territory, by increasing the tendency for each projection to compete for
+  cortical space into which to concentrate. The major modification required
+  was thus to introduce into the model an additional source of competition
+  between thalamic projections.}
 %
 The term in parentheses in Eq.\,\ref{eq:dc} represents competition between
 thalamocortical projections for a limited availability of cortical
@@ -309,14 +304,13 @@ redefined
   \color{black}
 \end{equation}
 %
-\mpfive{This term contributes to the \emph{flux} of axonal branching as
-  an additional source of diffusion, which reduces the branching density for a
-  given projection where the branches of other projections are dense. The
-  strength of this additional competition is parameterized by
-  $\epsilon$}. Note that this operation is local to individual afferent
-projections.
+\mpfive{This term contributes to the \emph{flux} of axonal branching as an
+  additional source of diffusion, scaled by $\epsilon$, which reduces the
+  branching density for a given projection where the branches of other
+  projections are dense. Note that this operation is local to individual
+  afferent projections.}
 
-\MPone{In addition, the model outlined requires that molecular
+\MPone{In addition, the model we have outlined requires that molecular
   guidance gradients in the cortex are complemented by graded values of the
   interaction strengths, $\gamma$, at the level of the thalamus. While the
   precise mechanisms by which thalamic and cortical gradients interact during
@@ -332,88 +326,78 @@ projections.
   levels of EphA receptors and project to the medial part of S1, which
   expresses high levels of ephrin-A5} (see
 \citealp{gao_regulation_1998,dufour_area_2003,vanderhaeghen_developmental_2004,speer_grading_2005,torii_role_2013}).
+\MPone{We assume that such patterning arises because relative strengths of
+  interaction with guidance molecules (e.g., ephrin-A5) in the cortex are
+  correlated with the relative concentrations of complementary molecules
+  (e.g., EphA4) in the thalamus, and thus with thalamic position along the
+  axis to which their gradients are aligned.}
 
-\MPone{For simplicity, both the thalamic interaction gradients and the
-  cortical guidance fields in the model were chosen in the first instance to
-  be linear and orthogonal. Hence a given pair of gamma values corresponds to
-  the coordinate of a barreloid center in the VPM (in a reference plane
-  defined by the anterior-posterior and medial-lateral axes. Coordinates were
-  estimated from Fig 5d of} \citep{haidarliu_size_2001}, \MPone{and
-  scaled (arbitrarily) such that $\gamma\in\pm 2$.}
+\MPone{For simplicity, the two simulated thalamic interaction gradients, as
+  well as the two cortical guidance gradients, were initially chosen to be
+  linear and orthogonal. Hence a given pair of $\gamma$ values corresponds to
+  the coordinate of a barreloid center in the VPM. Coordinates, in a reference
+  plane defined by the anterior-posterior and medial-lateral axes, were
+  estimated from Fig 5d of} \citep{haidarliu_size_2001}, \MPone{and scaled
+  such that $\gamma\in\pm 2$. Note that this scaling is arbitrary because
+  according to the model the coordinates provide relative position information
+  only.}
 
 A cortical boundary enclosing \cmnt{the} 41 \cmnt{macrovibrissae} barrels was
 traced from a cytochrome oxidase stain from \cite{zheng_signal_2001}
 \cmnt{(using original data kindly supplied by the authors)}, and
 Eqs.~\ref{eq:dc}--\ref{eq:comp} were solved for $N=41$ projections on the
-resulting domain, using $M=2$ linear signalling gradients aligned with the
-anterior-posterior and medial-lateral axes.  \mpfour{These gradients may
-  extend well beyond the boundary of the barrel field (e.g. as ephrin-5 does;
-  see \citealp{miller_epha7-ephrin-a5_2006}) but they are shown only within
-  the boundary in Fig.\,\ref{fig:main}A, to indicate that external values are
-  not used by the simulation. Simulations were stepped through 30000
-  iterations of Eqs.\,\ref{eq:dc}--\ref{eq:comp} ($\delta t=0.0001$)}
+resulting domain, $S$, using $M=2$ linear signalling gradients aligned with
+the anterior-posterior and medial-lateral axes.  \mpfour{These gradients are
+  shown with the barrel field boundary in Fig.\,\ref{fig:main}A for clarity,
+  though like ephrin-5 they may be thought of as extending across the cortical
+  hemisphere \citep{miller_epha7-ephrin-a5_2006}. Simulations were stepped
+  through 30000 iterations of Eqs.\,\ref{eq:dc}--\ref{eq:comp} ($\delta
+  t=0.0001$)}
 
-From initial conditions sample from a uniform random distribution for
-$a(\mb{x},0)\in(0.2,0.4)$ and $c(\mb{x},0)=0$, and across a wide range of
-parameter values,
-%From random initial conditions for $a(\mb{x},0)$, \MPtwo{with each hexagonal element
-%  of $a_i$ set from a uniform distribution according to $0.2+{U}(0,0.2)$, and
-%  $c(\mb{x},0)=0$},
-a clear Voronoi-like tesselation \cmnt{of topographically organised
-  projections} emerged, \cmnt{confirming that barrel maps can self-organise in
-  the absence of pre-specified center points. Parameters for the example
-  simulation shown in Fig.\,\ref{fig:main}C (see Movie S1) were obtained by
-  conducting a full parameter sweep and choosing a combination of values that
-  scored well against three measures.}
+\cmnt{Across a wide range of parameter values, random initial conditions (a
+  uniform random distribution for $a(\mb{x},0)\in(0.2,0.4)$, $c(\mb{x},0)=0$)
+  eventually yielded a clear Voronoi-like tessellation of topographically
+  organised thalamocortical projections, confirming that barrel maps can
+  self-organise in the absence of pre-specified center points. The
+  organization is apparent in a plot of the identity of the projection for
+  which the connection density is maximal at each simulated cortical location,
+  as shown in Fig.\,\ref{fig:main}C. Parameters for the example simulation
+  shown in Fig.\,\ref{fig:main}C (see also Movie S1) were obtained by
+  conducting a full parameter sweep and choosing a combination of parameter
+  values ($\alpha=3.6$, $\beta=16.67$, $k=3$, $D=0.5$, $\epsilon=1.2$) that
+  scored well against the following three measures.}
 
 % New section to describe and introduce the metrics
 \metrics{First, we used an algorithm introduced by Honda to measure the
-  discrepancy of each barrel shape from a Dirichletform shape. Low overall
-  values of the dimensionless \emph{Honda-}$\delta$ metric (called $\Delta$
-  in}
-\citealp{honda_geometrical_1983}) \metrics{obtained from simulated barrels indicate a close
-  correspondence of the simulated barrel field with a Voronoi tesselation, and
-  thus with a biological barrel field. For the
-  % Run ./build/sim/honda boundaries/rat_barrels/wb_110405_Dirichlet.svg to
-  % get this result:
-  tesselation overlaid on the real barrel field in Fig.\,\ref{fig:main}A,
-  $\delta=0.025$, and a reduction in the Honda-$\delta$ metric in simulation
-  confirmed that an equivalent `good' Voronoi pattern} (see
-\citealp{senft_mouse_1991}) \metrics{emerged within $\approx$~20000 iterations
-  (Fig.\,\ref{fig:main}D, red circles). Second, we devised a \emph{pattern
-    difference} measure that is sensitive to deviations in the component
-  shapes and overall topographic registration of two tesselations, $\eta$, and
-  we used this measure to compare the simulated barrel fields to the real
-  barrel field from which the simulation boundary shape was obtained (see
-  Materials and Methods for details). A similar reduction in pattern
-  difference over simulation time confirmed that the shapes and arrangement of
-  emergent connection fields matched those of the real barrel field by around
-  20000 iterations. Third, we measured the \emph{connection selectivity} at
-  each location on the cortical sheet, as the connection density of the most
-  dense projection divided by the sum over all projection densities,
-  $\omega$.}
-%
+  discrepancy of each barrel shape from a Dirichletform shape}
+\citep{honda_geometrical_1983}.  \metrics{Low overall values of this
+  \emph{Honda-}$\delta$ metric obtained from simulated barrels indicate a
+  close correspondence of the simulated barrel field with a Voronoi
+  tesselation, and thus with a biological barrel field. For the tesselation
+  that is overlaid on the real barrel field in Fig.\,\ref{fig:main}A,
+  $\delta=0.025$, and a reduction in $\delta$ in the example simulation over
+  time confirmed that an equivalent `good' Voronoi pattern} (see
+\citealp{senft_mouse_1991}) \metrics{can emerge within $\approx$~20000
+  iterations (Fig.\,\ref{fig:main}D, red circles). Second, we devised a
+  \emph{pattern difference} measure that is sensitive to deviations in the
+  component shapes and overall topographic registration between two
+  tesselations, $\eta$, and we used this measure to compare the simulated
+  barrel fields to the real barrel field from which the boundary shape applied
+  to the simulation was obtained (see \emph{Materials and Methods} for
+  details). A similar reduction in $\eta$ in the development of the example
+  simulation confirmed that the shapes and arrangement of emergent connection
+  fields came to match those of the real barrel field by around 20000
+  iterations (Fig.\,\ref{fig:main}D, black squares). Third, we measured the
+  \emph{connection selectivity} at each location on the cortical sheet, as the
+  connection density of the most dense projection divided by the sum over all
+  projection densities, $\omega$. The connection selectivity increased as the
+  barrel map self-organised in the example simulation (Fig.\,\ref{fig:main}D,
+  grey hexagons), and the selectivity became concentrated in regions
+  overlapping with the emergent barrel centers (Fig.\,\ref{fig:main}E).}
+
 \metrics{Against these three metrics we are also able to characterise the
   robustness of self-organization to the model parameters, and to investigate
   the sensitivity of the model to variation in its inputs.}
-
-% Most of this commented out region is covered in the para above.
-%
-%A reduction in the Honda delta
-%metric (see \citealp{senft_mouse_1991}) confirmed that a `good' Voronoi
-%pattern emerged within \cmnt{$\approx$~20000} iterations
-%(Fig.\,\ref{fig:main}D).  A measure of the difference in \cmnt{barrel area}
-%between real and simulated barrels revealed a strong correspondence (see
-%Fig.\,\ref{fig:main}D, squares). \cmnt{In a chosen region, the ratio of
-%  \emph{the connection density of the TC type $i$ which makes the densest
-%    connections} to \emph{the sum of all connection densities} gives a measure
-%  of the selectivity of the connection density, $\mu(\mb{x},t)$. We summed this measure
-%  across the entire barrel domain and named it $\omega(t)$ (see
-%  Fig.\,\ref{fig:main}D, grey hexagons). $\omega$ increases during the first
-%  20000 simulation steps and converges on a stable
-%  value. Fig.\,\ref{fig:main}E shows the selectivity measure plotted as a
-%  luminance map, giving a more graded impression of the structure which
-%  develops in the system.}
 
 % Full page width
 \begin{figure}
@@ -458,39 +442,36 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
   \end{fullwidth}
 \end{figure}
 
-\MPthreePar{To determine the robustness of the model to its parameters, we
-  investigated its behaviour with respect to changes in the parameters $D$,
-  $\epsilon$ and the ratio of $\alpha$ to $\beta$. Fig.\,\ref{fig:paramsweep}A
-  shows the value of the metrics $\delta$, $\eta$ and $\omega$ after 30000
-  iterations, plotted as colour maps, for 216 parameter sets. The maps
-  indicate that the pattern is not strongly influenced by the choice of
-  $\alpha/\beta$, which was varied by 5 orders of magnitude. The most
-  Voronoi-like patterns were achieved for parameter sets for which $D$ and
-  $\epsilon$ were high. The barrel area metric, $\eta$ indicates a strong
-  preference for $D\approx0.5$, although this does not give the solution of
-  maximum selectivity, which favours lower values of $D$. Thus, there is a
-  trade-off between good selection and good Voroni pattern conformation.  The
-  parameter set indicated by the asterisk in Fig.\,\ref{fig:paramsweep}A was
-  chosen for Fig.\,\ref{fig:main} because it provides good pattern
-  correspondence and a close approximation to a Voronoi tesselation.}
+\MPthreePar{Fig.\,\ref{fig:paramsweep}A shows values of $\delta$, $\eta$ and
+  $\omega$ obtained after 30000 iterations, from 216 independent simulations,
+  each representing a unique combination of the model parameters $D$,
+  $\epsilon$, and the ratio $\alpha/\beta$. First we observe that
+  self-organization is highly robust to the ratio $\alpha/\beta$, across five
+  orders of magnitude, with respect to all three metrics. Second, the most
+  strongly Dirichletform patterns (low \emph{Honda}-$\delta$) were generated
+  by simulations in which the diffusion constant $D$ and the strength of
+  competition $\epsilon$ were high. Third, strongest connection selectivities,
+  $\omega$, were obtained for lower values of $D$. Fourth, variation in the
+  pattern difference metric, $\eta$, indicated that the alignment between real
+  and simulated patterns was greatest for intermediate rates of diffusion,
+  $D\approx0.5$. Together these results indicate that when competition is
+  strong, the rate of diffusion determines a trade-off such that fields emerge
+  to be barrel-shaped when diffusion is fast and they emerge to be more
+  selectively innervated when diffusion is slow.}
 
-\MPthreePar{In Fig.\,\ref{fig:paramsweep}B, we present some patterns
-  representing alternative parameter choices. Because the patterns are robust
-  to alterations in $\epsilon$ and the choices of $\alpha$ and $\beta$, we
-  concentrate our attention on the diffusion constant, $D$. Changing $D$,
-  whose value defines the rate at which a region of localized branching will
-  spread out across the domain, $S$, is equivalent to making changes to the
-  size of $S$ with a fixed branching diffusion rate. These simulations can
-  therefore be thought of as representing animals with a varying cortical
-  areas but with unchanged cortical complexity. The most extreme example
-  (Fig.\,\ref{fig:paramsweep}B iii) could represent an animal with a very
-  large cortical area (such as the South American capybara) which receives
-  sensory input from $N=41$ thalamic barreloids. Here, a large proportion of
-  the domain is occupied by the projections with intermediate interaction
-  parameters and those with strong interaction parameters are bunched up
-  towards the edge of the domain. In this case, a barrel pattern fails to
-  form, agreeing with the observation that cortical whisker barrels are absent
-  in the capybara.}
+\MPthreePar{The parameters of the example simulation are indicated in
+  Fig.\,\ref{fig:paramsweep}A using an asterisk. In
+  Fig.\,\ref{fig:paramsweep}B, we also present examples of alternative
+  patterns that emerge for different choices of $D$. Decreasing the rate of
+  diffusion may be considered equivalent to increasing the overall size of the
+  domain, $S$, hence insights into barrel development in species with
+  substantially larger barrel fields, such as capybara which do not have
+  clearly identifiable barrels, may be gained by studying pattern formation
+  when $D$ is small. In this context, it is interesting to note that for small
+  $D$, the organization is predicted to be topological but highly irregular,
+  with a general expansion in the territory occupied by the central versus
+  peripheral domains that would presumably manifest as an absence of
+  identifiable barrel fields (Fig.\,\ref{fig:paramsweep}Biii).}
 
 % Full page width
 \begin{figure}
@@ -541,112 +522,66 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
   \end{fullwidth}
 \end{figure}
 
-% This section needs to emphasize that the absolute values of gamma are not important
-\MPthreeSens{We performed a sensitivity analysis to determine if the quality
-  of the pattern (i.e.~the values of $\delta$, $\eta$ \& $\omega$ after
-  $t=30000$ steps) was affected by perturbations to any of the following
-  inputs:
-%
-  i)~the magnitude and offset of the noise applied to $a_i$ at $t=0$;
-%
-  ii)~random noise applied to the interaction parameters, $\gamma_{i,j}$;
-%
-  iii)~random noise (at various length scales) applied to the guidance fields;
-%
-  and
-%
-  iv)~The angle and magnitude of one of the guidance fields, ($\rho_1$;
-  Fig.\,\ref{fig:main}A).
-}
 
-\MPthreeSens{First, we conducted 10 runs of the simulation shown in
-  Fig.\,\ref{fig:main}C to evaluate the mean and standard deviation of the
-  metrics in the default model. The results (where deviations occur as a
-  result of the different random initial conditions for $a_i$) were
-  $\delta=0.089\,(0.004)$, $\eta=0.2108\,(0.002)$ and
-  $\omega=0.2165\,(0.0001)$. The pattern was barely affected by the random
-  changes to $a_i(t=0)$ on each run.}
-%
-\MPthreeSens{Next, we modified the parameters of the generating uniform
-  distribution to initialize $a_i$ for each hex to $0.1+{U}(0,0.4)$,
-  increasing the variability of $a_i(\mb{x},t=0)$ without changing the mean
-  initial activation. We ran this system 10 times and obtained the results
-  $\delta=0.090\,(0.005)$, $\eta=0.2136\,(0.004)$ and
-  $\omega=0.2166\,(0.0003)$. Paired two-sample t-tests demonstrated that the
-  increase in noise amplitude made no significant difference to the metric
-  results ($\delta: \mathrm{t}=-0.69,\mathrm{p}=0.49$, $\eta:
-  \mathrm{t}=-2.0,\mathrm{p}=0.06$, $\omega:
-  \mathrm{t}=-1.7,\mathrm{p}=0.11$). 10 runs of a noise-free initial condition
-  with $a_i=0.3$ for every hex showed that the model is deterministic (all
-  runs produced the results $\delta=0.0928$, $\eta=0.21236$ and
-  $\omega=0.21649$) and that stochasticity in $a_i(\mb{x},t=0)$ is not
-  required by this model, as all three results lay within one standard
-  deviation of those for the runs in which $a_i$ was initialized
-  stochastically.}
+\MPthreeSens{Next we conducted a sensitivity analysis to determine the extent
+  to which the quality of the pattern (after $t=30000$ iterations) is affected
+  by perturbations to i)~the magnitude and offset of the noise applied to
+  $a_i$ at $t=0$; ii)~noise applied to the interaction parameters,
+  $\gamma_{i,j}$; iii)~noise (at various length scales) applied to the
+  guidance fields; and iv)~the magnitude and orientation of one cortical
+  guidance field relative to the other (Fig.\,\ref{fig:main}A).}
 
-% Quick check that noise free result is within 1 SD for the noisier initial conditions
-%         Noisefree    Normal noise    NF SD from Normal?   Noisy            NF SD from Noisy?
-% delta   0.0928       0.089(0.004)    <1                   0.090 (0.005)    <1
-% eta     0.2124       0.2108(0.002)   <1                   0.2136 (0.004)   <1
-% omega   0.21649      0.2165(0.0001)  <1                   0.2166 (0.0003)  <1
-
-\MPthreeSens{Fig\,\ref{fig:sens}A shows the results for perturbations ii) to
-  iv). The results show that the Voronoi nature of the pattern ($\delta$) and
-  the selectivity of the fields are not strongly affected by interaction
-  parameter noise, but the pattern metric, $\eta$ shows a degradation in the
-  pattern arrangement when a) noise in the interaction parameters causes their
-  disordering (find better way to express?), b) noise in the guidance field
-  with a high magnitude and short length scale causes disruption to the barrel
-  edges and c) the guidance fields tend towards a non-orthogonal arrangement,
-  or if one field becomes substantially stronger in its interaction with the
-  thalamocortical projections. Fig\,\ref{fig:sens}B shows perturbed examples.}
+\MPthreeSens{Using the parameters of the example simulation
+  (Fig.\,\ref{fig:main}C) we established baseline mean and standard deviations
+  from ten independent simulations with initial uniform random values for
+  $a(\mb{x},0)\in(0.2,0.4)$, to be $\delta=0.089\pm 0.004$, $\eta=0.2108\pm
+  0.002$, and $\omega=0.2165\pm 0.0001$. Repeating with the variation in the
+  initial noise doubled ($a(\mb{x},0)\in(0.1,0.5)$), or removed altogether
+  ($a(\mb{x},0)=0.3$), generated distributions of $\delta$, $\eta$, and
+  $\omega$ that were not statistically different, as established using paired
+  two-sample t-tests. Adding noise to the interaction parameters ($\gamma$)
+  affected neither the \emph{Honda-}$delta$ or the \emph{connection
+    selectivity} measures substantially (see Fig\,\ref{fig:sens}A), and an
+  increase in the \emph{pattern difference} reflected an increase in the
+  occurrence of topological defects only when perturbations become so large as
+  to cause the ordering of $\gamma$ values from neighbouring thalamic sites to
+  be switched (see example map Fig\,\ref{fig:sens}Bi). Adding noise to the
+  cortical guidance field values, $\rho_1(\mathbf{x})$ and
+  $\rho_2(\mathbf{x})$, disrupted pattern formation only for high levels of
+  noise applied at short length scales, which manifested as non-straight edges
+  at the domain boundaries (Fig\,\ref{fig:sens}Bii). Varying the slope of one
+  linear gradient $\rho_1(\mathbf{x})$ while keeping that of the other
+  constant caused elongation of the emergent domains along the corresponding
+  axis (Fig\,\ref{fig:sens}Biii), while pattern formation was not strongly
+  influenced by relaxing the assumption that the gradients of the two cortical
+  guidance fields are orthogonal (Fig\,\ref{fig:sens}Biv). Overall, the
+  sensitivity analysis revealed that self-organization of barrel-like fields
+  in the model is highly robust to a wide range of sources of perturbation.}
 
 % This should be a little less terse than in the original.
 \MPthreePred{To further investigate the interplay of genetic and intrinsic
   mechanisms we simulated two well known experimental manipulations of the
   whisker barrel system. First, we simulated a seminal barrel duplication
-  experiments}
+  experimental paradigm}
 \citep{shimogori_fibroblast_2005,assimacopoulos_fibroblast_2012}
 \MPthreePred{in which the growth factor Fgf8, which is normally expressed at
-  the anterior end of the cortical sub-plate from around E9.5}
+  the anterior end of the cortical subplate from around E9.5}
 \citep{crossley_mouse_1995}, \MPthreePred{is ectopically expressed (by
-  electroporation) also at the posterior end. Because Fgf8 sets off a chain of
-  gene interactions which are involved in the control of the expression of
-  ephrin and cadherin molecules in gradients across the cortical plate, its
-  misexpression at the posterior pole of a cortical hemisphere could be
-  expected to mirror those gradients which usually vary along the
-  rostro-caudal axis. We assume that this results in a mirror of the primary
-  barrel cortex boundary along the rostro-caudal axis, to match the
-  experimental results of}
+  electroporation) also at the posterior pole of a cortical
+  hemisphere. Because Fgf8 sets off a chain of gene interactions involved in
+  controlling the graded expression of ephrin and cadherin molecules, its
+  misexpression at the posterior pole could be expected to mirror those
+  gradients which usually vary along the rostrocaudal axis. We assume that
+  this results in a mirror of the primary barrel cortex boundary along the
+  rostrocaudal axis, to match the experimental results of}
 \citealp{assimacopoulos_fibroblast_2012}. \MPthreePred{We also assume that a
   further consequence of the posterior Fgf8 electroporation is the mirrored
-  anterior-posterior guidance gradient $\rho_1$ (Fig.\,\ref{fig:fgf8}A). We
-  mirrored this across a reflection line which is orthogonal to its angle
-  $\phi_{\rho_1}=6$\textdegree, and left $\rho_2$ unmodified. Although the
-  rostro-caudal boundary reflection is not perfectly aligned with $\rho_1$,
-  and we might expect some modification of both $\rho_1$ \emph{and} $\rho_2$,
-  mirroring only $\rho_1$ retains the simplicity of the guidance fields; they
-  remain either linear ($\rho_2$), or piece-wise linear ($\rho_1$).}
-
-\MPthreePred{The new boundary shape and $\rho_1$ guidance gradient were the
-  only changes made to the simulation of Fig.\,\ref{fig:main}; the simulation
-  was run with $N=41$ thalamocortical axon types as before and the initial
-  values for $a_i$ were randomly initialised according to the same
-  distribution. The result, after 30000 simulation steps, was two
-  mirror-symmetrical barrel fields comprising $2N$ barrels
-  (Fig\,\ref{fig:main}B). This result suggests that by the misexpression of
-  Fgf8,} \cite{shimogori_fibroblast_2005} and \cite{assimacopoulos_fibroblast_2012}
-  \MPthreePred{created the correct cortical
-  conditions for the self-organization of the two mirrored barrel fields. }
-
-%However, merging the two fields to
-%create an extended mirror-symmetric boundary shape, with an anterior-posterior
-%guidance field reflected at the join, gave rise to two mirror-symmetrical
-%barrel fields comprising 2N barrels, i.e., two cortical fields for each
-%thalamic projection (Fig.\,\ref{fig:fgf8}). Together these results suggest that by the
-%misexpression of Fgf8, \cite{shimogori_fibroblast_2005}
-%effectively created one large barrel field rather than two distinct cortical
-%fields.
+  anterior-posterior guidance gradient $\rho_1$ (Fig.\,\ref{fig:fgf8}A). With
+  the modified $\rho_1$ guidance gradient the simulation was run with $N=41$
+  thalamocortical axon types, using the parameters of the example
+  simulation. The result, after 30000 iterations, was two mirror-symmetrical
+  barrel fields comprising $2N$ barrels (Fig\,\ref{fig:main}B), consistent
+  with the outcome of the original experiments.}
 
 % This figure is text width
 \begin{center}
@@ -681,7 +616,7 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
   birth). During this critical period, removal of the mystacial whiskers by
   electrocauterization, plucking or trimming leads to observable changes in
   brain structures, including the barrel field in cortical layer
-  IV~\citep{jeanmonod_mouse_1981}. Amoung other changes, barrels associated
+  IV~\citep{jeanmonod_mouse_1981}. Amoungst other changes, barrels associated
   with deprived whiskers have a smaller area. This is found whether the animal
   is deprived of an individual whisker~\citep{kossut_effects_1992}, or an
   entire row~\citep{loos_somatosensory_1973}, and demonstrates that
@@ -691,12 +626,21 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
   compete for branching. This was achieved by reducing the value of $\epsilon$
   in Eq.\,\ref{eq:comp} for the C3 projection, leaving other simulation
   parameters unchanged. The reduced competition for branching limited the area
-  over which the C3 projection could make connections and its resulting barrel
-  size was diminished (Fig.\,\ref{fig:fgf8}C). Its neighbours, whose
-  ability to compete for branching was unchanged, were able to increase in
-  size compared to the control simulation presented in Fig\,\ref{fig:main}C
-  (Fig.\,\ref{fig:fgf8}D). The C3 barrel disappeared altogether if its
-  competition parameter was reduced below a half of the original value.}
+  over which the C3 projection could make connections and its resulting field
+  size was diminished (Fig.\,\ref{fig:fgf8}C). Emergent fields representing
+  the neighbours of the C3 projection, whose ability to compete for branching
+  was unchanged, increased in size. The C3 barrel disappeared altogether if
+  its competition parameter was reduced below a half of the original value. A
+  reduction in the area of barrel C3, comparable that induced by
+  \citep{kossut_effects_1992} (65\%) was obtained in simulation when the
+  competitiveness of projection C3, $\epsilon$, was reduced to 86\%, as
+  indicated in (Fig.\,\ref{fig:fgf8}D).}
+
+\MPthreePred{Together with the results of the misexpression experiment, the
+  consistency of the simulated whisker trimming results with those of the
+  original studies demonstrates how the model can be used to test specific
+  hypotheses about the contribution of intrinsic and extrinsic factors to the
+  development of cortical fields.}
 
 \section{Discussion}
 
@@ -943,6 +887,14 @@ from $\mb{x}$ to the boundary, \MPtwo{of the form $1/[1 +
 \end{equation}
 %
 \metrics{which has units of mm$^3$.}
+
+% for ``end of methods''
+\MPone{We concentrated on the representation of the forty-six macrovibrissae
+  that constitute a given barrel field, because their thalamic and cortical
+  correlates are easily identifiable and consistently positioned. We exclude
+  the representation of the microvibrissae to limit the overall complexity of
+  the simulations, as well as the five rhinal whiskers as their representation
+  in S1 is isolated from the main barrel field. Consequently, we set $N=41$.}
 
 All code required to reproduce these results is available at
 \url{https://github.com/ABRG-Models/BarrelEmerge/tree/eLife}. The computations
