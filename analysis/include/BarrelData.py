@@ -612,19 +612,16 @@ class BarrelData:
             self.honda[fi] = list(f['honda'])[0]
             keylist = list(f['honda_arr_keys'])
             vallist = list(f['honda_arr_vals'])
-            print ('keylist: {0}'.format(keylist))
-            print ('vallist: {0} of size {1}'.format(vallist, len(vallist)))
+
             delta_j_dict = {}
             for lcount in range(0, len(keylist)):
                 ## Convert key from flt to int
                 keyint = round (keylist[lcount] * np.float32(self.N))
-                print ('keyint: {0}'.format(keyint))
                 keyint = int(keyint)
-                print ('keyint as int: {0}'.format(keyint))
                 delta_j_dict[keyint] = vallist[lcount]
-                #self.honda_delta_j[keyint,fi] = vallist[keyint] # problem: less than 41 entries
+
             self.honda_delta_j.append(delta_j_dict)
-            print ('honda_delta_j is now {0}'.format(self.honda_delta_j))
+            #print ('honda_delta_j is now {0}'.format(self.honda_delta_j))
 
             # The sum of squared distances between the simulated barrels and the experimentally determined pattern
             self.sos_dist[fi] = list(f['sos_distances'])[0]
