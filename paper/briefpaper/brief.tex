@@ -660,29 +660,45 @@ a clear Voronoi-like tesselation \cmnt{of topographically organised
   \label{fig:fgf8}
 \end{center}
 
-\MPthreePred{Add paragraph on whisker trimming here.}
+\MPthreePred{To investigate the response of the model to environmental
+  manipulation, we simulated a whisker deprivation experiment. In the first
+  few days after birth, the upper region of the rat's cortex develops into
+  distinct layers I--IV (layers V and VI are already distinct at
+  birth). During this critical period, removal of the mystacial whiskers by
+  electrocauterization, plucking or trimming leads to observable changes in
+  brain structures, including the barrel field in cortical layer
+  IV~\citep{jeanmonod_mouse_1981}. Amoung other changes, barrels associated
+  with deprived whiskers have a smaller area. This is found whether the animal
+  is deprived of an individual whisker~\citep{kossut_effects_1992}, or an
+  entire row~\citep{loos_somatosensory_1973}, and demonstrates that
+  thalamocortical activity contributes to the developmental process. We
+  simulated the trimming of the individual whisker C3 during this critical
+  period by reducing the amount by which its thalamocortical projections
+  compete for branching. This was achieved by reducing the value of $\epsilon$
+  in Eq.\,\ref{eq:comp} for the C3 projection, leaving other simulation
+  parameters unchanged. The reduced competition for branching limited the area
+  over which the C3 projection could make connections and its resulting barrel
+  size was diminished (Fig.\,\ref{fig:whiskertrim}A). Its neighbours, whose
+  ability to compete for branching was unchanged, were able to increase in
+  size compared to the control simulation presented in Fig\,\ref{fig:main}C
+  (Fig.\,\ref{fig:whiskertrim}B). The C3 barrel disappeared altogether if its
+  competition parameter was reduced below a half of the original value.}
 
 \begin{center}
   \includegraphics[width=\linewidth]{./Fig5.png}
-  \captionof{figure}{\MPthreePred{Simulating whisker trimming by reduction of
-      $\epsilon_i$ for the thalamocortical projection for barrel
-      C3. $\epsilon_{C3} = m \epsilon$, where otherwise, all model parameters
-      match those in Fig.\,\ref{fig:main}C (thus $\epsilon=1.2$). \textbf{A}
-      The pattern formed after 30000 steps for $m=0.64$. Barrel C3 is reduced
-      in size as its axon branching competes less strongly with its
-      neighbours, whose area is slightly increased. \textbf{B} Top: Individual
-      barrel area, $A_i$, plotted vs.~$m$ shows that as $m$ is reduced, the
-      area of C3 (blue squares) goes down, disappearing for $m\approx0.5$,
-      whereas the areas of neighbouring barrels (triangles) increases. Bottom:
-      Honda measures of the Dirichliform nature of the pattern. Red circles
-      show the overall Honda-$\delta$ measure, with the red dotted line
-      showing the same `good' pattern threshold shown in
-      Fig.\,\ref{fig:main}D. Blue squares and triangles show the
-      \emph{individual} Honda metric ($\delta_i$ here; $\Delta_j$ in}
-    \citealp{honda_geometrical_1983}) \MPthreePred{divided by the barrel area,
-      making it comparable with the dimensionless, overall Honda-$\delta$
-      metric. The individual Honda measures do not vary systematically with
-      $m$.}}
+  \captionof{figure}{\MPthreePred{Simulating whisker trimming by a reduction
+      of the competition parameter, $\epsilon$, in the expression $\chi_i$
+      (Eq.\,\ref{eq:comp}) for the C3 thalamocortical projection. For C3,
+      $\epsilon$ is replaced by $m \epsilon$, where $m$ is a scalar
+      multiplier. For the rest of the projections, $\chi_i$ is left unchanged
+      and all other parameters are identical to those reported in
+      Fig.\,\ref{fig:main}C. \textbf{A} The pattern formed after 30000 steps
+      for $m=0.64$. Barrel C3 is reduced in size as its axon branching
+      competes less strongly with its neighbours, whose area is slightly
+      increased. \textbf{B} Individual barrel area plotted vs.~$m$
+      shows that as $m$ is reduced, the area of C3 (blue squares) goes down,
+      disappearing for $m\approx0.5$, whereas the average area of neighbouring
+      barrels (triangles) increases.}}
   \label{fig:whiskertrim}
 \end{center}
 
