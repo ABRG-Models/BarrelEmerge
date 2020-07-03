@@ -14,7 +14,7 @@ col = sc.Colour()
 
 # Set plotting defaults
 matplotlib.use('TkAgg') # cleaner likely to work
-fnt = {'family' : 'DejaVu Sans', 'weight' : 'regular', 'size' : 18 }
+fnt = {'family' : 'Arial', 'weight' : 'regular', 'size' : 18 }
 matplotlib.rc('font', **fnt)
 # IMPORTANT for svg output of text as things that can be edited in inkscape
 plt.rcParams['svg.fonttype'] = 'none'
@@ -190,10 +190,10 @@ ax3.set_xticklabels(['0','.2'])
 
 ax1.set_yticks ([0.1, 0.2, 0.3, 0.4])
 ax1.set_yticklabels (['.1', '.2', '.3', '.4'])
-ax2.set_yticks ([0.2, 0.4, 0.6])
-ax2.set_yticklabels (['.2', '.4', '.6'])
-ax3.set_yticks ([0, 0.5, 1.0, 1.5])
-ax3.set_yticklabels (['0', '.5', '1', '1.5'])
+ax2.set_yticks ([0, 0.5, 1.0, 1.5])
+ax2.set_yticklabels (['0', '.5', '1', '1.5'])
+ax3.set_yticks ([0.2, 0.4, 0.6])
+ax3.set_yticklabels (['.2', '.4', '.6'])
 
 
 equal_aspect (ax1)

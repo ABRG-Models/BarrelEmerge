@@ -19,7 +19,7 @@ col = sebcolour.Colour
 import matplotlib.transforms
 
 # Set plotting defaults
-fs = 26
+fs = 32
 fnt = {'family' : 'Arial',
        'weight' : 'regular',
        'size'   : fs}
@@ -88,8 +88,8 @@ l1, = ax1.plot(tdc3[:]['eps_mult'], tdc3[:]['area'], 's-', markersize=main_size,
 ax1.set_xlim([0.5,1.0])
 ax1.set_ylim([0,0.16])
 
-ax1.text (0.55, 0.022, 'C3', fontsize=24, horizontalalignment='left', color=col.black);
-ax1.text (0.67, 0.144, 'neighbours of C3', fontsize=24, horizontalalignment='left', color=col.black);
+ax1.text (0.55, 0.022, 'C3', fontsize=28, horizontalalignment='left', color=col.black);
+ax1.text (0.64, 0.144, 'neighbours of C3', fontsize=28, horizontalalignment='left', color=col.black);
 
 
 ax1.set_xlabel ('$m$')
@@ -101,10 +101,15 @@ for axis in ['top','bottom','left','right']:
   ax1.tick_params(length=ll, width=lw)
 
 # Shift x axis labels down a bit
-dx = 0/72.; dy = -10/72.
-offset = matplotlib.transforms.ScaledTranslation (dx, dy, F1.dpi_scale_trans)
+dx = 0/72.; dy = -14/72.
+offsetdown = matplotlib.transforms.ScaledTranslation (dx, dy, F1.dpi_scale_trans)
 for label in ax1.xaxis.get_majorticklabels():
-    label.set_transform(label.get_transform() + offset)
+    label.set_transform(label.get_transform() + offsetdown)
+
+dx = -8/72.; dy = 0/72.
+offsetleft = matplotlib.transforms.ScaledTranslation (dx, dy, F1.dpi_scale_trans)
+for label in ax1.yaxis.get_majorticklabels():
+    label.set_transform(label.get_transform() + offsetleft)
 
 plt.tight_layout()
 
