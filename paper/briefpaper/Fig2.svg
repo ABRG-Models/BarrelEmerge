@@ -45,9 +45,9 @@
      inkscape:window-height="1376"
      id="namedview2987"
      showgrid="false"
-     inkscape:zoom="1.2050278"
-     inkscape:cx="203.67092"
-     inkscape:cy="380.12295"
+     inkscape:zoom="1.7041667"
+     inkscape:cx="96.018506"
+     inkscape:cy="212.13012"
      inkscape:window-x="67"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
@@ -11290,4 +11290,43 @@
        style="stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:round"
        x="331.16031"
        y="12.954831">α/β = 166.7</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.88000011px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:round"
+     x="100.51635"
+     y="347.53357"
+     id="text11314"><tspan
+       sodipodi:role="line"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:round"
+       x="100.51635"
+       y="347.53357"
+       id="tspan11316"><tspan
+   style="font-style:italic;stroke-linecap:butt;stroke-linejoin:round"
+   id="tspan11324">D</tspan> = 1</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.88000011px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:round"
+     x="237.1485"
+     y="347.53357"
+     id="text11314-3"><tspan
+       sodipodi:role="line"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:round"
+       x="237.1485"
+       y="347.53357"
+       id="tspan11316-6"><tspan
+   style="font-style:italic;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:round"
+   id="tspan11324-7">D</tspan> = .12</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.88000011px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:round"
+     x="389.32303"
+     y="347.53357"
+     id="text11314-3-5"><tspan
+       sodipodi:role="line"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9px;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:round"
+       x="389.32303"
+       y="347.53357"
+       id="tspan11316-6-3"><tspan
+   style="font-style:italic;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:round"
+   id="tspan11324-7-5">D</tspan> = .03</tspan></text>
 </svg>

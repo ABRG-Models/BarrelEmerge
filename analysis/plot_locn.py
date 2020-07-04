@@ -57,6 +57,8 @@ else:
 sf.showAxes = False
 sf.sb1 = [-1.3, -0.9]
 sf.sb2 = [-0.3, -0.9]
+sf.fs2 = 32
+sf.svgNames = True
 sf.sbtext = ''
 sf.cmap = plt.cm.gray
 sf.sbtpos = [-1.1, -1.1]
@@ -91,10 +93,9 @@ if do_contours:
 sf.addOuterBoundary()
 
 mapname = 'plots/{0}_locn_{1:06d}.png'.format(os.path.basename(logdirname), ti)
-plt.savefig (mapname, dpi=300, transparent=True)
-
+sf.F1.savefig (mapname, dpi=300, transparent=True)
 sf.addColorBar()
 mapname = 'plots/{0}_locn_{1:06d}.svg'.format(os.path.basename(logdirname), ti)
-plt.savefig (mapname, dpi=300, transparent=True)
+sf.F2.savefig (mapname, dpi=300, transparent=True)
 
 plt.show()

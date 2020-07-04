@@ -50,7 +50,8 @@ ax1 = F1.add_subplot(3,1,1)
 l1, = ax1.plot(t1_masked, hondadelta, 'o', markersize=12, color=col.red, label='Honda $\delta$')
 
 # 0.054 is Senft and Woolsey's result for barrels (mouse 0,054, other rodents about 0.055)
-l2, = ax1.plot((0,xmax), (0.055, 0.055), '--', color=col.red, linewidth=3, label="good (S&W)")
+#l2, = ax1.plot((0,xmax), (0.055, 0.055), '--', color=col.red, linewidth=3, label="good (S&W)")
+l2, = ax1.plot((0,xmax), (0.025, 0.025), '--', color=col.red, linewidth=3, label="Fig1A")
 
 show_mapdiff = 0
 if show_mapdiff:

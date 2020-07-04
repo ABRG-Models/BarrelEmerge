@@ -28,6 +28,8 @@ class Surface:
         self.showAxes = False
         # Flag to show ID names or not
         self.showNames = True
+        # Flag to have names on a separate figure, with a svg save out
+        self.svgNames = True
         # Show boundaries between the hexes of different regions?
         self.showBoundaries = False
         # Should it be a 3d projection?
@@ -130,17 +132,23 @@ class Surface:
                'weight' : 'regular',
                'size'   : self.fs}
         matplotlib.rc ('font', **fnt)
+        # IMPORTANT for svg output of text as things that can be edited in inkscape
+        plt.rcParams['svg.fonttype'] = 'none'
         self.F1 = plt.figure (figsize=(self.width,self.height))
         self.f1 = self.F1.add_subplot (1,1,1)
+        self.F2 = plt.figure (figsize=(self.width,self.height))
+        self.f2 = self.F2.add_subplot (1,1,1)
         self.ready = True
 
     def setFig (self, F, pw, ph, pnum):
         self.F1 = F
+        # Set up an alternative figure, with the same features as F1 for the text labels.
         self.f1 = self.F1.add_subplot (pw, ph, pnum)
         self.ready = True
 
     def resetFig (self):
         self.f1.cla()
+        self.f2.cla()
 
     def addContour (self, contourData, contourLevel, colour="white", width=1.0, labelIdx=0, showContourLabel=False):
         if contourLevel == 0:
@@ -208,6 +216,7 @@ class Surface:
 
         if self.showAxes == False:
             self.f1.set_axis_off()
+            self.f2.set_axis_off()
         else:
             self.f1.set_xlabel ('x (mm)')
             self.f1.set_ylabel ('y (mm)')
@@ -331,12 +340,16 @@ class Surface:
                 # To add the area of each barrel (assumes barreldata object loaded for just one time):
                 #thechar = '{0} {1:.3f}'.format(thechar, self.barrel_areas[count][0])
 
-                self.f1.text (dc[0], dc[1], thechar, fontsize=self.fs2, verticalalignment='center', horizontalalignment='center', color=cmap_(cout))
+                if self.svgNames:
+                    self.f2.text (dc[0], dc[1], thechar, fontsize=self.fs2, verticalalignment='center', horizontalalignment='center', color=cmap_(cout))
+                else:
+                    self.f1.text (dc[0], dc[1], thechar, fontsize=self.fs2, verticalalignment='center', horizontalalignment='center', color=cmap_(cout))
 
                 count = count + 1
 
         # Finally, set the axes up.
         self.f1.axis (np.array ([min(self.x)-4.0*self.hextohex_d, max(self.x)+4.0*self.hextohex_d, min(self.y)-4.0*self.hextohex_d, max(self.y)+4.0*self.hextohex_d]))
+        self.f2.axis (np.array ([min(self.x)-4.0*self.hextohex_d, max(self.x)+4.0*self.hextohex_d, min(self.y)-4.0*self.hextohex_d, max(self.y)+4.0*self.hextohex_d]))
         if self.drawid:
             # Draw colours to indicate the identity of the map
             mapwidth = abs(max(self.x) - min(self.x)) + (4*self.hextohex_d)
@@ -365,11 +378,15 @@ class Surface:
             self.f1.text (min(self.x)+em, min(self.y)+lineoffs*em, r'$\beta$={0:.1f}'.format(self.beta), fontsize=10, horizontalalignment='left', color='k');
 
         self.f1.set_aspect ('equal')
+        self.f2.set_aspect ('equal')
         self.F1.tight_layout()
+        self.F2.tight_layout()
 
     def addColorBar (self):
         cb_ax = self.F1.add_axes([0.05, 0.05, 0.05, 0.3])
         cbar = self.F1.colorbar (plt.cm.ScalarMappable(norm=matplotlib.colors.Normalize(), cmap=self.cmap), cax=cb_ax)
+        cb_ax = self.F2.add_axes([0.05, 0.05, 0.05, 0.3])
+        cbar = self.F2.colorbar (plt.cm.ScalarMappable(norm=matplotlib.colors.Normalize(), cmap=self.cmap), cax=cb_ax)
 
 
     def addOuterBoundary (self):
@@ -390,6 +407,8 @@ class Surface:
                     linex = [xr, xr]
                     liney = [self.y[i] + self.hexrad/2.0, self.y[i] - self.hexrad/2.0]
                     self.f1.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
+                    #if self.svgNames:
+                    #    self.f2.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
                     hex = RegularPolygon((self.x[i]+self.hextohex_d, self.y[i]), numVertices=6, radius=self.hexrad,
                                          facecolor=self.boundaryOuterHexColour, edgecolor='none', zorder=10000)
                     self.f1.add_patch (hex)
@@ -399,6 +418,8 @@ class Surface:
                     linex = [self.x[i], self.x[i]+self.hextohex_d/2.0]
                     liney = [self.y[i] + self.hexrad, self.y[i] + self.hexrad/2.0]
                     self.f1.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
+                    #if self.svgNames:
+                    #    self.f2.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
                     hex = RegularPolygon((self.x[i]+self.hextohex_d/2.0, self.y[i]+1.5*self.hexrad), numVertices=6, radius=self.hexrad,
                                          facecolor=self.boundaryOuterHexColour, edgecolor='none', zorder=10000)
                     self.f1.add_patch (hex)
@@ -408,6 +429,8 @@ class Surface:
                     linex = [self.x[i], self.x[i]-self.hextohex_d/2.0]
                     liney = [self.y[i] + self.hexrad, self.y[i] + self.hexrad/2.0]
                     self.f1.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
+                    #if self.svgNames:
+                    #    self.f2.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
                     hex = RegularPolygon((self.x[i]-self.hextohex_d/2.0, self.y[i]+1.5*self.hexrad), numVertices=6, radius=self.hexrad,
                                          facecolor=self.boundaryOuterHexColour, edgecolor='none', zorder=10000)
                     self.f1.add_patch (hex)
@@ -418,6 +441,8 @@ class Surface:
                     linex = [xr, xr]
                     liney = [self.y[i] + self.hexrad/2.0, self.y[i] - self.hexrad/2.0]
                     self.f1.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
+                    #if self.svgNames:
+                    #    self.f2.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
                     hex = RegularPolygon((self.x[i]-self.hextohex_d, self.y[i]), numVertices=6, radius=self.hexrad,
                                          facecolor=self.boundaryOuterHexColour, edgecolor='none', zorder=10000)
                     self.f1.add_patch (hex)
@@ -427,6 +452,8 @@ class Surface:
                     linex = [self.x[i], self.x[i]-self.hextohex_d/2.0]
                     liney = [self.y[i] - self.hexrad, self.y[i] - self.hexrad/2.0]
                     self.f1.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
+                    #if self.svgNames:
+                    #    self.f2.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
                     hex = RegularPolygon((self.x[i]-self.hextohex_d/2.0, self.y[i]-1.5*self.hexrad), numVertices=6, radius=self.hexrad,
                                          facecolor=self.boundaryOuterHexColour, edgecolor='none', zorder=10000)
                     self.f1.add_patch (hex)
@@ -436,6 +463,8 @@ class Surface:
                     linex = [self.x[i], self.x[i]+self.hextohex_d/2.0]
                     liney = [self.y[i] - self.hexrad, self.y[i] - self.hexrad/2.0]
                     self.f1.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
+                    #if self.svgNames:
+                    #    self.f2.plot (linex, liney, color=self.boundaryColour, marker='None', linewidth=self.boundarylw, zorder=10001)
                     hex = RegularPolygon((self.x[i]+self.hextohex_d/2.0, self.y[i]-1.5*self.hexrad), numVertices=6, radius=self.hexrad,
                                          facecolor=self.boundaryOuterHexColour, edgecolor='none', zorder=10000)
                     self.f1.add_patch (hex)

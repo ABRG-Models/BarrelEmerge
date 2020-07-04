@@ -25,7 +25,7 @@ bdo = bd.BarrelData()
 bdo.loadAnalysisData = True
 bdo.loadDivisions = False
 # If loadGuidance is True, then expt id map will be plotted:
-bdo.loadGuidance = False
+bdo.loadGuidance = True
 bdo.loadHexFlags = True
 bdo.loadSimData = True
 bdo.loadTimeStep = ti
