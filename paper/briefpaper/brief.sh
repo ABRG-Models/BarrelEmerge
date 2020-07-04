@@ -2,7 +2,7 @@
 
 cat > sebcolour.tex <<EOF
 % Colours for revisions
-\definecolor{colcmnt}        {rgb} {1,      0,      0}      % blue
+\definecolor{colcmnt}        {rgb} {0,      0,      1}      % blue
 \definecolor{colmpfour}      {rgb} {0.220,  0.463,  0.114}  % blue
 \definecolor{colmptwo}       {rgb} {0.235,  0.471,  0.847}  % green
 \definecolor{colmetrics}     {rgb} {0.8353, 0.1255, 0.1255} % red
