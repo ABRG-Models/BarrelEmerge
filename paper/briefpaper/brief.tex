@@ -391,7 +391,7 @@ the anterior-posterior and medial-lateral axes.  \mpfour{These gradients are
         ii)~and iii)~mark parameter sets for which corresponding patterns are
         shown in \textbf{B} (for $t=30000$ steps).
 %
-        \textbf{B} Varying the diffusion constant $D$ generates qualitatively different patterns. Higher values 
+        \textbf{B} Varying the diffusion constant $D$ generates qualitatively different patterns. Higher values
         cause expansions of the peripheral barrels and a corresponding compression of the inner barrels (i). Lower values instead cause an expansion of the central barrels and compression of the peripheral barrels (ii). Further reducing the rate of diffusion (iii), which is equivalent to increasing the size of the domain and hence simulating development in an animal with a larger cortex, causes a large area to be occupied by projections with intermediate interaction parameters; those with strong interaction parameters are compressed around the edge of the domain, and consequently a barrel pattern fails to form.}}
     \label{fig:paramsweep}
   \end{fullwidth}
@@ -443,7 +443,7 @@ the anterior-posterior and medial-lateral axes.  \mpfour{These gradients are
         noise applied to the guidance fields. Uniform random noise $(\rho_{max} - \rho_{min})\,U(0, \nu_{\rho})$ was added
         to each (hexagonal) element of $\rho_1(\mb{x})$ and $\rho_2(\mb{x})$ and the result
         was smoothed by convolution with a symmetric 2D
-        Gaussian kernel of width $\sigma_\rho$. 
+        Gaussian kernel of width $\sigma_\rho$.
         %
         \emph{Right column:} The effect of setting the rotational angle
         of the linearly varying guidance field, $\rho_1(\mb{x})$, to $\phi_{\rho_1}$,
@@ -502,7 +502,7 @@ causes barrel rows B, C and D to become `crushed'
   in the model is highly robust to a wide range of sources of perturbation.}
 
 \MPthreePred{To further investigate the interplay of genetic and intrinsic
-  mechanisms we simulated two well known experimental manipulations of 
+  mechanisms we simulated two well known experimental manipulations of
 barrel development. First, we simulated a seminal barrel duplication
   paradigm}
 \citep{shimogori_fibroblast_2005,assimacopoulos_fibroblast_2012}
@@ -513,7 +513,7 @@ barrel development. First, we simulated a seminal barrel duplication
   this results in a mirror of the primary barrel cortex boundary along the
   rostrocaudal axis}
 \cite{assimacopoulos_fibroblast_2012} \MPthreePred{and a mirroring of the
-  anterior-posterior guidance gradient $\rho_1$ at the border between them (Fig.\,\ref{fig:fgf8}A). 
+  anterior-posterior guidance gradient $\rho_1$ at the border between them (Fig.\,\ref{fig:fgf8}A).
   The result after 30000 iterations, and otherwise using the parameters of the example simulation, was two mirror-symmetrical
   barrel fields comprising $2N$ barrels (Fig.\,\ref{fig:fgf8}B), consistent
   with the outcome of the original experiments.}
@@ -761,8 +761,8 @@ from $\mb{x}$ to the boundary, \MPtwo{of the form $1/[1 +
   dimensionless quantity can be obtained from the scalar product of the simulated and experimental
   adjacency vectors:
   $\frac{1}{N} \sum_i \frac { \mathcal{V}_{i}^{\mathrm{sim}}}
-  {b_{i}^{\mathrm{sim}} } \vcdot \frac{\mathcal{V}_{i}^{\mathrm{exp}}}{b_{i}^{\mathrm{exp}}}$, where e.g., 
-  $b_i^{\mathrm{exp}}$, is the total length of the border around 
+  {b_{i}^{\mathrm{sim}} } \vcdot \frac{\mathcal{V}_{i}^{\mathrm{exp}}}{b_{i}^{\mathrm{exp}}}$, where e.g.,
+  $b_i^{\mathrm{exp}}$, is the total length of the border around
 real barrel $i$. This quantity is small when the fields that form in simulation have dissimilar neighbour relations to those of the real barrels
   (e.g., Fig.\,\ref{fig:main}C, $t=1000$), and maximal for a precise topological map ($t=10000$).}
 %
