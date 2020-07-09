@@ -113,20 +113,21 @@ and can be manipulated to stretch,
 shrink, shift, and even duplicate barrels
 \citep{assimacopoulos_fibroblast_2012}.
 
-The barrel boundaries form a Voronoi tessellation
-\citep{senft_mouse_1991} (Fig.\,\ref{fig:main}A), suggesting that barreloid topology is
-preserved in the projection of thalamocortical axons into the cortex, and that
-a barrel forms by lateral axon branching from an initial center-point that
-ceases upon contact with axons branching from adjacent centers.  However, the
-assumption of pre-arranged center-points is difficult to resolve with the
-observation that axons arrive in the cortical plate as an undifferentiated
-bundle, \emph{prior} to barreloid formation \citep{agmon_organized_1993}.
-\mpsix{In mice, axons from the trigeminal ganglion arrive in the principal sensory
+The barrel boundaries form a Voronoi tessellation \citep{senft_mouse_1991}
+(Fig.\,\ref{fig:main}A), suggesting that barreloid topology is preserved in
+the projection of thalamocortical axons into the cortex, and that a barrel
+forms by lateral axon branching from an initial center-point that ceases upon
+contact with axons branching from adjacent centers.  However, the assumption
+of pre-arranged center-points is difficult to resolve with the observation
+that axons arrive in the cortical plate as an undifferentiated bundle,
+\emph{prior} to barreloid formation \citep{agmon_organized_1993}.  \mpsix{In
+  mice, axons from the trigeminal ganglion arrive in the principal sensory
   nucleus of the trigeminal nerve (PrV) at E12, then axons from the PrV arrive
   in the ventroposteromedial nucleus of the thalamus (VPM) at E17, then axons
-  from the VPM arrive in the cortical plate at E18/P0. Distinct whisker-related
-  clusters then become apparent in the PrV at P0-P1, in the VPM at P2-P3, and
-  in the cortex at P3-P5} \citep{erzurumlu_development_2012,sehara_neuronal_2011}.
+  from the VPM arrive in the cortical plate at E18/P0. Distinct
+  whisker-related clusters then become apparent in the PrV at P0-P1, in the
+  VPM at P2-P3, and in the cortex at P3-P5}
+\citep{erzurumlu_development_2012,sehara_neuronal_2011}.
 
 Alternatively, reaction-diffusion dynamics could generate a Voronoi
 tessellation without pre-arranged centers, by amplifying characteristic modes
@@ -155,13 +156,14 @@ pre-defined centers.
 
 \cite{karbowski_model_2004} developed a reaction-diffusion style model of how
 extrinsic signalling gradients can constrain the emergence of distinct fields
-from intrinsic cortical dynamics. Their model defines how the \cmnt{fraction of
-occupied synapses} $c_i(x,t)$ and \cmnt{the density of} axon branches $a_i(x,t)$ interact at time $t$, along a
-1D anterior-posterior axis $x$, for $N$ thalamocortical projections indexed by
-$i$. The model was derived from the assumption that the rates at which $a_i$
-and $c_i$ grow are reciprocally coupled. Extending the original 1D model to
-simulate arealisation on a 2D cortical sheet, we use $a_i(\mb{x},t)$ and
-$c_i(\mb{x},t)$, and model synaptogenesis as
+from intrinsic cortical dynamics. Their model defines how the \cmnt{fraction
+  of occupied synapses} $c_i(x,t)$ and \cmnt{the density of} axon branches
+$a_i(x,t)$ interact at time $t$, along a 1D anterior-posterior axis $x$, for
+$N$ thalamocortical projections indexed by $i$. The model was derived from the
+assumption that the rates at which $a_i$ and $c_i$ grow are reciprocally
+coupled. Extending the original 1D model to simulate arealisation on a 2D
+cortical sheet, we use $a_i(\mb{x},t)$ and $c_i(\mb{x},t)$, and model
+synaptogenesis as
 %
 \begin{equation} \label{eq:dc}
 \frac{\partial c_i}{\partial t} =-\alpha c_i +\beta  \left(1 - \sum_{j=1}^{N} c_{j}\right)[a_i]^k.
@@ -196,32 +198,45 @@ branching and synaptogenesis \cmnt{and implies an assumption of spatially
 \begin{figure}
   \begin{fullwidth}
     \includegraphics[width=\linewidth]{./Fig1.png}
-    \caption{The emergence of whisker barrels. \textbf{A} Left shows a cytochrome oxidase stain obtained from rat S1
+    \caption{The emergence of whisker barrels.
+      %
+      \textbf{A} Left shows a cytochrome oxidase stain obtained from rat S1
       by \cite{zheng_signal_2001}, with black lines to delineate barrels and to
       measure departure (Honda-$\delta$; see \citealp{senft_mouse_1991}) from a
       perfect Voronoi tesselation. Right shows the initial distribution of axon
       branching density ($a$) for one thalamocortical projection, and two
       molecular guidance fields ($\rho$), \cmnt{where the domain $S$ has been
-        traced from \textbf{A}}. \textbf{B} The strengths of interaction
-      $\gamma$ with fields $\rho_1$ and $\rho_2$ are indicated for each of 41
-      projections by the lengths of green and blue arrows respectively, assuming
-      that similar fields aligned to the posterior-anterior and medial-lateral
-      axes in the ventroposterior medial nucleus of the thalamus are sampled at
-      the locations of putative barreloid centers (reconstructed from
-      \citealp{haidarliu_size_2001}, their \MPone{Fig.\,5b}). \textbf{C} Results for the example simulation, with parameters
-      \MPtwo{$N=41$, $\alpha=3.6$, $\beta=16.67$, $k=3$, $D=0.5$, $\gamma\in\pm 2$,
-      $\epsilon=1.2$} and $\delta{t}=0.0001$. Colours indicate the thalamic
-      projection for which the connection density is maximal and black lines
-      delineate boundaries (see Movie
-      S1). \textbf{D} Red dots show the \emph{Honda}--\metrics{$\delta(t)$} metric obtained from \metrics{the}
-      simulation approaching that obtained from the \metrics{real} barrels in \textbf{A} (dotted
-      line); black squares show the \emph{pattern difference} metric $\eta(t)$, and reveal the emergence of a correspondence between the real and simulated barrel shapes (units mm$^3$); \metrics{grey hexagons show \metrics{how selectively each cortical site is innervated};
+        traced from \textbf{A}}.
+      %
+      \textbf{B} The strengths of interaction $\gamma$ with fields $\rho_1$
+      and $\rho_2$ are indicated for each of 41 projections by the lengths of
+      green and blue arrows respectively, assuming that similar fields aligned
+      to the posterior-anterior and medial-lateral axes in the ventroposterior
+      medial nucleus of the thalamus are sampled at the locations of putative
+      barreloid centers (reconstructed from \citealp{haidarliu_size_2001},
+      their \MPone{Fig.\,5b}).
+      %
+      \textbf{C} Results for the example simulation, with parameters
+      \MPtwo{$N=41$, $\alpha=3.6$, $\beta=16.67$, $k=3$, $D=0.5$,
+        $\gamma\in\pm 2$, $\epsilon=1.2$} and $\delta{t}=0.0001$. Colours
+      indicate the thalamic projection for which the connection density is
+      maximal and black lines delineate boundaries (see Movie S1).
+      %
+      \textbf{D} Red dots show the \emph{Honda}--\metrics{$\delta(t)$} metric
+      obtained from \metrics{the} simulation approaching that obtained from
+      the \metrics{real} barrels in \textbf{A} (dotted line); black squares
+      show the \emph{pattern difference} metric $\eta(t)$, and reveal the
+      emergence of a correspondence between the real and simulated barrel
+      shapes (units mm$^3$); \metrics{grey hexagons show how selectively each
+        cortical site is innervated;
         $\omega(t) = \oiint_{S} \mu(\mb{x},t) \mathrm{d}S$, where
         $\mu(\mb{x}) \equiv \mathrm{max}_i\big(c_i(\mb{x},t)\big)\big/\sum_{j=1}^{N} c_j(\mb{x},t)$.}
+      %
       \textbf{E} \metrics{Plotted across the cortical sheet, the selectivity
         develops to reveal an alignment with the emergent barrel boundary
-        shapes}. \metrics{Greyscale colour indicates values of $\mu(\mb{x})$ and overlaid
-        contours show $c_i > 0.95 \mathrm{max}_i\big(c_i(\mb{x})\big)$.} All scale bars 1\,mm.}
+        shapes}. \metrics{Greyscale colour indicates values of $\mu(\mb{x})$
+        and overlaid contours show $c_i > 0.95
+        \mathrm{max}_i\big(c_i(\mb{x})\big)$.} All scale bars 1\,mm.}
     \label{fig:main}
   \end{fullwidth}
 \end{figure}
@@ -339,8 +354,9 @@ the anterior-posterior and medial-lateral axes.  \mpfour{These gradients are
   which the connection density is maximal at each simulated cortical location,
   as shown in Fig.\,\ref{fig:main}C. Parameter values for this example simulation
   (see also Movie S1) were obtained by
-  conducting a full parameter sweep and choosing a combination ($\alpha=3.6$, $\beta=16.67$, $k=3$, $D=0.5$, $\epsilon=1.2$) that
-  scored well against the following three measures.}
+  conducting a full parameter sweep and choosing a combination
+  ($\alpha=3.6$, $\beta=16.67$, $k=3$, $D=0.5$, $\epsilon=1.2$) that scored
+  well against the following three measures.}
 
 % New section to describe and introduce the metrics
 \metrics{First, we used an algorithm introduced by Honda to measure the
@@ -381,18 +397,37 @@ the anterior-posterior and medial-lateral axes.  \mpfour{These gradients are
 \begin{figure}
   \begin{fullwidth}
     \includegraphics[width=\linewidth]{./Fig2.png}
-    \caption{\MPthreePar{Exploring the parameter space. \textbf{A} Colour indicates the quality of the pattern at $t=30000$ steps, against three measures: Low values of \emph{Honda}--$\delta$ (top
-        row) suggest a Voronoi-like pattern of fields. The \emph{pattern difference}, $\eta$ (middle row) measures the difference in the area and arrangement of barrels in real and simulated fields. The \emph{selectivity}, $\omega$ (bottom
-        row), measures the specificity with which the cortical sheet is innervated. Colour maps are chosen so that lighter (orange and yellow) colours indicate higher quality patterns against each measure. White squares indicate combinations of parameters for which simulations were numerically unstable.
-%
-        The parameter space explored is three dimensional with the ratio $\alpha/\beta$ varying between plots, and the
-        competition parameter $\epsilon$ and the diffusion constant $D$ varying within plots. An asterisk (*)
-        marks the parameters used in Fig.\,\ref{fig:main}. Boxes i),
-        ii)~and iii)~mark parameter sets for which corresponding patterns are
-        shown in \textbf{B} (for $t=30000$ steps).
-%
-        \textbf{B} Varying the diffusion constant $D$ generates qualitatively different patterns. Higher values
-        cause expansions of the peripheral barrels and a corresponding compression of the inner barrels (i). Lower values instead cause an expansion of the central barrels and compression of the peripheral barrels (ii). Further reducing the rate of diffusion (iii), which is equivalent to increasing the size of the domain and hence simulating development in an animal with a larger cortex, causes a large area to be occupied by projections with intermediate interaction parameters; those with strong interaction parameters are compressed around the edge of the domain, and consequently a barrel pattern fails to form.}}
+    \caption{\MPthreePar{Exploring the parameter space.
+        %
+        \textbf{A} Colour indicates the quality of the pattern at $t=30000$
+        steps, against three measures: Low values of \emph{Honda}--$\delta$
+        (top row) suggest a Voronoi-like pattern of fields. The \emph{pattern
+          difference}, $\eta$ (middle row) measures the difference in the area
+        and arrangement of barrels in real and simulated fields. The
+        \emph{selectivity}, $\omega$ (bottom row), measures the specificity
+        with which the cortical sheet is innervated. Colour maps are chosen so
+        that lighter (orange and yellow) colours indicate higher quality
+        patterns against each measure. White squares indicate combinations of
+        parameters for which simulations were numerically unstable.
+        %
+        The parameter space explored is three dimensional with the ratio
+        $\alpha/\beta$ varying between plots, and the competition parameter
+        $\epsilon$ and the diffusion constant $D$ varying within plots. An
+        asterisk (*) marks the parameters used in Fig.\,\ref{fig:main}. Boxes
+        i), ii)~and iii)~mark parameter sets for which corresponding patterns
+        are shown in \textbf{B} (for $t=30000$ steps).
+        %
+        \textbf{B} Varying the diffusion constant $D$ generates qualitatively
+        different patterns. Higher values cause expansions of the peripheral
+        barrels and a corresponding compression of the inner barrels
+        (i). Lower values instead cause an expansion of the central barrels
+        and compression of the peripheral barrels (ii). Further reducing the
+        rate of diffusion (iii), which is equivalent to increasing the size of
+        the domain and hence simulating development in an animal with a larger
+        cortex, causes a large area to be occupied by projections with
+        intermediate interaction parameters; those with strong interaction
+        parameters are compressed around the edge of the domain, and
+        consequently a barrel pattern fails to form.}}
     \label{fig:paramsweep}
   \end{fullwidth}
 \end{figure}
@@ -433,34 +468,41 @@ the anterior-posterior and medial-lateral axes.  \mpfour{These gradients are
   \begin{fullwidth}
     \includegraphics[width=\linewidth]{./Fig3.png}
     \caption{
-      \MPthreeSens{Sensitivity analysis. \textbf{A} Metrics of map quality $\delta(t)$ (top row), $\omega(t)$ (middle row) and $\eta(t)$ (bottom row), were evaluated at $t=30000$ steps. The $y$-axes and colour scales have identical ranges
-        to the colour scales in Fig.\,\ref{fig:paramsweep}, for easy comparison. \emph{Left column:} The effect of adding noise drawn from a uniform distribution,
-        $(\gamma_{max}-\gamma_{min})\,U(0,\nu_\gamma)$,
-        to the values of the interaction parameters, $\gamma$ used in
+      \MPthreeSens{Sensitivity analysis.
+        %
+        \textbf{A} Metrics of map quality $\delta(t)$ (top row), $\omega(t)$
+        (middle row) and $\eta(t)$ (bottom row), were evaluated at $t=30000$
+        steps. The $y$-axes and colour scales have identical ranges to the
+        colour scales in Fig.\,\ref{fig:paramsweep}, for easy comparison.
+        %
+        \emph{Left column:} The effect of adding noise drawn from a uniform
+        distribution, $(\gamma_{max}-\gamma_{min})\,U(0,\nu_\gamma)$, to the
+        values of the interaction parameters, $\gamma$ used in
         Fig.\,\ref{fig:main}.
         %
-        \emph{Middle column:} The effect of changing the magnitude and the length scale of
-        noise applied to the guidance fields. Uniform random noise $(\rho_{max} - \rho_{min})\,U(0, \nu_{\rho})$ was added
-        to each (hexagonal) element of $\rho_1(\mb{x})$ and $\rho_2(\mb{x})$ and the result
-        was smoothed by convolution with a symmetric 2D
-        Gaussian kernel of width $\sigma_\rho$.
+        \emph{Middle column:} The effect of changing the magnitude and the
+        length scale of noise applied to the guidance fields. Uniform random
+        noise $(\rho_{max} - \rho_{min})\,U(0, \nu_{\rho})$ was added to each
+        (hexagonal) element of $\rho_1(\mb{x})$ and $\rho_2(\mb{x})$ and the
+        result was smoothed by convolution with a symmetric 2D Gaussian kernel
+        of width $\sigma_\rho$.
         %
-        \emph{Right column:} The effect of setting the rotational angle
-        of the linearly varying guidance field, $\rho_1(\mb{x})$, to $\phi_{\rho_1}$,
+        \emph{Right column:} The effect of setting the rotational angle of the
+        linearly varying guidance field, $\rho_1(\mb{x})$, to $\phi_{\rho_1}$,
         and modifying its overall gain to $G_{\rho_1}$, whilst keeping the
-        parameters of $\rho_2(\mb{x})$
-        unchanged from those used in the example simulation, for which
-        $\phi_{\rho_2}=84$\textdegree and $G_{\rho_2}=1$.
+        parameters of $\rho_2(\mb{x})$ unchanged from those used in the
+        example simulation, for which $\phi_{\rho_2}=84$\textdegree and
+        $G_{\rho_2}=1$.
         %
         \textbf{B} Four ways in which the perturbations in \textbf{A} affect
         the patterns. i) The effect of significant interaction parameter noise
-        results in topological defects. ii) High magnitude, short lengthscale noise in
-        $\rho(\mb{x})$ leads to non-straight edges between adjacent barrels. iii)
- Reducing the slope of gradient $\rho_1$ (by a factor of 10)
-causes barrel rows B, C and D to become `crushed'
-        down the center line, and edge barrels to dominate. iv) Rotating $\rho_1$ by 20\textdegree~causes a slight distortion of the pattern, resulting in an overall anticlockwise rotation of the field locations.
-      }
-    }
+        results in topological defects. ii) High magnitude, short lengthscale
+        noise in $\rho(\mb{x})$ leads to non-straight edges between adjacent
+        barrels. iii) Reducing the slope of gradient $\rho_1$ (by a factor of
+        10) causes barrel rows B, C and D to become `crushed' down the center
+        line, and edge barrels to dominate. iv) Rotating $\rho_1$ by
+        20\textdegree~causes a slight distortion of the pattern, resulting in
+        an overall anticlockwise rotation of the field locations. }}
     \label{fig:sens}
   \end{fullwidth}
 \end{figure}
@@ -502,19 +544,18 @@ causes barrel rows B, C and D to become `crushed'
   in the model is highly robust to a wide range of sources of perturbation.}
 
 \MPthreePred{To further investigate the interplay of genetic and intrinsic
-  mechanisms we simulated two well known experimental manipulations of
-barrel development. First, we simulated a seminal barrel duplication
-  paradigm}
+  mechanisms we simulated two well known experimental manipulations of barrel
+  development. First, we simulated a seminal barrel duplication paradigm}
 \citep{shimogori_fibroblast_2005,assimacopoulos_fibroblast_2012}
 \MPthreePred{in which the growth factor Fgf8, which is normally expressed at
   the anterior end of the cortical subplate from around E9.5}
 \citep{crossley_mouse_1995}, \MPthreePred{is ectopically expressed (by
-  electroporation) also at the posterior pole. We assume that
-  this results in a mirror of the primary barrel cortex boundary along the
-  rostrocaudal axis}
+  electroporation) also at the posterior pole. We assume that this results in
+  a mirror of the primary barrel cortex boundary along the rostrocaudal axis}
 \cite{assimacopoulos_fibroblast_2012} \MPthreePred{and a mirroring of the
-  anterior-posterior guidance gradient $\rho_1$ at the border between them (Fig.\,\ref{fig:fgf8}A).
-  The result after 30000 iterations, and otherwise using the parameters of the example simulation, was two mirror-symmetrical
+  anterior-posterior guidance gradient $\rho_1$ at the border between them
+  (Fig.\,\ref{fig:fgf8}A). The result after 30000 iterations, and otherwise
+  using the parameters of the example simulation, was two mirror-symmetrical
   barrel fields comprising $2N$ barrels (Fig.\,\ref{fig:fgf8}B), consistent
   with the outcome of the original experiments.}
 
@@ -527,34 +568,41 @@ barrel development. First, we simulated a seminal barrel duplication
       (c.f.~\citealp{assimacopoulos_fibroblast_2012}), simulated by reflecting
       $\rho_1$ from Fig.\,\ref{fig:main}A at the join of the original boundary
       with its mirror. All other model parameters match those in
-      Fig.\,\ref{fig:main}C. \textbf{C} Simulating
-      whisker trimming by reducing the competitiveness,
-      $\epsilon$, of the one projection. For C3 only, $\epsilon$ was mutiplied by
-      $m\in(0,1)$. The pattern shown is that formed
-      after 30000 steps with $m=0.86$, which reduces the size of the C3 field to 65\% of its original size,
-      matching the average barrel area reduction observed by }
-    \citealp{kossut_effects_1992}. \MPthreePred{\textbf{D} The area of the C3 barrel
-reduces as $m$ is reduced, whereas
-      the mean area of neighbouring barrels (B3, C2, C4, D2 \& D3, grey
-      circles) increases. The dotted grey line indicates $m=0.86$ for
-      comparison with panel C.}}
+      Fig.\,\ref{fig:main}C. \textbf{C} Simulating whisker trimming by
+      reducing the competitiveness, $\epsilon$, of the one projection. For C3
+      only, $\epsilon$ was mutiplied by $m\in(0,1)$. The pattern shown is that
+      formed after 30000 steps with $m=0.86$, which reduces the size of the C3
+      field to 65\% of its original size, matching the average barrel area
+      reduction observed by }
+    \citealp{kossut_effects_1992}. \MPthreePred{\textbf{D} The area of the C3
+      barrel reduces as $m$ is reduced, whereas the mean area of neighbouring
+      barrels (B3, C2, C4, D2 \& D3, grey circles) increases. The dotted grey
+      line indicates $m=0.86$ for comparison with panel C.}}
   \label{fig:fgf8}
 \end{center}
 
-\MPthreePred{Finally, to investigate the response of the model to environmental
-  manipulation, we simulated a whisker deprivation experiment. In a critical period comprising the first postnatal days, removal of the whiskers by
-  electrocauterization, plucking, or trimming leads to observable changes in
-  brain structures, including the barrel field~\citep{jeanmonod_mouse_1981}. Amongst other changes, deprivation of individual whiskers, or an entire row of whiskers leads to smaller barrels~\citep{kossut_effects_1992,loos_somatosensory_1973}. We
-  simulated trimming of the individual whisker C3 during the critical
-  period by reducing the competitiveness of the C3 thalamocortical projection, $\epsilon$. As a result, the corresponding field
-  size was smaller (Fig.\,\ref{fig:fgf8}C), and the size of the fields representing
-  the neighbours of C3 increased in size. A reduction in area to 65\%, comparable to that induced by
-  \citealp{kossut_effects_1992}, was obtained in simulation when $\epsilon$ was reduced to 86\% (Fig.\,\ref{fig:fgf8}D.), and the C3 barrel disappeared altogether when $\epsilon$ was less than half of its original value.}
+\MPthreePred{Finally, to investigate the response of the model to
+  environmental manipulation, we simulated a whisker deprivation
+  experiment. In a critical period comprising the first postnatal days,
+  removal of the whiskers by electrocauterization, plucking, or trimming leads
+  to observable changes in brain structures, including the barrel
+  field~\citep{jeanmonod_mouse_1981}. Amongst other changes, deprivation of
+  individual whiskers, or an entire row of whiskers leads to smaller
+  barrels~\citep{kossut_effects_1992,loos_somatosensory_1973}. We simulated
+  trimming of the individual whisker C3 during the critical period by reducing
+  the competitiveness of the C3 thalamocortical projection, $\epsilon$. As a
+  result, the corresponding field size was smaller (Fig.\,\ref{fig:fgf8}C),
+  and the size of the fields representing the neighbours of C3 increased in
+  size. A reduction in area to 65\%, comparable to that induced by
+  \citealp{kossut_effects_1992}, was obtained in simulation when $\epsilon$
+  was reduced to 86\% (Fig.\,\ref{fig:fgf8}D.), and the C3 barrel disappeared
+  altogether when $\epsilon$ was less than half of its original value.}
 
 \MPthreePred{Together with the results of simulated misexpression, the
   consistency of the simulated whisker trimming results with those of the
-  original studies demonstrates how the model can be used to investigate the contribution of intrinsic and extrinsic factors to the
-  development of cortical fields.}
+  original studies demonstrates how the model can be used to investigate the
+  contribution of intrinsic and extrinsic factors to the development of
+  cortical fields.}
 
 \section{Discussion}
 
@@ -569,7 +617,8 @@ conserved over time.
 The emergence of barrels in simulation required competition between thalamic
 projections in terms of synaptic connectivity and also competition in terms of
 cortical space, as represented by $\chi$, with an implicit requirement for a
-self/other identifier amongst projections. This latter form of competition may account for the absence of barrels in rodents with larger brains, such as
+self/other identifier amongst projections. This latter form of competition may
+account for the absence of barrels in rodents with larger brains, such as
 capybara, for which competition for space is presumably weaker
 \citep{woolsey_comparative_1975}. Hence, irrespective of whether barrels are
 necessary for adaptive whisker function, the emergence of somatotopically
@@ -608,23 +657,23 @@ additional developmental mechanisms.
 %
 % Arbitrary boundary shapes were applied
 
-\MPone{We concentrated on the representation of the
-  forty-one macrovibrissae that constitute a given barrel field, because their
-  thalamic and cortical correlates are easily identifiable and consistently
-  located, excluding the five rhinal whiskers as their cortical representation is isolated from the main barrel
-  field. We excluded the representation of the microvibrissae to limit
-  the overall complexity of the simulations.}
+\MPone{We concentrated on the representation of the forty-one macrovibrissae
+  that constitute a given barrel field, because their thalamic and cortical
+  correlates are easily identifiable and consistently located, excluding the
+  five rhinal whiskers as their cortical representation is isolated from the
+  main barrel field. We excluded the representation of the microvibrissae to
+  limit the overall complexity of the simulations.}
 
 The cortical sheet was modelled as a two dimensional hexagonal lattice, which
 simplifies the computation of the 2D Laplacian. Within a boundary traced
-around the edge of a
-rat barrel field (Fig.\,\ref{fig:main}A) we set the hex-to-hex distance
-$d$ to 0.03\,mm, which resulted in a lattice containing 6515 hexes for the
-simulations shown in Figs.\,\ref{fig:main}A,C \& D and 12739 hexes for the Fgf8
-misexpression study shown in Fig.\,\ref{fig:fgf8}. Each hex contained 82 time-dependent
-variables: 41 branching densities ($a_i$) and 41 connection densities ($c_i$).
-The rate of change of each of the time-dependent variables (Eqs.\,\ref{eq:dc}
-\& \ref{eq:da}) was computed using a fourth-order Runge-Kutta method.
+around the edge of a rat barrel field (Fig.\,\ref{fig:main}A) we set the
+hex-to-hex distance $d$ to 0.03\,mm, which resulted in a lattice containing
+6515 hexes for the simulations shown in Figs.\,\ref{fig:main}A,C \& D and
+12739 hexes for the Fgf8 misexpression study shown in
+Fig.\,\ref{fig:fgf8}. Each hex contained 82 time-dependent variables: 41
+branching densities ($a_i$) and 41 connection densities ($c_i$).  The rate of
+change of each of the time-dependent variables (Eqs.\,\ref{eq:dc} \&
+\ref{eq:da}) was computed using a fourth-order Runge-Kutta method.
 
 The most involved part of this computation is to find the divergence of the
 flux of axonal branching, $\mb{J}_i(\mb{x},t)$, the term in parentheses in
@@ -687,12 +736,13 @@ neighbours at positions $\mb{p}_1$--$\mb{p}_6$ is
 \end{split}
 \end{equation}
 %
-where $v = d/\sqrt{3}$ is the length of each edge of the hexagon and $\dif\gamma$
-is an infinitesimally small distance along its perimeter.
+where $v = d/\sqrt{3}$ is the length of each edge of the hexagon and
+$\dif\gamma$ is an infinitesimally small distance along its perimeter.
 
 \noindent
 ii) The computation of the second term in Eq.\,\ref{eq:divJExpanded},
-$\langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}_i(\mb{p}_0)\rangle$, can be written out similarly:
+$\langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}_i(\mb{p}_0)\rangle$, can be written
+out similarly:
 
 \begin{equation} \label{eq:divg}
 \begin{split}
@@ -716,22 +766,22 @@ $\langle a_i(\mb{p}_0,t)\nabla\vcdot\mb{g}_i(\mb{p}_0)\rangle$, can be written o
 \end{split}
 \end{equation}
 %
-where $g_i^x$ and $g_i^y$ are the Cartesian components of $\mb{g}_i$. Both this
-last expression, and the final expression of Eq.\,\ref{eq:lapl} can
-be computed locally, by summing over values of the nearest neighbours.
+where $g_i^x$ and $g_i^y$ are the Cartesian components of $\mb{g}_i$. Both
+this last expression, and the final expression of Eq.\,\ref{eq:lapl} can be
+computed locally, by summing over values of the nearest neighbours.
 
 \noindent
-iii) The \MPtwo{middle} term in Eq.\,\ref{eq:divJExpanded} is the scalar product of two
-vector fields which is straightforward to compute from their Cartesian
-components.
+iii) The \MPtwo{middle} term in Eq.\,\ref{eq:divJExpanded} is the scalar
+product of two vector fields which is straightforward to compute from their
+Cartesian components.
 
 \noindent
-\MPtwo{iv) The same method used to compute $\dvrg a_i$ in term (i) is used to compute
-$\dvrg \hat{a}_i$.}
+\MPtwo{iv) The same method used to compute $\dvrg a_i$ in term (i) is used to
+  compute $\dvrg \hat{a}_i$.}
 
 \noindent
-\MPtwo{v) The final term is the scalar product of the two vector fields $\nabla
-  a_i$ and $\nabla \hat{a}_i$.}
+\MPtwo{v) The final term is the scalar product of the two vector fields
+  $\nabla a_i$ and $\nabla \hat{a}_i$.}
 
 By separating the computation of Eq.\,\ref{eq:divJ} into parts (i)--(v), the
 no-flux boundary condition,
@@ -741,35 +791,43 @@ no-flux boundary condition,
   \mb{J}_i(\mb{x},t)\big\rvert_{\mathrm{boundary}} = 0,
 \end{equation}
 %
-can be fulfilled. On
-the boundary, the contribution to $\mb{J}$ resulting from the first term of
-Eq.\,\ref{eq:divJExpanded} can be fixed to 0 by the `ghost cell method' in
-which, during the evaluation of (i), a hex outside the boundary containing the
-same value as the hex inside the boundary is imagined to exist such that the
-flux of $\mb{J}$ across the boundary is 0. Then, $\mb{g}_i(\mb{x})$ can be
-tailored so that it, and its normal derivative, approach 0 at the boundary,
-ensuring that the second and third terms of Eq.\,\ref{eq:divJExpanded} also
-contribute nothing to $\mb{J}$. This is achieved by \MPtwo{multiplying}
-$\mb{g}_i(\mb{x})$ \MPtwo{by} a sharp logistic function of the distance, $d_b$,
-from $\mb{x}$ to the boundary, \MPtwo{of the form $1/[1 +
-  \exp(100(d_f-d_b))]$, where $d_f=0.1$\,mm $\approx 3d$ is the boundary fall-off distance}.
+can be fulfilled. On the boundary, the contribution to $\mb{J}$ resulting from
+the first term of Eq.\,\ref{eq:divJExpanded} can be fixed to 0 by the `ghost
+cell method' in which, during the evaluation of (i), a hex outside the
+boundary containing the same value as the hex inside the boundary is imagined
+to exist such that the flux of $\mb{J}$ across the boundary is 0. Then,
+$\mb{g}_i(\mb{x})$ can be tailored so that it, and its normal derivative,
+approach 0 at the boundary, ensuring that the second and third terms of
+Eq.\,\ref{eq:divJExpanded} also contribute nothing to $\mb{J}$. This is
+achieved by \MPtwo{multiplying} $\mb{g}_i(\mb{x})$ \MPtwo{by} a sharp logistic
+function of the distance, $d_b$, from $\mb{x}$ to the boundary, \MPtwo{of the
+  form $1/[1 + \exp(100(d_f-d_b))]$, where $d_f=0.1$\,mm $\approx 3d$ is the
+  boundary fall-off distance}.
 
-\metrics{The \emph{pattern difference} metric, $\eta$, incorporates information about
-  the differences in the areas of simulated and experimentally determined (real) barrels
-  ($\mathcal{A}_i^{\mathrm{sim}}$ and $\mathcal{A}_i^{\mathrm{exp}}$), as well as
- information contained in the `adjacency vector' for each barrel, $\mathcal{V}_i$, the $j$-th element of which is the length of the border between barrel $i$ and $j$. For a well-formed barrel pattern, $\mathcal{V}_{i}$ is a sparse vector. A
-  dimensionless quantity can be obtained from the scalar product of the simulated and experimental
-  adjacency vectors:
+\metrics{The \emph{pattern difference} metric, $\eta$, incorporates
+  information about the differences in the areas of simulated and
+  experimentally determined (real) barrels ($\mathcal{A}_i^{\mathrm{sim}}$ and
+  $\mathcal{A}_i^{\mathrm{exp}}$), as well as information contained in the
+  `adjacency vector' for each barrel, $\mathcal{V}_i$, the $j$-th element of
+  which is the length of the border between barrel $i$ and $j$. For a
+  well-formed barrel pattern, $\mathcal{V}_{i}$ is a sparse vector. A
+  dimensionless quantity can be obtained from the scalar product of the
+  simulated and experimental adjacency vectors:
+  %
   $\frac{1}{N} \sum_i \frac { \mathcal{V}_{i}^{\mathrm{sim}}}
-  {b_{i}^{\mathrm{sim}} } \vcdot \frac{\mathcal{V}_{i}^{\mathrm{exp}}}{b_{i}^{\mathrm{exp}}}$, where e.g.,
-  $b_i^{\mathrm{exp}}$, is the total length of the border around
-real barrel $i$. This quantity is small when the fields that form in simulation have dissimilar neighbour relations to those of the real barrels
-  (e.g., Fig.\,\ref{fig:main}C, $t=1000$), and maximal for a precise topological map ($t=10000$).}
+  {b_{i}^{\mathrm{sim}} } \vcdot \frac{\mathcal{V}_{i}^{\mathrm{exp}}}{b_{i}^{\mathrm{exp}}}$,
+  %
+  where e.g., $b_i^{\mathrm{exp}}$, is the total length of the border around
+  real barrel $i$. This quantity is small when the fields that form in
+  simulation have dissimilar neighbour relations to those of the real barrels
+  (e.g., Fig.\,\ref{fig:main}C, $t=1000$), and maximal for a precise
+  topological map ($t=10000$).}
 %
-\metrics{A second comparison considers the mean magnitude of the difference between the simulated and experimental
-  vectors: $\frac{1}{N} \sum_i \norm{ \mathcal{V}_{i}^{\mathrm{sim}} -
-    \mathcal{V}_{i}^{\mathrm{exp}} } $. This tends to 0 for a perfect
-  match and can separate patterns with straight boundaries from those with `noisy edges' (as in Fig.\,\ref{fig:sens}B\,ii).}
+\metrics{A second comparison considers the mean magnitude of the difference
+  between the simulated and experimental vectors: $\frac{1}{N} \sum_i \norm{
+    \mathcal{V}_{i}^{\mathrm{sim}} - \mathcal{V}_{i}^{\mathrm{exp}} } $. This
+  tends to 0 for a perfect match and can separate patterns with straight
+  boundaries from those with `noisy edges' (as in Fig.\,\ref{fig:sens}B\,ii).}
 %
 \metrics{We combined these terms into a single metric:}
 %
