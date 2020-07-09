@@ -155,8 +155,8 @@ pre-defined centers.
 
 \cite{karbowski_model_2004} developed a reaction-diffusion style model of how
 extrinsic signalling gradients can constrain the emergence of distinct fields
-from intrinsic cortical dynamics. Their model defines how the density of
-connections $c(x,t)$ and axon branches $a(x,t)$ interact at time $t$, along a
+from intrinsic cortical dynamics. Their model defines how the \cmnt{fraction of
+occupied synapses} $c_i(x,t)$ and \cmnt{the density of} axon branches $a_i(x,t)$ interact at time $t$, along a
 1D anterior-posterior axis $x$, for $N$ thalamocortical projections indexed by
 $i$. The model was derived from the assumption that the rates at which $a_i$
 and $c_i$ grow are reciprocally coupled. Extending the original 1D model to
@@ -167,8 +167,8 @@ $c_i(\mb{x},t)$, and model synaptogenesis as
 \frac{\partial c_i}{\partial t} =-\alpha c_i +\beta  \left(1 - \sum_{j=1}^{N} c_{j}\right)[a_i]^k.
 \end{equation}
 %
-Accordingly, where the total density of synaptic connections sums to one,
-connections decay at rate $\alpha$. Otherwise the connection density increases
+Accordingly, where the total \cmnt{fraction} of synaptic connections sums to one,
+connections decay at rate $\alpha$. Otherwise, \cmnt{$c_i(\mb{x},t)$} increases
 non-linearly ($k>1$) with the density of axon branching. Axon branching is
 modelled as
 %
@@ -185,9 +185,11 @@ thalamic projection (indexed by $i$), is determined by $\gamma_{i,j}$, which
 may be positive or negative in order that axons may branch in the direction of
 either higher or lower concentrations. Note that computing the divergence in
 simulation requires cells on the cortical sheet to communicate with immedately
-adjacent cells only (see \emph{Materials \& Methods}). The second term on the
-right represents the coupling between axon branching and synaptogenesis. Here
-  $\chi_i=0$ is a placeholder.
+adjacent cells only (see \emph{Materials \& Methods}). Here $\chi_i=0$ is a
+placeholder. The second term on the right represents the coupling between axon
+branching and synaptogenesis \cmnt{and implies an assumption of spatially
+  homogeneous synaptic density which makes it possible to relate the quantity
+  $c_i$ to connection density}.
 
 \section{Results}
 
