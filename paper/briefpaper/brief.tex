@@ -576,9 +576,13 @@ the anterior-posterior and medial-lateral axes.  \mpfour{These gradients are
       field to 65\% of its original size, matching the average barrel area
       reduction observed by }
     \citealp{kossut_effects_1992}. \MPthreePred{\textbf{D} The area of the C3
-      barrel reduces as $m$ is reduced, whereas the mean area of neighbouring
+      barrel (black squares) reduces as $m$ is reduced, whereas the mean area of neighbouring
       barrels (B3, C2, C4, D2 \& D3, grey circles) increases. The dotted grey
-      line indicates $m=0.86$ for comparison with panel C.}}
+      line indicates $m=0.86$ for comparison with panel C. If the $\epsilon$
+      value is instead reduced for \emph{all} row C projections (including the interstitial
+      $\gamma$ projection), the mean row C barrel area is only slightly
+      reduced (light grey triangles). In this case, the mean row C area at
+      $m=0.86$ is 91\% of that for $m=1$.}}
   \label{fig:fgf8}
 \end{center}
 
@@ -588,16 +592,28 @@ the anterior-posterior and medial-lateral axes.  \mpfour{These gradients are
   removal of the whiskers by electrocauterization, plucking, or trimming leads
   to observable changes in brain structures, including the barrel
   field~\citep{jeanmonod_mouse_1981}. Amongst other changes, deprivation of
-  individual whiskers, or an entire row of whiskers leads to smaller
-  barrels~\citep{kossut_effects_1992,loos_somatosensory_1973}. We simulated
+  individual whiskers leads to smaller
+  % loos_somatosensory_1973 for row cauterization
+  barrels~\citep{kossut_effects_1992}. We simulated
   trimming of the individual whisker C3 during the critical period by reducing
   the competitiveness of the C3 thalamocortical projection, $\epsilon$. As a
   result, the corresponding field size was smaller (Fig.\,\ref{fig:fgf8}C),
   and the size of the fields representing the neighbours of C3 increased in
   size. A reduction in area to 65\%, comparable to that induced by
-  \citealp{kossut_effects_1992}, was obtained in simulation when $\epsilon$
-  was reduced to 86\% (Fig.\,\ref{fig:fgf8}D.), and the C3 barrel disappeared
+  \cite{kossut_effects_1992}, was obtained in simulation when $\epsilon$
+  was reduced to 86\% (Fig.\,\ref{fig:fgf8}D), and the C3 barrel disappeared
   altogether when $\epsilon$ was less than half of its original value.}
+
+\MPthreePred{Although individual whisker trimming reduces barrel size, if an
+  entire row is trimmed, barrel sizes for the trimmed row are not obviously
+  changed \citep{land_metabolic_1985}. We investigated with a simulation in
+  which we varied $\epsilon$ for all of the row C projections.  Although the
+  barrels which formed for row C did show some reduction in area
+  (Fig.\,\ref{fig:fgf8}D), this reduction was small when compared with the
+  individually trimmed C3 simulation. If the effect of trimming any whisker is
+  to reduce its $\epsilon$ (the competitiveness of its projection) to 86\% of
+  its original value, then the model predicts that the cortical barrels for
+  the trimmed C row will retain 91\% of their area.}
 
 \MPthreePred{Together with the results of simulated misexpression, the
   consistency of the simulated whisker trimming results with those of the
