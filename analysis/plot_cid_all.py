@@ -33,18 +33,20 @@ bdo.load (logdirname)
 
 # Plot a surface
 import Surface as surf
-sf = surf.Surface (12, 11)
+sf = surf.Surface (19.2, 10.8) # width and height
 sf.associate(bdo)
 
 sf.showScalebar = False
 sf.showAxes = False
 sf.sb1 = [-1.3, -0.8]
 sf.sb2 = [-0.3, -0.8]
+sf.fs2 = 32
 sf.sbtext = '1 mm'
 sf.sbtpos = [-1.1, -1.1]
 sf.sblw = 5
 sf.sbfs = 48
-sf.showNames = False
+sf.showNames = True
+sf.svgNames = False
 sf.showBoundaries = True
 col = sebcolour.Colour()
 sf.boundarylw = 1.0
@@ -53,6 +55,8 @@ sf.boundaryOuterHexColour = col.gray50
 
 for t in range(0,bdo.t_steps.size):
 
+    print ('Printing frame {0}'.format(t))
+
     # Compute max of c
     maxc = np.max (bdo.c[:,:,t], axis=0)
 
@@ -60,6 +64,7 @@ for t in range(0,bdo.t_steps.size):
     c_id = bdo.id_c[:,t]
 
     # Compute the colour map
+    print ('Compute colour map...')
     colmap = np.zeros([bdo.nhex,3], dtype=float)
     ii = 0
     for oneid in c_id:
@@ -71,15 +76,20 @@ for t in range(0,bdo.t_steps.size):
     #if sf.showBoundaries == True:
     #    sf.domdivision = bdo.domdivision
 
+    print ('plotPoly...')
     sf.plotPoly()
 
+    print ('Contours...')
     # A single contour for each field
     for ii in range(0,bdo.N):
         c = bdo.c[ii,:,t]
-        sf.addContour (c, 0.5, 'white', 1.0, ii, True);
+        ccontour = 0.95*np.max(c)
+        sf.addContour (c, ccontour, 'white', 1.0, ii, False);
 
+    print ('Outer boundary...')
     sf.addOuterBoundary()
 
+    print ('Save fig...')
     mapname = 'plots/cid_all/{0}_c_id_{1:06d}.png'.format(os.path.basename(logdirname), t)
-    plt.savefig (mapname, dpi=300, transparent=False)
+    sf.F1.savefig (mapname, dpi=100, transparent=False) # was originally 300dpi. 160 gives 1920 wide? 98 gives about 1080 deep?
     sf.resetFig()
