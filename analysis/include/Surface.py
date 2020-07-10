@@ -66,6 +66,10 @@ class Surface:
         self.hexrad = 0.1
         # Should the hex edges be visible?
         self.showHexEdges = False
+        # Show the areas of the barrels along with their labels?
+        self.showBarrelAreas = False
+        # Show the individual Honda deltas of the barrels along with their labels?
+        self.showBarrelHondas = False
         # Set True to draw a box or something around the map in an ID colour
         self.drawid = False
         self.idcolour = 0
@@ -331,14 +335,16 @@ class Surface:
                     thechar = idn_arr[count]
 
                 # To add the individual Honda delta for each barrel that has one:
-                #if hd_arr[count] != 0:
-                #    thechar = '{0} {1:.4f}'.format(thechar, hd_arr[count])
+                if self.showBarrelHondas:
+                    if hd_arr[count] != 0:
+                        thechar = '{0} {1:.4f}'.format(thechar, hd_arr[count])
 
                 # To add the area diff per barrel (assumes barreldata object loaded for just one time:
                 #thechar = '{0} {1:.3f}'.format(thechar, self.area_diffs[count][0])
 
                 # To add the area of each barrel (assumes barreldata object loaded for just one time):
-                #thechar = '{0} {1:.3f}'.format(thechar, self.barrel_areas[count][0])
+                if self.showBarrelAreas:
+                    thechar = '{0} {1:.3f}'.format(thechar, self.barrel_areas[count][0])
 
                 if self.svgNames:
                     self.f2.text (dc[0], dc[1], thechar, fontsize=self.fs2, verticalalignment='center', horizontalalignment='center', color=cmap_(cout))

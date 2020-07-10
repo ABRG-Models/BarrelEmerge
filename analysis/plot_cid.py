@@ -72,6 +72,8 @@ def content():
     else:
         sf.showNames = False
     sf.svgNames = False  # set True to put labels on separate svg
+    sf.showBarrelAreas = False # True to print barrel areas with labels
+    sf.showBarrelHondas = False # True to print barrel Hondas with labels
     sf.domcentres = bdo.domcentres[0]
     col = sc.Colour()
     sf.boundarylw = 1.0
@@ -92,6 +94,7 @@ def content():
     if do_contour:
         for ii in range(0,bdo.N):
             c = bdo.c[ii,:,0]
+            print ('c[{0}.:,0] has shape: {1} and max: {2}'.format (ii, np.shape(c), np.max(c)))
             ccontour = 0.95*np.max(c)
             sf.addContour (c, ccontour, 'white', 1.0, ii, False);
 
