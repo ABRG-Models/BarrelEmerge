@@ -89,7 +89,7 @@
     "description_guidance" : "An array of parameters for the guidance molecules",
     "guidance": [
         {
-            "description" : "The 'x' field",
+            "direction" : "x",
             "shape"  : "Linear1D",
             "gain"   : 1.0,
             "phi"    : 6,
@@ -97,7 +97,7 @@
             "offset" : 0.0
         },
         {
-            "description" : "The 'y' field",
+            "direction" : "y",
             "shape"  : "Linear1D",
             "gain"   : 1.0,
             "phi"    : -84,
