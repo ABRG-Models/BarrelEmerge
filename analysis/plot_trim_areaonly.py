@@ -38,6 +38,9 @@ td = np.sort (trimdata, order='barrel')
 alldata = np.genfromtxt ('postproc/whisker_trim_overall.csv', delimiter=",", names=True)
 ad = np.sort (alldata, order='eps_mult')
 
+rowtrimdata = np.genfromtxt ('postproc/whisker_rowtrim_individual.csv', delimiter=",", names=True)
+rtd = np.sort (rowtrimdata, order='barrel')
+
 # Get per-barrel results
 # barrels of interest are: B3, C2, C3, C4, D2, D3
 #              TC indices:  8, 12, 13, 14, 22, 23
@@ -47,6 +50,18 @@ tdc2 = td[td[:]['barrel_index'] == 12]
 tdc4 = td[td[:]['barrel_index'] == 14]
 tdd2 = td[td[:]['barrel_index'] == 22]
 tdd3 = td[td[:]['barrel_index'] == 23]
+
+# C row results
+rtdc0 = rtd[rtd[:]['barrel_index'] == 10] # c (gamma)
+rtdc1 = rtd[rtd[:]['barrel_index'] == 11] # C1
+rtdc2 = rtd[rtd[:]['barrel_index'] == 12] # C2 (etc)
+rtdc3 = rtd[rtd[:]['barrel_index'] == 13]
+rtdc4 = rtd[rtd[:]['barrel_index'] == 14]
+rtdc5 = rtd[rtd[:]['barrel_index'] == 15]
+rtdc6 = rtd[rtd[:]['barrel_index'] == 16]
+rtdc7 = rtd[rtd[:]['barrel_index'] == 17]
+rtdc8 = rtd[rtd[:]['barrel_index'] == 18]
+rtdc9 = rtd[rtd[:]['barrel_index'] == 19]
 
 ax1 = F1.add_subplot(1,1,1)
 
@@ -71,7 +86,8 @@ col_c2 = col.navy
 col_c4 = col.cobalt
 col_d2 = col.royalblue2
 col_d3 = col.cornflowerblue
-col_others = col.gray50
+col_others = col.gray40
+col_rowC = col.gray70
 
 #l1_map = ax1.plot([map_mult,map_mult], [0, 0.16], '--', color=col.gray70)
 l1_expt = ax1.plot([map_expt,map_expt], [0, 0.16], '--', color=col.gray70)
@@ -82,18 +98,24 @@ l1_expt = ax1.plot([map_expt,map_expt], [0, 0.16], '--', color=col.gray70)
 others = np.vstack ((tdb3[:]['area'], tdc2[:]['area'], tdc4[:]['area'], tdd2[:]['area'], tdd3[:]['area']))
 mn_oth = np.mean(others, axis=0)
 
+# Compute mean area of a row C barrel
+rCothers = np.vstack ((rtdc0[:]['area'], rtdc1[:]['area'], rtdc2[:]['area'], rtdc3[:]['area'], rtdc4[:]['area'], rtdc5[:]['area'], rtdc6[:]['area'], rtdc7[:]['area'], rtdc8[:]['area'], rtdc9[:]['area']))
+mn_rowC = np.mean(rCothers, axis=0)
+
+l1_2, = ax1.plot(rtdc0[:]['eps_mult'], mn_rowC, 'v-', markersize=main_size, linewidth=m_width, color=col_rowC, label='row C3')
 l1_1, = ax1.plot(tdb3[:]['eps_mult'], mn_oth, 'o-', markersize=main_size, linewidth=m_width, color=col_others, label='neighbours of C3')
-l1, = ax1.plot(tdc3[:]['eps_mult'], tdc3[:]['area'], 's-', markersize=main_size, linewidth=m_width, color=col_c3, label='C3')
+l1_3, = ax1.plot(tdc3[:]['eps_mult'], tdc3[:]['area'], 's-', markersize=main_size, linewidth=m_width, color=col_c3, label='C3')
 
 ax1.set_xlim([0.5,1.0])
 ax1.set_ylim([0,0.16])
 
 ax1.text (0.55, 0.022, 'C3', fontsize=28, horizontalalignment='left', color=col.black);
-ax1.text (0.64, 0.144, 'neighbours of C3', fontsize=28, horizontalalignment='left', color=col.black);
+ax1.text (0.624, 0.144, 'neighbours of C3', fontsize=28, horizontalalignment='left', color=col.black);
+ax1.text (0.595, 0.085, 'row C (mean)', fontsize=28, horizontalalignment='left', color=col.black);
 
 
 ax1.set_xlabel ('$m$')
-ax1.set_ylabel ('area', labelpad=25)
+ax1.set_ylabel ('area (mm$^2$)', labelpad=25)
 
 lw = 2; ll = 6
 for axis in ['top','bottom','left','right']:
