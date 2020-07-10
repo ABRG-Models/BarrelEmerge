@@ -109,9 +109,9 @@ l1_3, = ax1.plot(tdc3[:]['eps_mult'], tdc3[:]['area'], 's-', markersize=main_siz
 ax1.set_xlim([0.5,1.0])
 ax1.set_ylim([0,0.16])
 
-ax1.text (0.54, 0.022, 'C3', fontsize=28, horizontalalignment='left', color=col.black);
-ax1.text (0.624, 0.144, 'neighbours of C3', fontsize=28, horizontalalignment='left', color=col.black);
-ax1.text (0.595, 0.088, 'row C (mean)', fontsize=28, horizontalalignment='left', color=col.black);
+ax1.text (0.53, 0.144, 'C3 neighbours (C3 trimmed)', fontsize=24, horizontalalignment='left', color=col.black);
+ax1.text (0.52, 0.086, 'C-row mean (C-row trimmed)', fontsize=24, horizontalalignment='left', color=col.black);
+ax1.text (0.653, 0.017, 'C3 (C3 trimmed)', fontsize=24, horizontalalignment='left', color=col.black);
 
 
 ax1.set_xlabel ('$m$')
