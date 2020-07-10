@@ -283,7 +283,7 @@ class Surface:
                 idn_arr.append(idn)
                 hdval = 0
                 for hd in self.honda_delta_j:
-                    print ('hd, part of honda_delta_j, is {0}'.format(hd))
+                    #print ('hd, part of honda_delta_j, is {0}'.format(hd))
                     try :
                         if hd[count]:
                             hdval = hd[count]
@@ -291,8 +291,8 @@ class Surface:
                     except:
                         pass
                 hd_arr.append(hdval)
-                print ('idn: {0}'.format(idn))
-                print ('hdval: {0}'.format(hdval))
+                #print ('idn: {0}'.format(idn))
+                #print ('hdval: {0}'.format(hdval))
                 count = count + 1
             N = count
             count = 0
@@ -300,7 +300,7 @@ class Surface:
 
             #print ('In Surface. domcentres: {0}'.format (self.domcentres))
             for dc in self.domcentres:
-                print('dc: {0}'.format(dc)) # Hmm All domcentres are 0?
+                #print('dc: {0}'.format(dc)) # Hmm All domcentres are 0?
 
                 cidx = 0
                 # Compute a greyscale colour for the text from the raw index:

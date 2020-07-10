@@ -602,7 +602,7 @@ class BarrelData:
 
             f = h5py.File(filename, 'r')
 
-            #print ('Search {0} with RE pattern {1}'.format(filename, (logdir+'/dirich_(.*).h5')))
+            print ('Reading Dirich data for {0}'.format(filename))
             idxsearch = re.search(self.logdir+'/dirich_(.*).h5', '{0}'.format(filename))
             thetime = int('{0}'.format(idxsearch.group(1)))
             self.t_steps[fi] = thetime # Time in number of simulation steps.
@@ -650,7 +650,7 @@ class BarrelData:
 
             # area_diffs also need multiplying by hex_area
             self.area_diffs[:,fi] *= self.hex_area
-            print ('area_diffs: {0}'.format(self.area_diffs))
+            #print ('area_diffs: {0}'.format(self.area_diffs))
 
             # Another metric to determine the difference between the current pattern and the
             # experimentally observed pattern, this one is based on traced barrel boundaries.
@@ -675,8 +675,8 @@ class BarrelData:
             all_domboundcoords = []
             for dom in domset:
                 domboundcoords = []
-                print (' dom: {0}'.format(dom))
-                print (' list(f[dom][edgedev]): {0}'.format(list(f[dom]['edgedev'])))
+                #print (' dom: {0}'.format(dom))
+                #print (' list(f[dom][edgedev]): {0}'.format(list(f[dom]['edgedev'])))
                 self.edgedev[fi] += list(f[dom]['edgedev'])[0]
                 self.domarea[fi] += list(f[dom]['area'])[0]
                 #print('P: {0}'.format(list(f[dom]['P'])))
