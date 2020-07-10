@@ -18,7 +18,7 @@
     "k" : 3,    // Exponent on a
     // Also: alpha, beta, epsilon; see gamma list below
 
-    // Array of parameters for N thalamocortical populations.
+    // Array of parameters for N thalamocortical populations. epsilon for C3 set to 0.86 * 1.2 = 1.032
     "tc": [
         { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-2.0, 0.08297875929160803], "name" : "a" }, // a
         { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.841803677231407, 0.5955182340971339], "name" : "A1" }, // A1
@@ -33,7 +33,7 @@
         { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.9942346059227621, -1.4045569920900212], "name" : "c" }, // c
         { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.9686071613071959, -0.7666815324426732], "name" : "C1" }, // C1
         { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.586423738301838, -0.6271724432962702], "name" : "C2" }, // C2
-        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 0.7680000000, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.17997842955291926, -0.3945562892438259], "name" : "C3" }, // C3
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.032, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.17997842955291926, -0.3945562892438259], "name" : "C3" }, // C3
         { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.004934757689654623, -0.07282464925911292], "name" : "C4" }, // C4
         { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.1649578956687497, 0.3412494181486343], "name" : "C5" }, // C5
         { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.21421992832302666, 0.799862666426935], "name" : "C6" }, // C6
