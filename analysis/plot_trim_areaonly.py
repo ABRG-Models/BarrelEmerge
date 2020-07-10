@@ -29,7 +29,7 @@ matplotlib.rc('font', **fnt)
 plt.rcParams['svg.fonttype'] = 'none'
 
 # And plot this longhand here:
-F1 = plt.figure (figsize=(10,6))
+F1 = plt.figure (figsize=(10,6.5))
 
 ## load data from csv
 trimdata = np.genfromtxt ('postproc/whisker_trim_individual.csv', delimiter=",", names=True)
@@ -109,9 +109,9 @@ l1_3, = ax1.plot(tdc3[:]['eps_mult'], tdc3[:]['area'], 's-', markersize=main_siz
 ax1.set_xlim([0.5,1.0])
 ax1.set_ylim([0,0.16])
 
-ax1.text (0.55, 0.022, 'C3', fontsize=28, horizontalalignment='left', color=col.black);
+ax1.text (0.54, 0.022, 'C3', fontsize=28, horizontalalignment='left', color=col.black);
 ax1.text (0.624, 0.144, 'neighbours of C3', fontsize=28, horizontalalignment='left', color=col.black);
-ax1.text (0.595, 0.085, 'row C (mean)', fontsize=28, horizontalalignment='left', color=col.black);
+ax1.text (0.595, 0.088, 'row C (mean)', fontsize=28, horizontalalignment='left', color=col.black);
 
 
 ax1.set_xlabel ('$m$')
