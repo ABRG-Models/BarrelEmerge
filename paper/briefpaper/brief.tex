@@ -121,8 +121,8 @@ contact with axons branching from adjacent centers.  However, the assumption
 of pre-arranged center-points is difficult to resolve with the observation
 that axons arrive in the cortical plate as an undifferentiated bundle,
 \emph{prior} to barreloid formation \citep{agmon_organized_1993}.  \mpsix{In
-  mice, axons from the trigeminal ganglion arrive in the principal sensory
-  nucleus of the trigeminal nerve (PrV) at E12, then axons from the PrV arrive
+  mice, axons from the trigeminal ganglion arrive in the principal division of
+  the trigeminal nucleus (PrV) at E12, then axons from the PrV arrive
   in the ventroposteromedial nucleus of the thalamus (VPM) at E17, then axons
   from the VPM arrive in the cortical plate at E18/P0. Distinct
   whisker-related clusters then become apparent in the PrV at P0-P1, in the
@@ -280,7 +280,8 @@ guidance fields is unlikely to approach the number of individual barrels,
 \mpfive{Testing this reasoning required increasing the strength of the
   competition between simulated thalamocortical projections for cortical
   territory, by increasing the tendency for each projection to compete for
-  cortical space into which to concentrate. The major modification required
+  cortical space in which to branch and make connections. The major
+  modification required
   was thus to introduce into the model an additional source of competition
   between thalamic projections.}
 %
@@ -311,12 +312,12 @@ redefined
   experimentally. In particular, the EphA4 receptor and its ligand ephrin-A5
   are distributed in complementary gradients in the somatosensory thalamus and
   cortex} (\citealp{vanderhaeghen_mapping_2000,miller_epha7-ephrin-a5_2006}).
-\MPone{Cells originating in the medial part of ventrobasal thalamus
-  (comprising VPM and VPL) express high levels of EphA receptors and project
-  to the lateral part of S1, which expresses low levels of ephrin-A5, and
-  cells originating in the lateral part of ventrobasal thalamus express low
-  levels of EphA receptors and project to the medial part of S1, which
-  expresses high levels of ephrin-A5} (see
+
+\MPone{Cells originating in VPM express high levels of EphA receptors and
+  project to the lateral part of S1, which expresses low levels of ephrin-A5,
+  and cells originating in the VPL express low levels of EphA receptors and
+  project to the medial part of S1, which expresses high levels of ephrin-A5}
+(see
 \citealp{gao_regulation_1998,dufour_area_2003,vanderhaeghen_developmental_2004,speer_grading_2005,torii_role_2013}).
 \MPone{We assume that such patterning arises because the relative strengths of
   interaction with guidance molecules (e.g., ephrin-A5) in the cortex are
@@ -455,9 +456,9 @@ the anterior-posterior and medial-lateral axes.  \mpfour{These gradients are
   Fig.\,\ref{fig:paramsweep}B, we also present examples of alternative
   patterns that emerge for different choices of $D$. Decreasing the rate of
   diffusion may be considered equivalent to increasing the overall size of the
-  domain, $S$, hence insights into barrel development in species with
-  substantially larger barrel fields, such as capybara which do not have
-  clearly identifiable barrels, may be gained by studying pattern formation
+  domain, $S$. Hence, insights into barrel development in species with a
+  larger representation of the vibrissae, which do not have barrel fields, may
+  be gained by studying pattern formation
   when $D$ is small. In this context, it is interesting to note that for small
   $D$, the organization is predicted to be topological but highly irregular,
   with a general expansion in the territory occupied by the central versus
@@ -645,8 +646,8 @@ competition for cortical territory driven by input from an array of discrete
 sensory organs \citep{purves_iterated_1992}.
 
 \cmnt{In reality, scores of smaller Dirichletform barrels representing the
-  microvibrissae form to the right of where the E-row barrels emerge in our
-  simulations, presumably via the same competitive processes. Enforcing here
+  microvibrissae form alongside the E-row barrels, presumably via the same
+  competitive processes. Enforcing here
   the same boundary condition as used to represent the true edges of the
   barrel field was necessary to ensure the stability of the simulation, though
   we acknowledge that this region of the boundary was enforced primarily to
