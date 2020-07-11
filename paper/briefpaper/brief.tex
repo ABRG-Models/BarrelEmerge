@@ -189,9 +189,9 @@ either higher or lower concentrations. Note that computing the divergence in
 simulation requires cells on the cortical sheet to communicate with immedately
 adjacent cells only (see \emph{Materials \& Methods}). Here $\chi_i=0$ is a
 placeholder. The second term on the right represents the coupling between axon
-branching and synaptogenesis \cmnt{and implies the assumption that the spatial
+branching and synaptogenesis, \cmnt{and an assumption that the spatial
   distribution of synaptic density across the cortical sheet is broadly
-  homogeneous. This makes it possible to relate the quantity $c_i$ to
+  homogeneous. As such, the quantity $c_i$ can be thought of as the
   connection density}.
 
 \section{Results}
@@ -366,10 +366,10 @@ the anterior-posterior and medial-lateral axes.  \mpfour{These gradients are
 \citep{honda_geometrical_1983}.  \metrics{Low overall values of this
   \emph{Honda-}$\delta$ metric obtained from simulated barrels indicate a
   close correspondence of the simulated barrel field with a Voronoi
-  tesselation, and thus with a biological barrel field.
-  (In mouse, $\delta\approx0.054$} \citep{senft_mouse_1991}\metrics{;
-  our analysis of data from} \cite{zheng_signal_2001} \metrics{ indicates that
-  the value for rat is similar). For the tesselation
+  tesselation, and thus with a biological barrel field 
+  (for mice, $\delta\approx0.054$} \citealp{senft_mouse_1991}\metrics{, and 
+  our analysis of data from} \citealp{zheng_signal_2001} \metrics{ indicates that
+  the value for rats is similar). For the tesselation
   that is overlaid on the real barrel field in Fig.\,\ref{fig:main}A,
   $\delta=0.025$, and a reduction in $\delta$ in the example simulation over
   time confirmed that an equivalent `good' Voronoi pattern can emerge
@@ -386,14 +386,10 @@ the anterior-posterior and medial-lateral axes.  \mpfour{These gradients are
   iterations (Fig.\,\ref{fig:main}D, black squares). Third, we measured the
   \emph{connection selectivity} at each location on the cortical sheet, as the
   connection density of the most dense projection divided by the sum over all
-  projection densities, $\omega$. The connection selectivity increased as the
+  projection densities, $\omega$. The overall connection selectivity increased as the
   barrel map self-organized in the example simulation (Fig.\,\ref{fig:main}D,
   grey hexagons), and the selectivity became concentrated in regions
   overlapping with the emergent barrel centers (Fig.\,\ref{fig:main}E).}
-
-\metrics{Against these three metrics we are also able to characterise the
-  robustness of self-organization to the model parameters, and to investigate
-  the sensitivity of the model to variation in its inputs.}
 
 % Full page width
 \begin{figure}
@@ -434,7 +430,9 @@ the anterior-posterior and medial-lateral axes.  \mpfour{These gradients are
   \end{fullwidth}
 \end{figure}
 
-\MPthreePar{Fig.\,\ref{fig:paramsweep}A shows values of $\delta$, $\eta$ and
+\metrics{Against these three metrics we are also able to characterise the
+  robustness of self-organization to the model parameters, and to investigate
+  the sensitivity of the model to variation in its inputs.} \MPthreePar{Fig.\,\ref{fig:paramsweep}A shows values of $\delta$, $\eta$ and
   $\omega$ obtained after 30000 iterations, from 216 independent simulations,
   each representing a unique combination of the model parameters $D$,
   $\epsilon$, and the ratio $\alpha/\beta$. First we observe that
@@ -442,7 +440,7 @@ the anterior-posterior and medial-lateral axes.  \mpfour{These gradients are
   orders of magnitude, with respect to all three metrics. Second, the most
   strongly Dirichletform patterns (low \emph{Honda}-$\delta$) were generated
   by simulations in which the diffusion constant $D$ and the strength of
-  competition $\epsilon$ were high. Third, strongest connection selectivities,
+  competition $\epsilon$ were high. Third, strongest overall connection selectivities,
   $\omega$, were obtained for lower values of $D$. Fourth, variation in the
   pattern difference metric, $\eta$, indicated that the alignment between real
   and simulated patterns was greatest for intermediate rates of diffusion,
@@ -572,16 +570,16 @@ the anterior-posterior and medial-lateral axes.  \mpfour{These gradients are
       $\rho_1$ from Fig.\,\ref{fig:main}A at the join of the original boundary
       with its mirror. All other model parameters match those in
       Fig.\,\ref{fig:main}C. \textbf{C} Simulating whisker trimming by
-      reducing the competitiveness, $\epsilon$, of the one projection. For C3
+      reducing the competitiveness, $\epsilon$, of one projection. For C3
       only, $\epsilon$ was mutiplied by $m\in(0,1)$. The pattern shown is that
       formed after 30000 steps with $m=0.86$, which reduces the size of the C3
       field to 65\% of its original size, matching the average barrel area
       reduction observed by }
-    \citealp{kossut_effects_1992}. \MPthreePred{\textbf{D} The area of the C3
+    \cite{kossut_effects_1992}. \MPthreePred{\textbf{D} The area of the C3
       barrel (black squares) reduces as $m$ is reduced, whereas the mean area
       of neighbouring barrels (B3, C2, C4, D2 \& D3, grey circles)
       increases. The dotted grey line indicates $m=0.86$ for comparison with
-      panel C. If the $\epsilon$ value is instead reduced for \emph{all} row C
+      panel \textbf{C}. If the $\epsilon$ value is instead reduced for \emph{all} row C
       projections (including the interstitial $\gamma$ projection), the mean
       row C barrel area is only slightly reduced (light grey triangles). In
       this case, the mean area of a simulated row C barrel at $m=0.86$ is 91\%
