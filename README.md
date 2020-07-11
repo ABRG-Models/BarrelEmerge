@@ -11,7 +11,7 @@ morphologica. So, first, obtain and build morphologica (it has its own
 README.md with instructions). morphologica can be obtained here on
 github:
 
-https://github.com/ABRG-Models/morphologica/tree/master/
+https://github.com/ABRG-Models/morphologica/tree/papers/BarrelEmerge_eLife_submission2
 
 (Note that I've linked to you a particular branch of morphologica, in
 case any future changes there break the compilation of this version of
