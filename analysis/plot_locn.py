@@ -83,7 +83,7 @@ sf.plotPoly()
 #sf.addContour (maxc[:,0], 0.4, 'grey', 1.6);
 
 # Or single contour for each field
-do_contours = 1
+do_contours = 0
 if do_contours:
     for ii in range(0,bdo.N):
         c = bdo.c[ii,:,0]

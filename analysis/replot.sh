@@ -4,6 +4,12 @@
 # and SVG files which I then incorporate into Inkscape drawings, to
 # generate the final figures. Find output in ./plots/
 
+# Fig 1 C
+python plot_cid.py ../logs/41N2M_thalguide_Fig1  1000
+python plot_cid.py ../logs/41N2M_thalguide_Fig1 10000
+python plot_cid.py ../logs/41N2M_thalguide_Fig1 30000
+
+# Fig 1 D
 python plot_honda_quick.py
 
 python plot_paramsearch_paper.py

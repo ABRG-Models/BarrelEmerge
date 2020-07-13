@@ -53,6 +53,9 @@ sf.boundarylw = 1.0
 sf.boundaryColour = col.black
 sf.boundaryOuterHexColour = col.gray50
 
+# No contours in the movie
+do_contours = 0
+
 for t in range(0,bdo.t_steps.size):
 
     print ('Printing frame {0}'.format(t))
@@ -79,12 +82,13 @@ for t in range(0,bdo.t_steps.size):
     print ('plotPoly...')
     sf.plotPoly()
 
-    print ('Contours...')
-    # A single contour for each field
-    for ii in range(0,bdo.N):
-        c = bdo.c[ii,:,t]
-        ccontour = 0.95*np.max(c)
-        sf.addContour (c, ccontour, 'white', 1.0, ii, False);
+    if do_contours:
+        print ('Contours...')
+        # A single contour for each field
+        for ii in range(0,bdo.N):
+            c = bdo.c[ii,:,t]
+            ccontour = 0.95*np.max(c)
+            sf.addContour (c, ccontour, 'white', 1.0, ii, False);
 
     print ('Outer boundary...')
     sf.addOuterBoundary()
