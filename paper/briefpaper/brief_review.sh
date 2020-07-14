@@ -15,7 +15,7 @@ cat > sebcolour.tex <<EOF
 \definecolor{colmpthreesens} {rgb} {0.7098, 0.0745, 0.6431}
 EOF
 
-xelatex -jobname=barrels_review brief.tex
-bibtex barrels_review.aux
-xelatex -jobname=barrels_review brief.tex
-xelatex -jobname=barrels_review brief.tex
+xelatex -jobname=brief_review brief.tex
+bibtex brief_review.aux
+xelatex -jobname=brief_review brief.tex
+xelatex -jobname=brief_review brief.tex

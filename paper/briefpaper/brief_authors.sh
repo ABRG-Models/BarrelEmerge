@@ -14,7 +14,7 @@ cat > sebcolour.tex <<EOF
 \definecolor{colmpthreesens} {rgb} {0,      0.2,    0}      % greenblack
 EOF
 
-xelatex brief.tex
-bibtex brief.aux
-xelatex brief.tex
-xelatex brief.tex
+xelatex -jobname=brief_authors brief.tex
+bibtex brief_authors.aux
+xelatex -jobname=brief_authors brief.tex
+xelatex -jobname=brief_authors brief.tex

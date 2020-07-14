@@ -18,7 +18,7 @@ cat > sebcolour.tex <<EOF
 \definecolor{colmpthreesens} {rgb} {0, 0, 0}
 EOF
 
-xelatex -jobname=barrels_proof brief.tex
-bibtex barrels_proof.aux
-xelatex -jobname=barrels_proof brief.tex
-xelatex -jobname=barrels_proof brief.tex
+xelatex -jobname=brief_proof brief.tex
+bibtex brief_proof.aux
+xelatex -jobname=brief_proof brief.tex
+xelatex -jobname=brief_proof brief.tex
