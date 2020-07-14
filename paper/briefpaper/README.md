@@ -1,3 +1,13 @@
+# Recompiling this paper
+
+The final version of the paper is in barrels.tex. A version of the
+paper with the authors' colouring scheme is in brief.tex. Run
+brief_authors.sh, brief_review.sh or brief_proof.sh to generate papers
+with different colouring schemes.
+
+The submitted latex, with the bibtex incorporated into the single
+latex file, is barrels.tex.
+
 # Reproducing the results for this paper
 
 Here's how to reproduce the results in this brief format paper. You'll
