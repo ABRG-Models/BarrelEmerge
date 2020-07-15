@@ -7,11 +7,11 @@ called build/. See the top level README.md for instructions.
 If you run all of the scripts listed here, then you will have
 generated all the data to reproduce the results in our paper.
 
-The data is saved into ./logs/. To run all of the simulations, you
-will need about 30 GB of space available.
+The data is saved into ./logs/ in HDF5 format. To run all of the
+simulations, you will need about 30 GB of space available.
 
-I would suggest running just main_results.sh first, which only takes
-about 15 minutes and allows you to watch the simulation as it computes.
+I would suggest running main_results.sh first, which only takes about
+15 minutes and allows you to watch the simulation as it computes.
 
 ### main_results.sh
 

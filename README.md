@@ -31,11 +31,12 @@ make -j4 # or however many cores you have
 popd
 ```
 
-Now you can read how to reproduce the experiments. To reproduce ALL of
-the results, see ./scripts/README.md.
+Now you can read how to reproduce the experiments. To reproduce all of
+the results, see ./scripts/README.md. To graph the resulting data, see
+./analysis/README.md.
 
-To reproduce the main result, which is presented in Fig. 1C, you can
-run one simulation:
+To reproduce, and simultaneously view, the main result, as presented
+in Fig. 1C, you can run one simulation:
 
 ```bash
 ./build/sim/james_comp2 ./configs/rat/41N2M_thalguide_Fig1.json
