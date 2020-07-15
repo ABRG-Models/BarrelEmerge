@@ -48,7 +48,7 @@ for NOISE_GAIN in 0.03 0.06 0.15 0.6 1.5; do
     "steps" : 30000,
     "logevery": 30000,
     "overwrite_logs": true,
-    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/guidance_noise/",
+    "logbase" : "./logs/guidance_noise/",
     "hextohex_d" : ${HEXHEXD}, // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/rat_barrels/wb_110405_Dirichlet.svg",
     "boundaryFalloffDist" : ${BFD},

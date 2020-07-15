@@ -58,7 +58,7 @@ for gamma_noise_mag in 0.001 0.002 0.005 0.01 0.02 0.05 0.1 0.2 0.3 0.4 0.5 0.55
     "steps" : 30000,
     "logevery": 30000,
     "overwrite_logs": true,
-    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/gamma_noise/",
+    "logbase" : "./logs/gamma_noise/",
     "hextohex_d" : ${HEXHEXD}, // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/rat_barrels/wb_110405_Dirichlet.svg",
     "boundaryFalloffDist" : ${BFD},

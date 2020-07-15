@@ -1,6 +1,7 @@
 # BarrelEmerge
 
-Emergence of whisker barrels with modified Karbowski-Ermentrout-like axon branching population model
+Emergence of whisker barrels with modified Karbowski-Ermentrout-like
+axon branching population model.
 
 For instructions on reproducing the results of papers, see the
 README.md file in the paper/briefpaper subdirectory.
@@ -17,7 +18,8 @@ https://github.com/ABRG-Models/morphologica/tree/papers/BarrelEmerge_eLife_submi
 case any future changes there break the compilation of this version of
 BarrelEmerge).
 
-Once you've compiled and installed morphologica, you can compile BarrelEmerge:
+Once you've compiled and installed morphologica, you can compile
+BarrelEmerge:
 
 ```bash
 cd BarrelEmerge
@@ -29,8 +31,18 @@ make -j4 # or however many cores you have
 popd
 ```
 
+Now you can read how to reproduce the experiments. To reproduce ALL of
+the results, see ./scripts/README.md.
+
+To reproduce the main result, which is presented in Fig. 1C, you can
+run one simulation:
+
+```bash
+./build/sim/james_comp2 ./configs/rat/41N2M_thalguide_Fig1.json
+```
+
 If you have any trouble, please post an issue on github at
 https://github.com/ABRG-Models/BarrelEmerge/issues and I will do my
 best to help.
 
-Seb James, January 2020.
+Seb James, July 2020.
