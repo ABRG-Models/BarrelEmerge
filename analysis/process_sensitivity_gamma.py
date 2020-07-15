@@ -19,7 +19,7 @@ table = []
 for br in ['b', 'c', 'd']:
 
     modified_barrel = '{0}4'.format(br)
-    basedir = '/home/seb/gdrive_usfd/data/BarrelEmerge/sensitivity_gamma_{0}/'.format(modified_barrel)
+    basedir = '../logs/sensitivity_gamma_{0}/'.format(modified_barrel)
 
     for logdirname in os.listdir(basedir):
         print ('Log dir: {0}'.format(logdirname))

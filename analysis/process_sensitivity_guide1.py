@@ -11,7 +11,7 @@ import BarrelData as bd
 import h5py
 import math
 
-basedir = '/home/seb/gdrive_usfd/data/BarrelEmerge/sensitivity_guide1/'
+basedir = '../logs/sensitivity_guide1/'
 # Sensitivity analysis carried out for t=30000
 tpoint = 30000
 
