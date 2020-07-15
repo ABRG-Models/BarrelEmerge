@@ -18,16 +18,16 @@ about 15 minutes and allows you to watch the simulation as it computes.
 This runs three simulations; the simulation whose results are
 presented in Fig. 1 and those shown in Fig. 4. Examine this script to
 see how to run the simulations one by one. You'll get a sense of how
-long the other scripts will take by running the
-41N2M_thalguide_Fig4cd.json simulation and timing it (this one runs
-for 30000 steps, like most of the scripted simulations; the Fig 1 sim
-runs for 50000 steps).
+long the other scripts will take by timing the
+41N2M_thalguide_Fig4cd.json simulation (it runs for 30000 steps, like
+most of the scripted simulations whereas the Fig 1 sim runs for 50000
+steps).
 
 ### paramexplore_comp2.sh
 
 Runs the Fig 1 simulation 216 times with different values of the
 parameters D, epsilon(aka F) and alpha/beta. Care! This will take
-about a day on a fast computer, because it runs 216 simulations.
+about a day on a fast computer.
 
 ### multirun_anoiseless.sh, multirun_anoise.sh and multirun_comp2.sh
 
