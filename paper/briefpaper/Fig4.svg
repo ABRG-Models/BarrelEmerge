@@ -10,9 +10,9 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="131mm"
-   height="120mm"
-   viewBox="0 0 131.00001 120"
+   width="131.23268mm"
+   height="112.55193mm"
+   viewBox="0 0 131.23268 112.55194"
    version="1.1"
    id="svg3401"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
@@ -137,29 +137,35 @@
 *{stroke-linecap:butt;stroke-linejoin:round;}
   </style>
     <path
-       style="stroke:#000000;stroke-width:2;"
+       style="stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round"
        id="m3d263f0f89"
-       d="M 0 0  L 0 6  " />
+       d="M 0,0 V 6"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#000000;stroke-width:2;"
+       style="stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round"
        id="m3cb70e84db"
-       d="M 0 0  L -6 0  " />
+       d="M 0,0 H -6"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#7f7f7f;"
+       style="stroke:#7f7f7f;stroke-linecap:butt;stroke-linejoin:round"
        id="md98e3cef7a"
-       d="M 0 6  C 1.591219 6 3.117479 5.367802 4.242641 4.242641  C 5.367802 3.117479 6 1.591219 6 0  C 6 -1.591219 5.367802 -3.117479 4.242641 -4.242641  C 3.117479 -5.367802 1.591219 -6 0 -6  C -1.591219 -6 -3.117479 -5.367802 -4.242641 -4.242641  C -5.367802 -3.117479 -6 -1.591219 -6 0  C -6 1.591219 -5.367802 3.117479 -4.242641 4.242641  C -3.117479 5.367802 -1.591219 6 0 6  z " />
+       d="M 0,6 C 1.591219,6 3.117479,5.367802 4.242641,4.242641 5.367802,3.117479 6,1.591219 6,0 6,-1.591219 5.367802,-3.117479 4.242641,-4.242641 3.117479,-5.367802 1.591219,-6 0,-6 -1.591219,-6 -3.117479,-5.367802 -4.242641,-4.242641 -5.367802,-3.117479 -6,-1.591219 -6,0 -6,1.591219 -5.367802,3.117479 -4.242641,4.242641 -3.117479,5.367802 -1.591219,6 0,6 Z"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#000000;stroke-linejoin:miter;"
+       style="stroke:#000000;stroke-linecap:butt;stroke-linejoin:miter"
        id="m17d785b59f"
-       d="M -6 6  L 6 6  L 6 -6  L -6 -6  z " />
+       d="M -6,6 H 6 V -6 H -6 Z"
+       inkscape:connector-curvature="0" />
     <clipPath
-       id="p366e6d0e54">
+       id="p366e6d0e54"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <rect
          id="rect29949"
-         y="34.56"
+         y="34.560001"
          x="168.95"
-         width="494.26"
-         height="276.34" />
+         width="494.26001"
+         height="276.34"
+         style="stroke-linecap:butt;stroke-linejoin:round" />
     </clipPath>
     <style
        id="style31062"
@@ -172,33 +178,40 @@
 *{stroke-linecap:butt;stroke-linejoin:round;}
   </style>
     <path
-       style="stroke:#000000;stroke-width:2;"
+       style="stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round"
        id="m44619be35f"
-       d="M 0 0  L 0 6  " />
+       d="M 0,0 V 6"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#000000;stroke-width:2;"
+       style="stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round"
        id="m6009b4964a"
-       d="M 0 0  L -6 0  " />
+       d="M 0,0 H -6"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#b3b3b3;stroke-linejoin:miter;"
+       style="stroke:#b3b3b3;stroke-linecap:butt;stroke-linejoin:miter"
        id="m05ec1cb76f"
-       d="M -0 6  L 6 -6  L -6 -6  z " />
+       d="M 0,6 6,-6 H -6 Z"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#666666;"
+       style="stroke:#666666;stroke-linecap:butt;stroke-linejoin:round"
        id="m4b62d0e06a"
-       d="M 0 6  C 1.591219 6 3.117479 5.367802 4.242641 4.242641  C 5.367802 3.117479 6 1.591219 6 0  C 6 -1.591219 5.367802 -3.117479 4.242641 -4.242641  C 3.117479 -5.367802 1.591219 -6 0 -6  C -1.591219 -6 -3.117479 -5.367802 -4.242641 -4.242641  C -5.367802 -3.117479 -6 -1.591219 -6 0  C -6 1.591219 -5.367802 3.117479 -4.242641 4.242641  C -3.117479 5.367802 -1.591219 6 0 6  z " />
+       d="M 0,6 C 1.591219,6 3.117479,5.367802 4.242641,4.242641 5.367802,3.117479 6,1.591219 6,0 6,-1.591219 5.367802,-3.117479 4.242641,-4.242641 3.117479,-5.367802 1.591219,-6 0,-6 -1.591219,-6 -3.117479,-5.367802 -4.242641,-4.242641 -5.367802,-3.117479 -6,-1.591219 -6,0 -6,1.591219 -5.367802,3.117479 -4.242641,4.242641 -3.117479,5.367802 -1.591219,6 0,6 Z"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#000000;stroke-linejoin:miter;"
+       style="stroke:#000000;stroke-linecap:butt;stroke-linejoin:miter"
        id="mf7f7d6955f"
-       d="M -6 6  L 6 6  L 6 -6  L -6 -6  z " />
+       d="M -6,6 H 6 V -6 H -6 Z"
+       inkscape:connector-curvature="0" />
     <clipPath
-       id="p5213337418">
+       id="p5213337418"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <rect
          id="rect1721"
-         y="34.56"
+         y="34.560001"
          x="168.95"
-         width="494.26"
-         height="276.34" />
+         width="494.26001"
+         height="276.34"
+         style="stroke-linecap:butt;stroke-linejoin:round" />
     </clipPath>
     <style
        id="style2861"
@@ -206,33 +219,40 @@
 *{stroke-linecap:butt;stroke-linejoin:round;}
   </style>
     <path
-       style="stroke:#000000;stroke-width:2;"
+       style="stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round"
        id="m3e30f22563"
-       d="M 0 0  L 0 6  " />
+       d="M 0,0 V 6"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#000000;stroke-width:2;"
+       style="stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round"
        id="med089a49c1"
-       d="M 0 0  L -6 0  " />
+       d="M 0,0 H -6"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#b3b3b3;stroke-linejoin:miter;"
+       style="stroke:#b3b3b3;stroke-linecap:butt;stroke-linejoin:miter"
        id="m791ffaea77"
-       d="M -0 6  L 6 -6  L -6 -6  z " />
+       d="M 0,6 6,-6 H -6 Z"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#666666;"
+       style="stroke:#666666;stroke-linecap:butt;stroke-linejoin:round"
        id="m276e8d8c56"
-       d="M 0 6  C 1.591219 6 3.117479 5.367802 4.242641 4.242641  C 5.367802 3.117479 6 1.591219 6 0  C 6 -1.591219 5.367802 -3.117479 4.242641 -4.242641  C 3.117479 -5.367802 1.591219 -6 0 -6  C -1.591219 -6 -3.117479 -5.367802 -4.242641 -4.242641  C -5.367802 -3.117479 -6 -1.591219 -6 0  C -6 1.591219 -5.367802 3.117479 -4.242641 4.242641  C -3.117479 5.367802 -1.591219 6 0 6  z " />
+       d="M 0,6 C 1.591219,6 3.117479,5.367802 4.242641,4.242641 5.367802,3.117479 6,1.591219 6,0 6,-1.591219 5.367802,-3.117479 4.242641,-4.242641 3.117479,-5.367802 1.591219,-6 0,-6 -1.591219,-6 -3.117479,-5.367802 -4.242641,-4.242641 -5.367802,-3.117479 -6,-1.591219 -6,0 -6,1.591219 -5.367802,3.117479 -4.242641,4.242641 -3.117479,5.367802 -1.591219,6 0,6 Z"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#000000;stroke-linejoin:miter;"
+       style="stroke:#000000;stroke-linecap:butt;stroke-linejoin:miter"
        id="m61e1eecfd9"
-       d="M -6 6  L 6 6  L 6 -6  L -6 -6  z " />
+       d="M -6,6 H 6 V -6 H -6 Z"
+       inkscape:connector-curvature="0" />
     <clipPath
-       id="pefcd79b34d">
+       id="pefcd79b34d"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <rect
          id="rect3137"
-         y="34.56"
+         y="34.560001"
          x="178.742"
-         width="484.468"
-         height="276.34" />
+         width="484.46799"
+         height="276.34"
+         style="stroke-linecap:butt;stroke-linejoin:round" />
     </clipPath>
     <style
        id="style1497"
@@ -240,33 +260,40 @@
 *{stroke-linecap:butt;stroke-linejoin:round;}
   </style>
     <path
-       style="stroke:#000000;stroke-width:2;"
+       style="stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round"
        id="m97e56cf1f6"
-       d="M 0 0  L 0 6  " />
+       d="M 0,0 V 6"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#000000;stroke-width:2;"
+       style="stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round"
        id="m22a845e63e"
-       d="M 0 0  L -6 0  " />
+       d="M 0,0 H -6"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#b3b3b3;stroke-linejoin:miter;"
+       style="stroke:#b3b3b3;stroke-linecap:butt;stroke-linejoin:miter"
        id="m63f6c62662"
-       d="M -0 6  L 6 -6  L -6 -6  z " />
+       d="M 0,6 6,-6 H -6 Z"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#666666;"
+       style="stroke:#666666;stroke-linecap:butt;stroke-linejoin:round"
        id="m46f8c1b73f"
-       d="M 0 6  C 1.591219 6 3.117479 5.367802 4.242641 4.242641  C 5.367802 3.117479 6 1.591219 6 0  C 6 -1.591219 5.367802 -3.117479 4.242641 -4.242641  C 3.117479 -5.367802 1.591219 -6 0 -6  C -1.591219 -6 -3.117479 -5.367802 -4.242641 -4.242641  C -5.367802 -3.117479 -6 -1.591219 -6 0  C -6 1.591219 -5.367802 3.117479 -4.242641 4.242641  C -3.117479 5.367802 -1.591219 6 0 6  z " />
+       d="M 0,6 C 1.591219,6 3.117479,5.367802 4.242641,4.242641 5.367802,3.117479 6,1.591219 6,0 6,-1.591219 5.367802,-3.117479 4.242641,-4.242641 3.117479,-5.367802 1.591219,-6 0,-6 -1.591219,-6 -3.117479,-5.367802 -4.242641,-4.242641 -5.367802,-3.117479 -6,-1.591219 -6,0 -6,1.591219 -5.367802,3.117479 -4.242641,4.242641 -3.117479,5.367802 -1.591219,6 0,6 Z"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#000000;stroke-linejoin:miter;"
+       style="stroke:#000000;stroke-linecap:butt;stroke-linejoin:miter"
        id="m7c19ccbdcc"
-       d="M -6 6  L 6 6  L 6 -6  L -6 -6  z " />
+       d="M -6,6 H 6 V -6 H -6 Z"
+       inkscape:connector-curvature="0" />
     <clipPath
-       id="p2b6889404a">
+       id="p2b6889404a"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <rect
          id="rect1773"
-         y="34.56"
+         y="34.560001"
          x="178.742"
-         width="484.468"
-         height="348.34" />
+         width="484.46799"
+         height="348.34"
+         style="stroke-linecap:butt;stroke-linejoin:round" />
     </clipPath>
     <style
        id="style2285"
@@ -274,33 +301,40 @@
 *{stroke-linecap:butt;stroke-linejoin:round;}
   </style>
     <path
-       style="stroke:#000000;stroke-width:2;"
+       style="stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round"
        id="m91dc990165"
-       d="M 0 0  L 0 6  " />
+       d="M 0,0 V 6"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#000000;stroke-width:2;"
+       style="stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round"
        id="m74f77f2e20"
-       d="M 0 0  L -6 0  " />
+       d="M 0,0 H -6"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#b3b3b3;stroke-linejoin:miter;"
+       style="stroke:#b3b3b3;stroke-linecap:butt;stroke-linejoin:miter"
        id="m9af7b60421"
-       d="M -0 6  L 6 -6  L -6 -6  z " />
+       d="M 0,6 6,-6 H -6 Z"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#666666;"
+       style="stroke:#666666;stroke-linecap:butt;stroke-linejoin:round"
        id="mc528d080ff"
-       d="M 0 6  C 1.591219 6 3.117479 5.367802 4.242641 4.242641  C 5.367802 3.117479 6 1.591219 6 0  C 6 -1.591219 5.367802 -3.117479 4.242641 -4.242641  C 3.117479 -5.367802 1.591219 -6 0 -6  C -1.591219 -6 -3.117479 -5.367802 -4.242641 -4.242641  C -5.367802 -3.117479 -6 -1.591219 -6 0  C -6 1.591219 -5.367802 3.117479 -4.242641 4.242641  C -3.117479 5.367802 -1.591219 6 0 6  z " />
+       d="M 0,6 C 1.591219,6 3.117479,5.367802 4.242641,4.242641 5.367802,3.117479 6,1.591219 6,0 6,-1.591219 5.367802,-3.117479 4.242641,-4.242641 3.117479,-5.367802 1.591219,-6 0,-6 -1.591219,-6 -3.117479,-5.367802 -4.242641,-4.242641 -5.367802,-3.117479 -6,-1.591219 -6,0 -6,1.591219 -5.367802,3.117479 -4.242641,4.242641 -3.117479,5.367802 -1.591219,6 0,6 Z"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#000000;stroke-linejoin:miter;"
+       style="stroke:#000000;stroke-linecap:butt;stroke-linejoin:miter"
        id="m2931a34c82"
-       d="M -6 6  L 6 6  L 6 -6  L -6 -6  z " />
+       d="M -6,6 H 6 V -6 H -6 Z"
+       inkscape:connector-curvature="0" />
     <clipPath
-       id="pb7884c7a69">
+       id="pb7884c7a69"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <rect
          id="rect2561"
-         y="34.56"
+         y="34.560001"
          x="178.742"
-         width="484.468"
-         height="312.34" />
+         width="484.46799"
+         height="312.34"
+         style="stroke-linecap:butt;stroke-linejoin:round" />
     </clipPath>
     <style
        id="style3073"
@@ -308,33 +342,40 @@
 *{stroke-linecap:butt;stroke-linejoin:round;}
   </style>
     <path
-       style="stroke:#000000;stroke-width:2;"
+       style="stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round"
        id="meaf16639d7"
-       d="M 0 0  L 0 6  " />
+       d="M 0,0 V 6"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#000000;stroke-width:2;"
+       style="stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round"
        id="mbe55eef805"
-       d="M 0 0  L -6 0  " />
+       d="M 0,0 H -6"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#b3b3b3;stroke-linejoin:miter;"
+       style="stroke:#b3b3b3;stroke-linecap:butt;stroke-linejoin:miter"
        id="m6ebcb8b602"
-       d="M -0 6  L 6 -6  L -6 -6  z " />
+       d="M 0,6 6,-6 H -6 Z"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#666666;"
+       style="stroke:#666666;stroke-linecap:butt;stroke-linejoin:round"
        id="ma7428d98c9"
-       d="M 0 6  C 1.591219 6 3.117479 5.367802 4.242641 4.242641  C 5.367802 3.117479 6 1.591219 6 0  C 6 -1.591219 5.367802 -3.117479 4.242641 -4.242641  C 3.117479 -5.367802 1.591219 -6 0 -6  C -1.591219 -6 -3.117479 -5.367802 -4.242641 -4.242641  C -5.367802 -3.117479 -6 -1.591219 -6 0  C -6 1.591219 -5.367802 3.117479 -4.242641 4.242641  C -3.117479 5.367802 -1.591219 6 0 6  z " />
+       d="M 0,6 C 1.591219,6 3.117479,5.367802 4.242641,4.242641 5.367802,3.117479 6,1.591219 6,0 6,-1.591219 5.367802,-3.117479 4.242641,-4.242641 3.117479,-5.367802 1.591219,-6 0,-6 -1.591219,-6 -3.117479,-5.367802 -4.242641,-4.242641 -5.367802,-3.117479 -6,-1.591219 -6,0 -6,1.591219 -5.367802,3.117479 -4.242641,4.242641 -3.117479,5.367802 -1.591219,6 0,6 Z"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#000000;stroke-linejoin:miter;"
+       style="stroke:#000000;stroke-linecap:butt;stroke-linejoin:miter"
        id="me9dadb205a"
-       d="M -6 6  L 6 6  L 6 -6  L -6 -6  z " />
+       d="M -6,6 H 6 V -6 H -6 Z"
+       inkscape:connector-curvature="0" />
     <clipPath
-       id="pc6db384c4f">
+       id="pc6db384c4f"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <rect
          id="rect3349"
-         y="34.56"
+         y="34.560001"
          x="178.742"
-         width="484.468"
-         height="312.34" />
+         width="484.46799"
+         height="312.34"
+         style="stroke-linecap:butt;stroke-linejoin:round" />
     </clipPath>
     <defs
        id="defs3287">
@@ -366,33 +407,40 @@
 *{stroke-linecap:butt;stroke-linejoin:round;}
   </style>
     <path
-       style="stroke:#000000;stroke-width:2;"
+       style="stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round"
        id="mbe651699ad"
-       d="M 0 0  L 0 6  " />
+       d="M 0,0 V 6"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#000000;stroke-width:2;"
+       style="stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round"
        id="m9e2139eeaa"
-       d="M 0 0  L -6 0  " />
+       d="M 0,0 H -6"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#b3b3b3;stroke-linejoin:miter;"
+       style="stroke:#b3b3b3;stroke-linecap:butt;stroke-linejoin:miter"
        id="mcebbf29179"
-       d="M -0 6  L 6 -6  L -6 -6  z " />
+       d="M 0,6 6,-6 H -6 Z"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#666666;"
+       style="stroke:#666666;stroke-linecap:butt;stroke-linejoin:round"
        id="me6cbf86ed7"
-       d="M 0 6  C 1.591219 6 3.117479 5.367802 4.242641 4.242641  C 5.367802 3.117479 6 1.591219 6 0  C 6 -1.591219 5.367802 -3.117479 4.242641 -4.242641  C 3.117479 -5.367802 1.591219 -6 0 -6  C -1.591219 -6 -3.117479 -5.367802 -4.242641 -4.242641  C -5.367802 -3.117479 -6 -1.591219 -6 0  C -6 1.591219 -5.367802 3.117479 -4.242641 4.242641  C -3.117479 5.367802 -1.591219 6 0 6  z " />
+       d="M 0,6 C 1.591219,6 3.117479,5.367802 4.242641,4.242641 5.367802,3.117479 6,1.591219 6,0 6,-1.591219 5.367802,-3.117479 4.242641,-4.242641 3.117479,-5.367802 1.591219,-6 0,-6 -1.591219,-6 -3.117479,-5.367802 -4.242641,-4.242641 -5.367802,-3.117479 -6,-1.591219 -6,0 -6,1.591219 -5.367802,3.117479 -4.242641,4.242641 -3.117479,5.367802 -1.591219,6 0,6 Z"
+       inkscape:connector-curvature="0" />
     <path
-       style="stroke:#000000;stroke-linejoin:miter;"
+       style="stroke:#000000;stroke-linecap:butt;stroke-linejoin:miter"
        id="mb15918b148"
-       d="M -6 6  L 6 6  L 6 -6  L -6 -6  z " />
+       d="M -6,6 H 6 V -6 H -6 Z"
+       inkscape:connector-curvature="0" />
     <clipPath
-       id="p0a116a1d81">
+       id="p0a116a1d81"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <rect
          id="rect1784"
-         y="34.56"
+         y="34.560001"
          x="178.742"
-         width="484.468"
-         height="312.34" />
+         width="484.46799"
+         height="312.34"
+         style="stroke-linecap:butt;stroke-linejoin:round" />
     </clipPath>
     <defs
        id="defs1722">
@@ -426,16 +474,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="68.591102"
-     inkscape:cy="552.69021"
+     inkscape:zoom="2"
+     inkscape:cx="224.71246"
+     inkscape:cy="155.14957"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     fit-margin-top="1"
-     fit-margin-left="1"
-     fit-margin-right="1"
-     fit-margin-bottom="1"
+     fit-margin-top="0.1"
+     fit-margin-left="0.1"
+     fit-margin-right="0.1"
+     fit-margin-bottom="0.1"
      inkscape:window-width="2493"
      inkscape:window-height="1376"
      inkscape:window-x="67"
@@ -451,7 +499,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -459,7 +507,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(162.33036,-272.34902)"
+     transform="translate(162.45223,-272.21998)"
      style="stroke-linecap:butt;stroke-linejoin:round">
     <rect
        style="opacity:0.99299999;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.29634014;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
@@ -993,7 +1041,7 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.17499995px;font-family:arial;-inkscape-font-specification:arial;baseline-shift:baseline;stroke-width:0.06634737;stroke-linecap:butt;stroke-linejoin:round"
          id="tspan17984"
          sodipodi:role="line">ρ<tspan
-   style="font-size:65%;baseline-shift:sub"
+   style="font-size:64.99999762%;baseline-shift:sub;stroke-linecap:butt;stroke-linejoin:round"
    id="tspan29374">1</tspan>(<tspan
    style="font-style:italic;font-weight:bold;font-size:3.17499995px;stroke-width:0.06634737;stroke-linecap:butt;stroke-linejoin:round"
    id="tspan17980">x</tspan>)</tspan></text>
@@ -1008,7 +1056,7 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.17499995px;font-family:arial;-inkscape-font-specification:arial;baseline-shift:baseline;stroke-width:0.06634737;stroke-linecap:butt;stroke-linejoin:round"
          x="-160.44202"
          y="333.37405">ρ<tspan
-   style="font-size:65%;baseline-shift:sub"
+   style="font-size:64.99999762%;baseline-shift:sub;stroke-linecap:butt;stroke-linejoin:round"
    id="tspan29378">2</tspan>(<tspan
    id="tspan17990"
    style="font-style:italic;font-weight:bold;font-size:3.17499995px;stroke-width:0.06634737;stroke-linecap:butt;stroke-linejoin:round">x</tspan>)</tspan></text>
