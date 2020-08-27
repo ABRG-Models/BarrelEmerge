@@ -6,11 +6,11 @@
  *
  * Author: Seb James <seb.james@sheffield.ac.uk>
  *
- * Date: June 2019
+ * Date: June 2019 - July 2020
  */
 
 /*!
- * This will be passed as the template argument for RD_Plot and RD and
+ * FLT will be passed as the template argument for RD_James and it
  * should be defined when compiling.
  */
 #ifndef FLT
