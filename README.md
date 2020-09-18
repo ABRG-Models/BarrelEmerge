@@ -1,9 +1,16 @@
 # BarrelEmerge
 
-Emergence of whisker barrels with modified Karbowski-Ermentrout-like
-axon branching population model.
+This is a simulation of the growth of axons which demonstrates how the
+whisker barrel field pattern can selforganize in the presence of only
+two orthogonal molecular guidance cues. It is the code behind the
+eLife paper:
 
-For instructions on reproducing the results of papers, see the
+*"Modelling the Emergence of Whisker Barrels"*
+
+The emergence of whisker barrels is demonstated in a modified
+Karbowski-Ermentrout-like axon branching population model.
+
+For instructions on reproducing the results of the paper, see the
 README.md file in the paper/briefpaper subdirectory.
 
 Before you do that, you'll need to build this simulation code, which
