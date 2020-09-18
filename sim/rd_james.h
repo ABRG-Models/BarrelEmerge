@@ -1,5 +1,11 @@
 /*
- * A reaction diffusion system which derives from RD_Base
+ * A reaction diffusion system which derives from morph::RD_Base.
+ *
+ * This file provides RD_James, which implements a 2D version of the reaction-diffusion
+ * style model published in Karbowski & Ermentrout, 2004.
+ *
+ * Author: Seb James
+ * Date: June 2019 - July 2020
  */
 #include "morph/RD_Base.h"
 #include "morph/DirichVtx.h"
@@ -177,7 +183,6 @@ protected: // We have a setter for gamma.
     /*!
      * gamma_A/B/C_i (etc) parameters from Eq 4. There are M vectors of Flts in here.
      */
-    //@{
     alignas(alignof(std::vector<std::vector<Flt> >))
     std::vector<std::vector<Flt> > gamma;
 
@@ -187,7 +192,6 @@ protected: // We have a setter for gamma.
      */
     alignas(alignof(std::vector<Flt>)) std::vector<Flt> group;
     alignas(alignof(std::set<Flt>)) std::set<Flt> groupset;
-    //@}
 
 public:
     /*!
@@ -235,10 +239,8 @@ public:
      *
      * There are M vector<Flts> in rho.
      */
-    //@{
     alignas(alignof(std::vector<std::vector<Flt> >))
     std::vector<std::vector<Flt> > rho;
-    //@}
 
     /*!
      * Into grad_rho put the two components of the gradient of rho computed across the
@@ -246,10 +248,8 @@ public:
      *
      * There are M gradient fields stored in this variable.
      */
-    //@{
     alignas(alignof(std::vector<std::array<std::vector<Flt>, 2> >))
     std::vector<std::array<std::vector<Flt>, 2> > grad_rho;
-    //@}
 
     /*!
      * Memory to hold an intermediate result
@@ -282,11 +282,9 @@ public:
     /*!
      * Data containers for summed n, c and a.
      */
-    //@{
     alignas(std::vector<Flt>) std::vector<Flt> v_nsum;
     alignas(std::vector<Flt>) std::vector<Flt> v_csum;
     alignas(std::vector<Flt>) std::vector<Flt> v_asum;
-    //@}
 
     /*!
      * ALIGNAS REGION ENDS.
@@ -310,10 +308,10 @@ public:
      */
     bool doFgfDuplication = false;
 
-    /*!
+    /*
      * Dirichlet analysis variables
      */
-    //@{
+
     //! Dirichlet regions
     std::vector<Flt> regions;
 
@@ -354,7 +352,6 @@ public:
     //! Honda Dirichlet approx for the experimentally supplied barrels
     Flt expt_honda = 0.0;
     std::map<Flt, Flt> expt_honda_arr;
-    //@}
 
     /*!
      * A metric to determine the difference between the current pattern and the
@@ -748,7 +745,7 @@ public:
 
 protected:
     /*!
-     * Given a TC id string @idstr, look it up in tcnames and find the Flt ID that it
+     * Given a TC id string \a idstr, look it up in tcnames and find the Flt ID that it
      * corresponds to. Client code should have set up tcnames.
      */
     Flt tc_name_to_id (const std::string& idstr)
@@ -770,20 +767,17 @@ protected:
     /*!
      * Require private setter for d. Slightly different from the base class version.
      */
-    //@{
     void set_d (Flt d_)
     {
         morph::RD_Base<Flt>::set_d (d_);
         this->updateTwoDover3dd();
     }
-    //@}
 
 public:
     /*!
      * Public accessors for D, as it requires another attribute to be updated at the
      * same time.
      */
-    //@{
     void set_D (Flt D_)
     {
         this->D = D_;
@@ -793,7 +787,6 @@ public:
     {
         return this->D;
     }
-    //@}
 
 protected:
     /*!
@@ -805,13 +798,13 @@ protected:
     }
 
 public:
-    /*!
+    /*
      * Parameter setter methods
      */
-    //@{
+
     /*!
      * setGamma for the guidance molecule index m_idx and the TC index n_idx to
-     * @value. If group_m==m_idx, then set this->group[n_idx]=@value
+     * \a value. If group_m==m_idx, then set this->group[n_idx]=\a value
      */
     int setGamma (unsigned int m_idx, unsigned int n_idx, Flt value, unsigned int group_m = 0)
     {
@@ -833,12 +826,10 @@ public:
         }
         return 0;
     }
-    //@}
 
-    /*!
+    /*
      * HDF5 file saving/loading methods.
      */
-    //@{
 
     /*!
      * Save the c, a and n variables.
@@ -982,10 +973,9 @@ public:
         data.add_val ("/expt_honda", this->expt_honda);
     }
 
-    /*!
+    /*
      * Computation methods
      */
-    //@{
 
     /*!
      * Compute the values of c, the connection density
@@ -1275,7 +1265,7 @@ public:
      * Computes the "flux of axonal branches" term, J_i(x) (Eq 4)
      *
      * Inputs: this->g, fa (which is this->a[i] or a q in the RK algorithm), this->D,
-     * @a i, the TC type.  Helper functions: spacegrad2D().  Output: this->divJ
+     * i, the TC type.  Helper functions: spacegrad2D().  Output: this->divJ
      *
      * Stable with dt = 0.0001;
      */
@@ -1327,7 +1317,7 @@ public:
      *
      * Instead of using the Karbowski equations, just make some gaussian 'waves'
      *
-     * @m The molecule id
+     * \param m The molecule id
      */
     void gaussian1D_guidance (unsigned int m)
     {
@@ -1343,7 +1333,7 @@ public:
     /*!
      * Circular symmetric 2D Gaussian
      *
-     * @m The molecule id
+     * \param m The molecule id
      */
     void gaussian2D_guidance (unsigned int m)
     {
@@ -1370,7 +1360,7 @@ public:
     /*!
      * An exponential wave
      *
-     * @m The molecule id
+     * \param m The molecule id
      */
     void exponential_guidance (unsigned int m)
     {
@@ -1383,7 +1373,7 @@ public:
     }
 
     /*!
-     * @m The molecule id
+     * \param m The molecule id
      */
     void sigmoid_guidance (unsigned int m)
     {
@@ -1398,7 +1388,7 @@ public:
     }
 
     /*!
-     * @m The molecule id
+     * \param m The molecule id
      */
     void linear_guidance (unsigned int m)
     {
@@ -1423,7 +1413,7 @@ public:
     }
 
     /*!
-     * @m The molecule id
+     * \param m The molecule id
      */
     void circlinear_guidance (unsigned int m)
     {

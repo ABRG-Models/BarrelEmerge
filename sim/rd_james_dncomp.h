@@ -1,5 +1,15 @@
 /*
  * 2D Karbowski system with *divisive* normalization of a_i AND competition.
+ *
+ * This file provides the class RD_James_dncomp.
+ *
+ * This has a stronger mechanism for competition than that in the paper "Modelling the
+ * emergence of whisker barrels", but it also requires that a_i is re-normalised on
+ * every simulation step. This was the competition mechanism behind the first draft of
+ * the paper, but was replaced wtih RD_James_comp2 in the final revision.
+ *
+ * Author: Seb James
+ * Date: June 2019 - July 2020
  */
 
 #include "rd_james_divnorm.h"
@@ -56,8 +66,8 @@ class RD_James_dncomp : public RD_James_divnorm<Flt>
 {
 public:
 
-    //! Inter-TC-type competition
-    //@{
+    // Inter-TC-type competition
+
     //! The power to which a_j is raised for the inter-TC axon competition term.
     alignas(Flt) Flt l = 3.0;
     //! The steepness of the logistic function
@@ -65,10 +75,9 @@ public:
     //! epsilon_i parameters. axon competition parameter
     alignas(alignof(std::vector<Flt>))
     std::vector<Flt> epsilon;
-    //@}
 
-    //! comp3 params
-    //@{
+    // comp3 params
+
     //! The strength of gradient of n(x,t) contribution
     alignas(Flt) Flt E = 0.0;
     //! This holds the two components of the gradient field of the scalar value n(x,t)
@@ -77,10 +86,9 @@ public:
     //! divergence of n.
     alignas(alignof(std::vector<Flt>))
     std::vector<Flt> div_n;
-    //@}
 
-    //! comp7 params
-    //@{
+    // comp7 params
+
     //! \hat{a}_i.
     alignas(alignof(std::vector<Flt>)) std::vector<Flt> ahat;
     //! \lambda(\hat{a}_i)
@@ -91,8 +99,6 @@ public:
     alignas(Flt) Flt o = 5.0;
     //! Sigmoid sharpness
     alignas(Flt) Flt s = 0.5;
-    //@}
-
 
     RD_James_dncomp (void)
         : RD_James_divnorm<Flt>() {
@@ -434,4 +440,4 @@ public:
         this->dirichletComputed = false;
     }
 
-}; // RD_James_norm
+}; // RD_James_dncomp

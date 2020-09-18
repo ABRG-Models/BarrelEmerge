@@ -1,6 +1,14 @@
 /*
  * Competition method 2, which implements Eq. 40 in the lab notes (See
  * paper/supplementary/supp.tex; label eq:J_NM_with_comp)
+ *
+ * This file provides the class RD_James_comp2.
+ *
+ * This is the competition method which forms the basis of the results published in
+ * "Modelling the Emergence of Whisker Barrels".
+ *
+ * Author: Seb James
+ * Date: June 2019 - July 2020
  */
 
 #include "rd_james.h"
@@ -47,12 +55,10 @@ public:
     /*!
      * \bar{a}_i - result of processing a_i through a sigmoid.
      */
-    //@{
     alignas(alignof(std::vector<Flt>))
     std::vector<Flt> abar;
     alignas(alignof(std::array<std::vector<Flt>, 2>))
     std::array<std::vector<Flt>, 2> grad_abar;
-    //@}
 
     /*!
      * Simple constructor; no arguments. Just calls base constructor
@@ -65,7 +71,6 @@ public:
      * Override allocate() and init(), and add a couple of extra
      * resizes.
      */
-    //@{
     virtual void allocate (void) {
         RD_James<Flt>::allocate();
         this->resize_vector_variable (this->ahat);
@@ -94,11 +99,10 @@ public:
             this->zero_vector_param (this->epsilonOverNm1, this->N);
         }
     }
-    //@}
-    /*!
+
+    /*
      * Computation methods
      */
-    //@{
 
     /*!
      * This is updated wrt rd_james.h as it has the additional terms
@@ -106,7 +110,7 @@ public:
      * Computes the "flux of axonal branches" term, J_i(x) (Eq 4)
      *
      * Inputs: this->g, fa (which is this->a[i] or a q in the RK
-     * algorithm), this->D, @a i, the TC type.  Helper functions:
+     * algorithm), this->D, i, the TC type.  Helper functions:
      * spacegrad2D().  Output: this->divJ
      *
      * Stable with dt = 0.0001;
@@ -349,4 +353,4 @@ public:
         }
     }
 
-}; // RD_James
+}; // RD_James_comp2

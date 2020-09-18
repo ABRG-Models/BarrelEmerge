@@ -1,6 +1,10 @@
 /*
  * 2D Karbowski system with *divisive* normalization of a_i AND competition AND
  * per-group competition.
+ *
+ * This idea of per-group competition was to explore the formation of "rows before
+ * barrels", but was not included in the paper "Modelling the emergence of whisker
+ * barrels".
  */
 
 #include "rd_james_dncomp.h"

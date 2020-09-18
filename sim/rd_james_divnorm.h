@@ -1,6 +1,10 @@
 /*
- * 2D Karbowski system with *divisive* normalization of a_i, deriving
- * from RD_James base class.
+ * 2D Karbowski system with *divisive* normalization of a_i, deriving from RD_James base
+ * class. Provides the class RD_James_divnorm, which is used as a base class for
+ * RD_James_dncomp.
+ *
+ * Author: Seb James
+ * Date: June 2019 - July 2020
  */
 
 #include "rd_james.h"

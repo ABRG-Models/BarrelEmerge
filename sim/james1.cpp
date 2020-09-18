@@ -1,8 +1,7 @@
 /*
- * This program is intended to facilite the study of a reaction
- * diffusion system which is guided by M guidance molecules, whose
- * expression gradients drive N thalamocortical axon types to make
- * connections in an elliptical region.
+ * This file contains the main() function and common code to run several different
+ * reaction-diffusion style programs to investigate the development and selforganization
+ * of the whisker barrel field.
  *
  * Author: Seb James <seb.james@sheffield.ac.uk>
  *
