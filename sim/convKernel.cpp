@@ -1,5 +1,8 @@
 /*
  * Visualize convolution kernels on same grid as Barrel sim
+ *
+ * Author: Seb James
+ * Date: June 2020
  */
 #include <iostream>
 #include <vector>
