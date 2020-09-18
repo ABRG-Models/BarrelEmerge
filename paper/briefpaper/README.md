@@ -1,9 +1,11 @@
 # Recompiling this paper
 
-The submitted versions of the paper are barrels_proof.tex and
-barrels_review.tex, which are both standalone versions of
-brief.tex. Examine brief_authors.sh, brief_review.sh or brief_proof.sh
-to generate papers from brief.tex with different colouring schemes.
+The submitted versions of the paper (with our modifications following
+the review) are barrels_proof.tex and barrels_review.tex, which are
+both standalone versions of brief.tex. barrels_review.tex builds a pdf
+with pink colour indicating the changes and additions made since the
+original submission. barrels_proof.tex builds a document with no pink
+text.
 
 # Reproducing the results for this paper
 

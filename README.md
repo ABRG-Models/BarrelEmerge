@@ -11,7 +11,7 @@ The emergence of whisker barrels is demonstated in a modified
 Karbowski-Ermentrout-like axon branching population model.
 
 For instructions on reproducing the results of the paper, see the
-README.md file in the paper/briefpaper subdirectory.
+README.md file in the paper/scripts subdirectory.
 
 Before you do that, you'll need to build this simulation code, which
 is compiled against our library of research software,
