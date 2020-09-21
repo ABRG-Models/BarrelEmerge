@@ -39,8 +39,9 @@ popd
 ```
 
 **Note:** You'll ideally have an OpenMP-capable compiler. You'll
-probably need libomp as well, because Armadillo uses that if OpenMP is
-present. You get these both for free with gcc on a modern Linux
+probably need libomp as well, because even though my code doesn't use
+the runtime part of OpenMP, Armadillo does so if OpenMP is
+present. You get OpenMP/libomp for free with gcc on a modern Linux
 computer; on a Mac, you will have to install libomp from source.
 
 Now you can read how to reproduce the experiments. To reproduce all of
@@ -55,9 +56,13 @@ in Fig. 1C, you can run one simulation:
 ```
 
 **Note:** The simulation is computationally demanding. It takes about
-  10 minutes to run the Fig. 1C simulation on a 6-core gaming laptop
-  (with a Core i9 intel processor and when compiled with OpenMP to use
-  all the cores). Be prepared to wait on a lesser machine!
+10 minutes to run the 50000 steps of Fig. 1C simulation on a 6-core
+gaming laptop (with an Intel Core i9 8th gen processor and when
+compiled with OpenMP to use all the cores). That's about 12 seconds
+for 1000 steps. Be prepared to wait on a lesser machine: On a MacBook
+Air (Core i3 10th gen dual core) and *without* OpenMP, 1000 steps took
+about 400 seconds so the full Fig 1 simulation would take over 5 hours
+to complete!
 
 If you have any trouble, please post an issue on github at
 https://github.com/ABRG-Models/BarrelEmerge/issues and I will do my
