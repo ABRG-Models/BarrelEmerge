@@ -67,7 +67,6 @@ using morph::HexGrid;
 using morph::HdfData;
 
 #ifdef COMPILE_PLOTTING
-# include <GLFW/glfw3.h>
 # include "morph/Scale.h"
 using morph::Scale;
 # include "morph/ColourMap.h"
