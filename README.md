@@ -42,7 +42,9 @@ popd
 probably need libomp as well, because even though my code doesn't use
 the runtime part of OpenMP, Armadillo does so if OpenMP is
 present. You get OpenMP/libomp for free with gcc on a modern Linux
-computer; on a Mac, you will have to install libomp from source.
+computer; on a Mac, you will have to install libomp from source
+(follow instructions at https://openmp.llvm.org/ finishing up with a
+final `make install`).
 
 Now you can read how to reproduce the experiments. To reproduce all of
 the results, see ./scripts/README.md. To graph the resulting data, see
