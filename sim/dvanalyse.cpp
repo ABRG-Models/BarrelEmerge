@@ -1,6 +1,28 @@
-//
-// Load HexGrid and regions data from h5. Run Dirichlet analysis code on them.
-//
+#ifdef COPYLEFT
+/*
+ *  This file is part of BarrelEmerge.
+ *
+ *  BarrelEmerge is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  BarrelEmerge is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with BarrelEmerge.  If not, see <https://www.gnu.org/licenses/>.
+ */
+#endif
+
+/*
+ * Load HexGrid and regions data from h5. Run Dirichlet analysis code on them.
+ *
+ * Author: Seb James
+ * Date: 2020
+ */
 
 #include "morph/HexGrid.h"
 #include "morph/ReadCurves.h"
