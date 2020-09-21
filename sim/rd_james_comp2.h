@@ -1,6 +1,33 @@
+#ifdef COPYLEFT
+/*
+ *  This file is part of BarrelEmerge.
+ *
+ *  BarrelEmerge is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  BarrelEmerge is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with BarrelEmerge.  If not, see <https://www.gnu.org/licenses/>.
+ */
+#endif
+
 /*
  * Competition method 2, which implements Eq. 40 in the lab notes (See
  * paper/supplementary/supp.tex; label eq:J_NM_with_comp)
+ *
+ * This file provides the class RD_James_comp2.
+ *
+ * This is the competition method which forms the basis of the results published in
+ * "Modelling the Emergence of Whisker Barrels".
+ *
+ * Author: Seb James
+ * Date: June 2019 - July 2020
  */
 
 #include "rd_james.h"
@@ -47,12 +74,10 @@ public:
     /*!
      * \bar{a}_i - result of processing a_i through a sigmoid.
      */
-    //@{
     alignas(alignof(std::vector<Flt>))
     std::vector<Flt> abar;
     alignas(alignof(std::array<std::vector<Flt>, 2>))
     std::array<std::vector<Flt>, 2> grad_abar;
-    //@}
 
     /*!
      * Simple constructor; no arguments. Just calls base constructor
@@ -65,7 +90,6 @@ public:
      * Override allocate() and init(), and add a couple of extra
      * resizes.
      */
-    //@{
     virtual void allocate (void) {
         RD_James<Flt>::allocate();
         this->resize_vector_variable (this->ahat);
@@ -94,11 +118,10 @@ public:
             this->zero_vector_param (this->epsilonOverNm1, this->N);
         }
     }
-    //@}
-    /*!
+
+    /*
      * Computation methods
      */
-    //@{
 
     /*!
      * This is updated wrt rd_james.h as it has the additional terms
@@ -106,7 +129,7 @@ public:
      * Computes the "flux of axonal branches" term, J_i(x) (Eq 4)
      *
      * Inputs: this->g, fa (which is this->a[i] or a q in the RK
-     * algorithm), this->D, @a i, the TC type.  Helper functions:
+     * algorithm), this->D, i, the TC type.  Helper functions:
      * spacegrad2D().  Output: this->divJ
      *
      * Stable with dt = 0.0001;
@@ -161,7 +184,7 @@ public:
 
             // Multiply sum by 2D/3d^2 to give term1
             Flt term1 = this->twoDover3dd * thesum;
-            if (isnan(term1)) {
+            if (std::isnan(term1)) {
                 std::cerr << "term1 isnan" << std::endl;
                 std::cerr << "thesum is " << thesum << " fa[hi=" << hi << "] = " << fa[hi] << std::endl;
                 exit (21);
@@ -176,7 +199,7 @@ public:
             term1_1 = this->epsilonOverNm1[i] * fa[hi] * this->div_ahat[hi];
 #endif
 
-            if (isnan(term1_1)) {
+            if (std::isnan(term1_1)) {
                 std::cerr << "term1_1 isnan" << std::endl;
                 std::cerr << "fa[hi="<<hi<<"] = " << fa[hi] << ", this->div_ahat[hi] = " << this->div_ahat[hi] << std::endl;
                 exit (21);
@@ -193,15 +216,15 @@ public:
                                                  + this->grad_ahat[1][hi] * this->grad_a[i][1][hi]);
 #endif
 
-            if (isnan(term1_2)) {
+            if (std::isnan(term1_2)) {
                 std::cerr << "term1_2 isnan at hi=" << hi << std::endl;
-                if (isnan(this->grad_ahat[0][hi])) {
+                if (std::isnan(this->grad_ahat[0][hi])) {
                     std::cerr << "grad_ahat[0][hi] isnan\n";
                 }
-                if (isnan(this->grad_ahat[1][hi])) {
+                if (std::isnan(this->grad_ahat[1][hi])) {
                     std::cerr << "grad_ahat[1][hi] isnan\n";
                 }
-                if (isnan(this->grad_abar[0][hi])) {
+                if (std::isnan(this->grad_abar[0][hi])) {
                     std::cerr << "grad_abar[0][hi] isnan; abar is " << this->abar[hi] << ", neighbouring abars: "
                               << "NE: " << (HAS_NE(hi) ? this->abar[NE(hi)] : -1)
                               << ", NNE: " << (HAS_NNE(hi) ? this->abar[NNE(hi)] : -1)
@@ -211,7 +234,7 @@ public:
                               << ", NSE: " << (HAS_NSE(hi) ? this->abar[NSE(hi)] : -1)
                               << "\n";
                 }
-                if (isnan(this->grad_abar[1][hi])) {
+                if (std::isnan(this->grad_abar[1][hi])) {
                     std::cerr << "grad_abar[1][hi] isnan; abar is " << this->abar[hi] << "\n";
                 }
                 exit (21);
@@ -252,7 +275,7 @@ public:
             thesum += this->ahat[(HAS_NSW(hi) ? NSW(hi) : hi)];
             thesum += this->ahat[(HAS_NSE(hi) ? NSE(hi) : hi)];
             this->div_ahat[hi] = this->twoover3dd * thesum;
-            if (isnan(this->div_ahat[hi])) {
+            if (std::isnan(this->div_ahat[hi])) {
                 std::cerr << "div ahat isnan" << std::endl;
                 exit (3);
             }
@@ -349,4 +372,4 @@ public:
         }
     }
 
-}; // RD_James
+}; // RD_James_comp2

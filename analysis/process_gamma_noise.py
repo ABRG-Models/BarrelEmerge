@@ -11,7 +11,7 @@ import BarrelData as bd
 import h5py
 import math
 
-basedir = '/home/seb/gdrive_usfd/data/BarrelEmerge/gamma_noise/'
+basedir = '../logs/gamma_noise/'
 # Sensitivity analysis carried out for t=30000
 tpoint = 30000
 

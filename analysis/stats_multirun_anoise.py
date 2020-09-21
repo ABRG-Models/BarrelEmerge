@@ -11,7 +11,7 @@ import domcentres as dc
 vert = True
 horz = False
 
-basedir = '/home/seb/gdrive_usfd/data/BarrelEmerge/multirun_anoise/'
+basedir = '../logs/multirun_anoise/'
 t=30000
 
 hondas = []

@@ -44,8 +44,7 @@ for run in {1..${R}}; do  # 0.03 never works; should go one higher too
     "steps" : 30000,
     "logevery": 30000,
     "overwrite_logs": true,
-    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/multirun_comp2/",
-    //"logbase" : "/home/seb/paramexplore_comp2/",
+    "logbase" : "./logs/multirun_comp2/",
     "hextohex_d" : ${HEXHEXD}, // Hex to hex distance, determines num hexes
     "svgpath" : "./boundaries/rat_barrels/wb_110405_Dirichlet.svg",
     "boundaryFalloffDist" : ${BFD},

@@ -17,7 +17,7 @@ tpoint = 30000
 table = []
 table_ind = []
 
-basedir = '/home/seb/gdrive_usfd/data/BarrelEmerge/whisker_rowtrim/'
+basedir = '../logs/whisker_rowtrim/'
 
 # The epsilon for the unmodified barrels in the sim
 epsilon = 1.2

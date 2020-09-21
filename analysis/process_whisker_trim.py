@@ -18,7 +18,7 @@ table = []
 table_ind = []
 
 modified_barrel = 'C3'
-basedir = '/home/seb/gdrive_usfd/data/BarrelEmerge/whisker_trim/'
+basedir = '../logs/whisker_trim/'
 
 # The epsilon for the unmodified barrels in the sim
 epsilon = 1.2

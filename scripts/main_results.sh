@@ -24,9 +24,14 @@ CONFIG="./configs/rat/41N2M_thalguide_Fig1.json"
 # try james_comp2c instead of james_comp2:
 ./build/sim/james_comp2 ${CONFIG}
 
-# Fig 4, Fgf misexpression
-echo "Running simulation for Fig 4..."
-CONFIG="./configs/rat/41N2M_thalguide_Fig4.json"
+# Fig 4b, Fgf misexpression
+echo "Running simulation for Fig 4b..."
+CONFIG="./configs/rat/41N2M_thalguide_Fig4ab.json"
+./build/sim/james_comp2 ${CONFIG}
+
+# Fig 4c, Whisker trimming
+echo "Running simulation for Fig 4cd..."
+CONFIG="./configs/rat/41N2M_thalguide_Fig4cd.json"
 ./build/sim/james_comp2 ${CONFIG}
 
 # Success/completion

@@ -11,7 +11,7 @@ import domcentres as dc
 vert = True
 horz = False
 
-basedir = '/home/seb/gdrive_usfd/data/BarrelEmerge/multirun_comp2/'
+basedir = '../logs/multirun_comp2/'
 t=30000
 
 hondas = []

@@ -1,16 +1,34 @@
+#ifdef COPYLEFT
 /*
- * This program is intended to facilite the study of a reaction
- * diffusion system which is guided by M guidance molecules, whose
- * expression gradients drive N thalamocortical axon types to make
- * connections in an elliptical region.
+ *  This file is part of BarrelEmerge.
+ *
+ *  BarrelEmerge is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  BarrelEmerge is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with BarrelEmerge.  If not, see <https://www.gnu.org/licenses/>.
+ */
+#endif
+
+/*
+ * This file contains the main() function and common code to run several different
+ * reaction-diffusion style programs to investigate the development and selforganization
+ * of the whisker barrel field.
  *
  * Author: Seb James <seb.james@sheffield.ac.uk>
  *
- * Date: June 2019
+ * Date: June 2019 - July 2020
  */
 
 /*!
- * This will be passed as the template argument for RD_Plot and RD and
+ * FLT will be passed as the template argument for RD_James and it
  * should be defined when compiling.
  */
 #ifndef FLT
@@ -68,7 +86,6 @@ using morph::HexGrid;
 using morph::HdfData;
 
 #ifdef COMPILE_PLOTTING
-# include <GLFW/glfw3.h>
 # include "morph/Scale.h"
 using morph::Scale;
 # include "morph/ColourMap.h"
@@ -852,8 +869,11 @@ int main (int argc, char **argv)
     conf.set ("D", RD.get_D());
     conf.set ("k", RD.k);
     conf.set ("dt", RD.get_dt());
+#ifndef __OSX__ // Currently Config::insertGitInfo fails on Macs
     // Call our function to place git information into root.
     conf.insertGitInfo ("sim/");
+
+#endif
     // Store the binary name and command argument into root, too.
     if (argc > 0) { conf.set("argv0", argv[0]); }
     if (argc > 1) { conf.set("argv1", argv[1]); }

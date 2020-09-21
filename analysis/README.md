@@ -15,8 +15,8 @@ code to plot the parameter search results.
 
 ## plots/
 
-A directory into which generated plots are written, and which contains
-some movie-making scripts, also.
+A directory into which generated plots are written, and which also
+contains some movie-making scripts.
 
 ## postproc/
 
@@ -70,6 +70,22 @@ search into the csv file postproc/paramsearch_k3.0_comp2.csv
 generates sensitivity_guide1.csv,
 required for plot_FigSensitivity.py to plot Fig. 3 from the paper.
 
+### process_whisker_trim.py
+
+Process individual whisker trim data.
+
+Generates whisker_trim_individual.csv which contains the individual
+barrel metrics and whisker_trim_overall.csv which contains the overall
+pattern metrics.
+
+### process_whisker_rowtrim.py
+
+Process whisker row trim data.
+
+Generates whisker_rowtrim_individual.csv which contains the individual
+barrel metrics and whisker_rowtrim_overall.csv which contains the
+overall pattern metrics.
+
 ## Statistics scripts
 
 stats_multirun_normal.py, stats_multirun_anoiseless.py,
@@ -80,10 +96,13 @@ a_i. Reported in the text of the paper.
 ## Plot scripts
 
 ### plot_a_c_vs_t.py
-Plots a graph of a and c vs. t showing these are
-conserved with time. Figure not included in paper.
+
+Plots a graph of a and c vs. t showing that these are conserved with
+time. Figure not included in paper.
 
 ### plot_aid.py
+
+Example:
 ```
 plot_aid.py ../logs/41N2M_thalguide_Fig1/ 30000
 ```
@@ -93,10 +112,13 @@ Plot a colour map of argmax(a_i) at time 30000 from the simulation results in
 argmax(a_i) are not included in the paper.
 
 ### plot_aid_all.py
-Plot a maps for all times. Used to make up movie
-frames (takes a long time to run).
+
+Plot a maps for all times. Used to make up movie frames (takes a long
+time to run).
 
 ### plot_a.py
+
+Example:
 ```
 plot_a.py ../logs/41N2M_thalguide_Fig1/ ${t}
 ```
@@ -111,20 +133,25 @@ plot_cid.py ../logs/41N2M_thalguide_Fig1/ 30000
 
 Plot a colour map of argmax(c_i) at time 30000 from the simulation results in
 ../logs/41N2M_thalguide_Fig1/. Adjust time to suit. Used to generate
-maps in Fig. 1C, Fig. 2B and Fig. 3B in the paper.
+maps in Fig. 1C, Fig. 2B, Fig. 3B and Fig. 4C in the paper.
 
 ### plot_cid_all.py
-Like plot_aid_all.py, but for argmax(c).
+
+Like plot_aid_all.py, but for argmax(c). Used to print frames for the
+movie that accompanies the paper.
 
 ### plot_cid_fgfmis.py
-Like plot_cid.py, but for the Fgf8 misexpression experiment. Fig 4. in
+
+Like plot_cid.py, but for the Fgf8 misexpression experiment. Fig. 4B in
 the paper.
 
 ### plot_FigSensitivity.py
-Plots Fig 3A from the paper, sensitivity analysis.
+
+Plots Fig 3A from the paper, the sensitivity analysis.
 
 ### plot_guidance.py
 
+Example:
 ```
 python plot_guidance.py ../logs/41N2M_thalguide_Fig1/ 0 # or 1
 ```
@@ -132,17 +159,26 @@ Plot a greyscale map of the guidance field 0 (or 1). Used to plot
 parts of Fig. 1B.
 
 ### plot_honda.py
-Plot graphs included in Fig. 1D.
+
+Plot the graphs included in Fig. 1D.
 
 ### plot_locn.py
+
+Example:
 ```
 python plot_locn.py ../logs/41N2M_thalguide_Fig1/ ${t}
 ```
 Plot the selectivity measure, mu(x, t). Shown in Fig. 1E.
 
 ### plot_paramsearch_paper.py
+
 Plot the components of Fig. 2.
 
 ### plot_singlemap.py
+
 A bit like plot_cid.py, but ALSO plots the
 experimental map, in a separate window. Figures not shown in paper.
+
+### plot_trim_areaonly.py
+
+Plot the graph for Fig. 4D.

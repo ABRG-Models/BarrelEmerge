@@ -42,7 +42,7 @@ if do_maps:
     map_i = 1 # map index
     for pt in param_tuples:
 
-        logdirname = '/home/seb/gdrive_usfd/data/BarrelEmerge/paramexplore_comp2/pe_comp2_D{2}_F{0}_ab{1}_k3'.format (pt[0], pt[1], pt[2])
+        logdirname = '../logs/paramexplore_comp2/pe_comp2_D{2}_F{0}_ab{1}_k3'.format (pt[0], pt[1], pt[2])
         print ('Plotting image from log dir {0}'.format(logdirname))
         # Read the data
         bdo = bd.BarrelData()

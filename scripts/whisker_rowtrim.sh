@@ -42,7 +42,7 @@ for EPS_TRIM_MULT in 1 0.98 0.96 0.94 0.92 0.9 0.86 0.8 0.76 0.72 0.68 0.64 0.6 
     "steps" : 30000,
     "logevery": 30000,
     "overwrite_logs": true,
-    "logbase" : "/home/seb/gdrive_usfd/data/BarrelEmerge/whisker_rowtrim/",
+    "logbase" : "./logs/whisker_rowtrim/",
     "hextohex_d" : ${HEXHEXD},
     "svgpath" : "./boundaries/rat_barrels/wb_110405_Dirichlet.svg",
     "boundaryFalloffDist" : ${BFD},

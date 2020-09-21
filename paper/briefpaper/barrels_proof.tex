@@ -176,7 +176,7 @@ branching and synaptogenesis, \cmnt{and an assumption that the spatial
 
 \begin{figure}
   \begin{fullwidth}
-    \includegraphics[width=\linewidth]{./Fig1.png}
+    \includegraphics[width=\linewidth]{./Fig1.pdf}
     \caption{The emergence of whisker barrels.
       %
       \textbf{A} Left shows a cytochrome oxidase stain obtained from rat S1
@@ -200,7 +200,7 @@ branching and synaptogenesis, \cmnt{and an assumption that the spatial
         $\gamma\in\pm 2$, $\epsilon=1.2$} and $\delta{t}=0.0001$. Colours
       indicate the thalamic projection for which the connection density is
       maximal, \cmnt{barrel labels are located at the centroid of each
-        region and} black lines delineate boundaries (see Movie S1).
+        region and} black lines delineate boundaries (see Video 1).
       %
       \textbf{D} Red dots show the \emph{Honda}--\cmnt{$\delta(t)$} metric
       obtained from \cmnt{the} simulation approaching that obtained from
@@ -333,7 +333,7 @@ the anterior-posterior and medial-lateral axes.  \cmnt{These gradients are
   organization is apparent in a plot of the identity of the projection for
   which the connection density is maximal at each simulated cortical location,
   as shown in Fig.\,\ref{fig:main}C. Parameter values for this example simulation
-  (see also Movie S1) were obtained by
+  (see also Video 1) were obtained by
   conducting a full parameter sweep and choosing a combination
   ($\alpha=3.6$, $\beta=16.67$, $k=3$, $D=0.5$, $\epsilon=1.2$) that scored
   well against the following three measures.}
@@ -372,7 +372,7 @@ the anterior-posterior and medial-lateral axes.  \cmnt{These gradients are
 % Full page width
 \begin{figure}
   \begin{fullwidth}
-    \includegraphics[width=\linewidth]{./Fig2.png}
+    \includegraphics[width=\linewidth]{./Fig2.pdf}
     \caption{\cmnt{Exploring the parameter space.
         %
         \textbf{A} Colour indicates the quality of the pattern at $t=30000$
@@ -444,7 +444,7 @@ the anterior-posterior and medial-lateral axes.  \cmnt{These gradients are
 % Full page width
 \begin{figure}
   \begin{fullwidth}
-    \includegraphics[width=\linewidth]{./Fig3.png}
+    \includegraphics[width=\linewidth]{./Fig3.pdf}
     \caption{
       \cmnt{Sensitivity analysis.
         %
@@ -540,7 +540,7 @@ the anterior-posterior and medial-lateral axes.  \cmnt{These gradients are
 
 % This figure is text width
 \begin{center}
-  \includegraphics[width=\linewidth]{./Fig4.png} \captionof{figure}{
+  \includegraphics[width=\linewidth]{./Fig4.pdf} \captionof{figure}{
     \cmnt{Simulating altered barrel development.  Guidance fields
       (\textbf{A}) and emergent barrel pattern (\textbf{B}) in a Fgf8
       misexpression experiment
@@ -848,15 +848,17 @@ function of the distance, $d_b$, from $\mb{x}$ to the boundary, \cmnt{of the
 %
 \cmnt{which has units of mm$^3$.}
 
-All code required to reproduce these results is available at
+The code required to reproduce these results is available at
 \url{https://github.com/ABRG-Models/BarrelEmerge/tree/eLife}. The computations
 described in (i)--(v) may be found in the class method
 \code{RD\_James\cmnt{\_comp2}::compute\_divJ()} which calculates \code{term1},
 \code{term2}, \code{term3}, \code{term1\_1} and \code{term1\_2}, respectively.
+BarrelEmerge depends on the software library \emph{morphologica}
+(RRID:SCR\_018813), which must also be compiled.
 
-\section{Movie S1 caption}
+\section{Video 1 caption}
 
-Movie corresponding to Fig.\,\ref{fig:main}C in the main paper. Simulation parameters were
+Video corresponding to Fig.\,\ref{fig:main}C in the main paper. Simulation parameters were
 \cmnt{$N=41$, $\alpha=3.6$, $\beta=16.67$, $k=3$, $D=0.5$, $\gamma\in\pm 2$,
 $\epsilon=1.2$ and $\delta{t}=0.0001$}. Colours indicate the thalamic
 projection for which the connection density is maximal and black lines delineate
