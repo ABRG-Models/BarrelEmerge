@@ -38,6 +38,11 @@ make -j4 # or however many cores you have
 popd
 ```
 
+**Note:** You'll ideally have an OpenMP-capable compiler. You'll
+probably need libomp as well, because Armadillo uses that if OpenMP is
+present. You get these both for free with gcc on a modern Linux
+computer; on a Mac, you will have to install libomp from source.
+
 Now you can read how to reproduce the experiments. To reproduce all of
 the results, see ./scripts/README.md. To graph the resulting data, see
 ./analysis/README.md.
@@ -48,6 +53,11 @@ in Fig. 1C, you can run one simulation:
 ```bash
 ./build/sim/james_comp2 ./configs/rat/41N2M_thalguide_Fig1.json
 ```
+
+**Note:** The simulation is computationally demanding. It takes about
+  10 minutes to run the Fig. 1C simulation on a 6-core gaming laptop
+  (with a Core i9 intel processor and when compiled with OpenMP to use
+  all the cores). Be prepared to wait on a lesser machine!
 
 If you have any trouble, please post an issue on github at
 https://github.com/ABRG-Models/BarrelEmerge/issues and I will do my

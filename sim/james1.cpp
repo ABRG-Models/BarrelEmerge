@@ -850,8 +850,11 @@ int main (int argc, char **argv)
     conf.set ("D", RD.get_D());
     conf.set ("k", RD.k);
     conf.set ("dt", RD.get_dt());
+#ifndef __OSX__ // Currently Config::insertGitInfo fails on Macs
     // Call our function to place git information into root.
     conf.insertGitInfo ("sim/");
+
+#endif
     // Store the binary name and command argument into root, too.
     if (argc > 0) { conf.set("argv0", argv[0]); }
     if (argc > 1) { conf.set("argv1", argv[1]); }

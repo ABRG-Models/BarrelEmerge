@@ -165,7 +165,7 @@ public:
 
             // Multiply sum by 2D/3d^2 to give term1
             Flt term1 = this->twoDover3dd * thesum;
-            if (isnan(term1)) {
+            if (std::isnan(term1)) {
                 std::cerr << "term1 isnan" << std::endl;
                 std::cerr << "thesum is " << thesum << " fa[hi=" << hi << "] = " << fa[hi] << std::endl;
                 exit (21);
@@ -180,7 +180,7 @@ public:
             term1_1 = this->epsilonOverNm1[i] * fa[hi] * this->div_ahat[hi];
 #endif
 
-            if (isnan(term1_1)) {
+            if (std::isnan(term1_1)) {
                 std::cerr << "term1_1 isnan" << std::endl;
                 std::cerr << "fa[hi="<<hi<<"] = " << fa[hi] << ", this->div_ahat[hi] = " << this->div_ahat[hi] << std::endl;
                 exit (21);
@@ -197,15 +197,15 @@ public:
                                                  + this->grad_ahat[1][hi] * this->grad_a[i][1][hi]);
 #endif
 
-            if (isnan(term1_2)) {
+            if (std::isnan(term1_2)) {
                 std::cerr << "term1_2 isnan at hi=" << hi << std::endl;
-                if (isnan(this->grad_ahat[0][hi])) {
+                if (std::isnan(this->grad_ahat[0][hi])) {
                     std::cerr << "grad_ahat[0][hi] isnan\n";
                 }
-                if (isnan(this->grad_ahat[1][hi])) {
+                if (std::isnan(this->grad_ahat[1][hi])) {
                     std::cerr << "grad_ahat[1][hi] isnan\n";
                 }
-                if (isnan(this->grad_abar[0][hi])) {
+                if (std::isnan(this->grad_abar[0][hi])) {
                     std::cerr << "grad_abar[0][hi] isnan; abar is " << this->abar[hi] << ", neighbouring abars: "
                               << "NE: " << (HAS_NE(hi) ? this->abar[NE(hi)] : -1)
                               << ", NNE: " << (HAS_NNE(hi) ? this->abar[NNE(hi)] : -1)
@@ -215,7 +215,7 @@ public:
                               << ", NSE: " << (HAS_NSE(hi) ? this->abar[NSE(hi)] : -1)
                               << "\n";
                 }
-                if (isnan(this->grad_abar[1][hi])) {
+                if (std::isnan(this->grad_abar[1][hi])) {
                     std::cerr << "grad_abar[1][hi] isnan; abar is " << this->abar[hi] << "\n";
                 }
                 exit (21);
@@ -256,7 +256,7 @@ public:
             thesum += this->ahat[(HAS_NSW(hi) ? NSW(hi) : hi)];
             thesum += this->ahat[(HAS_NSE(hi) ? NSE(hi) : hi)];
             this->div_ahat[hi] = this->twoover3dd * thesum;
-            if (isnan(this->div_ahat[hi])) {
+            if (std::isnan(this->div_ahat[hi])) {
                 std::cerr << "div ahat isnan" << std::endl;
                 exit (3);
             }

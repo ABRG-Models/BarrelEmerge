@@ -20,33 +20,30 @@ else()
   message(ERROR "Operating system not supported: " ${CMAKE_SYSTEM})
 endif()
 
-set (CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 17)
 
+# Find OpenMP first, so that we have OpenMP_CXX_FLAGS
 find_package(OpenMP)
 
-# Add the host definition to CXXFLAGS along with other switches
+# Set up compiler flags
 if (APPLE)
-  # OpenMP: According to
-  # https://stackoverflow.com/questions/39979836/using-openmp-with-c11-on-mac-os#39983933
-  # it should now be a case of:
-  #
-  # You should be able to get away without the libomp that's mentioned
-  # in that post, as I don't use any of the runtime library OpenMP
-  # features. However, the code did not compile without it, so we've moved the links to omp to the later apple if case.
-  set(CMAKE_CXX_FLAGS "${MORPH_HOST_DEFINITION} -Wall -g")# -Xpreprocessor -fopenmp
-
+  set(CMAKE_CXX_FLAGS "${MORPH_HOST_DEFINITION} -Wall -g")
 else()
   # To use Intel compiler, call cmake as: cmake -DCMAKE_CXX_COMPILER=icpc ..
   if (CMAKE_CXX_COMPILER_ID MATCHES Intel)
-    set(CMAKE_CXX_FLAGS "${MORPH_HOST_DEFINITION} -Wall -g -std=c++17 -xHOST -O3 -D__ICC__") #-qopenmp
+    set(CMAKE_CXX_FLAGS "${MORPH_HOST_DEFINITION} -Wall -g -std=c++17 -xHOST -O3 -D__ICC__")
   else() # GCC or Clang
-    set(CMAKE_CXX_FLAGS "${MORPH_HOST_DEFINITION} -Wall -Wfatal-errors -g -Wno-unused-result -Wno-unknown-pragmas -march=native -O3") #-fopenmp
+    set(CMAKE_CXX_FLAGS "${MORPH_HOST_DEFINITION} -Wall -g -Wfatal-errors -Wno-unused-result -Wno-unknown-pragmas -march=native -O3")
   endif()
 endif()
 
 # Tell clang to be quiet about brace initialisers
 if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-missing-braces")
+endif()
+
+if(OpenMP_FOUND)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 endif()
 
 # Additional GL compiler flags.
@@ -69,7 +66,7 @@ find_package(glfw3 REQUIRED)
 find_package(Armadillo REQUIRED)
 find_package(morphologica CONFIG REQUIRED)
 
-if(OpenMP_Found)
+if(OpenMP_FOUND)
   link_libraries(OpenMP::OpenMP_CXX)
 endif()
 
