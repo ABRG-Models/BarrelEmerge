@@ -8,7 +8,7 @@ following paper:
 James, Krubitzer & Wilson. 2020. *Modelling the emergence of whisker
 barrels*. eLife. DOI: https://doi.org/10.7554/eLife.55588
 
-The emergence of whisker barrels is demonsrtated in a modified
+The emergence of whisker barrels is demonstrated in a modified
 Karbowski-Ermentrout-like axon branching population model.
 
 For instructions on reproducing the results of the paper, see the
