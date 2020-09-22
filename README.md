@@ -3,9 +3,10 @@
 This is a simulation of the growth of axons which demonstrates how the
 whisker barrel field pattern can selforganize in the presence of only
 two orthogonal molecular guidance cues. It is the code behind the
-eLife paper:
+following paper:
 
-*"Modelling the Emergence of Whisker Barrels"*
+James, Krubitzer & Wilson. 2020. *Modelling the Emergence of Whisker
+Barrels*. eLife. DOI: https://doi.org/10.7554/eLife.55588
 
 The emergence of whisker barrels is demonstated in a modified
 Karbowski-Ermentrout-like axon branching population model.
