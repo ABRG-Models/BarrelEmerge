@@ -27,7 +27,7 @@ find_package(OpenMP)
 
 # Set up compiler flags
 if (APPLE)
-  set(CMAKE_CXX_FLAGS "${MORPH_HOST_DEFINITION} -Wall -g")
+  set(CMAKE_CXX_FLAGS "${MORPH_HOST_DEFINITION} -Wall -g -O3")
 else()
   # To use Intel compiler, call cmake as: cmake -DCMAKE_CXX_COMPILER=icpc ..
   if (CMAKE_CXX_COMPILER_ID MATCHES Intel)
