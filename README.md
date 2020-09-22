@@ -12,7 +12,7 @@ The emergence of whisker barrels is demonstated in a modified
 Karbowski-Ermentrout-like axon branching population model.
 
 For instructions on reproducing the results of the paper, see the
-README.md file in the paper/scripts subdirectory.
+README.md file in the scripts subdirectory.
 
 Before you do that, you'll need to build this simulation code, which
 is compiled against our library of research software,
@@ -59,16 +59,13 @@ in Fig. 1C, you can run one simulation:
 ```
 
 **Note:** The simulation is computationally demanding. It takes about
-10 minutes to run the 50000 steps of Fig. 1C simulation on a 6-core
-gaming laptop (with an Intel Core i9 8th gen processor and when
-compiled with OpenMP to use all the cores). That's about 12 seconds
-for 1000 steps. Be prepared to wait on a lesser machine: On a MacBook
-Air (Core i3 10th gen dual core) and *without* OpenMP, 1000 steps took
-about 400 seconds so the full Fig 1 simulation would take over 5 hours
-to complete!
+11 minutes to run the 50000 steps of Fig. 1C simulation on a 6-core
+gaming laptop (with an 8th gen Intel Core i9 processor and with the code
+compiled with OpenMP to use all the cores). An older, 6th gen Core i5
+laptop (2 cores) needed 23 minutes for the same simulation.
 
 If you have any trouble, please post an issue on github at
 https://github.com/ABRG-Models/BarrelEmerge/issues and I will do my
 best to help.
 
-Seb James, July 2020.
+Seb James, September 2020.
