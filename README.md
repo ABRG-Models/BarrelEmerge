@@ -5,8 +5,8 @@ whisker barrel field pattern can selforganize in the presence of only
 two orthogonal molecular guidance cues. It is the code behind the
 following paper:
 
-James, Krubitzer & Wilson. 2020. *Modelling the Emergence of Whisker
-Barrels*. eLife. DOI: https://doi.org/10.7554/eLife.55588
+James, Krubitzer & Wilson. 2020. *Modelling the emergence of whisker
+barrels*. eLife. DOI: https://doi.org/10.7554/eLife.55588
 
 The emergence of whisker barrels is demonstated in a modified
 Karbowski-Ermentrout-like axon branching population model.
