@@ -3,7 +3,7 @@
 This is a simulation of the growth of axons which demonstrates how the
 whisker barrel field pattern can self-organize in the presence of only
 two orthogonal molecular guidance cues. It is the code behind the
-following paper (archive branch: [eLife](https://github.com/ABRG-Models/BarrelEmerge/tree/master)):
+following paper (archive branch: [eLife](https://github.com/ABRG-Models/BarrelEmerge/tree/eLife)):
 
 James, Krubitzer & Wilson. 2020. *Modelling the emergence of whisker
 barrels*. eLife. DOI: https://doi.org/10.7554/eLife.55588
