@@ -30,6 +30,7 @@ Once you've compiled and installed morphologica, you can compile
 BarrelEmerge:
 
 ```bash
+git clone https://github.com/ABRG-Models/BarrelEmerge.git
 cd BarrelEmerge
 mkdir build
 pushd build
