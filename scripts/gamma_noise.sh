@@ -40,6 +40,10 @@ GAIN2=1.0
 #exit 0
 
 # Barrel B4
+#
+# In the paper, \nu_{\gamma} used in (gamma_max - gamma_min)
+# U(0,\nu_{\gamma}) = 2-(-2) U(0,\nu) = 4 U(0,\nu), so the point
+# marked i at \nu_{\gamma}=0.25 corresponds to gamma_noise_mag 1.0.
 for gamma_noise_mag in 0.001 0.002 0.005 0.01 0.02 0.05 0.1 0.2 0.3 0.4 0.5 0.55 0.6 0.65 0.7 0.75 1.0 1.5 2.0 2.5; do
     JSON="gammanoise_gain${gamma_noise_mag}.json"
 
