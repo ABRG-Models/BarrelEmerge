@@ -1,0 +1,115 @@
+{
+    "steps" : 30000,
+    "logevery": 50,
+    "overwrite_logs": true,
+    "logbase" : "./logs/gamma_noise/",
+    "hextohex_d" : 0.03, // Hex to hex distance, determines num hexes
+    "svgpath" : "./boundaries/rat_barrels/wb_110405_Dirichlet.svg",
+    "boundaryFalloffDist" : 0.1,
+    "G" : 1.0,     // gamma gain
+    "dt" : 0.0001, // Timestep. Defaults to 0.00001 if omitted here
+
+    // Initial conditions parameters
+    "aNoiseGain" : 0.2,
+    "aInitialOffset" : 0.2,
+
+    "mNoiseGain" : 0.0,
+
+    // Parameters that will vary
+    "D" : 0.5,
+    "k" : 3,    // Exponent on a
+    // Also: alpha, beta, epsilon; see gamma list below
+
+    // Array of parameters for N thalamocortical populations.
+    // Noise magnitude: 1.0
+    "tc": [
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.9903400200000001,               0.38909475929160803], "name" : "a" }, // a
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.840938434231407, 1.2836682340971339], "name" : "A1" }, // A1
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.97158678674042165, 0.90045233301765726], "name" : "A2" }, // A2
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.73655312068806245, 1.910944138855208], "name" : "A3" }, // A3
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.91468624740382087, 1.6194242728569301], "name" : "A4" }, // A4
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.2083070937774447, -0.28901433641070373], "name" : "b" }, // b
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-1.0385749461215958, 0.28839993864070962], "name" : "B1" }, // B1
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.13969239203132744, 0.42846861081184945], "name" : "B2" }, // B2
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.68644904746729218, 1.1668057533912726], "name" : "B3" }, // B3
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.079362191389794279, 0.83692722247419249], "name" : "B4" }, // B4
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.4032206059227621, -0.83525999209002111], "name" : "c" }, // c
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.61666616130719598, -0.75489343244267326], "name" : "C1" }, // C1
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [-0.45887973830183804, -0.2614134432962702], "name" : "C2" }, // C2
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.42383657044708073, 0.54059371075617413], "name" : "C3" }, // C3
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.70163175768965469, 0.2322223507408871], "name" : "C4" }, // C4
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.96546489566874971, 0.72224341814863435], "name" : "C5" }, // C5
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.25889122832302669, 1.3445696664269351], "name" : "C6" }, // C6
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.1797065119317678, 1.5164611833621804], "name" : "C7" }, // C7
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.7059055399368066, 1.6368008363126574], "name" : "C8" }, // C8
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.67785131586503566, 2.5671812179208171], "name" : "C9" }, // C9
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.63949270712362827, -1.5075856935842133], "name" : "d" }, // d
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.48768305999709904, -0.73075601349481389], "name" : "D1" }, // D1
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.18723968226553331, -0.44260796292012883], "name" : "D2" }, // D2
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.1153607521778741, -0.84671183969176089], "name" : "D3" }, // D3
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.4425212425310838, -0.71028339412808983], "name" : "D4" }, // D4
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.7696012923921058, 0.39483661906901213], "name" : "D5" }, // D5
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.9509110511135901, 0.48140433575836994], "name" : "D6" }, // D6
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.7155377397408347, 0.72242218960465654], "name" : "D7" }, // D7
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [0.91292926965293586, 1.491640051589858], "name" : "D8" }, // D8
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.0645435102858338, 1.6148878643062088], "name" : "D9" }, // D9
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.433176745522754, 2.361925545420859], "name" : "D10" }, // D10
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.1418978246896887, -1.220334], "name" : "E1" }, // E1
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [1.9035943323610558, -1.4781213552933612], "name" : "E2" }, // E2
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [2.7767319553746201, -1.6926825130395196], "name" : "E3" }, // E3
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [2.0923465000000001,                -0.39863325569000641], "name" : "E4" }, // E4
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [2.4235665641076469, -0.60882090510111098], "name" : "E5" }, // E5
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [2.0674785477785336, 0.12470264890158567], "name" : "E6" }, // E6
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [2.1867871611496592, 0.25339657206744637], "name" : "E7" }, // E7
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [2.4191751998566695, 1.1247924026421101], "name" : "E8" }, // E8
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [2.3608462777721284, 1.4226885811620478], "name" : "E9" }, // E9
+        { "alpha" : 3.6, "beta" : 16.67, "epsilon" : 1.2, "xinit" : -0.16,   "yinit" : 0.0, "sigmainit" : 0.0, "gaininit" : 1.0, "gamma" : [2.5961751896046521, 1.4616848145790438], "name" : "E10" }
+    ], // end tc
+
+    // Array of parameters for the guidance molecules
+    "guidance": [
+        {
+            "shape"  : "Linear1D", // 'x'
+            "gain"   : 1.0,
+            "phi"    : 6,
+            "width"  : 0.1,
+            "offset" : 0.0
+        },
+        {
+            "shape"  : "Linear1D", // 'y'
+            "gain"   : 1.0,
+            "phi"    : -84, // -84
+            "width"  : 0.1,
+            "offset" : 0.0
+        }
+    ], // end guidance
+
+    "contour_threshold" : 0.35,
+
+    // Visualization parameters (ignored by computation-only binaries)
+    "win_width_contours": 800,
+    "x_default": -3.38512,
+    "y_default": -0.491072,
+    "z_default": -11.5,
+    "plotevery": 500,
+    "vidframes": false,    // If true, number video frame saves consecutively, rather than by simulation step number
+    "rhoInit": 4, // Larger to zoom out
+    //
+    "plot_guide" : true,
+    "plot_contours" : true,
+    "plot_a_contours" : false,
+    "plot_a" : false,
+    "plot_c" : false,
+    "plot_n" : false,
+    "scale_a" : false,
+    "scale_c" : false,
+    "scale_n" : false,
+
+    //
+    "plot_guidegrad" : false,
+    "plot_divg" : false,
+    "plot_divJ" : false,
+    "plot_dr": true,
+    "do_dirichlet_analysis": true,
+    "plot_dr_with_guide" : false
+}
