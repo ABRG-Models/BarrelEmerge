@@ -28,6 +28,7 @@
 #include "morph/ReadCurves.h"
 #include "morph/display.h"
 #include "morph/tools.h"
+#include "morph/ColourMap.h"
 #include <iostream>
 #include <vector>
 #include <list>
@@ -100,7 +101,7 @@ int main (int argc, char** argv)
         array<float,3> cl_gn2 = {{0.0,0.5,0.05}};
         float sz = hg.hexen.front().d;
         for (auto h : hg.hexen) {
-            array<float,3> cl_a = morph::Tools::getJetColorF (f[h.vi]);
+            array<float,3> cl_a = morph::ColourMap<float>::jetcolour (f[h.vi]);
             disp.drawHex (h.position(), offset, (sz/2.0f), cl_a);
             // On boundary draw small marker hex.
             if (h.boundaryHex()) {
