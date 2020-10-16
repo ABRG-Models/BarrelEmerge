@@ -15,23 +15,13 @@ For instructions on reproducing the results of the paper, see the
 README.md file in the scripts subdirectory.
 
 Before you do that, you'll need to build this simulation code, which
-is compiled against our library of research software,
-morphologica. So, first, obtain and build morphologica (it has its own
-README.md with instructions). morphologica can be obtained here on
-github:
-
-https://github.com/ABRG-Models/morphologica/tree/papers/BarrelEmerge_eLife
-
-(Note that I've linked to you a particular branch of morphologica, in
-case any future changes there break the compilation of this version of
-BarrelEmerge).
-
-Once you've compiled and installed morphologica, you can compile
-BarrelEmerge:
+is compiled using our library of research software,
+morphologica (so you'll see there are two git clones to do):
 
 ```bash
 git clone https://github.com/ABRG-Models/BarrelEmerge.git
 cd BarrelEmerge
+git clone https://github.com/ABRG-Models/morphologica.git
 mkdir build
 pushd build
 cmake ..
