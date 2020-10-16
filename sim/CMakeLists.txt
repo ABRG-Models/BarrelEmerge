@@ -1,4 +1,5 @@
-#include_directories(${GLFW3_INCLUDE_DIR})
+# Add the path to where morph is installed
+include_directories(BEFORE ${MORPH_INCLUDE_PATH})
 
 set(MORPH_LIBS jsoncpp_lib ${HDF5_C_LIBRARIES} ${ARMADILLO_LIBRARY} ${ARMADILLO_LIBRARIES} ${OpenCV_LIBS} ${LAPACK_LIBRARIES} OpenGL::GL glfw)
 

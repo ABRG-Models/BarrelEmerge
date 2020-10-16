@@ -64,16 +64,18 @@ find_package(HDF5 REQUIRED)
 find_package(jsoncpp REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(Armadillo REQUIRED)
-find_package(morphologica CONFIG REQUIRED)
+find_package(morphologica REQUIRED)
 
 if(OpenMP_FOUND)
   link_libraries(OpenMP::OpenMP_CXX)
 endif()
 
+set(MORPH_INCLUDE_PATH "/usr/local/include" CACHE PATH "The path to the morphologica headers (e.g. /usr/local/include or \$HOME/usr/include)")
+
 add_subdirectory(sim)
 
 # For debugging of variables:
-option(DEBUG_VARIABLES OFF)
+option(DEBUG_VARIABLES "Set to 1 or ON to see all of cmake's internal variables. Useful for debugging the cmake build." OFF)
 if(DEBUG_VARIABLES)
   get_cmake_property(_variableNames VARIABLES)
   foreach (_variableName ${_variableNames})
