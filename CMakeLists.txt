@@ -75,7 +75,7 @@ set(MORPH_INCLUDE_PATH "${PROJECT_SOURCE_DIR}/morphologica" CACHE PATH "The path
 
 # Show message saying where morphologica is
 message(STATUS "morphologica path: ${MORPH_INCLUDE_PATH}")
-message(STATUS "  (This can be changed with `cmake -DMORPH_INCLUDE_PATH=/some/place`")
+message(STATUS "  (This can be changed with, e.g.: `cmake -DMORPH_INCLUDE_PATH=/usr/local/include`")
 
 # Use our include path for the morph directories
 include_directories(BEFORE ${MORPH_INCLUDE_PATH})
