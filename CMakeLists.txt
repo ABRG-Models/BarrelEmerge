@@ -64,7 +64,6 @@ find_package(HDF5 REQUIRED)
 find_package(jsoncpp REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(Armadillo REQUIRED)
-find_package(morphologica REQUIRED)
 
 if(OpenMP_FOUND)
   link_libraries(OpenMP::OpenMP_CXX)
