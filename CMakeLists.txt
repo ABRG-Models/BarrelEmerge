@@ -70,7 +70,20 @@ if(OpenMP_FOUND)
   link_libraries(OpenMP::OpenMP_CXX)
 endif()
 
-set(MORPH_INCLUDE_PATH "/usr/local/include" CACHE PATH "The path to the morphologica headers (e.g. /usr/local/include or \$HOME/usr/include)")
+# The include path for morphologica defaults to in-tree, but user can change it if necessary
+set(MORPH_INCLUDE_PATH "${PROJECT_SOURCE_DIR}/morphologica" CACHE PATH "The path to the morphologica headers (e.g. /usr/local/include or \$HOME/usr/include)")
+
+# Show message saying where morphologica is
+message(STATUS "morphologica path: ${MORPH_INCLUDE_PATH}")
+message(STATUS "  (This can be changed with `cmake -DMORPH_INCLUDE_PATH=/some/place`")
+
+# Use our include path for the morph directories
+include_directories(BEFORE ${MORPH_INCLUDE_PATH})
+
+# Make a check that the morph directory exists and fail out if it can't be found
+if(NOT EXISTS "${MORPH_INCLUDE_PATH}/morph")
+  message(FATAL_ERROR "Make sure you have installed morphologica at the location: ${MORPH_INCLUDE_PATH}. The suggested way to do this is to git clone morphologica inside the ${PROJECT_NAME} base directory")
+endif()
 
 add_subdirectory(sim)
 

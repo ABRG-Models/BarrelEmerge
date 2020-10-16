@@ -1,6 +1,3 @@
-# Add the path to where morph is installed
-include_directories(BEFORE ${MORPH_INCLUDE_PATH})
-
 set(MORPH_LIBS jsoncpp_lib ${HDF5_C_LIBRARIES} ${ARMADILLO_LIBRARY} ${ARMADILLO_LIBRARIES} ${OpenCV_LIBS} ${LAPACK_LIBRARIES} OpenGL::GL glfw)
 
 # James model 0. RD Karbowski with variable numbers of guidance
