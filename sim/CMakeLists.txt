@@ -74,25 +74,31 @@ add_executable(james_dncomp_pergroupc james1.cpp)
 target_compile_definitions(james_dncomp_pergroupc PUBLIC FLT=float DNCOMP_PERGROUP)
 target_link_libraries(james_dncomp_pergroupc ${MORPH_LIBS})
 
-add_executable(dvanalyse dvanalyse.cpp)
-target_include_directories(dvanalyse PUBLIC ${X11_INCLUDE_DIR})
-target_compile_definitions(dvanalyse PUBLIC FLT=float COMPILE_PLOTTING)
-target_link_libraries(dvanalyse ${MORPH_LIBS} morphdisplay0)
-
-add_executable(viewguidance viewguidance.cpp)
-target_include_directories(viewguidance PUBLIC ${X11_INCLUDE_DIR})
-target_compile_definitions(viewguidance PUBLIC FLT=float)
-target_link_libraries(viewguidance ${MORPH_LIBS} morphdisplay0)
-
 add_executable(honda honda.cpp)
 target_compile_definitions(honda PUBLIC FLT=float)
 target_link_libraries(honda ${MORPH_LIBS})
 
-# Dual barrel fields with shared branching normalization
-add_executable(jamesdual jamesdual.cpp)
-target_include_directories(jamesdual PUBLIC ${X11_INCLUDE_DIR})
-target_compile_definitions(jamesdual PUBLIC FLT=float COMPILE_PLOTTING)
-target_link_libraries(jamesdual ${MORPH_LIBS} morphdisplay0)
+# 3 old programs that all linked in old style morph::Gdisplay code
+if(0)
+  # Deprecated, uses old display code
+  add_executable(dvanalyse dvanalyse.cpp)
+  target_include_directories(dvanalyse PUBLIC ${X11_INCLUDE_DIR})
+  target_compile_definitions(dvanalyse PUBLIC FLT=float COMPILE_PLOTTING)
+  target_link_libraries(dvanalyse ${MORPH_LIBS} morphdisplay0)
+
+  # Deprecated, james_comp2 etc all show the guidance fields, so no need for separate prog
+  add_executable(viewguidance viewguidance.cpp)
+  target_include_directories(viewguidance PUBLIC ${X11_INCLUDE_DIR})
+  target_compile_definitions(viewguidance PUBLIC FLT=float)
+  target_link_libraries(viewguidance ${MORPH_LIBS} morphdisplay0)
+
+  # Deprecated, not part of eLife paper results
+  # Dual barrel fields with shared branching normalization
+  add_executable(jamesdual jamesdual.cpp)
+  target_include_directories(jamesdual PUBLIC ${X11_INCLUDE_DIR})
+  target_compile_definitions(jamesdual PUBLIC FLT=float COMPILE_PLOTTING)
+  target_link_libraries(jamesdual ${MORPH_LIBS} morphdisplay0)
+endif(0)
 
 # View convolution kernel
 add_executable(convKernel convKernel.cpp)
