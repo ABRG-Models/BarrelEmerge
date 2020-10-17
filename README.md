@@ -16,7 +16,16 @@ README.md file in the scripts subdirectory.
 
 Before you do that, you'll need to build this simulation code, which
 is compiled using our library of research software,
-morphologica (so you'll see there are two git clones to do):
+morphologica (so you'll see there are two git clones in the
+instructions).
+
+The dependencies for the morphologica code are OpenCV, Armadillo,
+OpenGL, HDF5, jsoncpp, LAPACK and glfw (we don't use the old
+morphologica code which also needed X11 headers).  Refer to the
+instructions in the morphologica README.install files, covering
+installation of dependences on Mac or Linux.
+
+With dependences installed you can build BarrelEmerge:
 
 ```bash
 git clone https://github.com/ABRG-Models/BarrelEmerge.git
