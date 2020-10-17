@@ -62,8 +62,6 @@ endif()
 # morphologica header files.
 find_package(OpenCV REQUIRED)
 find_package(OpenGL REQUIRED)
-# X11 is required as some programs link to morphdisplay0
-find_package(X11 REQUIRED)
 find_package(HDF5 REQUIRED)
 find_package(jsoncpp REQUIRED)
 find_package(glfw3 REQUIRED)
