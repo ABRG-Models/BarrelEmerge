@@ -66,6 +66,7 @@ find_package(HDF5 REQUIRED)
 find_package(jsoncpp REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(Armadillo REQUIRED)
+find_package(Freetype REQUIRED)
 
 if(OpenMP_FOUND)
   link_libraries(OpenMP::OpenMP_CXX)
@@ -80,6 +81,9 @@ message(STATUS "  (This can be changed with, e.g.: `cmake -DMORPH_INCLUDE_PATH=/
 
 # Use our include path for the morph directories
 include_directories(BEFORE ${MORPH_INCLUDE_PATH})
+include_directories(BEFORE ${MORPH_INCLUDE_PATH}/include)
+# Tell BarrelEmerge where the morph fonts are, to compile them into the binary
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DMORPH_FONTS_DIR=\"\\\"${PROJECT_SOURCE_DIR}/morphologica/fonts\\\"\"")
 
 # Make a check that the morph directory exists and fail out if it can't be found
 if(NOT EXISTS "${MORPH_INCLUDE_PATH}/morph")

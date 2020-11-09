@@ -322,6 +322,8 @@ int main (int argc, char **argv)
     // Set a dark blue background (black is the default). This value has the order
     // 'RGBA', though the A(alpha) makes no difference.
     plt.bgcolour = {0.0f, 0.0f, 0.2f, 1.0f};
+    plt.showCoordArrows = true;
+    plt.showTitle = false;
     // You can lock movement of the scene
     plt.sceneLocked = conf.getBool ("sceneLocked", false);
     // You can set the default scene x/y/z offsets

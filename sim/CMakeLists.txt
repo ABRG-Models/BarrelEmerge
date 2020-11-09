@@ -1,4 +1,4 @@
-set(MORPH_LIBS jsoncpp_lib ${HDF5_C_LIBRARIES} ${ARMADILLO_LIBRARY} ${ARMADILLO_LIBRARIES} ${OpenCV_LIBS} ${LAPACK_LIBRARIES} OpenGL::GL glfw)
+set(MORPH_LIBS jsoncpp_lib ${HDF5_C_LIBRARIES} ${ARMADILLO_LIBRARY} ${ARMADILLO_LIBRARIES} ${OpenCV_LIBS} ${LAPACK_LIBRARIES} OpenGL::GL glfw Freetype::Freetype)
 
 # James model 0. RD Karbowski with variable numbers of guidance
 # molecules and TC populations and runtime setting of parameters to
