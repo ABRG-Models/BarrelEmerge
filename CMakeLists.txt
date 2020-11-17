@@ -72,6 +72,12 @@ if(OpenMP_FOUND)
   link_libraries(OpenMP::OpenMP_CXX)
 endif()
 
+# Define collections of includes for the dependencies
+get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
+set(MORPH_INC_CORE ${JSON_INC_PATH} ${ARMADILLO_INCLUDE_DIR} ${ARMADILLO_INCLUDE_DIRS} ${HDF5_INCLUDE_DIR})
+set(MORPH_INC_GL ${OpenCV_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${GLFW3_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS})
+include_directories(${MORPH_INC_CORE} ${MORPH_INC_GL})
+
 # The include path for morphologica defaults to in-tree, but user can change it if necessary
 set(MORPH_INCLUDE_PATH "${PROJECT_SOURCE_DIR}/morphologica" CACHE PATH "The path to the morphologica headers (e.g. /usr/local/include or \$HOME/usr/include)")
 
