@@ -539,7 +539,7 @@ int main (int argc, char **argv)
         for (unsigned int i = 0; i<RD.N; ++i) {
             spatOff[0] = xzero + RD.hg->width() * (i/side);
             spatOff[1] = RD.hg->width() * (i%side);
-            unsigned int idx = plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
+            unsigned int idx = plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog, plt.tshaderprog,
                                                                            RD.hg,
                                                                            spatOff,
                                                                            &RD.a[i],
@@ -559,7 +559,7 @@ int main (int argc, char **argv)
         for (unsigned int i = 0; i<RD.N; ++i) {
             spatOff[0] = xzero + RD.hg->width() * (i/side);
             spatOff[1] = RD.hg->width() * (i%side);
-            unsigned int idx = plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
+            unsigned int idx = plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog, plt.tshaderprog,
                                                                            RD.hg,
                                                                            spatOff,
                                                                            &RD.c[i],
@@ -575,7 +575,7 @@ int main (int argc, char **argv)
     unsigned int ngrid = 0;
     if (plot_n) {
         spatOff = { xzero, 0.0, 0.0 };
-        ngrid = plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
+        ngrid = plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog, plt.tshaderprog,
                                                             RD.hg,
                                                             spatOff,
                                                             &RD.n,
@@ -594,19 +594,23 @@ int main (int argc, char **argv)
     if (plot_contours) {
         spatOff = { xzero, 0.0, 0.0 };
         // special scaling for contours. flat in Z, but still colourful
-        c_ctr_grid = plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
-                                                                 RD.hg,
-                                                                 spatOff,
-                                                                 &zeromap,
-                                                                 null_zscale,
-                                                                 ctr_cscale,
-                                                                 ColourMapType::RainbowZeroBlack));
+        HexGridVisual<FLT>* hgv_contours = new HexGridVisual<FLT> (plt.shaderprog, plt.tshaderprog,
+                                                                   RD.hg,
+                                                                   spatOff,
+                                                                   &zeromap,
+                                                                   null_zscale,
+                                                                   ctr_cscale,
+                                                                   ColourMapType::RainbowZeroBlack);
+        hgv_contours->addLabel ("Contours c_i", {0.0f, 1.3f, 0.0f},
+                                morph::colour::khaki1, morph::VisualFont::Vera, 0.2f);
+        c_ctr_grid = plt.addVisualModel (hgv_contours);
+
         xzero += RD.hg->width();
     }
 
     if (plot_a_contours) {
         spatOff = { xzero, 0.0, 0.0 };
-        a_ctr_grid = plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
+        a_ctr_grid = plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog, plt.tshaderprog,
                                                                  RD.hg,
                                                                  spatOff,
                                                                  &zeromap,
@@ -618,13 +622,16 @@ int main (int argc, char **argv)
 
     if (plot_dr && do_dirichlet_analysis == true) {
         spatOff = { xzero, 0.0, 0.0 };
-        dr_grid = plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
-                                                              RD.hg,
-                                                              spatOff,
-                                                              &zeromap,
-                                                              null_zscale,
-                                                              ctr_cscale,
-                                                              ColourMapType::Rainbow));
+        morph::HexGridVisual<FLT>* hgv_dr = new HexGridVisual<FLT> (plt.shaderprog, plt.tshaderprog,
+                                                                    RD.hg,
+                                                                    spatOff,
+                                                                    &zeromap,
+                                                                    null_zscale,
+                                                                    ctr_cscale,
+                                                                    ColourMapType::Rainbow);
+        hgv_dr->addLabel ("argmax(c_i)", {0.0f, 1.3f, 0.0f},
+                          morph::colour::khaki1, morph::VisualFont::Vera, 0.2f);
+        dr_grid = plt.addVisualModel (hgv_dr);
         xzero += RD.hg->width();
     }
 
@@ -637,7 +644,7 @@ int main (int argc, char **argv)
         gd_cscale.do_autoscale = true;
         // Plot gradients of the guidance effect g.
         for (unsigned int j = 0; j<RD.M; ++j) {
-            plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
+            plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog, plt.tshaderprog,
                                                         RD.hg,
                                                         spatOff,
                                                         &RD.rho[j],
@@ -686,7 +693,7 @@ int main (int argc, char **argv)
             Scale<FLT> ggd_cscale; ggd_cscale.setParams (gg_m, gg_c);
 
             // Create the grids
-            plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
+            plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog, plt.tshaderprog,
                                                         RD.hg,
                                                         spatOff,
                                                         &gx[j],
@@ -694,7 +701,7 @@ int main (int argc, char **argv)
                                                         ggd_cscale,
                                                         ColourMapType::Viridis));
             spatOff[0] += RD.hg->width();
-            plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog,
+            plt.addVisualModel (new HexGridVisual<FLT> (plt.shaderprog, plt.tshaderprog,
                                                         RD.hg,
                                                         spatOff,
                                                         &gy[j],

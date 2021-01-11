@@ -107,13 +107,13 @@ int main(int argc, char** argv)
 
         // Visualize the 3 maps
         morph::Vector<float, 3> offset = { -1.1, 0.0, 0.0 };
-        unsigned int gridId = v.addVisualModel (new morph::HexGridVisual<float>(v.shaderprog, &hg, offset, &data));
+        unsigned int gridId = v.addVisualModel (new morph::HexGridVisual<float>(v.shaderprog, v.tshaderprog, &hg, offset, &data));
         offset[1] += hg.depth()/2.0f;
         offset[0] += (hg.width()/2.0f);
-        unsigned int gridId1 = v.addVisualModel (new morph::HexGridVisual<float>(v.shaderprog, &kernel, offset, &kerneldata));
+        unsigned int gridId1 = v.addVisualModel (new morph::HexGridVisual<float>(v.shaderprog, v.tshaderprog, &kernel, offset, &kerneldata));
         offset[0] += (hg.width()/2.0f);
         offset[1] -= hg.depth()/2.0f;
-        unsigned int gridId2 = v.addVisualModel (new morph::HexGridVisual<float>(v.shaderprog, &hg, offset, &convolved));
+        unsigned int gridId2 = v.addVisualModel (new morph::HexGridVisual<float>(v.shaderprog, v.tshaderprog, &hg, offset, &convolved));
 
         // Divide existing scale by 10:
         float newGrad = static_cast<morph::VisualDataModel<float>*>(v.getVisualModel(gridId))->zScale.getParams(0)/10.0;
