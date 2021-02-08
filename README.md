@@ -12,7 +12,7 @@ The emergence of whisker barrels is demonstrated in a modified
 Karbowski-Ermentrout-like axon branching population model.
 
 ![Shows Fig 1 from the paper](https://github.com/ABRG-Models/BarrelEmerge/blob/master/paper/briefpaper/Fig1.png?raw=true)
-*A: CO stain of the rat barrel field B: Centres of thalamic barreloids provide interaction parameters for axon bundles growing into the cortical subplate C: Cortical fields emerge D & E: Pattern quality meausures*
+*A: CO stain of the rat barrel field B: Centres of thalamic barreloids provide interaction parameters for axon bundles growing into the cortical subplate C: Cortical fields emerge D & E: Pattern quality measures*
 
 
 For instructions on reproducing the results of the paper, see the
