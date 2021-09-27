@@ -818,6 +818,9 @@ protected:
     }
 
 public:
+
+    Flt getGamma (size_t m, size_t i) { return this->gamma[m][i]; }
+
     /*
      * Parameter setter methods
      */

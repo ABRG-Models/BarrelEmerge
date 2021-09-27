@@ -805,7 +805,17 @@ int main (int argc, char **argv)
                 }
                 if (plot_dr && do_dirichlet_analysis) {
                     mdlptr = (VdmPtr)plt.getVisualModel (dr_grid);
-                    mdlptr->updateData (&RD.regions);
+                    // Update a vector of Vectors from RD.regions and RD.gamma
+                    std::vector<morph::Vector<FLT>> duocolours(RD.regions.size());
+                    for (size_t i = 0; i < RD.regions.size(); ++i) {
+                        // gi is 'gamma index'
+                        FLT idx_f = (FLT)RD.N * RD.regions[i]; // how to go form flt to int?
+                        unsigned int idx = static_cast<unsigned int>(idx_f);
+                        //std::cout << "RE.regions[i] == " << RD.regions[i] << " idx = " << idx << std::endl;
+                        duocolours[i] = { FLT{0}, RD.getGamma(0,idx), RD.getGamma(1,idx) };
+                    }
+                    //mdlptr->updateData (&RD.regions);
+                    mdlptr->updateData (&duocolours);
                 }
                 // Then add:
                 //plt.plot_dirichlet_boundaries (displays[n_id], RD.hg, vv);
