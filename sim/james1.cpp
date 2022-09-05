@@ -758,6 +758,7 @@ int main (int argc, char **argv)
 
     // Container for colour values
     std::vector<morph::Vector<FLT, 3>> duocolours(RD.regions.size());
+    vector<morph::Vector<FLT, 3>> ctrmap_colours;
 
     try {
         // Start the loop
@@ -772,6 +773,17 @@ int main (int argc, char **argv)
                 DBG2("Plot at step " << RD.stepCount);
                 // Do a plot of the ctrs as found.
                 vector<FLT> ctrmap = ShapeAnalysis<FLT>::get_contour_map (RD.hg, RD.c, RD.contour_threshold);
+                if (ctrmap_colours.size() != ctrmap.size()) { ctrmap_colours.resize(ctrmap.size()); }
+                // Set ctrmap_colours from values in ctrmap.
+                for (size_t i = 0; i < ctrmap.size(); ++i) {
+                    FLT idx_f = (FLT)RD.N * ctrmap[i];
+                    unsigned int idx = static_cast<unsigned int>(idx_f);
+                    if (idx != 0) {
+                        ctrmap_colours[i] = { FLT{0}, RD.getGammaNormalized(0,idx), RD.getGammaNormalized(1,idx) };
+                    } else {
+                        ctrmap_colours[i] = {FLT{0}, FLT{0}, FLT{0}};
+                    }
+                }
 
                 if (do_dirichlet_analysis == true) {
                     RD.dirichlet();
@@ -780,7 +792,7 @@ int main (int argc, char **argv)
 
                 if (plot_contours) {
                     mdlptr = (VdmPtr)plt.getVisualModel (c_ctr_grid);
-                    mdlptr->updateData (&ctrmap);
+                    mdlptr->updateData (&ctrmap_colours);
                 }
 
                 if (plot_a_contours) {
@@ -806,11 +818,11 @@ int main (int argc, char **argv)
                     mdlptr->updateData (&RD.n);
                 }
                 if (plot_dr && do_dirichlet_analysis) {
-                    mdlptr = (VdmPtr)plt.getVisualModel (dr_grid);
-                    // Update a vector of Vectors from RD.regions and RD.gamma
                     if (duocolours.size() < RD.regions.size()) {
                         duocolours.resize (RD.regions.size());
                     }
+                    mdlptr = (VdmPtr)plt.getVisualModel (dr_grid);
+                    // Update a vector of Vectors from RD.regions and RD.gamma
                     for (size_t i = 0; i < RD.regions.size(); ++i) {
                         // gi is 'gamma index'
                         FLT idx_f = (FLT)RD.N * RD.regions[i]; // conversion method from
@@ -822,8 +834,6 @@ int main (int argc, char **argv)
                     }
                     mdlptr->updateData (&duocolours);
                 }
-                // Then add:
-                //plt.plot_dirichlet_boundaries (displays[n_id], RD.hg, vv);
 
                 // With the new all-in-one-window OpenGL format, there's only one savePngs
                 // call at a time.
