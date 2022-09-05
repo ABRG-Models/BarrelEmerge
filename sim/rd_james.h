@@ -34,6 +34,7 @@
 #include "morph/Hex.h"
 #include "morph/HdfData.h"
 #include "morph/Random.h"
+#include "morph/Scale.h"
 
 #include <vector>
 #include <array>
@@ -819,7 +820,15 @@ protected:
 
 public:
 
+    Flt gamma_max = std::numeric_limits<Flt>::min();
+    Flt gamma_min = std::numeric_limits<Flt>::max();
     Flt getGamma (size_t m, size_t i) { return this->gamma[m][i]; }
+    Flt getGammaNormalized (size_t m, size_t i)
+    {
+        morph::Scale<Flt> s;
+        s.compute_autoscale (this->gamma_min, this->gamma_max);
+        return s.transform_one(this->gamma[m][i]);
+    }
 
     /*
      * Parameter setter methods
@@ -835,6 +844,9 @@ public:
             if (gamma[m_idx].size() > n_idx) {
                 // Ok, we can set the value
                 this->gamma[m_idx][n_idx] = value;
+                // Record max and min of gamma
+                this->gamma_max = value > this->gamma_max ? value : this->gamma_max;
+                this->gamma_min = value < this->gamma_min ? value : this->gamma_min;
                 if (group_m == m_idx) {
                     this->group[n_idx] = value;
                     this->groupset.insert (value);
