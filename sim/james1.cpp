@@ -756,6 +756,9 @@ int main (int argc, char **argv)
     sighandling::user_interrupt = false;
     conf.set ("crashed", false);
 
+    // Container for colour values
+    std::vector<morph::Vector<FLT, 3>> duocolours(RD.regions.size());
+
     try {
         // Start the loop
         sighandling::finished = false;
@@ -796,7 +799,6 @@ int main (int argc, char **argv)
                     for (unsigned int i = 0; i<RD.N; ++i) {
                         mdlptr = (VdmPtr)plt.getVisualModel (cgrids[i]);
                         mdlptr->updateData (&RD.c[i]);
-
                     }
                 }
                 if (plot_n) {
@@ -806,15 +808,18 @@ int main (int argc, char **argv)
                 if (plot_dr && do_dirichlet_analysis) {
                     mdlptr = (VdmPtr)plt.getVisualModel (dr_grid);
                     // Update a vector of Vectors from RD.regions and RD.gamma
-                    std::vector<morph::Vector<FLT>> duocolours(RD.regions.size());
+                    if (duocolours.size() < RD.regions.size()) {
+                        duocolours.resize (RD.regions.size());
+                    }
                     for (size_t i = 0; i < RD.regions.size(); ++i) {
                         // gi is 'gamma index'
-                        FLT idx_f = (FLT)RD.N * RD.regions[i]; // how to go form flt to int?
+                        FLT idx_f = (FLT)RD.N * RD.regions[i]; // conversion method from
+                                                               // flt to int must match
+                                                               // what I used for the
+                                                               // multi-coloured scheme
                         unsigned int idx = static_cast<unsigned int>(idx_f);
-                        //std::cout << "RE.regions[i] == " << RD.regions[i] << " idx = " << idx << std::endl;
-                        duocolours[i] = { FLT{0}, RD.getGamma(0,idx), RD.getGamma(1,idx) };
+                        duocolours[i] = { FLT{0}, RD.getGammaNormalized(0,idx), RD.getGammaNormalized(1,idx) };
                     }
-                    //mdlptr->updateData (&RD.regions);
                     mdlptr->updateData (&duocolours);
                 }
                 // Then add:
