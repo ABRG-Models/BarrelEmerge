@@ -63,7 +63,6 @@ endif()
 find_package(OpenCV REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(HDF5 REQUIRED)
-find_package(jsoncpp REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(Armadillo REQUIRED)
 find_package(Freetype REQUIRED)
@@ -73,8 +72,7 @@ if(OpenMP_FOUND)
 endif()
 
 # Define collections of includes for the dependencies
-get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
-set(MORPH_INC_CORE ${JSON_INC_PATH} ${ARMADILLO_INCLUDE_DIR} ${ARMADILLO_INCLUDE_DIRS} ${HDF5_INCLUDE_DIR})
+set(MORPH_INC_CORE ${ARMADILLO_INCLUDE_DIR} ${ARMADILLO_INCLUDE_DIRS} ${HDF5_INCLUDE_DIR})
 set(MORPH_INC_GL ${OpenCV_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${GLFW3_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS})
 include_directories(${MORPH_INC_CORE} ${MORPH_INC_GL})
 

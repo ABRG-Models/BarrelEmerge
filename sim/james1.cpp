@@ -275,7 +275,7 @@ int main (int argc, char **argv)
     DBG ("steps to simulate: " << steps);
 
     // Thalamocortical populations array of parameters:
-    const Json::Value tcs = conf.getArray ("tc");
+    const nlohmann::json tcs = conf.get ("tc");
     unsigned int N_TC = static_cast<unsigned int>(tcs.size());
     if (N_TC == 0) {
         cerr << "Zero thalamocortical populations makes no sense for this simulation. Exiting."
@@ -284,7 +284,7 @@ int main (int argc, char **argv)
     }
 
     // Guidance molecule array of parameters:
-    const Json::Value guid = conf.getArray("guidance");
+    const nlohmann::json guid = conf.get ("guidance");
     unsigned int M_GUID = static_cast<unsigned int>(guid.size());
 
 #ifdef COMPILE_PLOTTING
@@ -399,33 +399,33 @@ int main (int argc, char **argv)
 
     // Index through thalamocortical fields, setting params:
     for (unsigned int i = 0; i < tcs.size(); ++i) {
-        Json::Value v = tcs[i];
-        RD.alpha[i] = v.get("alpha", 0.0).asDouble();
-        RD.beta[i] = v.get("beta", 0.0).asDouble();
+        nlohmann::json v = tcs[i];
+        RD.alpha[i] = v.contains("alpha") ? v["alpha"].get<FLT>() : FLT{0};
+        RD.beta[i] = v.contains("beta") ? v["beta"].get<FLT>() : FLT{0};
 
         // Sets up mask for initial branching density
         GaussParams<FLT> gp;
-        gp.gain = v.get("gaininit", 1.0).asDouble();
-        gp.sigma = v.get("sigmainit", 0.0).asDouble();
-        gp.x = v.get("xinit", 0.0).asDouble();
+        gp.gain = v.contains("gaininit") ? v["gaininit"].get<FLT>() : FLT{1};
+        gp.sigma = v.contains("sigmainit") ? v["sigmainit"].get<FLT>() : FLT{0};
+        gp.x = v.contains("xinit") ? v["xinit"].get<FLT>() : FLT{0};
         DBG2 ("Set xinit["<<i<<"] to " << gp.x);
-        gp.y = v.get("yinit", 0.0).asDouble();
+        gp.y = v.contains("yinit") ? v["yinit"].get<FLT>() : FLT{0};
         RD.initmasks.push_back (gp);
 #if defined DNCOMP || defined DNCOMP_PERGROUP || defined COMP2
-        RD.epsilon[i] = v.get("epsilon", 0.0).asDouble();
+        RD.epsilon[i] = v.contains("epsilon") ? v["epsilon"].get<FLT>() : FLT{0};
         DBG2 ("Set RD.epsilon["<<i<<"] to " << RD.epsilon[i]);
 #endif
 #if defined DNCOMP_PERGROUP
-        RD.xi[i] = v.get("xi", 0.0).asDouble();
+        RD.xi[i] = v.contains("xi") ? v["xi"].get<FLT>() : FLT{0};
         DBG2 ("Set RD.xi["<<i<<"] to " << RD.xi[i]);
 #endif
     }
 
     // Index through guidance molecule parameters:
     for (unsigned int j = 0; j < guid.size(); ++j) {
-        Json::Value v = guid[j];
+        nlohmann::json v = guid[j];
         // What guidance molecule method will we use?
-        string rmeth = v.get ("shape", "Sigmoid1D").asString();
+        string rmeth = v.contains("shape") ? v["shape"].get<std::string>() : "Sigmoid1D";
         DBG2 ("guidance molecule shape: " << rmeth);
         if (rmeth == "Sigmoid1D") {
             RD.rhoMethod[j] = FieldShape::Sigmoid1D;
@@ -441,12 +441,12 @@ int main (int argc, char **argv)
             RD.rhoMethod[j] = FieldShape::CircLinear2D;
         }
         // Set up guidance molecule method parameters
-        RD.guidance_gain.push_back (v.get("gain", 1.0).asDouble());
+        RD.guidance_gain.push_back (v.contains("gain") ? v["gain"].get<FLT>() : FLT{1});
         DBG2 ("guidance modelecule gain: " << RD.guidance_gain.back());
-        RD.guidance_phi.push_back (v.get("phi", 1.0).asDouble());
-        RD.guidance_width.push_back (v.get("width", 1.0).asDouble());
-        RD.guidance_offset.push_back (v.get("offset", 1.0).asDouble());
-        RD.guidance_time_onset.push_back (v.get("time_onset", 0).asUInt());
+        RD.guidance_phi.push_back (v.contains("phi") ? v["phi"].get<FLT>() : FLT{1});
+        RD.guidance_width.push_back (v.contains("width") ? v["width"].get<FLT>() : FLT{1});
+        RD.guidance_offset.push_back (v.contains("offset") ? v["offset"].get<FLT>() : FLT{1});
+        RD.guidance_time_onset.push_back (v.contains("time_onset") ? v["time_onset"].get<unsigned int>() : 0);
     }
 
     // Which of the gammas is the "group" defining gamma?
@@ -456,18 +456,18 @@ int main (int argc, char **argv)
     // populations and the guidance molecules (aka gamma).
     int paramRtn = 0;
     for (unsigned int i = 0; i < tcs.size(); ++i) {
-        Json::Value tcv = tcs[i];
-        Json::Value gamma = tcv["gamma"];
-        Json::Value tcname = tcv["name"];
+        nlohmann::json tcv = tcs[i];
+        nlohmann::json gamma = tcv["gamma"];
+        nlohmann::json tcname = tcv["name"];
         for (unsigned int j = 0; j < guid.size(); ++j) {
             // Set up gamma values using a setter which checks we
             // don't set a value that's off the end of the gamma
             // container.
-            DBG2 ("Set gamma for guidance " << j << " over TC " << i << " = " << gamma[j]);
-            paramRtn += RD.setGamma (j, i, gamma[j].asDouble(), groupgamma);
+            DBG2 ("Set gamma for guidance " << j << " over TC " << i << " = " << gamma[j].get<FLT>());
+            paramRtn += RD.setGamma (j, i, gamma[j].get<FLT>(), groupgamma);
         }
         // Make a map of name to float id value
-        RD.tcnames[(FLT)i/(FLT)tcs.size()] = tcname.asString();
+        RD.tcnames[(FLT)i/(FLT)tcs.size()] = tcname.get<std::string>();
     }
 
     if (paramRtn && M_GUID>0) {
@@ -513,8 +513,8 @@ int main (int argc, char **argv)
 #ifdef COMPILE_PLOTTING
 
     // Data scaling parameters
-    float _m = 0.2;
-    float _c = 0.0;
+    float _m = 0.2f;
+    float _c = 0.0f;
     // Z position scaling - how hilly/bumpy the visual will be.
     Scale<FLT> zscale; zscale.setParams (_m/10.0f, _c/10.0f);
     // The second is the colour scaling.

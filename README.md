@@ -24,7 +24,7 @@ morphologica (so you'll see there are two git clones in the
 instructions).
 
 The dependencies for the morphologica code are OpenCV, Armadillo,
-OpenGL, HDF5, jsoncpp, LAPACK and glfw (we don't use the old
+OpenGL, HDF5, LAPACK and glfw (we don't use the old
 morphologica code which also needed X11 headers).  Refer to the
 instructions in the morphologica README.install files, covering
 installation of dependences on Mac or Linux.

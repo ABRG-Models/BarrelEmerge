@@ -110,7 +110,7 @@ int main(int argc, char** argv)
         unsigned int gridId = v.addVisualModel (new morph::HexGridVisual<float>(v.shaderprog, v.tshaderprog, &hg, offset, &data));
         offset[1] += hg.depth()/2.0f;
         offset[0] += (hg.width()/2.0f);
-        unsigned int gridId1 = v.addVisualModel (new morph::HexGridVisual<float>(v.shaderprog, v.tshaderprog, &kernel, offset, &kerneldata));
+        v.addVisualModel (new morph::HexGridVisual<float>(v.shaderprog, v.tshaderprog, &kernel, offset, &kerneldata));
         offset[0] += (hg.width()/2.0f);
         offset[1] -= hg.depth()/2.0f;
         unsigned int gridId2 = v.addVisualModel (new morph::HexGridVisual<float>(v.shaderprog, v.tshaderprog, &hg, offset, &convolved));
