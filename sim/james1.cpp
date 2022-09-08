@@ -94,6 +94,8 @@ using morph::ColourMapType;
 using morph::Visual;
 # include "morph/VisualDataModel.h"
 using morph::VisualDataModel;
+// I AM using the deprecated code in HexGridVisual for now...
+# define HGV_DEPRECATED 1
 # include "morph/HexGridVisual.h"
 using morph::HexGridVisual;
 
@@ -319,10 +321,11 @@ int main (int argc, char **argv)
     plt.zFar = 50;
     plt.fov = 45;
     plt.setZDefault (-10.0f);
-    // Set a dark blue background (black is the default). This value has the order
+    // Set a dark blue background (white is the default). This value has the order
     // 'RGBA', though the A(alpha) makes no difference.
-    plt.bgcolour = {0.0f, 0.0f, 0.2f, 1.0f};
-    plt.showCoordArrows = true;
+    //plt.bgcolour = {0.0f, 0.0f, 0.2f, 1.0f};
+    plt.backgroundBlack();
+    plt.showCoordArrows = false;
     plt.showTitle = false;
     // You can lock movement of the scene
     plt.sceneLocked = conf.getBool ("sceneLocked", false);
