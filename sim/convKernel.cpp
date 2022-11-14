@@ -69,7 +69,7 @@ int main(int argc, char** argv)
         }
         morph::ReadCurves r(curvepath);
 
-        morph::HexGrid hg(hextohex_d, 4, 0, morph::HexDomainShape::Boundary);
+        morph::HexGrid hg(hextohex_d, 4, 0);
         hg.setBoundary (r.getCorticalPath());
 
         // Populate a vector of floats with data
@@ -80,7 +80,7 @@ int main(int argc, char** argv)
         }
 
         // Create a circular HexGrid to contain the Gaussian convolution kernel
-        morph::HexGrid kernel(hextohex_d, 20.0f*sigma, 0, morph::HexDomainShape::Boundary);
+        morph::HexGrid kernel(hextohex_d, 20.0f*sigma, 0);
         kernel.setCircularBoundary (6.0f*sigma);
         std::vector<float> kerneldata (kernel.num(), 0.0f);
         // Once-only parts of the calculation of the Gaussian.
@@ -107,13 +107,19 @@ int main(int argc, char** argv)
 
         // Visualize the 3 maps
         morph::Vector<float, 3> offset = { -1.1, 0.0, 0.0 };
-        unsigned int gridId = v.addVisualModel (new morph::HexGridVisual<float>(v.shaderprog, v.tshaderprog, &hg, offset, &data));
+        morph::HexGridVisual<float>* hgv = new morph::HexGridVisual<float>(v.shaderprog, v.tshaderprog, &hg, offset);
+        hgv->setScalarData (&data);
+        unsigned int gridId = v.addVisualModel (hgv);
         offset[1] += hg.depth()/2.0f;
         offset[0] += (hg.width()/2.0f);
-        v.addVisualModel (new morph::HexGridVisual<float>(v.shaderprog, v.tshaderprog, &kernel, offset, &kerneldata));
+        morph::HexGridVisual<float>* hgv_k = new morph::HexGridVisual<float>(v.shaderprog, v.tshaderprog, &kernel, offset);
+        hgv_k->setScalarData (&kerneldata);
+        v.addVisualModel (hgv_k);
         offset[0] += (hg.width()/2.0f);
         offset[1] -= hg.depth()/2.0f;
-        unsigned int gridId2 = v.addVisualModel (new morph::HexGridVisual<float>(v.shaderprog, v.tshaderprog, &hg, offset, &convolved));
+        morph::HexGridVisual<float>* hgv_c = new morph::HexGridVisual<float>(v.shaderprog, v.tshaderprog, &hg, offset);
+        hgv_c->setScalarData (&convolved);
+        unsigned int gridId2 = v.addVisualModel (hgv_c);
 
         // Divide existing scale by 10:
         float newGrad = static_cast<morph::VisualDataModel<float>*>(v.getVisualModel(gridId))->zScale.getParams(0)/10.0;
@@ -136,7 +142,6 @@ int main(int argc, char** argv)
         std::cerr << "Current working directory: " << morph::Tools::getPwd() << std::endl;
         rtn = -1;
     }
-
 
     return rtn;
 }

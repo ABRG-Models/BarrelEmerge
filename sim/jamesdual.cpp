@@ -919,7 +919,7 @@ int main (int argc, char **argv)
             ctrdata.add_contained_vals (pth.c_str(), vy);
 
             // Generate hex grids from contours to obtain the size of the region enclosed by the contour
-            HexGrid* hg1 = new HexGrid (RD.hextohex_d, 3, 0, morph::HexDomainShape::Boundary);
+            HexGrid* hg1 = new HexGrid (RD.hextohex_d, 3, 0);
             hg1->setBoundary (ctrs[ci]);
             pth[1] = 'n';
             ctrdata.add_val(pth.c_str(), hg1->num());

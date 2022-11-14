@@ -79,7 +79,7 @@ int main (int argc, char **argv)
     // Create HexGrid...
     float hextohex_d = 0.03; // reinstate Json for these params?
     float hexspan = 6;
-    HexGrid* hg = new HexGrid (hextohex_d, hexspan, 0, morph::HexDomainShape::Boundary);
+    HexGrid* hg = new HexGrid (hextohex_d, hexspan, 0);
     // Read the curves which make a boundary
     ReadCurves r;
     r.init (svgpath);
