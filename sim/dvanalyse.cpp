@@ -40,7 +40,7 @@
 
 #include "morph/ShapeAnalysis.h"
 
-#include "morph/MathConst.h"
+#include "morph/mathconst.h"
 
 using namespace morph;
 using namespace std;

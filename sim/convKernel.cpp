@@ -37,7 +37,7 @@
 #include <morph/tools.h>
 #include <morph/Random.h>
 #include <morph/Scale.h>
-#include <morph/Vector.h>
+#include <morph/vec.h>
 
 int main(int argc, char** argv)
 {
@@ -106,7 +106,7 @@ int main(int argc, char** argv)
         hg.convolve (kernel, kerneldata, data, convolved);
 
         // Visualize the 3 maps
-        morph::Vector<float, 3> offset = { -1.1, 0.0, 0.0 };
+        morph::vec<float, 3> offset = { -1.1, 0.0, 0.0 };
         morph::HexGridVisual<float>* hgv = new morph::HexGridVisual<float>(v.shaderprog, v.tshaderprog, &hg, offset);
         hgv->setScalarData (&data);
         unsigned int gridId = v.addVisualModel (hgv);

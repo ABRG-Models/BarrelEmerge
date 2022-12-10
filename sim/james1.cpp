@@ -529,7 +529,7 @@ int main (int argc, char **argv)
     vector<unsigned int> guidegrad_grids;
 
     // Spatial offset
-    morph::Vector<float, 3> spatOff;
+    morph::vec<float, 3> spatOff;
     float xzero = 0.0f;
 
     // The a variable
@@ -756,8 +756,8 @@ int main (int argc, char **argv)
     conf.set ("crashed", false);
 
     // Container for colour values
-    std::vector<morph::Vector<FLT, 3>> duocolours(RD.regions.size());
-    vector<morph::Vector<FLT, 3>> ctrmap_colours;
+    std::vector<morph::vec<FLT, 3>> duocolours(RD.regions.size());
+    vector<morph::vec<FLT, 3>> ctrmap_colours;
 
     try {
         // Start the loop
@@ -821,7 +821,7 @@ int main (int argc, char **argv)
                         duocolours.resize (RD.regions.size());
                     }
                     mdlptr = (VdmPtr)plt.getVisualModel (dr_grid);
-                    // Update a vector of Vectors from RD.regions and RD.gamma
+                    // Update a vector of vecs from RD.regions and RD.gamma
                     for (size_t i = 0; i < RD.regions.size(); ++i) {
                         // gi is 'gamma index'
                         FLT idx_f = (FLT)RD.N * RD.regions[i]; // conversion method from
