@@ -96,10 +96,6 @@ using morph::Visual;
 using morph::VisualDataModel;
 # include "morph/HexGridVisual.h"
 using morph::HexGridVisual;
-
-// Alias VisualDataModel<FLT>* as VdmPtr, to neaten code
-typedef morph::VisualDataModel<FLT>* VdmPtr;
-
 # include <morph/MathAlgo.h>
 using morph::MathAlgo;
 
@@ -522,60 +518,56 @@ int main (int argc, char **argv)
     Scale<FLT> cscale; cscale.setParams (_m, _c);
 
     // HERE, add HexGridVisuals...
-    unsigned int c_ctr_grid = 0; // one only
-    unsigned int a_ctr_grid = 0;
-    unsigned int dr_grid = 0;
-    vector<unsigned int> guide_grids;
-    vector<unsigned int> guidegrad_grids;
+    HexGridVisual<FLT>* c_ctr_grid = nullptr; // one only
+    HexGridVisual<FLT>* a_ctr_grid = nullptr;
+    HexGridVisual<FLT>* dr_grid = nullptr;
 
     // Spatial offset
     morph::vec<float, 3> spatOff;
     float xzero = 0.0f;
 
     // The a variable
-    vector<unsigned int> agrids;
+    vector<HexGridVisual<FLT>*> agrids;
     unsigned int side = static_cast<unsigned int>(floor (sqrt (RD.N)));
     if (plot_a) {
         spatOff = {xzero, 0.0, 0.0 };
         for (unsigned int i = 0; i<RD.N; ++i) {
             spatOff[0] = xzero + RD.hg->width() * (i/side);
             spatOff[1] = RD.hg->width() * (i%side);
-            HexGridVisual<FLT>* hgv = new HexGridVisual<FLT>(plt.shaderprog, plt.tshaderprog, RD.hg, spatOff);
+            auto hgv = std::make_unique<HexGridVisual<FLT>>(plt.shaders, RD.hg, spatOff);
             hgv->setScalarData (&(RD.a[i]));
             hgv->zScale = zscale;
             hgv->colourScale = cscale;
             hgv->cm.setType (ColourMapType::Plasma);
             hgv->finalize();
-            unsigned int idx = plt.addVisualModel (hgv);
-            agrids.push_back (idx);
+            agrids.push_back (plt.addVisualModel(hgv));
         }
         xzero = spatOff[0] + RD.hg->width();
     }
 
     // The c variable
-    vector<unsigned int> cgrids;
+    vector<HexGridVisual<FLT>*> cgrids;
     if (plot_c) {
         spatOff = {xzero, 0.0, 0.0 };
         for (unsigned int i = 0; i<RD.N; ++i) {
             spatOff[0] = xzero + RD.hg->width() * (i/side);
             spatOff[1] = RD.hg->width() * (i%side);
-            HexGridVisual<FLT>* hgv = new HexGridVisual<FLT>(plt.shaderprog, plt.tshaderprog, RD.hg, spatOff);
+            auto hgv = std::make_unique<HexGridVisual<FLT>>(plt.shaders, RD.hg, spatOff);
             hgv->setScalarData (&(RD.c[i]));
             hgv->zScale = zscale;
             hgv->colourScale = cscale;
             hgv->cm.setType (ColourMapType::Plasma);
             hgv->finalize();
-            unsigned int idx = plt.addVisualModel (hgv);
-            cgrids.push_back (idx);
+            cgrids.push_back (plt.addVisualModel (hgv));
         }
         xzero = spatOff[0] + RD.hg->width();
     }
 
     // n
-    unsigned int ngrid = 0;
+    HexGridVisual<FLT>* ngrid = nullptr;
     if (plot_n) {
         spatOff = { xzero, 0.0, 0.0 };
-        HexGridVisual<FLT>* hgv = new HexGridVisual<FLT>(plt.shaderprog, plt.tshaderprog, RD.hg, spatOff);
+        auto hgv = std::make_unique<HexGridVisual<FLT>>(plt.shaders, RD.hg, spatOff);
         hgv->setScalarData (&RD.n);
         hgv->zScale = zscale;
         hgv->colourScale = cscale;
@@ -594,7 +586,7 @@ int main (int argc, char **argv)
     if (plot_contours) {
         spatOff = { xzero, 0.0, 0.0 };
         // special scaling for contours. flat in Z, but still colourful
-        HexGridVisual<FLT>* hgv_contours = new HexGridVisual<FLT>(plt.shaderprog, plt.tshaderprog, RD.hg, spatOff);
+        auto hgv_contours = std::make_unique<HexGridVisual<FLT>>(plt.shaders, RD.hg, spatOff);
         hgv_contours->setScalarData (&zeromap);
         hgv_contours->zScale = null_zscale;
         hgv_contours->colourScale = ctr_cscale;
@@ -609,7 +601,7 @@ int main (int argc, char **argv)
 
     if (plot_a_contours) {
         spatOff = { xzero, 0.0, 0.0 };
-        HexGridVisual<FLT>* hgv_contours = new HexGridVisual<FLT>(plt.shaderprog, plt.tshaderprog, RD.hg, spatOff);
+        auto hgv_contours = std::make_unique<HexGridVisual<FLT>>(plt.shaders, RD.hg, spatOff);
         hgv_contours->setScalarData (&zeromap);
         hgv_contours->zScale = null_zscale;
         hgv_contours->colourScale = ctr_cscale;
@@ -621,7 +613,7 @@ int main (int argc, char **argv)
 
     if (plot_dr && do_dirichlet_analysis == true) {
         spatOff = { xzero, 0.0, 0.0 };
-        morph::HexGridVisual<FLT>* hgv_dr = new HexGridVisual<FLT> (plt.shaderprog, plt.tshaderprog, RD.hg, spatOff);
+        auto hgv_dr = std::make_unique<HexGridVisual<FLT>> (plt.shaders, RD.hg, spatOff);
         hgv_dr->setScalarData (&zeromap);
         hgv_dr->zScale = null_zscale;
         hgv_dr->colourScale = ctr_cscale;
@@ -642,7 +634,7 @@ int main (int argc, char **argv)
         gd_cscale.do_autoscale = true;
         // Plot gradients of the guidance effect g.
         for (unsigned int j = 0; j<RD.M; ++j) {
-            morph::HexGridVisual<FLT>* hgv = new HexGridVisual<FLT> (plt.shaderprog, plt.tshaderprog, RD.hg, spatOff);
+            auto hgv = std::make_unique<HexGridVisual<FLT>> (plt.shaders, RD.hg, spatOff);
             hgv->setScalarData (&(RD.rho[j]));
             hgv->zScale = null_zscale;
             hgv->colourScale = gd_cscale;
@@ -691,7 +683,7 @@ int main (int argc, char **argv)
             Scale<FLT> ggd_cscale; ggd_cscale.setParams (gg_m, gg_c);
 
             // Create the grids
-            HexGridVisual<FLT>* hgv1 = new HexGridVisual<FLT> (plt.shaderprog, plt.tshaderprog, RD.hg, spatOff);
+            auto hgv1 = std::make_unique<HexGridVisual<FLT>> (plt.shaders, RD.hg, spatOff);
             hgv1->setScalarData (&(RD.rho[j]));
             hgv1->zScale = null_zscale;
             hgv1->colourScale = ggd_cscale;
@@ -699,7 +691,7 @@ int main (int argc, char **argv)
             hgv1->finalize();
             plt.addVisualModel (hgv1);
             spatOff[0] += RD.hg->width();
-            HexGridVisual<FLT>* hgv2 = new HexGridVisual<FLT> (plt.shaderprog, plt.tshaderprog, RD.hg, spatOff);
+            auto hgv2 = std::make_unique<HexGridVisual<FLT>> (plt.shaders, RD.hg, spatOff);
             hgv2->setScalarData (&(gy[j]));
             hgv2->zScale = null_zscale;
             hgv2->colourScale = ggd_cscale;
@@ -746,9 +738,6 @@ int main (int argc, char **argv)
     // if using plotting, then set up the render clock
     steady_clock::time_point lastrender = steady_clock::now();
 
-    // A pointer to access the data layer of HexGridVisual objects.
-    VisualDataModel<FLT>* mdlptr = (VdmPtr)0;
-
 #endif // COMPILE_PLOTTING
 
     // Innocent until proven guilty
@@ -789,38 +778,24 @@ int main (int argc, char **argv)
                     DBG2 ("dirich_value = " << RD.honda);
                 }
 
-                if (plot_contours) {
-                    mdlptr = (VdmPtr)plt.getVisualModel (c_ctr_grid);
-                    mdlptr->updateData (&ctrmap_colours);
-                }
+                if (plot_contours) { c_ctr_grid->updateData (&ctrmap_colours); }
 
                 if (plot_a_contours) {
                     vector<FLT> actrmap = ShapeAnalysis<FLT>::get_contour_map (RD.hg, RD.a, RD.contour_threshold);
-                    mdlptr = (VdmPtr)plt.getVisualModel (a_ctr_grid);
-                    mdlptr->updateData (&actrmap);
+                    a_ctr_grid->updateData (&actrmap);
                 }
 
                 if (plot_a) {
-                    for (unsigned int i = 0; i<RD.N; ++i) {
-                        mdlptr = (VdmPtr)plt.getVisualModel (agrids[i]);
-                        mdlptr->updateData (&RD.a[i]);
-                    }
+                    for (unsigned int i = 0; i<RD.N; ++i) { agrids[i]->updateData (&RD.a[i]); }
                 }
                 if (plot_c) {
-                    for (unsigned int i = 0; i<RD.N; ++i) {
-                        mdlptr = (VdmPtr)plt.getVisualModel (cgrids[i]);
-                        mdlptr->updateData (&RD.c[i]);
-                    }
+                    for (unsigned int i = 0; i<RD.N; ++i) { cgrids[i]->updateData (&RD.c[i]); }
                 }
-                if (plot_n) {
-                    mdlptr = (VdmPtr)plt.getVisualModel (ngrid);
-                    mdlptr->updateData (&RD.n);
-                }
+                if (plot_n) { ngrid->updateData (&RD.n); }
                 if (plot_dr && do_dirichlet_analysis) {
                     if (duocolours.size() < RD.regions.size()) {
                         duocolours.resize (RD.regions.size());
                     }
-                    mdlptr = (VdmPtr)plt.getVisualModel (dr_grid);
                     // Update a vector of vecs from RD.regions and RD.gamma
                     for (size_t i = 0; i < RD.regions.size(); ++i) {
                         // gi is 'gamma index'
@@ -831,7 +806,7 @@ int main (int argc, char **argv)
                         unsigned int idx = static_cast<unsigned int>(idx_f);
                         duocolours[i] = { FLT{0}, RD.getGammaNormalized(0,idx), RD.getGammaNormalized(1,idx) };
                     }
-                    mdlptr->updateData (&duocolours);
+                    dr_grid->updateData (&duocolours);
                 }
 
                 // With the new all-in-one-window OpenGL format, there's only one savePngs

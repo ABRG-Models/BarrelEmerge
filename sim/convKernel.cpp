@@ -42,7 +42,7 @@
 int main(int argc, char** argv)
 {
     if (argc < 2) {
-        std::cout << "Usage: " << argv[0] << " kernel_width\n";
+        std::cout << "Usage: " << argv[0] << " kernel_width (Try 0.04 as a good example)\n";
         return -1;
     }
 
@@ -107,28 +107,33 @@ int main(int argc, char** argv)
 
         // Visualize the 3 maps
         morph::vec<float, 3> offset = { -1.1, 0.0, 0.0 };
-        morph::HexGridVisual<float>* hgv = new morph::HexGridVisual<float>(v.shaderprog, v.tshaderprog, &hg, offset);
+        auto hgv = std::make_unique<morph::HexGridVisual<float>>(v.shaders, &hg, offset);
         hgv->setScalarData (&data);
-        unsigned int gridId = v.addVisualModel (hgv);
+        hgv->finalize();
+        auto gridId = v.addVisualModel (hgv);
         offset[1] += hg.depth()/2.0f;
         offset[0] += (hg.width()/2.0f);
-        morph::HexGridVisual<float>* hgv_k = new morph::HexGridVisual<float>(v.shaderprog, v.tshaderprog, &kernel, offset);
+        auto hgv_k = std::make_unique<morph::HexGridVisual<float>>(v.shaders, &kernel, offset);
         hgv_k->setScalarData (&kerneldata);
+        hgv_k->finalize();
         v.addVisualModel (hgv_k);
         offset[0] += (hg.width()/2.0f);
         offset[1] -= hg.depth()/2.0f;
-        morph::HexGridVisual<float>* hgv_c = new morph::HexGridVisual<float>(v.shaderprog, v.tshaderprog, &hg, offset);
+        auto hgv_c = std::make_unique<morph::HexGridVisual<float>>(v.shaders, &hg, offset);
         hgv_c->setScalarData (&convolved);
-        unsigned int gridId2 = v.addVisualModel (hgv_c);
+        hgv_c->finalize();
+        auto gridId2 = v.addVisualModel (hgv_c);
 
         // Divide existing scale by 10:
-        float newGrad = static_cast<morph::VisualDataModel<float>*>(v.getVisualModel(gridId))->zScale.getParams(0)/10.0;
+        float newGrad = gridId->zScale.getParams(0)/10.0;
         // Set this in a new zscale object:
         morph::Scale<float> zscale;
         zscale.setParams (newGrad, 0);
         // And set it back into the visual model:
-        static_cast<morph::VisualDataModel<float>*>(v.getVisualModel(gridId))->setZScale (zscale);
-        static_cast<morph::VisualDataModel<float>*>(v.getVisualModel(gridId2))->setZScale (zscale);
+        gridId->setZScale (zscale);
+        gridId->reinit();
+        gridId2->setZScale (zscale);
+        gridId2->reinit();
 
         v.render();
 
