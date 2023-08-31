@@ -107,19 +107,22 @@ int main(int argc, char** argv)
 
         // Visualize the 3 maps
         morph::vec<float, 3> offset = { -1.1, 0.0, 0.0 };
-        auto hgv = std::make_unique<morph::HexGridVisual<float>>(v.shaders, &hg, offset);
+        auto hgv = std::make_unique<morph::HexGridVisual<float>>(&hg, offset);
+        v.bindmodel (hgv);
         hgv->setScalarData (&data);
         hgv->finalize();
         auto gridId = v.addVisualModel (hgv);
         offset[1] += hg.depth()/2.0f;
         offset[0] += (hg.width()/2.0f);
-        auto hgv_k = std::make_unique<morph::HexGridVisual<float>>(v.shaders, &kernel, offset);
+        auto hgv_k = std::make_unique<morph::HexGridVisual<float>>(&kernel, offset);
+        v.bindmodel (hgv_k);
         hgv_k->setScalarData (&kerneldata);
         hgv_k->finalize();
         v.addVisualModel (hgv_k);
         offset[0] += (hg.width()/2.0f);
         offset[1] -= hg.depth()/2.0f;
-        auto hgv_c = std::make_unique<morph::HexGridVisual<float>>(v.shaders, &hg, offset);
+        auto hgv_c = std::make_unique<morph::HexGridVisual<float>>(&hg, offset);
+        v.bindmodel (hgv_c);
         hgv_c->setScalarData (&convolved);
         hgv_c->finalize();
         auto gridId2 = v.addVisualModel (hgv_c);

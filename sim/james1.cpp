@@ -534,7 +534,8 @@ int main (int argc, char **argv)
         for (unsigned int i = 0; i<RD.N; ++i) {
             spatOff[0] = xzero + RD.hg->width() * (i/side);
             spatOff[1] = RD.hg->width() * (i%side);
-            auto hgv = std::make_unique<HexGridVisual<FLT>>(plt.shaders, RD.hg, spatOff);
+            auto hgv = std::make_unique<HexGridVisual<FLT>>(RD.hg, spatOff);
+            plt.bindmodel (hgv);
             hgv->setScalarData (&(RD.a[i]));
             hgv->zScale = zscale;
             hgv->colourScale = cscale;
@@ -552,7 +553,8 @@ int main (int argc, char **argv)
         for (unsigned int i = 0; i<RD.N; ++i) {
             spatOff[0] = xzero + RD.hg->width() * (i/side);
             spatOff[1] = RD.hg->width() * (i%side);
-            auto hgv = std::make_unique<HexGridVisual<FLT>>(plt.shaders, RD.hg, spatOff);
+            auto hgv = std::make_unique<HexGridVisual<FLT>>(RD.hg, spatOff);
+            plt.bindmodel (hgv);
             hgv->setScalarData (&(RD.c[i]));
             hgv->zScale = zscale;
             hgv->colourScale = cscale;
@@ -567,7 +569,8 @@ int main (int argc, char **argv)
     HexGridVisual<FLT>* ngrid = nullptr;
     if (plot_n) {
         spatOff = { xzero, 0.0, 0.0 };
-        auto hgv = std::make_unique<HexGridVisual<FLT>>(plt.shaders, RD.hg, spatOff);
+        auto hgv = std::make_unique<HexGridVisual<FLT>>(RD.hg, spatOff);
+        plt.bindmodel (hgv);
         hgv->setScalarData (&RD.n);
         hgv->zScale = zscale;
         hgv->colourScale = cscale;
@@ -586,7 +589,8 @@ int main (int argc, char **argv)
     if (plot_contours) {
         spatOff = { xzero, 0.0, 0.0 };
         // special scaling for contours. flat in Z, but still colourful
-        auto hgv_contours = std::make_unique<HexGridVisual<FLT>>(plt.shaders, RD.hg, spatOff);
+        auto hgv_contours = std::make_unique<HexGridVisual<FLT>>(RD.hg, spatOff);
+        plt.bindmodel (hgv_contours);
         hgv_contours->setScalarData (&zeromap);
         hgv_contours->zScale = null_zscale;
         hgv_contours->colourScale = ctr_cscale;
@@ -601,7 +605,8 @@ int main (int argc, char **argv)
 
     if (plot_a_contours) {
         spatOff = { xzero, 0.0, 0.0 };
-        auto hgv_contours = std::make_unique<HexGridVisual<FLT>>(plt.shaders, RD.hg, spatOff);
+        auto hgv_contours = std::make_unique<HexGridVisual<FLT>>(RD.hg, spatOff);
+        plt.bindmodel (hgv_contours);
         hgv_contours->setScalarData (&zeromap);
         hgv_contours->zScale = null_zscale;
         hgv_contours->colourScale = ctr_cscale;
@@ -613,7 +618,8 @@ int main (int argc, char **argv)
 
     if (plot_dr && do_dirichlet_analysis == true) {
         spatOff = { xzero, 0.0, 0.0 };
-        auto hgv_dr = std::make_unique<HexGridVisual<FLT>> (plt.shaders, RD.hg, spatOff);
+        auto hgv_dr = std::make_unique<HexGridVisual<FLT>> (RD.hg, spatOff);
+        plt.bindmodel (hgv_dr);
         hgv_dr->setScalarData (&zeromap);
         hgv_dr->zScale = null_zscale;
         hgv_dr->colourScale = ctr_cscale;
@@ -634,7 +640,8 @@ int main (int argc, char **argv)
         gd_cscale.do_autoscale = true;
         // Plot gradients of the guidance effect g.
         for (unsigned int j = 0; j<RD.M; ++j) {
-            auto hgv = std::make_unique<HexGridVisual<FLT>> (plt.shaders, RD.hg, spatOff);
+            auto hgv = std::make_unique<HexGridVisual<FLT>> (RD.hg, spatOff);
+            plt.bindmodel (hgv);
             hgv->setScalarData (&(RD.rho[j]));
             hgv->zScale = null_zscale;
             hgv->colourScale = gd_cscale;
@@ -683,7 +690,8 @@ int main (int argc, char **argv)
             Scale<FLT> ggd_cscale; ggd_cscale.setParams (gg_m, gg_c);
 
             // Create the grids
-            auto hgv1 = std::make_unique<HexGridVisual<FLT>> (plt.shaders, RD.hg, spatOff);
+            auto hgv1 = std::make_unique<HexGridVisual<FLT>> (RD.hg, spatOff);
+            plt.bindmodel (hgv1);
             hgv1->setScalarData (&(RD.rho[j]));
             hgv1->zScale = null_zscale;
             hgv1->colourScale = ggd_cscale;
@@ -691,7 +699,8 @@ int main (int argc, char **argv)
             hgv1->finalize();
             plt.addVisualModel (hgv1);
             spatOff[0] += RD.hg->width();
-            auto hgv2 = std::make_unique<HexGridVisual<FLT>> (plt.shaders, RD.hg, spatOff);
+            auto hgv2 = std::make_unique<HexGridVisual<FLT>> (RD.hg, spatOff);
+            plt.bindmodel (hgv2);
             hgv2->setScalarData (&(gy[j]));
             hgv2->zScale = null_zscale;
             hgv2->colourScale = ggd_cscale;
