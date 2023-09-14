@@ -32,9 +32,15 @@ installation of dependences on Mac or Linux.
 With dependences installed you can build BarrelEmerge:
 
 ```bash
-git clone https://github.com/ABRG-Models/BarrelEmerge.git
+# Clone, making sure to get the submodules (morphologica)
+git clone --recurse-submodules https://github.com/ABRG-Models/BarrelEmerge.git
+
+# If you ALREADY did a git clone *without* --recurse-submodules, then don't panic! just do:
+# cd BarrelEmerge
+# git submodule init
+# git submodule update
+
 cd BarrelEmerge
-git clone https://github.com/ABRG-Models/morphologica.git
 mkdir build
 pushd build
 cmake ..
