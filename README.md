@@ -19,15 +19,22 @@ For instructions on reproducing the results of the paper, see the
 README.md file in the scripts subdirectory.
 
 Before you do that, you'll need to build this simulation code, which
-is compiled using our library of research software,
-morphologica (so you'll see there are two git clones in the
-instructions).
+is compiled using our library of research software, morphologica.
 
-The dependencies for the morphologica code are OpenCV, Armadillo,
-OpenGL, HDF5, LAPACK and glfw (we don't use the old
-morphologica code which also needed X11 headers).  Refer to the
-instructions in the morphologica README.install files, covering
-installation of dependences on Mac or Linux.
+morphologica is pulled in as a git submodule, but you'll still need to
+install the dependencies for the morphologica code, which are: OpenCV,
+Armadillo, OpenGL, HDF5, LAPACK and glfw.  Refer to the instructions
+in the morphologica README.install files, covering installation of
+dependences on Mac or Linux. On a Debian based Linux, this should
+work:
+
+```bash
+sudo apt install build-essential cmake git \
+                 freeglut3-dev libglu1-mesa-dev libxmu-dev libxi-dev \
+                 libglfw3-dev libfreetype-dev
+
+sudo apt install libarmadillo-dev libhdf5-dev libopencv-dev
+```
 
 With dependences installed you can build BarrelEmerge:
 
