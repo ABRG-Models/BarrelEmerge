@@ -1,5 +1,5 @@
 # 3.1 minimum version for set(CMAKE_CXX_STANDARD 1z)
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.1...4.2)
 project(BarrelEmerge)
 
 message(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
